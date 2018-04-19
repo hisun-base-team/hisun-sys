@@ -1,0 +1,54 @@
+.t2 {
+	margin: 0px;
+	padding: 0px;
+	font: icon;
+	white-space: nowrap;
+}
+
+.t1 {
+	padding: 0px;
+	margin: 0px;
+	font: icon;
+	color: black;
+	white-space: nowrap;
+}
+
+.t1 a, .t1 a:active, .t1 a:hover {
+	margin-left: 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+.t1 a {
+	color: black;
+	text-decoration: none;
+}
+
+.t1 a:hover {
+	color: blue;
+	text-decoration: underline;
+}
+
+.t1 a:active {
+	background: highlight;
+	color: highlighttext;
+	text-decoration: none;
+}
+
+.t1 img {
+	vertical-align: middle;
+	border: 0px;
+}
+
+.webfx-tree-icon {
+	width: 16px;
+	height: 16px;
+}
+.t1 a.selected {
+	color: selectedtext;
+	background: selected;
+}
+
+.t1 a.selected-inactive {
+	color: windowtext;
+	background: buttonface;
+}
