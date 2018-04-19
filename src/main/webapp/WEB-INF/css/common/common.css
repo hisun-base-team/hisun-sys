@@ -1,0 +1,5 @@
+/**
+* tabel单元格自动打点,需要下面两个样式一起
+*/
+.table-set { table-layout: fixed; }
+.table-set td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

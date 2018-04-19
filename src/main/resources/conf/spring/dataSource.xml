@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+		
+	<bean id="dataSource" class="com.hisun.base.druid.AdvanceDruidSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${db.connection.driver_class}" />
+		<!-- 基本属性 -->
+		<property name="url" value="${db.connection.url}" />
+		<property name="username" value="${db.connection.username}" />
+		<property name="password" value="${db.connection.password}" />
+		<property name="filters" value="config,stat,wall" />
+		<property name="connectionProperties" value="${db.connection.properties}" />
+
+		<!-- 初始化大小,最小,最大 -->
+		<property name="initialSize" value="1" />
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="1" />
+		<!-- 连接池最大使用连接数量 -->
+		<property name="maxActive" value="50" />
+		<!-- 获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 间隔多久检测需要关闭的空闲连接,单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间,单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<!-- 关闭长时间不使用的连接 -->
+        <!-- 打开removeAbandoned功能 -->
+        <property name="removeAbandoned" value="true" />
+        <!-- 1200秒，也就是20分钟 -->
+        <property name="removeAbandonedTimeout" value="10800" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="statFilter" />
+				<ref bean="slf4jLogFilter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="statFilter" class="com.alibaba.druid.filter.stat.StatFilter">
+		<property name="connectionStackTraceEnable" value="true" />
+		<property name="slowSqlMillis" value="10000" />
+		<property name="logSlowSql" value="true" />
+		<property name="mergeSql" value="false" />
+		<property name="dbType" value="mysql" />
+	</bean>
+	<bean id="slf4jLogFilter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">
+        <property name="resultSetLogEnabled" value="false"/>
+	</bean>
+	<!-- 配置druid监控spring jdbc -->
+	<bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+	</bean>
+	<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
+		<property name="patterns">
+			<list>
+				<value>com.hisun.*</value>
+			</list>
+		</property>
+	</bean>
+	<aop:config>
+		<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
+	</aop:config>
+</beans>

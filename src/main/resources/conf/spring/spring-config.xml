@@ -1,0 +1,124 @@
+<?xml  version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <!-- 开启注解 -->
+	<context:annotation-config />
+	<!-- 扫描当前包下及子包下的所有类，除带有@Controller注释的类 -->
+	<context:component-scan base-package="com.hisun.*">
+	   <!--<context:exclude-filter type="regex" expression=".*.controller"/>-->
+       <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    
+    <!-- 资源文件配置 -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:conf/properties/resources.properties</value>
+            </list>
+        </property>
+		<property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+    <!-- Hibernate SessionFactory配置 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.hisun</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.query.substitutions">${hibernate.query.substitutions}</prop>
+                <prop key="hibernate.default_batch_fetch_size">${hibernate.default_batch_fetch_size}</prop>
+                <prop key="hibernate.max_fetch_depth">${hibernate.max_fetch_depth}</prop>
+                <prop key="hibernate.generate_statistics">${hibernate.generate_statistics}</prop>
+                <prop key="hibernate.bytecode.use_reflection_optimizer">${hibernate.bytecode.use_reflection_optimizer}</prop>
+                <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+                <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
+                <prop key="hibernate.cache.region.factory_class">${hibernate.cache.region.factory_class}</prop>
+                <prop key="hibernate.cache.use_structured_entries">${hibernate.cache.use_structured_entries}</prop>
+                <prop key="hibernate.cache.provider_configuration_file_resource_path">${hibernate.cache.provider_configuration_file_resource_path}</prop>
+				<prop key="hibernate.current_session_class_name">thread</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 注解方式配置事物 -->
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+	<!-- 拦截器方式配置事物 -->
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="append*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="merge*" propagation="REQUIRED" />
+			<tx:method name="modify*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="repair" propagation="REQUIRED" />
+			<tx:method name="delAndRepair" propagation="REQUIRED" />
+			<tx:method name="creatCatalog*" propagation="REQUIRED" />
+			<tx:method name="exec*" propagation="REQUIRED" />
+			<tx:method name="log*" propagation="REQUIRED" />
+			<tx:method name="on*Event" propagation="REQUIRED" />
+			<tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="load*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="search*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="datagrid*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="count*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="*" propagation="REQUIRED" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="transactionPointcut" expression="execution(* com.hisun..service..*Impl.*(..))" />
+		<aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
+	</aop:config>
+
+	<!-- 启用AOP -->
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+    <!--<aop:config>
+		<aop:aspect id="aspectLogging" ref="loggingAspect">
+		<aop:pointcut  id="controllerAnyMethod" expression = "execution(* com.hisun.cloud.*.controller.*.*(..))"/>
+		<aop:pointcut  id="serviceSaveMethod" expression = "execution(* com.hisun.cloud.*.service.*.save*(..))"/>
+	    <aop:pointcut  id="serviceSaveOrUpdateMethod" expression = "execution(* com.hisun.cloud.*.service.*.saveOrUpdate*(..))"/>
+		<aop:pointcut  id="serviceUpdateMethod" expression = "execution(* com.hisun.cloud.*.service.*.update*(..))"/>
+		<aop:pointcut  id="serviceDeleteMethod" expression = "execution(* com.hisun.cloud.*.service.*.delete*(..))"/>
+		<aop:pointcut  id="serviceListMethod" expression = "execution(* com.hisun.cloud.*.service.*.list*(..))"/>
+
+		<aop:before method="beforeControllerAnyMethodCall" pointcut-ref="controllerAnyMethod"/>
+		<aop:after-throwing method="afterControllerAnyMethodThrowingCall" pointcut-ref="controllerAnyMethod" throwing="ex"/>
+		<aop:before method="beforeServiceListCall" pointcut-ref="serviceListMethod"/>
+		<aop:before method="beforeServiceSaveCall" pointcut-ref="serviceSaveMethod"/>
+		<aop:before method="beforeServiceSaveOrUpdateCall" pointcut-ref="serviceSaveOrUpdateMethod"/>
+		<aop:before method="beforeServiceUpdateCall" pointcut-ref="serviceUpdateMethod"/>
+		<aop:before method="beforeServiceDeleteCall" pointcut-ref="serviceDeleteMethod"/>
+		<aop:after-throwing method="afterServiceListThrowingCall" pointcut-ref="serviceListMethod" throwing="ex"/>
+		<aop:after-throwing method="afterServiceSaveThrowingCall" pointcut-ref="serviceSaveMethod" throwing="ex"/>
+		<aop:after-throwing method="afterServiceSaveOrUpdateThrowingCall" pointcut-ref="serviceSaveOrUpdateMethod" throwing="ex"/>
+		<aop:after-throwing method="afterServiceUpdateThrowingCall" pointcut-ref="serviceUpdateMethod" throwing="ex"/>
+		<aop:after-throwing method="afterServiceDeleteThrowingCall" pointcut-ref="serviceDeleteMethod" throwing="ex"/>
+		</aop:aspect>
+	</aop:config>-->
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+</bean>
+</beans>

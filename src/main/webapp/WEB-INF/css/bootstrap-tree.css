@@ -1,0 +1,120 @@
+/*!
+ * Bootstrap Tree v0.3
+ *
+ * Copyright 2012 Cutters Crossing
+ * Bootstrap is Copyright 2012 Twitter, Inc.
+ * Licensed under the Apache License v2.0
+ *
+ * Designed and built with all the love in the world by @cutterbl.
+ */
+ 
+.tree,
+.branch {
+  list-style: none outside none;
+}
+.branch {
+  postion: relative;
+  height: 0;
+/*  margin: 0 0 0 15px;*/
+  overflow: hidden;
+}
+.branch.in {
+  height: auto;
+}
+
+.branch li{ padding:4px 0;}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+  color: #000;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+/* Work in progress */
+a.tree-toggle-icon-only {
+  height: 16px;
+  width: 20px;
+  line-height: 16px;
+  vertical-align: middle;
+  display: inline-block;
+  background: url("../images/templateImage/bstree-halflings.png") no-repeat;
+  background-position: 0 -22px;
+}
+
+a.tree-toggle {
+  height: 16px;
+  padding:2px 2px 2px 20px;
+  line-height: 16px;
+  vertical-align: middle;
+  display: inline-block;
+  background: url("../images/templateImage/bstree-halflings.png") no-repeat;
+  background-position: 0 -22px;
+}
+a.tree-toggle.closed, a.tree-toggle-icon-only.closed {
+  background-position: 0 1px;
+}
+
+.one_tree{ font-weight:bold; font-size:14px;}
+
+
+.branch p.Information{ color:#222; background-color:#f5f5f5; padding:15px 15px; margin:0; line-height:22px; font-weight:bold;}
+
+.perc35{ width:45%;}
+.perc10{ width:15%;}
+.perc55{ width:40%;}
+
+table.branch tr td img{ vertical-align:top;}
+table.branch tr td{ color:#333;}
+
+.marg0{ margin-left:0;}
+
+.tree .red{ color:#e82d16; padding:0 3px; font-size:15px;}
+.dltree_title{ background-color:#fff; border:solid 1px #e1e6eb;/* padding:15px 30px;*/ overflow:hidden;}
+.dltree_title dt{ float:left; width:140px; height:140px; padding-top:0;}
+.dltree_title dt p.p1{ margin:21px 0 0 30px;}
+.dltree_title dt p.p1 i{ font-size:7em; color:#35aa47; !important}
+.dltree_title dt p.p2{/* padding-top:20px; */padding-left:10px; margin:0; padding:0;}
+.dltree_title dd{ float:left; padding-top:30px;}
+.dltree_title dd p{ color:#333;}
+.dltree_title dd h4{ font-weight:bold; color:#d84a38; padding-bottom:10px; font-size:20px;}
+.dltree_title dd.but_right{ float:right; margin-top:18px; font-size:16px; padding-right:30px;}
+.dltree_title dd.but_right .btn{ font-size:16px;}
+
+.dltree_title .red{ color:#f00; padding:0 3px; font-size:15px;}
+
+.tree_header{ border:none;border-bottom:solid 1px #e1e6eb; background-color:#F2F2F2;}
+.tree_header tr td{ border-right:solid 1px #e1e6eb; padding:5px 10px; font-weight:bold; font-size:15px; position:relative;}
+
+
+.dropdown-menu li > a{ padding:6px 0 6px 6px; font-size:14px; !important}
+
+.loca{position:absolute; top:5px; right:8px; *top:2px; *right:8px;}
+
+.sherr_menu{position:absolute; right:-122px; top:60px; width:120px; background-color:#FFFFFF; border:solid 1px #D9D9D9; display:none; 
+ box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);}
+.sherr_menu p{ font-weight:normal; margin:0; padding:0; height:28px; line-height:28px; padding:1px 8px 1px 8px;}
+.sherr_menu p a{ display:block;}
+.sherr_menu p a:hover{ display:block;text-decoration:none; }
+.sherr_menu p:hover{ text-decoration:none; background-color:#ECECEC;}
+.dropdown-menu li.Column{ border-bottom:solid 1px #D9D9D9; border-top:solid 1px #D9D9D9;}
+.dropdown-menu li.hover{ background-color:#ECECEC;}
+
+.posi{position:absolute; right:0; top:70px;}
+
+.bold{ font-weight:bold;}
+
+
+
+
+
+
+
+
+
+

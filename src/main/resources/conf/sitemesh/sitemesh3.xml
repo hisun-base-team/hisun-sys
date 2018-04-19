@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sitemesh>
+	<!-- 指明满足"/*"的页面，将被"/WEB-INF/jsp/main.jsp"所装饰 -->
+  	<mapping path="/*" decorator="/WEB-INF/jsp/main.jsp"/>
+  	<mapping path="/admin/dashboard" decorator="/WEB-INF/jsp/index.jsp"/>
+  	<mapping path="/adminDashboard" decorator="/WEB-INF/jsp/index.jsp"/>
+  	<mapping path="/admin/adminDashboard" decorator="/WEB-INF/jsp/index.jsp"/>
+  	<!-- 指明满足"/admin/*"的页面，将被排除，不被装饰 -->
+	<mapping path="/admin/*" exclude="true"/>
+	<mapping path="/login*" exclude="true"/>
+	<mapping path="/js/*" exclude="true"/>
+  	<mapping path="/images/*" exclude="true"/>
+  	<mapping path="/css/*" exclude="true"/>
+  	<mapping path="/fonts/*" exclude="true"/>
+  	<mapping path="/plugins/*" exclude="true"/>
+  	<mapping path="/ueditor/*" exclude="true"/>
+  	<mapping path="/kaptcha/*" exclude="true"/>
+	<mapping path="/dashboard*" exclude="true"/>
+	<mapping path="/app/*" exclude="true"/>
+  	<mapping path="/uploadPage" exclude="true"/>
+  	<mapping path="/uploadCommonPage" exclude="true"/>
+  	<mapping path="*/sitemesh/*" exclude="true"/>
+  	<mapping path="*/getCharts*" exclude="true"/>
+  	<mapping path="*/getIndexCharts*" exclude="true"/>
+  	<mapping path="*/ajax/*" exclude="true"/>
+  	<mapping path="/api/*" exclude="true"/>
+  	<mapping path="/ueditor/*" exclude="true"/><!-- 富文本编辑框 -->
+  	<mapping path="*/attach/*" exclude="true"/><!-- 定义各URL只要出现attach目录不要装饰 -->
+  	<mapping path="*/password*" exclude="true"/>
+  	<mapping path="*/activate*" exclude="true"/>
+  	<mapping path="/forgetPassword*" exclude="true"/>
+  	<mapping path="*/user/forgot" exclude="true"/>
+  	<mapping path="*/user/pwdreset/**" exclude="true"/>
+  	<mapping path="*/register/**" exclude="true"/>
+  	<mapping path="*/un/*" exclude="true"/>
+	<mapping path="/register" exclude="true"/>
+</sitemesh>

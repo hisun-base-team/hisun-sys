@@ -1,0 +1,170 @@
+<?xml  version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+    <!-- 配置注解驱动 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="false">
+            <bean id="jacksonMessageConverter"
+                  class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+            <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>image/jpeg</value>
+                        <value>image/png</value>
+                        <value>application/octet-stream</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+        <!-- <mvc:argument-resolvers>
+          <bean class="com.hisun.cloud.auth.controller.method.CurrentUserMethodArgumentResolver"/>
+        </mvc:argument-resolvers> -->
+    </mvc:annotation-driven>
+
+    <!-- 扫描当前包下及子包下带有@Controller注释的BEAN -->
+    <context:component-scan base-package="com.hisun.*" use-default-filters="false">
+        <!--<context:include-filter type="regex" expression=".*.controller"/>-->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <mvc:view-controller path="/" view-name="forward:/login"/>
+    <mvc:default-servlet-handler/>
+    <!-- 映射静态资源 -->
+    <mvc:resources mapping="/images/**" location="/WEB-INF/images/"/>
+    <mvc:resources mapping="/css/**" location="/WEB-INF/css/"/>
+    <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
+    <mvc:resources mapping="/fonts/**" location="/WEB-INF/fonts/"/>
+    <mvc:resources mapping="/ueditor/**" location="/WEB-INF/ueditor/"/>
+    <!--<mvc:resources mapping="/attach/**" location="file:/${upload.absolute.path}/attach/" />-->
+
+    <!-- 以下是数据分析使用到的资源 -->
+    <!-- <mvc:resources mapping="/kibana/**" location="/WEB-INF/kibana/" /> -->
+    <mvc:resources mapping="/kibana/css/**" location="/WEB-INF/kibana/css/"/>
+    <mvc:resources mapping="/vendor/**" location="/WEB-INF/kibana/vendor/"/>
+    <mvc:resources mapping="/img/**" location="/WEB-INF/kibana/img/"/>
+    <mvc:resources mapping="/font/**" location="/WEB-INF/kibana/font/"/>
+    <mvc:resources mapping="/app/**" location="/WEB-INF/kibana/app/"/>
+    <mvc:resources mapping="/i18n_lang/**" location="/WEB-INF/kibana/i18n_lang/"/>
+    <mvc:resources mapping="/plugins/**" location="/WEB-INF/plugins/"/>
+
+    <!-- 注意：FreeMarker与SpringMVC集成时，其配置一定要放在SpringMVC的配置之前 -->
+    <bean id="freemarkerConfig"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <!-- 指定FreeMarker模板文件目录 -->
+        <property name="templateLoaderPath" value="/WEB-INF/jsp/ftl/"/>
+        <!-- 编码设置 -->
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="defaultEncoding">UTF-8</prop>
+                <prop key="template_update_delay">0</prop>
+                <prop key="locale">zh_CN</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="freeMarkerViewResolver"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".ftl"/>
+        <property name="contentType" value="text/html; charset=UTF-8"/>
+    </bean>
+
+    <!-- 配置视图解析器 -->
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--国际化的消息资源文件 -->
+    <!-- <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" >
+            <list>
+                <value>/WEB-INF/messages.properties</value>
+            </list>
+        </property>
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>-->
+
+    <!-- 资源文件配置 -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:testresources.properties</value>
+                <value>classpath:outside-api.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 异常解析器 -->
+    <bean id="genericSimpleMappingExceptionResolver"
+          class="com.hisun.base.exception.GenericSimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="com.hisun.base.exception.GenericException">/error/500</prop>
+                <prop key="com.hisun.base.exception.ErrorMsgShowException">/error/errorMsgShow</prop>
+                <prop key="org.apache.shiro.authz.UnauthorizedException">/error/accessDenied</prop>
+                <prop key="java.lang.Exception">/error/500</prop>
+            </props>
+        </property>
+        <property name="defaultErrorView" value="/error/errorpage"/>
+        <property name="exceptionAttribute" value="ex"/>
+        <property name="warnLogCategory" value="EXCEPTIONRESOLVER"></property>
+    </bean>
+
+
+    <!-- 启用AOP -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!-- 文件上传解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="31457280"/>
+    </bean>
+
+    <!-- 验证工厂BEAN -->
+    <bean id="validatorFactory" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"></bean>
+
+    <!-- 上下文初始化 -->
+    <bean class="com.hisun.util.ApplicationContextUtil"></bean>
+
+    <!--  <import resource="spring-mvc-shiro.xml"/> -->
+    <!-- message资源文件 -->
+    <util:properties id="resourcesProperties" location="classpath:testresources.properties"></util:properties>
+
+    <bean id="kaptchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+        <property name="config">
+            <bean class="com.google.code.kaptcha.util.Config">
+                <constructor-arg>
+                    <props>
+                        <prop key="kaptcha.border">no</prop>
+                        <!-- <prop key="kaptcha.border.color">105,179,90</prop>   -->
+                        <prop key="kaptcha.textproducer.font.color">blue</prop>
+                        <prop key="kaptcha.image.width">100</prop>
+                        <prop key="kaptcha.image.height">30</prop>
+                        <prop key="kaptcha.noise.impl">${kaptcha.noise.impl}</prop> <!-- 去掉干扰线 -->
+                        <prop key="kaptcha.textproducer.font.size">24</prop>
+                        <prop key="kaptcha.session.key">code</prop>
+                        <prop key="kaptcha.textproducer.char.length">4</prop>
+                        <prop key="kaptcha.textproducer.char.space">4</prop>
+                        <prop key="kaptcha.textproducer.char.string">abcde23456789fhkmnwxrstABCDEFGHKMNRSTWX</prop>
+                        <prop key="kaptcha.obscurificator.impl">${kaptcha.obscurificator.impl}</prop>
+                        <prop key="kaptcha.background.clear.from">255,255,255</prop>
+                        <!-- <prop key="kaptcha.textproducer.font.names">宋体,楷体,微软雅黑</prop> -->
+                        <!-- <prop key="kaptcha.noise.colo">blue</prop>   -->
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- 当Spring容器启动完成后执行下面的这个Bean,告警在服务器重启后需要把之前为发送的重新发送  -->
+    <!-- <bean class="com.hisun.cloud.management.warn.processor.DataInitSendBeanPostProcessor"/> -->
+</beans>

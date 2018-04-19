@@ -1,0 +1,409 @@
+/***
+Timeline UI Base
+***/
+
+.baogaotitle{ margin-bottom:30px; margin-left:232px;}
+.baogaotitle h3{ color:#009ae1; margin:-8px 0 0 0; font-size:20px;}
+
+/* The icons */
+.baogaotitle > .timeline-icon {
+	width: 24px;
+	height: 24px;
+	/*speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	font-size: 1.4em;
+	line-height: 40px;
+	-webkit-font-smoothing: antialiased;*/
+	position: absolute;
+	color: #fff;
+	background:url(../images/templateImage/timeline_yuan2.png) no-repeat;
+	/*background: #2b92e2;  
+	border-radius: 50%;
+	box-shadow: 0 0 0 8px #ccc;
+	border:solid 3px #FFFFFF;*/
+	text-align: center;
+	left: 209px;
+	top: 0;
+	margin: 0px 0 0 -25px;
+	/*padding-bottom: 3px; 
+	padding-right: 1px;
+	padding-left: 2px;
+	-webkit-border-radius: 30px !important;
+	   -moz-border-radius: 30px !important;
+			border-radius: 30px !important;*/
+}
+
+.timelinemain {
+	margin: 30px 0 0 0;
+	padding: 0;
+	list-style: none;
+	position: relative;
+} 
+
+/* The line */
+/*.timelinemain:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 4px;
+	background: #dddddd;
+	left: 204px;
+	margin-left: -10px;
+}*/
+
+.timelinemain {
+	background:url(../images/templateImage/timeline_bg.png) repeat-y;
+}
+
+.timeline > li {
+	position: relative;
+}
+
+/* The date/time */
+.timeline > li .timeline-time {
+	display: block;
+	width: 170px;
+	padding-right: 100px;
+	position: absolute;
+	margin-top:8px;
+}
+
+.timeline > li .timeline-time span {
+	display: block;
+	text-align: right;
+}
+
+.timeline > li .timeline-time span.date {
+	font-size: 15px;
+	color:#1980e0;
+	display: block;
+	margin-bottom: 0px;
+	font-weight: 300;
+}
+
+.timeline > li .timeline-time span.time {
+	font-weight: 300;
+	font-size: 13px;
+	color: #bdd0db;
+}
+
+/* Right content */
+
+.timeline > li .timeline-body {
+	margin: 25px 0 0 232px;
+	color: #333;
+	padding: 10px;
+	font-weight: 300;
+	position: relative;
+	border-radius: 5px;
+
+}
+
+
+.timeline > li .timeline-body h2 { 
+	margin-top: 0px;
+	padding: 0 0 5px 0;
+	border-bottom: 1px solid rgba(255,255,255,0.3);
+	font-size: 24px;
+}
+
+.timeline-body h4{ font-size:15px; font-weight:bold; margin:0 0 5px 0;}
+
+.timeline > li .timeline-content { 
+	font-size: 12px;
+	color:#444;
+	max-height:60px; 
+	overflow:hidden;
+	
+}
+
+.ie8 .timeline > li .timeline-body h2 { 
+	border-bottom: 1px solid #eee;
+}
+
+.timeline > li .timeline-body img.timeline-img { 
+  width: 75px;
+  height: 75px;
+  margin: 5px 10px 0 0px;
+}
+
+.timeline > li .timeline-body img.pull-right {
+  margin-left: 10px;
+}
+
+
+.timeline > li .timeline-body a.nav-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #fff;
+  font-size: 14px;
+  padding: 0px;
+  text-align: left;
+  text-decoration: none;
+}
+
+.timeline > li .timeline-body a.nav-link:hover {
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+
+.timeline > li .timeline-body .btn {
+  margin-top: 10px;
+}
+
+/* The triangle */
+.timeline > li .timeline-body:after {
+	right: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-right-color: #3594cb;
+	border-width: 10px;
+	top: 19px;
+}
+
+.timeline > li .timeline-content:after,
+.timeline > li .timeline-content:before {
+	display: table;
+	line-height: 0;
+	content: "";
+}
+
+.timeline > li .timeline-content:after {
+	clear: both;
+}
+
+.timeline >li .timeline-footer:after,
+.timeline >li .timeline-footer:before {
+	content: "";
+	display: table;
+	line-height: 0;
+}
+
+.timeline >li .timeline-footer:after {
+	clear: both;
+}
+
+/* The icons */
+.timeline > li .timeline-icon {
+	width: 15px;
+	height: 15px;
+	/*speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	font-size: 1.4em;
+	line-height: 40px;
+	-webkit-font-smoothing: antialiased;*/
+	position: absolute;
+	color: #fff;
+	/*background: #fff;  
+	border-radius: 50%;
+	border:solid 2px #357fc5;*/
+	/*box-shadow: 0 0 0 8px #ccc;*/
+	background:url(../images/templateImage/timeline_yuan.png) no-repeat;
+	text-align: center;
+	left: 215px;
+	top: 0;
+	margin: 20px 0 0 -26px;
+	/*padding-bottom: 3px; 
+	padding-right: 1px;
+	padding-left: 2px;
+	-webkit-border-radius: 30px !important;
+	   -moz-border-radius: 30px !important;
+			border-radius: 30px !important;*/
+}
+
+.timeline > li.timeline-yellow .timeline-icon { background-color:#ffb848;}
+.timeline > li.timeline-blue .timeline-icon { background-color:#4b8df8;}
+.timeline > li.timeline-green .timeline-icon { background-color:#35aa47;}
+.timeline > li.timeline-purple .timeline-icon { background-color:#852b99;}
+.timeline > li.timeline-red .timeline-icon { background-color:#e02222;}
+.timeline > li.timeline-grey .timeline-icon { background-color:#555555;}
+.timeline > li.timeline-blue .timeline-icon { background-color:#4b8df8;}
+
+
+/* Yellow */
+.timeline li .timeline-body:after {
+	border-right-color: #eef0f2;
+}
+
+.timeline li .timeline-body {
+	 background: #eef0f2; 
+}
+
+.timeline li .timeline-time span.time {
+	 color: #999; 
+}
+
+/* Red */
+.timeline li.timeline-red .timeline-body:after {
+	border-right-color: #f8f8f8;
+}
+
+.timeline li.timeline-red .timeline-body {
+	 background: #f8f8f8;
+}
+
+.timeline li.timeline-red .timeline-time span.time {
+	 color: #e02222; 
+}
+
+/* Yellow */
+.timeline li.timeline-yellow .timeline-body:after {
+	border-right-color: #f8f8f8;
+}
+
+.timeline li.timeline-yellow .timeline-body {
+	 background: #f8f8f8; 
+}
+
+.timeline li.timeline-yellow .timeline-time span.time {
+	 color: #ffb848; 
+}
+
+/* Green */
+.timeline li.timeline-green .timeline-body:after {
+	border-right-color: #f8f8f8;
+}
+
+.timeline li.timeline-green .timeline-body {
+	 background: #f8f8f8;
+}
+
+.timeline li.timeline-green .timeline-time span.time {
+	 color: #35aa47; 
+}
+
+/* Blue */
+.timeline li.timeline-blue .timeline-body:after {
+	border-right-color: #f8f8f8;
+}
+
+.timeline li.timeline-blue .timeline-body {
+	 background: #f8f8f8;
+}
+
+.timeline li.timeline-blue .timeline-time span.time {
+	 color: #4b8df8; 
+}
+
+/* Purple */
+.timeline li.timeline-purple .timeline-body:after {
+	border-right-color: #f8f8f8;
+}
+
+.timeline li.timeline-purple .timeline-body {
+	 background: #f8f8f8;
+}
+
+.timeline li.timeline-purple .timeline-time span.time {
+	 color: #852b99; 
+}
+
+/* Grey */
+.timeline li.timeline-grey .timeline-body:after {
+	border-right-color: #f8f8f8;
+}
+
+.timeline li.timeline-grey .timeline-body {
+	 background: #f8f8f8;
+}
+
+.timeline li.timeline-grey .timeline-time span.time {
+	 color: #555555; 
+}
+
+.timelinemore{ display:block; margin-top:10px; color:#009ae1;}
+.timered{ color:#ED0003; font-size:14px; margin:0 3px;}
+
+.timeline > li .timeline-content.maxheight{
+	max-height:inherit;	
+}
+
+
+
+
+
+
+
+
+/*@media (max-width: 767px) {  
+	timeline > li .timeline-time span.time {
+		font-size: 18px;
+	}
+
+	.timeline:before {
+		display: none;
+	}
+
+	.timeline > li .timeline-time {
+		width: 100%;
+		position: relative;
+		padding: 0 0 20px 0;
+	}
+
+	.timeline > li .timeline-time span {
+		text-align: left;
+	}
+
+	.timeline > li .timeline-body {
+		margin: 0 0 30px 0;
+		padding: 1em;
+	}
+
+	.timeline > li .timeline-body:after {
+		right: auto;
+		left: 20px;
+		top: -20px;
+	}
+
+	.timeline > li .timeline-icon {
+		position: relative;
+		float: right;
+		left: auto;
+		margin: -55px 5px 0 0px;
+	}	
+
+
+
+
+	.timeline li.timeline-red .timeline-body:after {
+		border-right-color: transparent;
+		border-bottom-color: #e02222;
+	}
+
+	.timeline li.timeline-blue .timeline-body:after {
+		border-right-color: transparent;
+		border-bottom-color: #4b8df8;
+	}
+
+	.timeline li.timeline-green .timeline-body:after {
+		border-right-color: transparent;
+		border-bottom-color: #35aa47;
+	}
+
+	.timeline li.timeline-yellow .timeline-body:after {
+		border-right-color: transparent;
+		border-bottom-color: #ffb848;
+	}
+
+	.timeline li.timeline-purple .timeline-body:after {
+		border-right-color: transparent;
+		border-bottom-color: #852b99;
+	}
+
+	.timeline li.timeline-grey .timeline-body:after {
+		border-right-color: transparent;
+		border-bottom-color: #555555;
+	}
+}
+*/

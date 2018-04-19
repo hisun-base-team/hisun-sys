@@ -1,0 +1,96 @@
+.service-yellow{
+	background-color: #ffb848;
+}
+
+.service-green{
+	background-color: #28b779;
+}
+
+.service-purple{
+	  background-color: #852b99;
+}
+
+.service-blue{
+	background-color: #27a9e3;
+}
+
+ul.service{
+	padding: 0px;
+	margin: 0px;
+	width : 100%;
+}
+
+ul.service li{
+	width: 48%;
+	float: left;
+	margin-bottom: 50px;
+	border-bottom: 1px solid #E0DFDF;
+	padding-bottom: 20px;
+	list-style-type: none;
+}
+
+ul.service li.marginright{
+	margin-right: 4%;
+}
+
+.service-title{
+	padding: 5px;
+  	height: 40px;
+  	font-size: 40px;
+}
+
+.service-title .text{
+  display: block;
+  padding-top: 10px;
+  padding-left: 15px;
+  float: left;
+}
+
+.service-title .visual{
+  display: block;
+/*   padding-top: 10px; */
+  padding-left: 15px;
+  float: left;
+}
+
+.service-title i{
+  color: #fff;
+}
+
+/**
+* 值班样式
+*/
+.duty{
+	padding: 0px;
+	margin: 0px;
+	width : 100%;
+	float: left;
+}
+
+.marginR4{
+	margin-right: 4%;
+}
+
+.duty-title{
+	background-color: #eee;
+	padding: 10px 0px;
+}
+
+.duty li{
+	list-style-type : none;
+	width:100px;
+	margin-right: 5px;
+	float: left;
+}
+
+.duty-img{
+	height: 150px;
+	width: 150px;
+}
+
+.duty-info{
+	float: left;
+	word-wrap: break-word; 
+	word-break: normal;
+	display: block;
+}

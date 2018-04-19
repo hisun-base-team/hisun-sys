@@ -1,0 +1,72 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../config/ehcache.xsd">
+    <diskStore path="java.io.tmpdir"/>
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="1800"
+            timeToLiveSeconds="3600"
+            overflowToDisk="true"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="1800"
+            memoryStoreEvictionPolicy="LRU"
+            />
+    <cache
+        name="org.hibernate.cache.internal.StandardQueryCache"
+        maxElementsInMemory="5000"
+        eternal="false"
+        timeToLiveSeconds="3600">
+     </cache>
+        
+    <cache
+        name="org.hibernate.cache.spi.UpdateTimestampsCache"
+        maxElementsInMemory="5000"
+        eternal="false"
+        timeToLiveSeconds="3600">
+     </cache>
+     
+    <cache name="shiro-activeSessionCache"
+    		 maxElementsInMemory="5000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false">
+    </cache>
+
+    <!--
+    a) timeToIdleSeconds(空闲时间)、timeToLiveSeconds(生存时间)都设置为0时，表示不过期
+
+    b) 如果只有timeToLiveSeconds设置>0的值，则Element的过期时间为 timeToLiveSeconds
+
+    c) 如果只有timeToIdleSeconds设置>0的值，则Element的过期时间为 (上次访问时间+timeToIdleSeconds)，说得更通俗点，上次get过了，现在又想get，若二次get的时间间隔>timeToIdleSeconds，则过期(即：最后一次get出来为null)
+
+    d) 如果timeToLiveSeconds、timeToIdleSeconds都有>0的值，则最终过期时间为 b)，c)规则综合起来，取二者的最小值
+    -->
+    <!-- 登录记录缓存 锁定15分钟 -->
+    <cache name="passwordRetryCache"
+            maxElementsInMemory="5000"
+           eternal="false"
+           timeToIdleSeconds="5400"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    
+     <cache name="authorizationCache"
+          maxElementsInMemory="5000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+
+    <cache name="authenticationCache"
+           maxElementsInMemory="5000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+</ehcache>
