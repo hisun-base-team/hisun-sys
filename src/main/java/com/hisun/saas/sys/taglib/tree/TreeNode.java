@@ -1,6 +1,6 @@
 package com.hisun.saas.sys.taglib.tree;
 
-public interface SanTreeNodeInterface {
+public interface TreeNode {
 	void setText(String text);
 	String getText();
 	void setHref(String href);

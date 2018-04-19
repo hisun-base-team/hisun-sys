@@ -125,7 +125,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
             Collections.sort(resources);
             List<AbstractResource> abstractResources = Lists.newArrayList();
             for(Resource resource : resources){
-                abstractResources.add((AbstractResource)resource);
+                abstractResources.add(resource);
             }
             userLoginDetails.setResources(abstractResources);
             return userLoginDetails;

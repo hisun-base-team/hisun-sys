@@ -1,10 +1,16 @@
-package com.hisun.saas.sys.taglib.hisunTree;
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
+
+package com.hisun.saas.sys.taglib.tree;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-public final class HisunTreeTag extends BodyTagSupport {
+public final class TreeTag extends BodyTagSupport {
 
 	private String text;
 
@@ -184,62 +190,62 @@ public final class HisunTreeTag extends BodyTagSupport {
 	}
 
 	//初始化数据
-	public HisunTreeTag() {
+	public TreeTag() {
 		super();
 
 	}
 
 	private String buildHTML() {
-		BuildTreeHtml buildTreeHtml=new BuildTreeHtml();
+		Tree tree =new Tree();
 
-//			BuildTreeHtml buildTreeHtml=new BuildTreeHtml(this.divId,this.dataSource,this.checkboxDisplay,
+//			Tree tree=new Tree(this.divId,this.dataSource,this.checkboxDisplay,
 //					this.radioOrCheckbox,this.parentRadioEnable,this.parentCheckboxEnable,
 //					this.parentChildIsolate,this.pageContext,this.userParameter);
 
-		buildTreeHtml.setDivId(this.divId);//设置保存节点的div的id
-		buildTreeHtml.setDataSource(this.dataSource);//设置树的数据源
-		buildTreeHtml.setCheckboxDisplay(this.checkboxDisplay);//设置是否显示选择框对象
-		buildTreeHtml.setRadioOrCheckbox(this.radioOrCheckbox);//设置是单选 还是 复选
-		buildTreeHtml.setParentRadioEnable(this.parentRadioEnable);//单选情况下父节点是否可选 true可选 false不可选
-		buildTreeHtml.setParentCheckboxEnable(this.parentCheckboxEnable);//复选情况下父节点是否可选 true可选 false不可选
+		tree.setDivId(this.divId);//设置保存节点的div的id
+		tree.setDataSource(this.dataSource);//设置树的数据源
+		tree.setCheckboxDisplay(this.checkboxDisplay);//设置是否显示选择框对象
+		tree.setRadioOrCheckbox(this.radioOrCheckbox);//设置是单选 还是 复选
+		tree.setParentRadioEnable(this.parentRadioEnable);//单选情况下父节点是否可选 true可选 false不可选
+		tree.setParentCheckboxEnable(this.parentCheckboxEnable);//复选情况下父节点是否可选 true可选 false不可选
 			/*
 			  设置为 true 选择父节点时子节点全部选中,取消时全部取消
 			  子节点部分选中时，父节点选中变灰（灰勾）
 			  设置为 false 父节点子和子节点可以分开选中，相互不影响
 			*/
 //		HttpServletRequest httpRequest = (HttpServletRequest)this.pageContext.getRequest();
-		buildTreeHtml.setParentChildIsolate(this.parentChildIsolate);
-		buildTreeHtml.setPageContext(this.pageContext);//设置页面上下文对象
-		buildTreeHtml.setServletContext(this.pageContext.getServletContext());//设置servlet上下文对象
-		buildTreeHtml.setContextPath("");//设置系统路径
-		buildTreeHtml.setUserParameter(this.userParameter);//设置用户自定义使用的参数
-		buildTreeHtml.setDefaultOnclick(this.defaultOnclick);//设置默认的单击事件函数
-		buildTreeHtml.setRequest(this.pageContext.getRequest());
-		buildTreeHtml.setIsInit(this.getIsInit());//是否在加载树时对他进行初始化
-		buildTreeHtml.setAClick(this.getAclickDefault());
-		buildTreeHtml.setCheckBoxClick(this.getCheckboxclickDefault());
-		buildTreeHtml.setImgClick(this.getImgclickDefault());
-		buildTreeHtml.setDblonclick(this.getDblonclick());
-		buildTreeHtml.setAuto_dynamic_load(this.getAuto_dynamic_load());
-		buildTreeHtml.setSeletedCheckboxByTitle(this.getSeletedCheckboxByTitle());
-		buildTreeHtml.setFirstSelectedByTitle(this.getFirstSelectedByTitle());
-		buildTreeHtml.setSelectedTitleByCheckbox(this.getSelectedTitleByCheckbox());
-		buildTreeHtml.setType(this.getType());
-		buildTreeHtml.setOpenOnclick(this.getOpenOnclick());
-		buildTreeHtml.setExpandByCheckbox(this.getExpandByCheckbox());
+		tree.setParentChildIsolate(this.parentChildIsolate);
+		tree.setPageContext(this.pageContext);//设置页面上下文对象
+		tree.setServletContext(this.pageContext.getServletContext());//设置servlet上下文对象
+		tree.setContextPath("");//设置系统路径
+		tree.setUserParameter(this.userParameter);//设置用户自定义使用的参数
+		tree.setDefaultOnclick(this.defaultOnclick);//设置默认的单击事件函数
+		tree.setRequest(this.pageContext.getRequest());
+		tree.setIsInit(this.getIsInit());//是否在加载树时对他进行初始化
+		tree.setAClick(this.getAclickDefault());
+		tree.setCheckBoxClick(this.getCheckboxclickDefault());
+		tree.setImgClick(this.getImgclickDefault());
+		tree.setDblonclick(this.getDblonclick());
+		tree.setAuto_dynamic_load(this.getAuto_dynamic_load());
+		tree.setSeletedCheckboxByTitle(this.getSeletedCheckboxByTitle());
+		tree.setFirstSelectedByTitle(this.getFirstSelectedByTitle());
+		tree.setSelectedTitleByCheckbox(this.getSelectedTitleByCheckbox());
+		tree.setType(this.getType());
+		tree.setOpenOnclick(this.getOpenOnclick());
+		tree.setExpandByCheckbox(this.getExpandByCheckbox());
 
-		buildTreeHtml.setParentSelectedWithChild(this.getParentSelectedWithChild());
-		buildTreeHtml.setParentClearWithChild(this.getParentClearWithChild());
-		buildTreeHtml.setLowerSelectedAllWithSuperior(this.getLowerSelectedAllWithSuperior());
-		buildTreeHtml.setLowerClearWithSuperior(this.getLowerClearWithSuperior());
-		buildTreeHtml.setLowerClearAllWithSuperior(this.getLowerClearAllWithSuperior());
-		buildTreeHtml.setLowerSelectedWithSuperior(this.getLowerSelectedWithSuperior());
+		tree.setParentSelectedWithChild(this.getParentSelectedWithChild());
+		tree.setParentClearWithChild(this.getParentClearWithChild());
+		tree.setLowerSelectedAllWithSuperior(this.getLowerSelectedAllWithSuperior());
+		tree.setLowerClearWithSuperior(this.getLowerClearWithSuperior());
+		tree.setLowerClearAllWithSuperior(this.getLowerClearAllWithSuperior());
+		tree.setLowerSelectedWithSuperior(this.getLowerSelectedWithSuperior());
 
 
 //		StringBuffer html = new StringBuffer();
 //		html.append("");
 
-		return buildTreeHtml.getTreeHtml().toString();
+		return tree.getTreeHtml().toString();
 	}
 
 

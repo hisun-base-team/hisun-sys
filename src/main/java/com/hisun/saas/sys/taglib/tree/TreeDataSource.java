@@ -4,7 +4,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.PageContext;
-public interface SanTreeDataSourceInterface{
+public interface TreeDataSource {
 	
 	List getChildrenNodes(String parentKey, String parentText) throws Exception;
 	List getNodes() throws Exception;

@@ -1,23 +1,19 @@
-/**
- * 
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
  */
-package com.hisun.saas.sys.taglib.tree.impl;
 
-/**
- * dzgw
- * <p>
- * </p>
- *
- * @author Rocky
- * @version 1.1
- */
-public class SanNodeTreeTransfer {
+package com.hisun.saas.sys.taglib.util;
+import com.hisun.saas.sys.taglib.tree.TreeNodeImpl;
 
-	public static SanTreeNode transferSanTreeNode(String nodeKey,
-												  String nodeName, String nodeHref, String parentNodeKey,
-												  boolean isDynamic, boolean isCurrentNode) {
-		SanTreeNode node = new SanTreeNode();
-		node = new SanTreeNode();
+public class TreeNodeGenerator {
+
+	public static TreeNodeImpl genTreeNode(String nodeKey,
+												   String nodeName, String nodeHref, String parentNodeKey,
+												   boolean isDynamic, boolean isCurrentNode) {
+		TreeNodeImpl node = new TreeNodeImpl();
+		node = new TreeNodeImpl();
 		node.setText(nodeName);// 节点文本
 		node.setHref(nodeHref);// 节点链接
 		node.setTarget("");// 链接目标
@@ -51,12 +47,12 @@ public class SanNodeTreeTransfer {
 		return node;
 	}
 
-	public static SanTreeNode transferSanTreeNode(String nodeKey,
-												  String nodeName, String nodeHref, String parentNodeKey,
-												  boolean isDynamic, boolean isCurrentNode, boolean isDefaultSelect,
-												  boolean checkboxEnable) {
-		SanTreeNode node = new SanTreeNode();
-		node = new SanTreeNode();
+	public static TreeNodeImpl genTreeNode(String nodeKey,
+												   String nodeName, String nodeHref, String parentNodeKey,
+												   boolean isDynamic, boolean isCurrentNode, boolean isDefaultSelect,
+												   boolean checkboxEnable) {
+		TreeNodeImpl node = new TreeNodeImpl();
+		node = new TreeNodeImpl();
 		node.setText(nodeName);// 节点文本
 		node.setHref(nodeHref);// 节点链接
 		node.setTarget("");// 链接目标

@@ -1,18 +1,17 @@
-package com.hisun.saas.sys.taglib.hisunTree;
-import java.util.List;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
+package com.hisun.saas.sys.taglib.selectOption;
 
-import com.hisun.saas.sys.taglib.tree.SanTreeDataSourceInterface;
-import com.hisun.saas.sys.taglib.tree.impl.SanTreeNode;
+import com.hisun.saas.sys.taglib.selectOption.vo.SelectNode;
 import com.hisun.saas.sys.taglib.util.Attribute;
 import com.hisun.saas.sys.taglib.util.Attributes;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
+import java.util.List;
 
 
-public abstract class TreeObject implements SanTreeDataSourceInterface {
+public abstract class AbstractSelectObject implements SelectDataSource {
 
 	private ServletContext servletContext;
 
@@ -88,33 +87,9 @@ public abstract class TreeObject implements SanTreeDataSourceInterface {
 		}
 	}
 
-	public abstract List<SanTreeNode> getChildrenNodes(String parentKey, String parentText) throws Exception;
+
 	/**
 	 * 获取当前树的第一次加载时的节点数据。如果是第一级节点，则其父
 	 */
-	public abstract List<SanTreeNode> getNodes() throws Exception;
-	/**
-	 * 实现一个空的根据codes取得value的方法
-	 */
-	public  String getValueByKeys(String codes,String userParameter,String chooseType,String unitCode) throws Exception{
-		return "";
-	}
-	/**
-	 * 根据输入内容得到模糊匹配的数据
-	 */
-	public  String checkTextEqual(String text,String userParameter,String chooseType,String unitCod) throws Exception{
-		return "";
-	}
-	/**
-	 * 动态加载中根据查询条件得到一组codes
-	 */
-	public  List getKeysByQueryInfo(String codes,String userParameter,String unitCode) throws Exception{
-		return null;
-	}
-	/**
-	 * 动态加载中根据codes得到一组到最高节点的codes    code,code
-	 */
-	public String getParamentCodesByKeys(String codes,String userParameter,String dicCode) throws Exception{
-		return "";
-	}
+	public abstract List<SelectNode> getDataOptions() throws Exception;
 }

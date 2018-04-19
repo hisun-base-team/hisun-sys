@@ -1,8 +1,8 @@
 package com.hisun.saas.sys.taglib.selectOption;
 
-import com.hisun.saas.sys.taglib.hisunTree.TreeObject;
+import com.hisun.saas.sys.taglib.tree.AbstractTreeDataSource;
 import com.hisun.saas.sys.taglib.selectOption.vo.SelectNode;
-import com.hisun.saas.sys.taglib.tree.SanTreeDataSourceInterface;
+import com.hisun.saas.sys.taglib.tree.TreeDataSource;
 import com.hisun.util.ApplicationContextUtil;
 import com.hisun.util.StringUtils;
 
@@ -412,7 +412,7 @@ public final class SelectOption{
 				}
 				noTreeresults.append(" >");
 				try {
-					SelectDataSourceInterface obj = ApplicationContextUtil.getBean(this.dataSource, SelectObject.class);
+					SelectDataSource obj = ApplicationContextUtil.getBean(this.dataSource, AbstractSelectObject.class);
 					if(obj.getDataOptions()!=null && obj.getDataOptions().size()>0){
 						List<SelectNode> selectNodes = obj.getDataOptions();
 						for(SelectNode node : selectNodes){
@@ -431,7 +431,7 @@ public final class SelectOption{
 				}catch (Exception e){
 					e.printStackTrace();;
 				}
-//				List<SanTreeNode> sanTreeNodes =  obj.getNodes();
+//				List<TreeNodeImpl> sanTreeNodes =  obj.getNodes();
 
 				noTreeresults.append("</select");
 //				<select class="m-wrap span4" required name="tblx" id="tblx" >
@@ -473,7 +473,7 @@ public final class SelectOption{
 				}
 				noTreeresults.append(" >");
 				try {
-					SelectDataSourceInterface obj = ApplicationContextUtil.getBean(this.dataSource, SelectObject.class);
+					SelectDataSource obj = ApplicationContextUtil.getBean(this.dataSource, AbstractSelectObject.class);
 					if(obj.getDataOptions()!=null && obj.getDataOptions().size()>0){
 						List<SelectNode> selectNodes = obj.getDataOptions();
 						for(SelectNode node : selectNodes){
@@ -492,7 +492,7 @@ public final class SelectOption{
 				}catch (Exception e){
 					e.printStackTrace();;
 				}
-//				List<SanTreeNode> sanTreeNodes =  obj.getNodes();
+//				List<TreeNodeImpl> sanTreeNodes =  obj.getNodes();
 
 				noTreeresults.append("</select");
 				noTreeresults.append("</div>");
@@ -1015,8 +1015,8 @@ public final class SelectOption{
 		Class beanClass;
 		try {
 //			beanClass = Class.forName(dataSource);
-			SanTreeDataSourceInterface obj = ApplicationContextUtil.getBean(this.getDataSource(), TreeObject.class);
-//			SanTreeDataSourceInterface obj = (TreeObject)beanClass.newInstance();
+			TreeDataSource obj = ApplicationContextUtil.getBean(this.getDataSource(), AbstractTreeDataSource.class);
+//			TreeDataSource obj = (AbstractTreeDataSource)beanClass.newInstance();
 			values=obj.getValueByKeys(codes,userParameter,radioOrCheckbox,unitCode);
 		}
 		catch (Exception e) {
@@ -1035,8 +1035,8 @@ public final class SelectOption{
 		try {
 //			beanClass = Class.forName(dataSource);
 //
-//			SanTreeDataSourceInterface obj = (TreeObject)beanClass.newInstance();
-			SanTreeDataSourceInterface obj = ApplicationContextUtil.getBean(this.getDataSource(), TreeObject.class);
+//			TreeDataSource obj = (AbstractTreeDataSource)beanClass.newInstance();
+			TreeDataSource obj = ApplicationContextUtil.getBean(this.getDataSource(), AbstractTreeDataSource.class);
 			values=obj.checkTextEqual(texts,userParameter,radioOrCheckbox,unitCode);
 		}
 		catch (Exception e) {

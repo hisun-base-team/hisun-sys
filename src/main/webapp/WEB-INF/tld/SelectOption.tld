@@ -4,8 +4,6 @@
     <tlib-version>1.0</tlib-version>
     <jsp-version>1.2</jsp-version>
     <short-name>SelectOptionTag</short-name>
-
-
  <tag>
     <name>SelectOption</name>
     <tag-class>com.hisun.saas.sys.taglib.selectOption.SelectOptionTag</tag-class>

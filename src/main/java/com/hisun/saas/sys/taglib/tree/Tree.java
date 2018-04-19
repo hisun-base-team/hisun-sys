@@ -1,4 +1,10 @@
-package com.hisun.saas.sys.taglib.hisunTree;
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
+
+package com.hisun.saas.sys.taglib.tree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,17 +12,11 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.PageContext;
 
-import com.hisun.saas.sys.taglib.tree.SanTreeDataSourceInterface;
-import com.hisun.saas.sys.taglib.tree.impl.SanTreeNode;
 import com.hisun.util.ApplicationContextUtil;
 import com.hisun.util.StringUtils;
 
-/**
- * @author chensheng
- * @TIME 2008-3-30
- * 使用说明：
- */
-public final class BuildTreeHtml{
+
+public final class Tree {
 
 	private String divId;
 
@@ -350,7 +350,7 @@ public final class BuildTreeHtml{
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	public BuildTreeHtml(){
+	public Tree(){
 
 	}
 
@@ -358,9 +358,9 @@ public final class BuildTreeHtml{
      * 用于标签中
      * version 1.0
      */
-	public BuildTreeHtml(String divId,String dataSource,String checkboxDisplay,
-						 String radioOrCheckbox,String parentRadioEnable,String parentCheckboxEnable,
-						 String parentChildIsolate,PageContext pageContext,String userParameter){
+	public Tree(String divId, String dataSource, String checkboxDisplay,
+				String radioOrCheckbox, String parentRadioEnable, String parentCheckboxEnable,
+				String parentChildIsolate, PageContext pageContext, String userParameter){
 		this.divId=divId;
 		this.dataSource=dataSource;
 		this.checkboxDisplay=checkboxDisplay;
@@ -378,10 +378,10 @@ public final class BuildTreeHtml{
 	/*
 	 * 用于servlet中动态加载整颗树
 	 */
-	public BuildTreeHtml(String divId,String dataSource,String checkboxDisplay,
-						 String radioOrCheckbox,String parentRadioEnable,String parentCheckboxEnable,
-						 String parentChildIsolate,String contextPath,ServletContext servletContext,ServletRequest request,String userParameter,
-						 String imgClick,String checkBoxClick,String aClick){
+	public Tree(String divId, String dataSource, String checkboxDisplay,
+				String radioOrCheckbox, String parentRadioEnable, String parentCheckboxEnable,
+				String parentChildIsolate, String contextPath, ServletContext servletContext, ServletRequest request, String userParameter,
+				String imgClick, String checkBoxClick, String aClick){
 		this.divId=divId;
 		this.dataSource=dataSource;
 		this.checkboxDisplay=checkboxDisplay;
@@ -404,11 +404,11 @@ public final class BuildTreeHtml{
 /*
  * 用于servlet中动态加载子节点
  */
-	public BuildTreeHtml(String divId,String dataSource,String checkboxDisplay,
-						 String radioOrCheckbox,String parentRadioEnable,String parentCheckboxEnable,
-						 String parentChildIsolate,String contextPath,String parentText,String parentkey,
-						 String cengCount,ServletContext servletContext,ServletRequest request,
-						 String imgClick,String checkBoxClick,String aClick){
+	public Tree(String divId, String dataSource, String checkboxDisplay,
+				String radioOrCheckbox, String parentRadioEnable, String parentCheckboxEnable,
+				String parentChildIsolate, String contextPath, String parentText, String parentkey,
+				String cengCount, ServletContext servletContext, ServletRequest request,
+				String imgClick, String checkBoxClick, String aClick){
 		this.divId=divId;
 		this.dataSource=dataSource;
 		this.checkboxDisplay=checkboxDisplay;
@@ -438,13 +438,13 @@ public final class BuildTreeHtml{
 		StringBuffer nodesHtml=new StringBuffer();
 		try{
 			//Class beanClass = Class.forName(this.getDataSource());
-			SanTreeDataSourceInterface obj = ApplicationContextUtil.getBean(this.getDataSource(), SanTreeDataSourceInterface.class);
-//			SanTreeDataSourceInterface obj = (TreeObject)beanClass.newInstance();
-			List<SanTreeNode> list=null;
+			TreeDataSource obj = ApplicationContextUtil.getBean(this.getDataSource(), TreeDataSource.class);
+//			TreeDataSource obj = (AbstractTreeDataSource)beanClass.newInstance();
+			List<TreeNodeImpl> list=null;
 			obj.setServletContext(this.servletContext);
 			obj.setUserParameter(this.userParameter);
 			obj.setRequest(this.request);
-			list = (List<SanTreeNode>)obj.getNodes();
+			list = (List<TreeNodeImpl>)obj.getNodes();
 			this.treeId=0;
 
 			if(list!=null && list.size()>0){
@@ -501,7 +501,7 @@ public final class BuildTreeHtml{
 	public StringBuffer getTreeHtmlByServlet(){
 		StringBuffer nodesHtml=new StringBuffer();
 		try{
-			SanTreeDataSourceInterface obj = ApplicationContextUtil.getBean(this.getDataSource(), SanTreeDataSourceInterface.class);
+			TreeDataSource obj = ApplicationContextUtil.getBean(this.getDataSource(), TreeDataSource.class);
 			List list=null;
 			obj.setServletContext(this.servletContext);
 			obj.setRequest(this.request);
@@ -565,7 +565,7 @@ public final class BuildTreeHtml{
 	private StringBuffer addNodes(List list,String parentKey,int cengCount,String divId, int index) {
 		StringBuffer NodesString = null;
 		for(int i=index; i<list.size(); i++){
-			SanTreeNode t1=(SanTreeNode)list.get(i);
+			TreeNodeImpl t1=(TreeNodeImpl)list.get(i);
 			if(StringUtils.equals(t1.getParentKey(), parentKey)){
 				if (NodesString == null){
 					NodesString = new StringBuffer();
@@ -591,7 +591,7 @@ public final class BuildTreeHtml{
 	/**
 	 * 设置节点函数
 	 */
-	private void setFunction(SanTreeNode t){
+	private void setFunction(TreeNodeImpl t){
 		String checkboxJs=t.getCheckboxJs();
 		String jsFunction=t.getJsFunction();
 		if(checkboxJs==null || checkboxJs.equals("") || checkboxJs.equals("javascript:{}")){
@@ -611,7 +611,7 @@ public final class BuildTreeHtml{
 	 * @param childCount
 	 * @return
 	 */
-	private String getDivHtml(int cengCount,String divId,SanTreeNode t,String childCount){
+	private String getDivHtml(int cengCount, String divId, TreeNodeImpl t, String childCount){
 		StringBuffer results=new StringBuffer("");
 		int id=this.getTreeId();
 		String objId="";//divId+"-zzb-tree-object-"+id;
@@ -736,7 +736,7 @@ public final class BuildTreeHtml{
 	public StringBuffer getDynamicLoadChilds(){
 		StringBuffer nodesHtml=null;
 		try{
-			SanTreeDataSourceInterface obj = ApplicationContextUtil.getBean(this.getDataSource(), TreeObject.class);
+			TreeDataSource obj = ApplicationContextUtil.getBean(this.getDataSource(), AbstractTreeDataSource.class);
 			List list=null;
 
 			obj.setServletContext(servletContext);
@@ -764,7 +764,7 @@ public final class BuildTreeHtml{
 		//int cengLast=0;
 		for(int i=0;i<list.size();i++){
 
-			SanTreeNode t1=(SanTreeNode)list.get(i);
+			TreeNodeImpl t1=(TreeNodeImpl)list.get(i);
 
 			if(t1.getParentKey().equals(parentKey)){
 				//if(t1.getDynamicLoading()==1){
@@ -780,7 +780,7 @@ public final class BuildTreeHtml{
 
 
 	///////动态树
-	private String getDynamicLoadingDivHtml(int cengCount,String divId,SanTreeNode t){
+	private String getDynamicLoadingDivHtml(int cengCount,String divId,TreeNodeImpl t){
 		int id=this.getTreeId();
 		String objId="";//divId+"-zzb-tree-object-"+id;
 		StringBuffer cengImg=new StringBuffer("");
@@ -977,12 +977,12 @@ public final class BuildTreeHtml{
 		return results.toString();
 	}
 
-	private StringBuffer addDynamicNodesNew(List<SanTreeNode> list,String parentKey,int cengCount,String divId) {
+	private StringBuffer addDynamicNodesNew(List<TreeNodeImpl> list, String parentKey, int cengCount, String divId) {
 		Node root = new Node(null,null);
 		//root.parentNode=new Node(null,null);
 		// find root 查找根节点
 		for(int i=list.size() -1; i>=0; i--){
-			SanTreeNode stn = list.get(i);
+			TreeNodeImpl stn = list.get(i);
 			if (StringUtils.equals(stn.getParentKey(), parentKey)){
 				Node node=new Node(stn,root);
 				node.cengCount=cengCount;
@@ -1001,11 +1001,11 @@ public final class BuildTreeHtml{
 	}
 
 	//
-	private StringBuffer addNodesNew(List<SanTreeNode> list,String parentKey,int cengCount,String divId) {
+	private StringBuffer addNodesNew(List<TreeNodeImpl> list, String parentKey, int cengCount, String divId) {
 		Node root = new Node(null,new Node(null,null));
 		// find root 查找根节点
 		for(int i=list.size() -1; i>=0; i--){
-			SanTreeNode stn = list.get(i);
+			TreeNodeImpl stn = list.get(i);
 			if (StringUtils.equals(stn.getParentKey(), "")){
 				root.children.add(0, new Node(stn,null));
 				list.remove(i);
@@ -1013,7 +1013,7 @@ public final class BuildTreeHtml{
 		}
 		if(root.children.size()<=0){
 			for(int i=list.size() -1; i>=0; i--){
-				SanTreeNode stn = list.get(i);
+				TreeNodeImpl stn = list.get(i);
 				if (StringUtils.equals(stn.getParentKey(), "0")){
 					root.children.add(0, new Node(stn,null));
 					list.remove(i);
@@ -1050,12 +1050,12 @@ public final class BuildTreeHtml{
 
 		sb.append("</div>");
 	}
-	private void findChildrenNode(Node root, List<SanTreeNode> list){
+	private void findChildrenNode(Node root, List<TreeNodeImpl> list){
 		if (list.size() > 0){
 			for(int i=0; i<root.children.size(); i++){
 				Node node = root.children.get(i);
 				for(int j=list.size() -1; j>=0; j--){
-					SanTreeNode stn = list.get(j);
+					TreeNodeImpl stn = list.get(j);
 					if (StringUtils.equals(stn.getParentKey(), node.content.getKey())){
 						node.children.add(0, new Node(stn,node));
 						list.remove(j);
@@ -1067,7 +1067,7 @@ public final class BuildTreeHtml{
 		}
 	}
 	class Node{
-		public SanTreeNode content = null;
+		public TreeNodeImpl content = null;
 		public Node parentNode=null;
 		public Node upNode=null;
 		public Node NextNode=null;
@@ -1075,7 +1075,7 @@ public final class BuildTreeHtml{
 		public String position="";//在同级中所属的位置
 		public int index=0;//在同级中所属的索引,第一个从1开始
 		public ArrayList<Node> children = new ArrayList<Node>();
-		public Node(SanTreeNode node,Node parentNode){
+		public Node(TreeNodeImpl node, Node parentNode){
 			this.content = node;
 			this.parentNode = parentNode;
 		}

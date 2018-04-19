@@ -3,9 +3,9 @@ package com.hisun.saas.sys.taglib.selectOption;
 import com.google.common.collect.Maps;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.exception.GenericException;
-import com.hisun.saas.sys.taglib.tree.SanTreeDataSourceInterface;
-import com.hisun.saas.sys.taglib.tree.impl.SanTreeNode;
-import com.hisun.saas.sys.taglib.hisunTree.TreeObject;
+import com.hisun.saas.sys.taglib.tree.AbstractTreeDataSource;
+import com.hisun.saas.sys.taglib.tree.TreeDataSource;
+import com.hisun.saas.sys.taglib.tree.TreeNodeImpl;
 import com.hisun.util.ApplicationContextUtil;
 import com.hisun.util.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -216,7 +216,7 @@ import java.util.Map;
 		}
 		try{
 			StringBuffer results = new StringBuffer("");
-			SanTreeDataSourceInterface obj = ApplicationContextUtil.getBean(dataSource, TreeObject.class);
+			TreeDataSource obj = ApplicationContextUtil.getBean(dataSource, AbstractTreeDataSource.class);
 			obj.setServletContext(request.getServletContext());
 			obj.setRequest(request);
 			obj.setUserParameter(userParameter);
@@ -256,7 +256,7 @@ import java.util.Map;
 						results.append("gzzzb_returnCodes###"+dataCodes);
 					}else{
 
-						/*BuildTreeHtml buildTreeHtml=new BuildTreeHtml(
+						/*Tree buildTreeHtml=new Tree(
 								divId,
 								dataSource,
 								checkboxDisplay,
@@ -287,7 +287,7 @@ import java.util.Map;
 								}
 							}
 							for(int i=0;i<list.size();i++){
-								SanTreeNode datainfo=(SanTreeNode)list.get(i);
+								TreeNodeImpl datainfo=(TreeNodeImpl)list.get(i);
 								String dynamicAttri=datainfo.getDynamicAttri()==null?"":datainfo.getDynamicAttri();
 								if(code.equals(datainfo.getKey())){
 									results.append("<tr  key='"+datainfo.getKey()+"' height=20><td onmouseover=\"_gzzzb_changecolor(this,'1','"+id+"');\" onmouseout=\"_gzzzb_changecolor(this,'2','"+id+"');\" onclick=\"_gzzzb_changevalues('"+id+"','"+datainfo.getText()+"','"+datainfo.getKey()+"','"+dynamicAttri+"');\" style=\"height:1.5em;padding-left:1px;"+style+"\"><font color=\"red\" style=\"cursor:hand;\">"+datainfo.getText()+"</font></td></tr>");
@@ -299,7 +299,7 @@ import java.util.Map;
 						}else{
 							results.append("<table width=\"100%\"  border=\"0\" cellSpacing=0 cellPadding=0><TBODY>");
 							for(int i=0;i<list.size();i++){
-								SanTreeNode datainfo=(SanTreeNode)list.get(i);
+								TreeNodeImpl datainfo=(TreeNodeImpl)list.get(i);
 
 								boolean isshow=false;//记录是否有需要查询的记录  为TRUE时则为该记录为需要的记录、
 								boolean isequal=false;//记录是否完全匹配  用于改变颜色
@@ -450,7 +450,7 @@ import java.util.Map;
 					if(!unitCode.equals("")&&!dataCodes.equals("")){
 						results.append("gzzzb_returnCodes###"+dataCodes);
 					}else{
-						/*BuildTreeHtml buildTreeHtml=new BuildTreeHtml(divId,dataSource,checkboxDisplay,
+						/*Tree buildTreeHtml=new Tree(divId,dataSource,checkboxDisplay,
 								radioOrCheckBox,parentRadioEnable,parentCheckboxEnable,
 								parentChildIsolate,contextPath,this.getServletContext(),request,userParameter,"_gzzzb_getChileTree('"+id+"')","treechecked(this,'"+id+"')","selected_values_checkbox(this,'"+id+"')");
 						results.append(buildTreeHtml.getTreeHtmlByServlet());
@@ -467,7 +467,7 @@ import java.util.Map;
 						for(int i=0;i<list.size();i++){
 
 							boolean ischecked=false;
-							SanTreeNode datainfo=(SanTreeNode)list.get(i);
+							TreeNodeImpl datainfo=(TreeNodeImpl)list.get(i);
 							if(checkedkey!=null){
 								for(int n=0;n<checkedkey.length;n++){
 									if(!checkedkey[n].equals("")&&!checkedkey[n].equals(" ")){
@@ -487,7 +487,7 @@ import java.util.Map;
 						results.append("<table width=\"100%\"  cellSpacing=0 cellPadding=0><TBODY>");
 						for(int i=0;i<list.size();i++){
 							boolean ischecked=false;
-							SanTreeNode datainfo=(SanTreeNode)list.get(i);
+							TreeNodeImpl datainfo=(TreeNodeImpl)list.get(i);
 							boolean isshow=false;
 							boolean isequal=false;//记录是否完全匹配
 							String name=datainfo.getText().trim();//显示值
@@ -681,7 +681,7 @@ import java.util.Map;
 
 		StringBuffer results = new StringBuffer("");
 		try{
-			SanTreeDataSourceInterface obj = ApplicationContextUtil.getBean(dataSource, TreeObject.class);
+			TreeDataSource obj = ApplicationContextUtil.getBean(dataSource, AbstractTreeDataSource.class);
 			obj.setServletContext(request.getServletContext());
 			obj.setRequest(request);
 			obj.setUserParameter(userParameter);

@@ -1,8 +1,12 @@
-package com.hisun.saas.sys.taglib.tree.impl;
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
 
-import com.hisun.saas.sys.taglib.tree.SanTreeNodeInterface;
+package com.hisun.saas.sys.taglib.tree;
 
-public class SanTreeNode implements SanTreeNodeInterface {
+public class TreeNodeImpl implements TreeNode {
 	private String text="";//节点文本
 	private String href="javascript:{}";//节点链接
 	private String target="";//链接目标
@@ -197,7 +201,7 @@ public class SanTreeNode implements SanTreeNodeInterface {
 		return inputValue;
 	}
 
-	public SanTreeNode(){
+	public TreeNodeImpl(){
 
 	}
 
@@ -215,8 +219,8 @@ public class SanTreeNode implements SanTreeNodeInterface {
 		 String defaultSelected;//是否默认选中
 		 String enable //复选是否可用 true可用 false 不可用
 	*/
-	public SanTreeNode(String text,String href,String target,String jsFunction,String helpCode,
-					   String key,String parentKey,int dynamicLoading,String inputValue,String checkboxJs,String defaultSelected,String enable){
+	public TreeNodeImpl(String text, String href, String target, String jsFunction, String helpCode,
+						String key, String parentKey, int dynamicLoading, String inputValue, String checkboxJs, String defaultSelected, String enable){
 		this.text=text;
 		this.href=href;
 		this.target=target;
@@ -243,8 +247,8 @@ public class SanTreeNode implements SanTreeNodeInterface {
 	 String inputValue;//复选框值
 	 String defaultSelected;//是否默认选中
 */
-	public SanTreeNode(String text,String href,String target,String jsFunction,String helpCode,
-					   String key,String parentKey,int dynamicLoading,String inputValue,String defaultSelected){
+	public TreeNodeImpl(String text, String href, String target, String jsFunction, String helpCode,
+						String key, String parentKey, int dynamicLoading, String inputValue, String defaultSelected){
 		this.text=text;
 		this.href=href;
 		this.target=target;
@@ -275,9 +279,9 @@ public class SanTreeNode implements SanTreeNodeInterface {
 
 	 version 1.0
 	 */
-	public SanTreeNode(String text,String href,String target,String jsFunction,String helpCode,
-					   String key,String parentKey,int dynamicLoading,String inputValue,String checkboxJs,
-					   String defaultSelected,String enable,String dynamicAttri,String grayImg){
+	public TreeNodeImpl(String text, String href, String target, String jsFunction, String helpCode,
+						String key, String parentKey, int dynamicLoading, String inputValue, String checkboxJs,
+						String defaultSelected, String enable, String dynamicAttri, String grayImg){
 		this.text=text;
 		this.href=href;
 		this.target=target;
@@ -311,9 +315,9 @@ public class SanTreeNode implements SanTreeNodeInterface {
 	 String fullName;//节点全称
 	 version 1.1 
 	 */
-	public SanTreeNode(String text,String href,String target,String jsFunction,String helpCode,
-					   String key,String parentKey,int dynamicLoading,String inputValue,String checkboxJs,
-					   String defaultSelected,String enable,String dynamicAttri,String grayImg,String fullName){
+	public TreeNodeImpl(String text, String href, String target, String jsFunction, String helpCode,
+						String key, String parentKey, int dynamicLoading, String inputValue, String checkboxJs,
+						String defaultSelected, String enable, String dynamicAttri, String grayImg, String fullName){
 		this.text=text;
 		this.href=href;
 		this.target=target;
@@ -534,7 +538,7 @@ public class SanTreeNode implements SanTreeNodeInterface {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final SanTreeNode other = (SanTreeNode) obj;
+		final TreeNodeImpl other = (TreeNodeImpl) obj;
 		if (key == null) {
 			if (other.key != null)
 				return false;

@@ -6,7 +6,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@include file="/WEB-INF/jsp/inc/styles.jsp" %>
-    <link href="${path }/css/login_style.css" rel="stylesheet" type="text/css"/>
+    <link href="${path}/css/login_style.css" rel="stylesheet" type="text/css"/>
     <title>${sysAdminName}</title>
 </head>
 <!-- BEGIN BODY -->
@@ -97,7 +97,7 @@
                             立即登录
                         </button>
                     </div>
-                    <div class="BackPassword"><a href="${path }/admin/forgot">忘记密码 ? 点击找回密码&gt;&gt;</a></div>
+                    <%--<div class="BackPassword"><a href="${path }/admin/forgot">忘记密码 ? 点击找回密码&gt;&gt;</a></div>--%>
                 </div>
             </div>
 

@@ -4,10 +4,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title><sitemesh:write property="title"/></title>
-    <%@include file="/WEB-INF/jsp/inc/import.jsp" %>
-    <sitemesh:write property="head"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title><sitemesh:write property="title"/></title>
+<%@include file="/WEB-INF/jsp/inc/import.jsp" %>
+<sitemesh:write property="head"/>
 </head>
 <body class="page-header-fixed">
 <div class="header navbar navbar-inverse navbar-fixed-top">

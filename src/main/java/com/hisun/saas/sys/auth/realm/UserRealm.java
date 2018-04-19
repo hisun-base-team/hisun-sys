@@ -62,9 +62,6 @@ public class UserRealm extends BaseRealm {
                 permissions.add(permission);
             }
         }
-//        if (Constants.ADMIN_USERNAME.equalsIgnoreCase(username)) {
-//            permissions.add(Constants.ADMIN_PERMISSION);
-//        }
         authorizationInfo.setRoles(roleCodes);
         authorizationInfo.setStringPermissions(permissions);
         return authorizationInfo;

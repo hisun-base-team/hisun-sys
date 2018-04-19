@@ -1,4 +1,10 @@
-package com.hisun.saas.sys.taglib.hisunTree;
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
+
+package com.hisun.saas.sys.taglib.tree;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.exception.GenericException;
 import org.springframework.stereotype.Controller;
@@ -12,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/sys/hisunTree")
-	public class DynamicLoadingTreeController extends BaseController{
+public class DynamicLoadingTreeController extends BaseController{
 	@RequestMapping(value="/ajax/loadTree")
 	public @ResponseBody
 	Map<String,Object> loadTree(HttpServletRequest request)throws GenericException {
@@ -61,36 +67,36 @@ import javax.servlet.http.HttpServletRequest;
 			}
 
 			/*
-			BuildTreeHtml buildTreeHtml=new BuildTreeHtml(divId,dataSource,checkboxDisplay,
+			Tree tree=new Tree(divId,dataSource,checkboxDisplay,
 					radioOrCheckBox,parentRadioEnable,parentCheckboxEnable,
 					parentChildIsolate,contextPath,parentText,parentkey,cengCount,this.getServletContext(),
 					request,imgClick,checkBoxClick,aClick);
-			StringBuffer nodesHtml=buildTreeHtml.getDynamicLoadChilds();
+			StringBuffer nodesHtml=tree.getDynamicLoadChilds();
 			*/
 
-			BuildTreeHtml buildTreeHtml=new BuildTreeHtml();
-			buildTreeHtml.setDivId(divId);//设置保存节点的div的id
-			buildTreeHtml.setDataSource(dataSource);//设置树的数据源
-			buildTreeHtml.setCheckboxDisplay(checkboxDisplay);//设置是否显示选择框对象
-			buildTreeHtml.setRadioOrCheckbox(radioOrCheckBox);//设置是单选 还是 复选
-			buildTreeHtml.setParentRadioEnable(parentRadioEnable);//单选情况下父节点是否可选 true可选 false不可选
-			buildTreeHtml.setParentCheckboxEnable(parentCheckboxEnable);//复选情况下父节点是否可选 true可选 false不可选
-			buildTreeHtml.setParentChildIsolate(parentChildIsolate);
-			buildTreeHtml.setContextPath(contextPath);//设置系统路径
-			buildTreeHtml.setParentText(parentText);//设置父节点标题
-			buildTreeHtml.setParentkey(parentkey);//设置父节点key值
-			buildTreeHtml.setCengCount(cengCount);//设置父节点层次值
-			buildTreeHtml.setServletContext(request.getServletContext());//设置servlet上下文对象
-			buildTreeHtml.setRequest(request);//设置HttpServletRequest对象
-			buildTreeHtml.setImgClick(imgClick);//设置选择框控件,设置操作图片的函数
-			buildTreeHtml.setCheckBoxClick(checkBoxClick);//设置选择框控件,设置选择框的函数
-			buildTreeHtml.setAClick(aClick);//设置选择框控件,设置链接的函数
-			buildTreeHtml.setIsNextNode(isNextNode);//用于动态载，加载节点的父节点是否有下一个同级节点
-			buildTreeHtml.setDblonclick(ondblclick);
-			buildTreeHtml.setUserParameter(userParameter);
-			buildTreeHtml.setCheckBoxClick(checkboxclickDefault);
+			Tree tree =new Tree();
+			tree.setDivId(divId);//设置保存节点的div的id
+			tree.setDataSource(dataSource);//设置树的数据源
+			tree.setCheckboxDisplay(checkboxDisplay);//设置是否显示选择框对象
+			tree.setRadioOrCheckbox(radioOrCheckBox);//设置是单选 还是 复选
+			tree.setParentRadioEnable(parentRadioEnable);//单选情况下父节点是否可选 true可选 false不可选
+			tree.setParentCheckboxEnable(parentCheckboxEnable);//复选情况下父节点是否可选 true可选 false不可选
+			tree.setParentChildIsolate(parentChildIsolate);
+			tree.setContextPath(contextPath);//设置系统路径
+			tree.setParentText(parentText);//设置父节点标题
+			tree.setParentkey(parentkey);//设置父节点key值
+			tree.setCengCount(cengCount);//设置父节点层次值
+			tree.setServletContext(request.getServletContext());//设置servlet上下文对象
+			tree.setRequest(request);//设置HttpServletRequest对象
+			tree.setImgClick(imgClick);//设置选择框控件,设置操作图片的函数
+			tree.setCheckBoxClick(checkBoxClick);//设置选择框控件,设置选择框的函数
+			tree.setAClick(aClick);//设置选择框控件,设置链接的函数
+			tree.setIsNextNode(isNextNode);//用于动态载，加载节点的父节点是否有下一个同级节点
+			tree.setDblonclick(ondblclick);
+			tree.setUserParameter(userParameter);
+			tree.setCheckBoxClick(checkboxclickDefault);
 
-			StringBuffer nodesHtml=buildTreeHtml.getDynamicLoadChilds();
+			StringBuffer nodesHtml= tree.getDynamicLoadChilds();
 			if(nodesHtml!=null){
 				map.put("nodesHtml",nodesHtml);
 			}else{

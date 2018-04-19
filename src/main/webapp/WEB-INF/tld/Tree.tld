@@ -3,12 +3,12 @@
 <taglib>
     <tlib-version>1.0</tlib-version>
     <jsp-version>1.2</jsp-version>
-    <short-name>Hisuntree</short-name>
+    <short-name>TreeTag</short-name>
 
 
  <tag>
     <name>tree</name>
-    <tag-class>com.hisun.saas.sys.taglib.hisunTree.HisunTreeTag</tag-class>
+    <tag-class>com.hisun.saas.sys.taglib.tree.TreeTag</tag-class>
 
 	<attribute>
       <name>divId</name>

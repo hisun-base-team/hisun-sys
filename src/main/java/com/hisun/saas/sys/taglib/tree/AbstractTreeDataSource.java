@@ -1,17 +1,22 @@
-package com.hisun.saas.sys.taglib.selectOption;
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
 
-import com.hisun.saas.sys.taglib.selectOption.vo.SelectNode;
+package com.hisun.saas.sys.taglib.tree;
+import java.util.List;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
+
 import com.hisun.saas.sys.taglib.util.Attribute;
 import com.hisun.saas.sys.taglib.util.Attributes;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
-import java.util.List;
 
 
-public abstract class SelectObject implements SelectDataSourceInterface {
+public abstract class AbstractTreeDataSource implements TreeDataSource {
 
 	private ServletContext servletContext;
 
@@ -30,9 +35,6 @@ public abstract class SelectObject implements SelectDataSourceInterface {
 		this.servletContext=servletContext;
 	}
 
-	/**
-	 * @return the servletContext
-	 */
 	public ServletContext getServletContext() {
 		return servletContext;
 	}
@@ -87,9 +89,33 @@ public abstract class SelectObject implements SelectDataSourceInterface {
 		}
 	}
 
-
+	public abstract List<TreeNodeImpl> getChildrenNodes(String parentKey, String parentText) throws Exception;
 	/**
 	 * 获取当前树的第一次加载时的节点数据。如果是第一级节点，则其父
 	 */
-	public abstract List<SelectNode> getDataOptions() throws Exception;
+	public abstract List<TreeNodeImpl> getNodes() throws Exception;
+	/**
+	 * 实现一个空的根据codes取得value的方法
+	 */
+	public  String getValueByKeys(String codes,String userParameter,String chooseType,String unitCode) throws Exception{
+		return "";
+	}
+	/**
+	 * 根据输入内容得到模糊匹配的数据
+	 */
+	public  String checkTextEqual(String text,String userParameter,String chooseType,String unitCod) throws Exception{
+		return "";
+	}
+	/**
+	 * 动态加载中根据查询条件得到一组codes
+	 */
+	public  List getKeysByQueryInfo(String codes,String userParameter,String unitCode) throws Exception{
+		return null;
+	}
+	/**
+	 * 动态加载中根据codes得到一组到最高节点的codes    code,code
+	 */
+	public String getParamentCodesByKeys(String codes,String userParameter,String dicCode) throws Exception{
+		return "";
+	}
 }

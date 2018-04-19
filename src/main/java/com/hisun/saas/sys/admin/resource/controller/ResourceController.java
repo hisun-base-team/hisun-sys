@@ -155,7 +155,6 @@ public class ResourceController extends BaseController {
 				query.add(CommonRestrictions.and(" resourceType != :resourceType ", "resourceType", Integer.valueOf(1)));
 			}
 			query.add(CommonRestrictions.and(" type = :type ","type" ,1));
-			query.add(CommonRestrictions.and(" sysResource = :sysResource ", "sysResource", Boolean.FALSE));
 			orderBy.add(CommonOrder.asc("sort"));
 			resources = resourceService.list(query, orderBy);
 			List<ResourceVo> resourceVos = new ArrayList<ResourceVo>();
