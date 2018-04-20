@@ -2,71 +2,28 @@
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/jsp/inc/servlet.jsp" %>
 <%@include file="/WEB-INF/jsp/inc/taglib.jsp" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>登录日志</title>
 <!-- BEGIN PAGE LEVEL STYLES -->
-
-<link rel="stylesheet" type="text/css"
-	href="<%=path%>/css/select2_metro.css" />
-
+<link rel="stylesheet" type="text/css" href="<%=path%>/css/select2_metro.css" />
 <link rel="stylesheet" href="<%=path%>/css/DT_bootstrap.css" />
-
-
 <style type="text/css">
-.mybodyfont{
-	font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI',
-		'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif !important;
-}
 
-.mycontent {
-	margin-top: 20px;
-}
-
-.mylabel {
-	font-size: 16px;
-	cursor: default;
-	font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI',
-		'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif;
-}
-
-.mybutton-group {
-	text-align: right;
-}
-
-.mybutton {
-	font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI',
-		'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif;
-	font-size: 16px;
-}
-
-.btn {
-	font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI',
-		'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif !important;
-}
-
-table {
-	border-collapse:collapse !important;
-}
 </style>
 <!-- END PAGE LEVEL STYLES -->
 </head>
 <body>
 
 			<div class="container-fluid">
-				
+
 				<div class="span6" style="width: 100%; margin: 0px;">
 
 					<div class="portlet-title" style="vertical-align: middle; margin-bottom: 0px; border-bottom:0;">
 						<div class="caption">登录日志</div>
-						<%--<div class="btn-group fr">
-                            <a id="sample_editable_1_new" class="btn green" href="${path }/sys/tenant/tenant/add">
-                                <i class="icon-plus"></i> 创 建
-                            </a>
-                        </div>--%>
 					</div>
 
 					<div class="portlet-body">
@@ -82,16 +39,15 @@ table {
 									<div class="input-append" id="endtimeDiv">
 										<input type="text" class="span12" value='<c:out value="${param.end }"></c:out>' name="end" id="end" readonly/>
 									</div>
-									<span class="inp_name" style=""></span>
-									姓名： <input type="text" class="m-wrap" name="searchContent" id="searchContent" placeholder="用户名/邮箱/姓名搜索" value="${cloud:htmlEscape(param.searchContent)}">
-									<button type="submit" class="btn blue Short_but">查询</button>
-									<button type="button" class="btn blue Short_but" onclick="searchReset()">清空</button>
+									<span class="inp_name" style="">姓名：</span>
+									<input type="text" class="m-wrap" name="searchContent" id="searchContent" placeholder="用户名/邮箱/姓名搜索" value="${cloud:htmlEscape(param.searchContent)}">
+									<button type="submit" class="btn Short_but">查询</button>
+									<button type="button" class="btn Short_but" onclick="searchReset()">清空</button>
 								</form>
 							</div>
 						</div>
 					</div>
-				<table
-					class="table table-striped table-bordered table-hover dataTable table-set">
+				<table class="table table-striped table-bordered table-hover dataTable table-set">
 					<thead>
 						<tr>
 							<th style="width: 70%">登录地址</th>
@@ -118,14 +74,12 @@ table {
 
 
 			</div>
-			
+
 		</div>
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
 
 	<script type="text/javascript" src="<%=path%>/js/select2.min.js"></script>
-
-	<script type="text/javascript"
-		src="<%=path%>/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="<%=path%>/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="<%=path%>/js/jquery.form.js"></script>
 	<script type="text/javascript" src="<%=path%>/js/DT_bootstrap.js"></script>
 	<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.js"></script>

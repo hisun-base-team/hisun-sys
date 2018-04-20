@@ -27,6 +27,8 @@ public class Tenant extends TombstoneEntity implements Serializable {
 
     private String id;//主键
     private String name;//租户名
+    private String shortName;//简称
+    private String shortNamePy;//简称拼音
     private int status;//保留以后使用
     private String token = RandomStringUtils.randomAlphanumeric(32);
     private List<TenantUser> users;
@@ -59,6 +61,23 @@ public class Tenant extends TombstoneEntity implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Column(name = "short_name", length = 60)
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+    @Column(name = "short_name_py", length = 60)
+    public String getShortNamePy() {
+        return shortNamePy;
+    }
+
+    public void setShortNamePy(String shortNamePy) {
+        this.shortNamePy = shortNamePy;
     }
 
     @Column(name = "status")

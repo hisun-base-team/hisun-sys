@@ -12,7 +12,7 @@
 .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
 .page-content{   padding: 0 !important; }
 ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
-.portlet.box.grey.mainleft{background-color: #f1f3f6;overflow: hidden; padding: 0px !important; margin-bottom: 0px;} 
+.portlet.box.grey.mainleft{background-color: #f1f3f6;overflow: hidden; padding: 0px !important; margin-bottom: 0px;}
 .main_left{float:left; width:220px;  margin-right:10px; background-color: #f1f3f6; }
 .main_right{display: table-cell; width:2000px; padding:20px 20px; }
 .portlet-title .caption.mainlefttop{ border: none !important; background-color:#eaedf1;width: 220px; height: 48px;line-height: 48px;padding: 0;margin: 0;text-indent: 1em; }

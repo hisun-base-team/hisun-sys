@@ -920,7 +920,7 @@ $(function(){
 });
 	
 function autoFixed(){
-	var mainHeight = $(window).height()-60;
+	var mainHeight = $(window).height()-50;
 	$('.page-sidebar').height(mainHeight);
 	$(".main_left").height(mainHeight);
 

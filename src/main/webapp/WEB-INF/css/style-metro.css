@@ -26,10 +26,10 @@ select:focus {
 	background-image: none;
 	filter: none;
 	border: 0;
-	padding: 7px 14px; 
+	padding: 6px 14px; 
 	text-shadow: none;
 	font-family:'微软雅黑', "Segoe UI", Helvetica, Arial, sans-serif;
-  font-size: 14px;  	
+  font-size: 12px;  	
   color: #333333;
 	cursor: pointer;
 	outline: none;
@@ -107,6 +107,7 @@ select:focus {
   /*background-color: #4d90fe;*/
   /*background-color:#ec9d21;*/
   background-color:#2b92e2;
+  font-size:12px;
 }
 .btn.blue:hover, 
 /*.btn.blue:focus, */
@@ -125,6 +126,7 @@ select:focus {
   text-shadow: none;	 
   /* background-color: #35aa47; */
   background-color: #2b92e2;
+  font-size:12px;
 }
 .btn.green:hover, 
 .btn.green:focus, 
@@ -319,7 +321,7 @@ Dropdowns
   -webkit-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);  
-  font-size: 14px;
+  font-size: 12px;
   font-family:"微软雅黑", "Segoe UI",Helvetica, Arial, sans-serif;
   border: 1px solid #ddd;
 }

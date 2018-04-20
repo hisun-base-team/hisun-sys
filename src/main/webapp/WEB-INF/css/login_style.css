@@ -4,9 +4,10 @@
 
 
 .login_header{ background-color:#fff;  height:80px; width:100%;}
-.login_header_1000{ max-width:1000px; margin:0 auto;}
-.login_logo{ float:left; margin:14px 12px 0 20px;}
-.Customer_name{ font-size:20px; float:left; height:32px; line-height:32px; border-left:solid 1px #e6e6e6; padding-left:12px; margin-top:24px; color:#555;}
+.login_header_1000{  margin:0 auto; width: 1000px;}
+.login_logo{  float:left; margin:14px 12px 0 20px;}
+.login_logo img{ max-width:150px; margin-top:6px;}
+.Customer_name{ font-size:20px; float:left; height:32px; line-height:32px;/* border-left:solid 1px #e6e6e6; */padding-left:12px; margin-top:24px; color:#555;}
 
 
 

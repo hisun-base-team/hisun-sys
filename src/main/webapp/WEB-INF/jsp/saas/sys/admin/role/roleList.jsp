@@ -4,63 +4,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8" />
-
 <title>角色列表</title>
-
-<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-
-<meta content="" name="description" />
-
-<meta content="" name="author" />
-
 <!-- BEGIN PAGE LEVEL STYLES -->
-
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>/css/select2_metro.css" />
-
 <link rel="stylesheet" href="<%=path%>/css/DT_bootstrap.css" />
 
-<style type="text/css">
-.mybodyfont{
-	font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI',
-		'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif !important;
-}
-
-.mycontent {
-	margin-top: 20px;
-}
-
-.mylabel {
-	font-size: 16px;
-	cursor: default;
-	font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI',
-		'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif;
-}
-
-.mybutton-group {
-	text-align: right;
-}
-
-.mybutton {
-	font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI',
-		'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif;
-	font-size: 16px;
-}
-
-.btn {
-	font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI',
-		'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif !important;
-}
-
-table {
-	border-collapse:collapse !important;
-}
-
-.select2-drop {
-	  z-index: 999999 !important;
-}
-</style>
 <!-- END PAGE LEVEL STYLES -->
 
 </head>

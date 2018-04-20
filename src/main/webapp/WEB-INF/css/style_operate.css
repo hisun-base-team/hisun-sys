@@ -49,7 +49,7 @@ a:hover{ color:#2784DB;}
 .orange{color:#ff7800 !important;}
 .bold{ font-weight:bold !important;}
 
-.header{  height:40px;}
+.header{  position:relative; height:40px;}
 .logo{ position:absolute; left:0; top:0; }
 .heatitle{ text-align:center; font-size:30px;}
 
@@ -171,7 +171,7 @@ table.tabOperationSurvey{}
 .tabOperationSurvey tr:hover td{ background-color: rgba(41,157,252,0.4); color:#FFFFFF;}
 .tabOperationSurvey tr td a:hover{ color:#fff;}
 
-.ExpertTitle{ padding:12px 0 12px 0 ;font-size:14px;  color:#b0d3ff; text-align:center;  }
+.ExpertTitle{ padding:12px 0 12px 0 ;font-size:13px;  color:#b0d3ff; text-align:center;  }
 
 
 .OperateBigTitle{ position:absolute; top:90px; left:30px; }
@@ -182,27 +182,9 @@ table.tabOperationSurvey{}
 .OperateSummary dd em{font-family: 'webfontregular'; color:#a3c601; padding:0 3px;  }
 
 
-.OperAmount{ width:240px; text-align: center; padding:75px 0px; overflow:hidden; background-color: rgba(0, 34, 70, 0.3);border: 1px solid rgba(0, 74, 149, 0.3); position:absolute; top:0; left:0;}
+.OperAmount{ padding-bottom:30px; overflow:hidden;}
 .OperAmount .AName{ font-size:16px; color:#b0d3ff; padding-bottom:8px; height:30px; overflow:hidden;}
 .OperAmount .Atotal{font-family: 'webfontregular';letter-spacing:2px; font-size:46px; color:#a3c601;}
-
-
-.BigdatamainOne{ overflow:hidden; position:relative;}
-.mainright{ margin-left:255px; height:230px; background-color: rgba(0, 34, 70, 0.3);border: 1px solid rgba(0, 74, 149, 0.3);}
-.bintulist3{ width:33.333333%; float:left;}
-.bintumain{background-color: rgba(0, 34, 70, 0.3);border: 1px solid rgba(0, 74, 149, 0.3); height:230px; margin-right:15px;}
-
-.ulshiwutslist{ padding:0 10px 10px 10px;}
-.ulshiwutslist li{ color:#FFFFFF; height:36px; line-height:36px;  padding:0 10px; border-bottom:dashed 1px #013876;}
-.ulshiwutslist li:last-child{ border-bottom:none;}
-.ulshiwutslist li span{ float:right;}
-.ulshiwutslist li a{ color:#fff; display:inline-block;}
-.ulshiwutslist li a:hover{ color:#FF9E00;}
-/*.ulshiwutslist li:nth-child(2n-1){ background-color:#063365;}*/
-.ulshiwutslist li:hover{background-color:#032b57; }
-.ulshiwutslist li em{ margin-right:8px;}
-.ulshiwutslist li span a{ color:#268AF3;}
-
 
 
 

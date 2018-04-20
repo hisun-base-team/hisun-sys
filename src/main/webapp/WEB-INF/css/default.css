@@ -16,7 +16,7 @@ Page header
   filter: none !important;
   background-image: none !important;
   /*background-color: #3665a7 !important;*/
-  background-color: #1b549a !important;
+  background-color: #006fcd !important;
 }
 .header .btn-navbar {
   background-color: #212121 !important;
@@ -28,7 +28,7 @@ Page header
 */
 .header .nav li:hover,
 .header .nav .dropdown.open .dropdown-toggle {
-  background-color: #124b91 !important;
+  background-color: #005ead !important;
 }
 .header .nav li.dropdown .dropdown-toggle i {
   color: #bbcbe1;
@@ -38,7 +38,7 @@ Page header
 Page sidebar
 ***/
 .page-sidebar {
-  background-color: #2d3e50;
+  background-color: #293038;
   
   /*20150525 ie7 左边导航做兼容*/
   width:180px; position: fixed;
@@ -50,8 +50,8 @@ Page sidebar
 ul.page-sidebar-menu > li > a {
   /*border-top: 1px solid #5c5c5c !important;
   border-top: 1px solid #515151 !important;
-  border-bottom: 1px solid #242424 !important;*/
-  background:url(../images/templateImage/navleft_line.png) no-repeat;
+  border-bottom: 1px solid #242424 !important;
+  background:url(../images/templateImage/navleft_line.png) no-repeat;*/
   color: #ffffff !important;
 }
 ul.page-sidebar-menu > li:last-child > a {
@@ -63,14 +63,14 @@ ul.page-sidebar-menu > li a i {
 ul.page-sidebar-menu > li.open > a,
 ul.page-sidebar-menu > li > a:hover,
 ul.page-sidebar-menu > li:hover > a {
-  background: #244466;
+  background: #0258b4;
 }
 
 /*ul.page-sidebar-menu > li.open > a{  background: #e02222;}*/
 
 ul.page-sidebar-menu > li.active > a {
  /* background: #3a5a88 !important;*/
-  background: #2d5792 !important;
+  background: #006fcd !important;
   border-top-color: transparent !important;
   color: #ffffff;
 }
@@ -100,6 +100,7 @@ ul.page-sidebar-menu > li > ul.sub-menu li.open > a {
 }
 /* font color for all sub menu links*/
 ul.page-sidebar-menu li > ul.sub-menu > li > a {
+	padding:8px 0;
   color: #a9b1c7;
 }
 /* menu arrows */

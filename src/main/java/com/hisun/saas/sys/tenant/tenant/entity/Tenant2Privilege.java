@@ -27,6 +27,7 @@ public class Tenant2Privilege implements Serializable{
     private Tenant tenant;
     private TenantPrivilege tenantPrivilege;
     private String sqlFilterExpress;
+    private String hqlFilterExpress;
     private String selectedExpress;
 
     private List<TenantRoleResourcePrivilege> tenantRoleResourcePrivileges;
@@ -73,7 +74,14 @@ public class Tenant2Privilege implements Serializable{
         this.selectedExpress = selectedExpress;
     }
 
+    @Column(name="hql_filter_express",nullable=false)
+    public String getHqlFilterExpress() {
+        return hqlFilterExpress;
+    }
 
+    public void setHqlFilterExpress(String hqlFilterExpress) {
+        this.hqlFilterExpress = hqlFilterExpress;
+    }
 
     @OneToMany(mappedBy = "tenant2Privilege")
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
