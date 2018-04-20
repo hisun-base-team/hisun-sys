@@ -1,0 +1,46 @@
+@charset "utf-8";
+/* CSS Document */
+
+.MainGZ{ margin:0 auto; overflow:hidden;}
+
+.headerTop{ width:100%; height:48px; line-height:48px; background-color:rgba(0,122,226,1); font-size:1rem; color:#fff; /*border:solid 1px #DDDDDD; border-top:none;*/ box-shadow: 0 1px 3px rgba(0,0,0,0.3);  position:fixed; top:0; left:0;}
+.headerL{float:left; text-align:left; display:inline-block; padding-left:14px;}
+.headerL img{ max-height:28px; margin-top:10px;}
+.headerR{ padding-top:7px; display:inline-block; float:right;}
+.headerR a.mui-btn-outlined.mui-btn-primary, .headerR a.mui-btn-outlined.mui-btn-blue{ color:#FFFFFF; border:solid 1px #FFFFFF;}
+/*.headerTitle{float:left; text-align:center;}
+.headerR a{  float:right; text-align: center; display:inline-block;  color:#fff; font-size:0.9rem; height:28px; line-height:28px; border-radius:4px; margin:10px 10px 0 0; border:solid 1px #0066bd;}*/
+
+.PagrBottom{ width:100%; height:48px; line-height:48px; background-color:#FFFFFF; font-size:1rem; color:#666666; border-top:solid 1px #DDDDDD; /*border:solid 1px #DDDDDD; border-top:none;*/ box-shadow: 0 1px 3px rgba(0,0,0,0.3);  position:fixed; bottom:0; left:0;}
+.pageBtnL a{ width:40%; float:left; text-align:left; display:inline-block; padding-left:2%;}
+.PageTit{width:16%; float:left; text-align:center;}
+.pageBtnR a{ width:40%; float:right; text-align:right; display:inline-block;  padding-right:2%;}
+
+
+.gzTabList{ margin:95px 0 48px 0; overflow:hidden;}
+.dlgzlist{ background-color:#FFFFFF; margin:0.5rem; padding:0.6rem 0.8rem; line-height:1.4rem; font-size:0.9rem;}
+.dlgzlist dt{ border-bottom:dashed 1px #DDDDDD; padding-bottom:0.3rem; color:#666666;}
+.dlgzlist dd{ padding-top:0.3rem; word-break:break-all; word-wrap:break-word;}
+
+.Overdue{ text-align:center; margin-top:8rem;}
+.Overdue p img{ max-height:72px;}
+.Overdue span{ margin-top:0.5rem; display:inline-block;}
+
+
+
+.TimeChoice{ background-color:#f8f8f8; width:100%; height:50px; line-height:36px; position:fixed; top:48px; left:0; padding:8px 0; text-indent:0.5em; }
+.TimeChoice span{ padding:0 0 0 5px;}
+
+.NoHint{ text-align:center; padding:100px 0 20px 0; color:#666;}
+
+
+.ulgzshowlist{ margin:0 7px;}
+.ulgzshowlist li{ padding:12px 10px; border-bottom:dashed 1px #DDDDDD;}
+.ulgzshowlist li a{ color:#007aff;}
+
+
+.ArticleGZ{ padding:65px 14px 14px 14px;}
+
+.warnTabList{ margin:50px 0 48px 0; overflow:hidden;padding: 14px;word-break:break-all; /*支持IE，chrome，FF不支持*/word-wrap:break-word;/*支持IE，chrome，FF*/}
+.dataName{width: 80px;text-align: right;color: #666;display: inline-block;}
+.warnDetailTable tr td{padding: 3px 0;}
