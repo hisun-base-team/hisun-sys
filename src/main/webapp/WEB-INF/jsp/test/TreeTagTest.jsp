@@ -2,38 +2,14 @@
 		 pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/jsp/inc/servlet.jsp" %>
 <%@include file="/WEB-INF/jsp/inc/taglib.jsp" %>
-<%@ taglib uri="/WEB-INF/tld/Tree.tld" prefix="Hisuntree" %>
-<%@ taglib uri="/WEB-INF/tld/selectOption.tld" prefix="SelectOption" %>
+
 <c:set var="path" value="${pageContext.request.contextPath}"></c:set>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link href="${path}/css/common/common.css" rel="stylesheet" type="text/css"/>
-	<!-- BEGIN PAGE LEVEL STYLES -->
-	<link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
-	<link rel="stylesheet" type="text/css" href="${path }/css/bootstrap-fileupload.css">
-
-	<script type="text/javascript" src="${path}/js/jquery.json-2.3.min.js"></script>
-
-	<link href="${contextPath}/css/zTreeStyle/zzbxtree.css" rel="stylesheet" type="text/css" />
-	<script src="${contextPath}/js/hisunTree/hisunxtree.js" language="javascript"></script>
-	<script src="${contextPath}/js/hisunTree/xtree.js" type="text/javascript"></script>
-	<script src="${contextPath}/js/select_option.js" language=javascript></script>
 
 
-	<link href="${path }/css/style.css" rel="stylesheet" type="text/css">
-
-	<%--<script src="${contextPath}/js/selectCheckBox/jquery.easyui.min.js" language=javascript></script>--%>
-	<%--<link href="${path }/css/selectCheckBox/easyui.css" rel="stylesheet" type="text/css">--%>
-	<%--<script src="${contextPath}/js/selectCheckBox/jquery.easyui.min.js" language=javascript></script>--%>
-	<link href="${path }/css/selectCheckBox/jquery.multiselect.css" rel="stylesheet" type="text/css">
-	<script src="${contextPath}/js/selectCheckBox/jquery.multiselect.js" language=javascript></script>
-	<link href="${path}/css/select2_metro.css" rel="stylesheet" type="text/css"/>
-	<link href="${path}/css/chosen.css" rel="stylesheet" type="text/css"/>
-	<script type="text/javascript" src="<%=path%>/js/select2.min.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/chosen.jquery.min.js"></script>
 
 	<script src="${contextPath}/js/zipjs/zip.js" charset=“utf-8”></script>
 	<script src="${contextPath}/js/zipjs/mime-types.js"  charset=“utf-8”></script>
@@ -65,9 +41,9 @@
 </div>
 <TABLE height="100%" width="100%" border="0" bordercolor="red" cellspacing="0" cellpadding="0" >
 
-	<TR height="100%" valign="top">
+	<TR valign="top">
 		<TD colspan="2">
-			<div id="b01Tree"><Hisuntree:tree divId="b01Tree" checkboxDisplay="yes" radioOrCheckbox="checkbox" parentRadioEnable="true"
+			<div id="b01Tree"><Tree:tree divId="b01Tree" checkboxDisplay="yes" radioOrCheckbox="checkbox" parentRadioEnable="true"
 							   parentCheckboxEnable="true" parentChildIsolate="true"
 							   dataSource="b01TreeDataSource"
 							   userParameter="" /></div>
@@ -77,7 +53,7 @@
 			<%--</div> 													--%>
 		</TD>
 	</TR>
-	<TR height="100%" valign="top">
+	<TR  valign="top">
 		<TD colspan="2" width="300px">
 			<div class="controls" >
 				<SelectOption:SelectOption id="sex1" textClass="span4 chosen"  isshowtree="no"
@@ -91,7 +67,7 @@
 			</div>
 		</TD>
 	</TR>
-	<TR height="100%" valign="top">
+	<TR  valign="top">
 		<TD colspan="2" width="300px">
 			<div class="controls">
 				<SelectOption:SelectOption id="sex" textClass="m-wrap span4"  isshowtree="no" defaultkeys="0,1"
@@ -166,10 +142,10 @@
 			<%--</div>--%>
 		<%--</TD>--%>
 	<%--</TR>--%>
-	<TR height="100%" valign="top">
-		<TD colspan="2" width="300px">
+	<TR valign="top">
+		<TD colspan="2" style="width: 300px">
 			<SelectOption:SelectOption id="manageUnitId"  textClass="m-wrap span4" allownull="false" onchange="changeA01z1();"
-									   des="档案管理单位" textFontSize="10pt" width="200px" isshowtree="yes"
+									   des="档案管理单位" textFontSize="10pt" width="200px" isshowtree="yes" token="${sessionScope.OWASP_CSRFTOKEN}"
 									   formName="eApplyE01z8Form" fieldCode="manageUnitId" fieldText="manageUnitName"
 									   staticdata="no" isEnterQuery="false" radioOrCheckbox="checkbox" matchingsetup="2,1,0,0,0,0,0"
 									   selectvaluetype="1" checkboxDisplay="yes" isDisabled="false" title=""
@@ -177,16 +153,16 @@
 		</TD>
 	</TR>
 
-	<TR height="100%" valign="top">
-		<TD colspan="2" width="300px">
-			<SelectOption:SelectOption id="manageUnitIdaaa"   textClass="m-wrap span4" allownull="false" onchange="changeA01z1();"
-									   des="档案管理单位" textFontSize="10pt" width="200px" isshowtree="yes"
-									   formName="eApplyE01z8Form" fieldCode="manageUnitIdaa" fieldText="manageUnitNameaa"
-									   staticdata="yes" isEnterQuery="false" radioOrCheckbox="radio" matchingsetup="2,1,0,0,0,0,0"
-									   selectvaluetype="1" checkboxDisplay="none" isDisabled="false" title=""
-									   dataSource="dynamicB01TreeDataSource" userParameter="isShowDepart:false;"/>
-		</TD>
-	</TR>
+	<%--<TR height="100%" valign="top">--%>
+		<%--<TD colspan="2" width="300px">--%>
+			<%--<SelectOption:SelectOption id="manageUnitIdaaa"   textClass="m-wrap span4" allownull="false" onchange="changeA01z1();"--%>
+									   <%--des="档案管理单位" textFontSize="10pt" width="200px" isshowtree="yes"--%>
+									   <%--formName="eApplyE01z8Form" fieldCode="manageUnitIdaa" fieldText="manageUnitNameaa"--%>
+									   <%--staticdata="yes" isEnterQuery="false" radioOrCheckbox="radio" matchingsetup="2,1,0,0,0,0,0"--%>
+									   <%--selectvaluetype="1" checkboxDisplay="none" isDisabled="false" title=""--%>
+									   <%--dataSource="b01TreeDataSource" userParameter="isShowDepart:false;"/>--%>
+		<%--</TD>--%>
+	<%--</TR>--%>
 
 	<TR height="100%" valign="top">
 		<TD colspan="2" width="300px">

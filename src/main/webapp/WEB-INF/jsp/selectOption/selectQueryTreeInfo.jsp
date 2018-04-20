@@ -1,14 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 		 pageEncoding="UTF-8"%>
-<%@include file="/WEB-INF/jsp/inc/servlet.jsp" %>
-<%@include file="/WEB-INF/jsp/inc/taglib.jsp" %>
 <%@ taglib uri="/WEB-INF/tld/Tree.tld" prefix="Hisuntree" %>
 <c:set var="path" value="${pageContext.request.contextPath}"></c:set>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<link href="${path}/css/common/common.css" rel="stylesheet" type="text/css"/>
-<!-- BEGIN PAGE LEVEL STYLES -->
-<link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
-<link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 <html>
 <head>
 <title>下拉多级树选择卡</title>
@@ -24,7 +18,7 @@
 
 <TABLE height="100%" width="100%" cellspacing="1" cellpadding="1" border="0">
 	<tr height="500px" >
-		<td width="350" style="border-right-width: 1px;border-right-style: solid;border-right-color: #71ADFF;">
+		<td width="350" style="border-right-width: 1px;border-right-style: solid;border-right-color: #e5e5e5;">
 			<TABLE height="100%" width="100%" cellspacing="1" cellpadding="1" border="0">
 				<TR height="21" valign="middle">
 					<TD  width="100%">
@@ -62,7 +56,7 @@
 
 						<div class="input-append date form_datetime">
 
-							<input type="text" style="width:250px;" placeholder="请在此输入搜索条件..." class="span6 m-wrap" name="queryValueInfo" value=""  onchange="queryInfo(this);" onkeyup="javascript:{if(event.keyCode==13){queryInfo_Onkeyup(this);}}"/>
+							<input type="text"  placeholder="请在此输入搜索条件..." class="span6 m-wrap" style="width:250px;height:16px !important"  name="queryValueInfo" value=""  onchange="queryInfo(this);" onkeyup="javascript:{if(event.keyCode==13){queryInfo_Onkeyup(this);}}"/>
 							<span class="add-on" onclick="clearQuery();"><i class="icon-remove"></i></span>
 							<span class="add-on" onclick="queryInfo_buttom();"><i class="icon-search"></i></span>
 							<%--<img style="border:0;margin-top:0px;padding-top:0px;cursor:hand;" title="点击此处开始查询" onclick="javascript:queryInfo_buttom();" src="${contextPath}/images/option/lookup.gif"/>--%>
@@ -80,7 +74,7 @@
 		</td>
 	</tr>
 	<tr height="10%" valign="middle">
-		<td align="center" colspan="2"  style="border-top-width: 1px;border-top-style: solid;	border-top-color: #71ADFF;">
+		<td align="center" colspan="2"  style="border-top-width: 1px;border-top-style: solid;	border-top-color: #e5e5e5;">
 			<button type="button" class="btn green"  onclick="save()" id="listBtnOk"><i class="icon-ok"></i> 确定</button>
 			&nbsp;&nbsp;&nbsp;
 			<button type="button" class="btn"  onclick="myClear()"><i class="icon-refresh"></i> 清空 </button>

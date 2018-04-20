@@ -4021,7 +4021,7 @@ function _gzzzb_selectOption_openChoose(id,rightQueryInfo,num){
 		var lowerSelectedAllWithSuperior=hiddenobj.getAttribute("lowerSelectedAllWithSuperior");
 		var lowerClearWithSuperior=hiddenobj.getAttribute("lowerClearWithSuperior");
 		var lowerClearAllWithSuperior=hiddenobj.getAttribute("lowerClearAllWithSuperior");
-
+		var token=hiddenobj.getAttribute("token");
 		//if(isOpenState==1){
 		//	return ;
 		//}
@@ -4106,7 +4106,7 @@ function _gzzzb_selectOption_openChoose(id,rightQueryInfo,num){
 
 			},
 			headers:{
-				OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+				OWASP_CSRFTOKEN:token
 			},
 			dataType : "html",
 			success : function(html){
@@ -4288,6 +4288,7 @@ function _gzzzb_selectOption_openChoose_onBlur(id){
 		var onchageEvent=hiddenobj.onchange;
 		var matchingsetup=hiddenobj.getAttribute("matchingsetup");
 		var staticdata=hiddenobj.getAttribute("staticdata");
+		var token=hiddenobj.getAttribute("token");
 		var re = /，/g;//把全角的，转为半角的,的正则表达式
 		textobj.value=textobj.value.replace(re,",");
 
@@ -4320,7 +4321,7 @@ function _gzzzb_selectOption_openChoose_onBlur(id){
 					"dataSource":dataSource
 				},
 				headers:{
-					OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+					OWASP_CSRFTOKEN:token
 				},
 				dataType : "json",
 				success:function(json){

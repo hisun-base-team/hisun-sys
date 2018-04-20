@@ -43,7 +43,7 @@
         var func = {
             addOption: function( container, option )
             {
-                container.text( $(option).text() );
+                container.prepend("<span style='padding-left:16px;'>"+$(option).text()+"</span>");
                 container.prepend(
                     $('<input type="checkbox" value="" title="" />')
                         .val( $(option).val() )

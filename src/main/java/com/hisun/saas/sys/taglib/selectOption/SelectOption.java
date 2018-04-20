@@ -134,6 +134,8 @@ public final class SelectOption{
 	private String moreSelectSearch; // yes为显示多选的search栏
 
 	private String moreSelectAll; // yes为显示多选的全选
+
+	private String token;
 	//初始化数据
 	public SelectOption() {
 		//super();
@@ -193,6 +195,7 @@ public final class SelectOption{
 		lowerClearWithSuperior = "false";
 		lowerClearAllWithSuperior = "true";
 		textClass = "span8 m-wrap";
+		token = "";
 //		moreSelectSearch = "no";
 //		moreSelectAll = "no";
 	}
@@ -656,7 +659,7 @@ public final class SelectOption{
 //		if (canWrite == false){
 //			results.append(" disabled");
 //		}
-		results.append(" ><i class=\"icon-search\"></i></span>");
+		results.append("style=\"height:24px\" ><i class=\"icon-search\"></i></span>");
 
 				results.append("<script type=\"text/javascript\">$(\"#"+newid+"_text\").css(\"width\", window.document.getElementById(\""+newid+"_text\").offsetWidth-28);</script>");
 //				results.append("</td></tr>");
@@ -739,6 +742,7 @@ public final class SelectOption{
 		results.append(" parentChildIsolate=\"").append(parentChildIsolate).append("\"");
 		results.append(" userParameter=\"").append(userParameter).append("\"");
 		results.append(" dictionaryType=\"").append(dictionaryType).append("\"");
+		results.append(" token=\"").append(token).append("\"");
 		//如果设置了字体颜色 则把字体颜色增加进去
 		if(fontColor!=null){
 			results.append(" fontColor=\"").append(fontColor).append("\"");
@@ -794,100 +798,100 @@ public final class SelectOption{
 
 		results.append("/>\n");
 		if(isshowtree.equals("no")){
-			results.append("<tr valign=\"middle\" style=\"background-color: "+divBackgroundColor+"\">\n<td colspan=2 width=\"100%\" style=\"padding-left:0px;height:0px;background-color:"+divBackgroundColor+"\">");
-			if(radioOrCheckbox.equals("radio")){//onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV_Input_Onblur(this);\" onblur=\"_gzzzb_selectOption_hidden_Select('"+newid+"');\"
-				results.append("<div id=\"gzzzb_"+newid+"_main\" style=\"width:100%;z-index:99;position:absolute;background-color: "+divBackgroundColor+"; border:1px;border-style:solid;border-color:Gray;  filter:progid:DXImageTransform.Microsoft.Shadow(color='dimgray', Direction=135, Strength=2);display:none;\" onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV_Input_Onblur('"+newid+"');\" onmouseout=\"_gzzzb_selectOption_hidden_Select_MainDiv('"+newid+"');\">");
-				//用来把生成模拟的保存数据的标签
-				results.append("<B style=\"line-height:0px;visibility:hidden;\">");
-				if(optionType.equals("tag")){
-					if(!this.getId().equals(fieldCode))
-						results.append("<input type=\"hidden\" name=\""+fieldCode+"\" value=\""+defaultkeys+"\" />");
-					if(!defaultvalues.equals(""))//如果是修改 则生成一个模拟的保存内容的hidden
-						results.append("<input type=\"hidden\" name=\""+fieldText+"\" value=\""+defaultvalues+"\" />");
-				}
-				results.append("</B>");
-				results.append("<div id=\""+newid+"_option\" style=\"white-space:nowrap;background-color:"+divBackgroundColor+";\" onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV('"+newid+"','2');\"><p align=\"left\" style=\"color:#E1D355;font-size:14px;\"><img src=\""+applicationName+"/images/option/loadingImg.gif\" style=\"width:24px;height:24px;\"><b>正在加载数据 请稍候....</b></p></div>");
-				results.append("<div id=\""+newid+"_hidden_option_all\" style=\"overflow-y:hidden;white-space:nowrap;background-color: "+divBackgroundColor+";display:none;\"></div>\n");
-			}else{// onmouseover=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onblur=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','1');\"
-				results.append("<div id=\"gzzzb_"+newid+"_main\" style=\"width:100%;z-index:99;position:absolute;background-color: "+divBackgroundColor+"; border:1px;border-style:solid;border-color:Gray;  filter:progid:DXImageTransform.Microsoft.Shadow(color='dimgray', Direction=135, Strength=2);display:none\"  onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV_Input_Onblur('"+newid+"');\" onmouseout=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox_mainDIv('"+newid+"','1');\" >");
-				//			用来把生成模拟的保存数据的标签
-				results.append("<B style=\"line-height:0px;visibility:hidden;\">");
-				if(optionType.equals("tag")){
-					if(defaultvalues!=""){
-						String[] defaultkey=defaultkeys.split(",");
-						String[] defaultvalue=defaultvalues.split(",");
-						if(mainField!=null&&!mainField.equals("")){
-							for(int i=0;i<defaultvalue.length;i++){
-								if(defaultvalue[i]!=""){
-									results.append("<input type=\"hidden\" name=\""+collectMeans+"["+i+"]."+fieldCode+"\" value=\""+defaultkey[i]+"\"/><input type=\"hidden\" name=\""+collectMeans+"["+i+"]."+fieldText+"\" value=\""+defaultvalue[i]+"\"/>");
-								}
-							}
-						}else{
-							if(fieldText!=null&&fieldText!=""){
-								results.append("<input type=\"hidden\" name=\""+fieldText+"\" value=\""+defaultvalues+"\"/>");
-							}
-						}
-					}
-				}
-				results.append("</B>");
-				results.append("<div id=\""+newid+"_option\"  style=\"swhite-space:nowrap;background-color: "+divBackgroundColor+";\" onscroll=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onclick=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onblur=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','1');\"><p align=\"left\" style=\"color:#E1D355;font-size:14px;\"><img src=\""+applicationName+"/images/option/loadingImg.gif\" style=\"width:24px;height:24px;\"><b>正在加载数据 请稍候....</b></p></div>\n");
-				results.append("<div id=\""+newid+"_hidden_option_all\" style=\"overflow-y:hidden;white-space:nowrap;background-color: "+divBackgroundColor+";display:none;\" onscroll=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onclick=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onblur=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','1');\"></div>\n");
-			}
-			results.append("<div id=\""+newid+"_option_old\" style=\"overflow-y:hidden;white-space:nowrap;background-color:"+divBackgroundColor+";display:none;\"></div>\n");
-
-			////输出下面的按钮  单选只输出一个取消按钮    如果dictionaryEdit为true则显示一个字典维护的按钮
-			if(radioOrCheckbox.equals("radio")){
-				/*results.append("<table width=\"100%\" bgColor=\""+divBackgroundColor+"\" cellSpacing=0 cellPadding=0><tr><td align=center><input type=\"button\" value=\"取消\" onclick=\"show_parentvalue('"+newid+"','1');\"");
-				if(buttonstyle!=null&&!buttonstyle.equals("")){
-					results.append(" style=\""+buttonstyle+"\"");
-				}
-				if(buttoncss!=null&&!buttoncss.equals("")){
-					results.append(" css=\""+buttoncss+"\"");
-				}
-				results.append(">");
-				if(dictionaryEdit.equals("true")){
-					results.append("<input type=\"button\" value=\" 字典维护 \" onclick=\""+dictionaryEditFunc+"\"");
-					if(buttonstyle!=null&&!buttonstyle.equals("")){
-						results.append(" style=\""+buttonstyle+"\"");
-					}
-					if(buttoncss!=null&&!buttoncss.equals("")){
-						results.append(" css=\""+buttoncss+"\"");
-					}
-					results.append(">");
-				}
-				results.append("</td>\n</tr>\n</table>\n");
-				*/
-				results.append("</div>\n");
-			}else{//复选输出确定按钮和复选按钮   如果dictionaryEdit为true则显示一个字典维护的按钮
-				results.append(" &nbsp;&nbsp;<input type=\"button\" value=\"确定\" onclick=\"checkbox_submit('"+newid+"');\"");
-				if(buttonstyle!=null&&!buttonstyle.equals("")){
-					results.append(" style=\""+buttonstyle+"\"");
-				}
-				if(buttoncss!=null&&!buttoncss.equals("")){
-					results.append(" css=\""+buttoncss+"\"");
-				}
-				results.append(">&nbsp;&nbsp;<input type=\"button\" value=\"取消\" onclick=\"show_parentvalue('"+newid+"','1');\"");
-				if(buttonstyle!=null&&!buttonstyle.equals("")){
-					results.append(" style=\""+buttonstyle+"\"");
-				}
-				if(buttoncss!=null&&!buttoncss.equals("")){
-					results.append(" css=\""+buttoncss+"\"");
-				}
-				results.append(">");
-				if(dictionaryEdit.equals("true")){
-					results.append("<input type=\"button\" value=\"字典维护\" onclick=\""+dictionaryEditFunc+"\"");
-					if(buttonstyle!=null&&!buttonstyle.equals("")){
-						results.append(" style=\""+buttonstyle+"\"");
-					}
-					if(buttoncss!=null&&!buttoncss.equals("")){
-						results.append(" css=\""+buttoncss+"\"");
-					}
-					results.append(">");
-				}
-				results.append("</div>");
-			}
-
-//			results.append("</td></tr>\n");
+//			results.append("<tr valign=\"middle\" style=\"background-color: "+divBackgroundColor+"\">\n<td colspan=2 width=\"100%\" style=\"padding-left:0px;height:0px;background-color:"+divBackgroundColor+"\">");
+//			if(radioOrCheckbox.equals("radio")){//onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV_Input_Onblur(this);\" onblur=\"_gzzzb_selectOption_hidden_Select('"+newid+"');\"
+//				results.append("<div id=\"gzzzb_"+newid+"_main\" style=\"width:100%;z-index:99;position:absolute;background-color: "+divBackgroundColor+"; border:1px;border-style:solid;border-color:Gray;  filter:progid:DXImageTransform.Microsoft.Shadow(color='dimgray', Direction=135, Strength=2);display:none;\" onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV_Input_Onblur('"+newid+"');\" onmouseout=\"_gzzzb_selectOption_hidden_Select_MainDiv('"+newid+"');\">");
+//				//用来把生成模拟的保存数据的标签
+//				results.append("<B style=\"line-height:0px;visibility:hidden;\">");
+//				if(optionType.equals("tag")){
+//					if(!this.getId().equals(fieldCode))
+//						results.append("<input type=\"hidden\" name=\""+fieldCode+"\" value=\""+defaultkeys+"\" />");
+//					if(!defaultvalues.equals(""))//如果是修改 则生成一个模拟的保存内容的hidden
+//						results.append("<input type=\"hidden\" name=\""+fieldText+"\" value=\""+defaultvalues+"\" />");
+//				}
+//				results.append("</B>");
+//				results.append("<div id=\""+newid+"_option\" style=\"white-space:nowrap;background-color:"+divBackgroundColor+";\" onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV('"+newid+"','2');\"><p align=\"left\" style=\"color:#E1D355;font-size:14px;\"><img src=\""+applicationName+"/images/option/loadingImg.gif\" style=\"width:24px;height:24px;\"><b>正在加载数据 请稍候....</b></p></div>");
+//				results.append("<div id=\""+newid+"_hidden_option_all\" style=\"overflow-y:hidden;white-space:nowrap;background-color: "+divBackgroundColor+";display:none;\"></div>\n");
+//			}else{// onmouseover=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onblur=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','1');\"
+//				results.append("<div id=\"gzzzb_"+newid+"_main\" style=\"width:100%;z-index:99;position:absolute;background-color: "+divBackgroundColor+"; border:1px;border-style:solid;border-color:Gray;  filter:progid:DXImageTransform.Microsoft.Shadow(color='dimgray', Direction=135, Strength=2);display:none\"  onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV_Input_Onblur('"+newid+"');\" onmouseout=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox_mainDIv('"+newid+"','1');\" >");
+//				//			用来把生成模拟的保存数据的标签
+//				results.append("<B style=\"line-height:0px;visibility:hidden;\">");
+//				if(optionType.equals("tag")){
+//					if(defaultvalues!=""){
+//						String[] defaultkey=defaultkeys.split(",");
+//						String[] defaultvalue=defaultvalues.split(",");
+//						if(mainField!=null&&!mainField.equals("")){
+//							for(int i=0;i<defaultvalue.length;i++){
+//								if(defaultvalue[i]!=""){
+//									results.append("<input type=\"hidden\" name=\""+collectMeans+"["+i+"]."+fieldCode+"\" value=\""+defaultkey[i]+"\"/><input type=\"hidden\" name=\""+collectMeans+"["+i+"]."+fieldText+"\" value=\""+defaultvalue[i]+"\"/>");
+//								}
+//							}
+//						}else{
+//							if(fieldText!=null&&fieldText!=""){
+//								results.append("<input type=\"hidden\" name=\""+fieldText+"\" value=\""+defaultvalues+"\"/>");
+//							}
+//						}
+//					}
+//				}
+//				results.append("</B>");
+//				results.append("<div id=\""+newid+"_option\"  style=\"swhite-space:nowrap;background-color: "+divBackgroundColor+";\" onscroll=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onclick=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onblur=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','1');\"><p align=\"left\" style=\"color:#E1D355;font-size:14px;\"><img src=\""+applicationName+"/images/option/loadingImg.gif\" style=\"width:24px;height:24px;\"><b>正在加载数据 请稍候....</b></p></div>\n");
+//				results.append("<div id=\""+newid+"_hidden_option_all\" style=\"overflow-y:hidden;white-space:nowrap;background-color: "+divBackgroundColor+";display:none;\" onscroll=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onclick=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onblur=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','1');\"></div>\n");
+//			}
+//			results.append("<div id=\""+newid+"_option_old\" style=\"overflow-y:hidden;white-space:nowrap;background-color:"+divBackgroundColor+";display:none;\"></div>\n");
+//
+//			////输出下面的按钮  单选只输出一个取消按钮    如果dictionaryEdit为true则显示一个字典维护的按钮
+//			if(radioOrCheckbox.equals("radio")){
+//				/*results.append("<table width=\"100%\" bgColor=\""+divBackgroundColor+"\" cellSpacing=0 cellPadding=0><tr><td align=center><input type=\"button\" value=\"取消\" onclick=\"show_parentvalue('"+newid+"','1');\"");
+//				if(buttonstyle!=null&&!buttonstyle.equals("")){
+//					results.append(" style=\""+buttonstyle+"\"");
+//				}
+//				if(buttoncss!=null&&!buttoncss.equals("")){
+//					results.append(" css=\""+buttoncss+"\"");
+//				}
+//				results.append(">");
+//				if(dictionaryEdit.equals("true")){
+//					results.append("<input type=\"button\" value=\" 字典维护 \" onclick=\""+dictionaryEditFunc+"\"");
+//					if(buttonstyle!=null&&!buttonstyle.equals("")){
+//						results.append(" style=\""+buttonstyle+"\"");
+//					}
+//					if(buttoncss!=null&&!buttoncss.equals("")){
+//						results.append(" css=\""+buttoncss+"\"");
+//					}
+//					results.append(">");
+//				}
+//				results.append("</td>\n</tr>\n</table>\n");
+//				*/
+//				results.append("</div>\n");
+//			}else{//复选输出确定按钮和复选按钮   如果dictionaryEdit为true则显示一个字典维护的按钮
+//				results.append(" &nbsp;&nbsp;<input type=\"button\" value=\"确定\" onclick=\"checkbox_submit('"+newid+"');\"");
+//				if(buttonstyle!=null&&!buttonstyle.equals("")){
+//					results.append(" style=\""+buttonstyle+"\"");
+//				}
+//				if(buttoncss!=null&&!buttoncss.equals("")){
+//					results.append(" css=\""+buttoncss+"\"");
+//				}
+//				results.append(">&nbsp;&nbsp;<input type=\"button\" value=\"取消\" onclick=\"show_parentvalue('"+newid+"','1');\"");
+//				if(buttonstyle!=null&&!buttonstyle.equals("")){
+//					results.append(" style=\""+buttonstyle+"\"");
+//				}
+//				if(buttoncss!=null&&!buttoncss.equals("")){
+//					results.append(" css=\""+buttoncss+"\"");
+//				}
+//				results.append(">");
+//				if(dictionaryEdit.equals("true")){
+//					results.append("<input type=\"button\" value=\"字典维护\" onclick=\""+dictionaryEditFunc+"\"");
+//					if(buttonstyle!=null&&!buttonstyle.equals("")){
+//						results.append(" style=\""+buttonstyle+"\"");
+//					}
+//					if(buttoncss!=null&&!buttoncss.equals("")){
+//						results.append(" css=\""+buttoncss+"\"");
+//					}
+//					results.append(">");
+//				}
+//				results.append("</div>");
+//			}
+//
+////			results.append("</td></tr>\n");
 		}else{
 			results.append("<div id=\"gzzzb_"+newid+"_main\" style=\"z-index:99;position:absolute;background-color: "+divBackgroundColor+"; border:1px;border-style:solid;border-color:Gray;  filter:progid:DXImageTransform.Microsoft.Shadow(color='dimgray', Direction=135, Strength=2);display:none;\" >\n");
 			//用来把生成模拟的保存数据的标签
@@ -927,49 +931,49 @@ public final class SelectOption{
 		 * 此对象主要用于二次开发者客服端取得数据
 		 */
 
-		if(isshowtree.equals("no")){
-			results.append("var "+newid+"_img_obj=document.all(\""+newid+"_img\");\n\t");
-			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\""+newid+"_img\";\n\t");
-			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]="+newid+"_img_obj;\n\t");
-
-			results.append("var gzzzb_"+newid+"_checked_allkey_obj=document.all(\"gzzzb_"+newid+"_checked_allkey\");\n\t");
-			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_checked_allkey\";\n\t");
-			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_checked_allkey_obj;\n\t");
-
-			results.append("var gzzzb_"+newid+"_checked_allvalue_obj=document.all(\"gzzzb_"+newid+"_checked_allvalue\");\n\t");
-			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_checked_allvalue\";\n\t");
-			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_checked_allvalue_obj;\n\t");
-			/**
-			 * 此对象主要用于二次开发者客服端取得数据
-			 */
-			results.append("var gzzzb_"+newid+"_oldqueryvalue_obj=document.all(\"gzzzb_"+newid+"_oldqueryvalue\");\n\t");
-			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_oldqueryvalue\";\n\t");
-			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_oldqueryvalue_obj;\n\t");
-
-			results.append("var gzzzb_"+newid+"_oldquerykey_obj=document.all(\"gzzzb_"+newid+"_oldquerykey\");\n\t");
-			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_oldquerykey\";\n\t");
-			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_oldquerykey_obj;\n\t");
-
-			results.append("var gzzzb_"+newid+"_checked_fullurl_obj=document.all(\"gzzzb_"+newid+"_checked_fullurl\");\n\t");
-			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_checked_fullurl\";\n\t");
-			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_checked_fullurl_obj;\n\t");
-
-			results.append("var "+newid+"_option_obj=document.all(\""+newid+"_option\");\n\t");
-			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\""+newid+"_option\";\n\t");
-			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]="+newid+"_option_obj;\n\t");
-
-			results.append("var "+newid+"_option_old_obj=document.all(\""+newid+"_option_old\");\n\t");
-			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\""+newid+"_option_old\";\n\t");
-			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]="+newid+"_option_old_obj;\n\t");
-
-			results.append("var "+newid+"_hidden_option_all_obj=document.all(\""+newid+"_hidden_option_all\");\n\t");
-			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\""+newid+"_hidden_option_all\";\n\t");
-			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]="+newid+"_hidden_option_all_obj;\n\t");
-
-			results.append("var gzzzb_"+newid+"_query_obj=document.all(\"gzzzb_"+newid+"_queryValue\");\n\t");
-			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_queryValue\";\n\t");
-			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_query_obj;\n\t");
-		}
+//		if(isshowtree.equals("no")){
+//			results.append("var "+newid+"_img_obj=document.all(\""+newid+"_img\");\n\t");
+//			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\""+newid+"_img\";\n\t");
+//			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]="+newid+"_img_obj;\n\t");
+//
+//			results.append("var gzzzb_"+newid+"_checked_allkey_obj=document.all(\"gzzzb_"+newid+"_checked_allkey\");\n\t");
+//			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_checked_allkey\";\n\t");
+//			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_checked_allkey_obj;\n\t");
+//
+//			results.append("var gzzzb_"+newid+"_checked_allvalue_obj=document.all(\"gzzzb_"+newid+"_checked_allvalue\");\n\t");
+//			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_checked_allvalue\";\n\t");
+//			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_checked_allvalue_obj;\n\t");
+//			/**
+//			 * 此对象主要用于二次开发者客服端取得数据
+//			 */
+//			results.append("var gzzzb_"+newid+"_oldqueryvalue_obj=document.all(\"gzzzb_"+newid+"_oldqueryvalue\");\n\t");
+//			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_oldqueryvalue\";\n\t");
+//			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_oldqueryvalue_obj;\n\t");
+//
+//			results.append("var gzzzb_"+newid+"_oldquerykey_obj=document.all(\"gzzzb_"+newid+"_oldquerykey\");\n\t");
+//			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_oldquerykey\";\n\t");
+//			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_oldquerykey_obj;\n\t");
+//
+//			results.append("var gzzzb_"+newid+"_checked_fullurl_obj=document.all(\"gzzzb_"+newid+"_checked_fullurl\");\n\t");
+//			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_checked_fullurl\";\n\t");
+//			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_checked_fullurl_obj;\n\t");
+//
+//			results.append("var "+newid+"_option_obj=document.all(\""+newid+"_option\");\n\t");
+//			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\""+newid+"_option\";\n\t");
+//			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]="+newid+"_option_obj;\n\t");
+//
+//			results.append("var "+newid+"_option_old_obj=document.all(\""+newid+"_option_old\");\n\t");
+//			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\""+newid+"_option_old\";\n\t");
+//			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]="+newid+"_option_old_obj;\n\t");
+//
+//			results.append("var "+newid+"_hidden_option_all_obj=document.all(\""+newid+"_hidden_option_all\");\n\t");
+//			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\""+newid+"_hidden_option_all\";\n\t");
+//			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]="+newid+"_hidden_option_all_obj;\n\t");
+//
+//			results.append("var gzzzb_"+newid+"_query_obj=document.all(\"gzzzb_"+newid+"_queryValue\");\n\t");
+//			results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_queryValue\";\n\t");
+//			results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_query_obj;\n\t");
+//		}
 		results.append("var gzzzb_"+newid+"_main_obj=document.all(\"gzzzb_"+newid+"_main\");\n\t");
 		results.append("Gzzzb_SelectOption_ids[Gzzzb_SelectOption_ids.length]=\"gzzzb_"+newid+"_main\";\n\t");
 		results.append("Gzzzb_SelectOption_objs[Gzzzb_SelectOption_objs.length]=gzzzb_"+newid+"_main_obj;\n\t");
@@ -1478,5 +1482,13 @@ public final class SelectOption{
 
 	public void setMoreSelectSearch(String moreSelectSearch) {
 		this.moreSelectSearch = moreSelectSearch;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

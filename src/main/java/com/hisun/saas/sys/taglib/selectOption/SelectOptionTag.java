@@ -163,6 +163,7 @@ public final class SelectOptionTag extends BodyTagSupport {
 
 	private String moreSelectAll; // yes为显示多选的全选
 
+	private String token;
 	SelectOption select=null;
 	public String getIsSpecialWidthType() {
 		return isSpecialWidthType;
@@ -227,6 +228,7 @@ public final class SelectOptionTag extends BodyTagSupport {
 		lowerClearWithSuperior = "false";
 		lowerClearAllWithSuperior = "true";
 		textClass = "span8 m-wrap";
+		token = "";
 //		moreSelectSearch = "no";
 //		moreSelectAll = "no";
 	}
@@ -303,6 +305,7 @@ public final class SelectOptionTag extends BodyTagSupport {
 		select.setTextClass(textClass);
 		select.setMoreSelectAll(moreSelectAll);
 		select.setMoreSelectSearch(moreSelectSearch);
+		select.setToken(token);
 		//select.setStyle(style);
 		getInitData();
 
@@ -869,5 +872,13 @@ public final class SelectOptionTag extends BodyTagSupport {
 
 	public void setMoreSelectSearch(String moreSelectSearch) {
 		this.moreSelectSearch = moreSelectSearch;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

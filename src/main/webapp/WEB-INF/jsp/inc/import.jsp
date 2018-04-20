@@ -31,10 +31,24 @@
 <script src='<c:url value="/js/jquery.slimscroll.min.js" />' type="text/javascript"></script>
 <script src='<c:url value="/js/jquery.blockui.min.js" />' type="text/javascript"></script>  
 <script src='<c:url value="/js/jquery.cookie.min.js" />' type="text/javascript"></script>
-<script src='<c:url value="/js/jquery.uniform.min.js" />' type="text/javascript" ></script>
+<%--<script src='<c:url value="/js/jquery.uniform.min.js" />' type="text/javascript" ></script> 复选框样式 20180420lzj屏蔽--%>
 <script src='<c:url value="/js/jquery.validate.min.js" />' type="text/javascript" ></script>
 <script src='<c:url value="/js/jquery.form.js" />' type="text/javascript" ></script>
 <script src='<c:url value="/js/app.js" />' type="text/javascript" ></script>
 <script src='<c:url value="/js/menu-generate.js" />' type="text/javascript" ></script>
 <!-- END CORE PLUGINS -->
 
+<!-- start 树控件引用-->
+<link href='<c:url value="/css/zTreeStyle/zzbxtree.css" />' rel="stylesheet" type="text/css" />
+<script src='<c:url value="/js/hisunTree/hisunxtree.js" />' type="text/javascript" ></script>
+<script src='<c:url value="/js/hisunTree/xtree.js" />' type="text/javascript" ></script>
+
+
+<!-- start 下拉控件引用-->
+<script src='<c:url value="/js/select_option.js" />' type="text/javascript" ></script>
+<link href='<c:url value="/css/selectCheckBox/jquery.multiselect.css" />' rel="stylesheet" type="text/css" />
+<script src='<c:url value="/js/selectCheckBox/jquery.multiselect.js" />' type="text/javascript" ></script>
+<link href='<c:url value="/css/chosen.css" />' rel="stylesheet" type="text/css" />
+<script src='<c:url value="/js/select2.min.js" />' type="text/javascript" ></script>
+<script src='<c:url value="/js/chosen.jquery.min.js" />' type="text/javascript" ></script>
+<!-- end 下拉控件引用-->
