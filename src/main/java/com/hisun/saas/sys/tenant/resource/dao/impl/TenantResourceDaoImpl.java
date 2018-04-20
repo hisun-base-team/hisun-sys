@@ -11,6 +11,10 @@ import com.hisun.saas.sys.tenant.resource.dao.TenantResourceDao;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Rocky {rockwithyou@126.com}
  */
@@ -18,5 +22,17 @@ import org.springframework.stereotype.Repository;
 public class TenantResourceDaoImpl extends BaseDaoImpl<TenantResource,String>
        implements TenantResourceDao {
 
-
+    @Override
+    public Integer getMaxSort(String pId) {
+        Map<String, Object> map = new HashMap<>();
+        String hql = "select max(t.sort)+1 as sort from sys_resource t where t.p_id=:pId";
+        map.put("pId", pId);
+        List<Map> maxSorts = this.countReturnMapBySql(hql, map);
+        if(maxSorts.isEmpty()||maxSorts.get(0).get("sort")==null){
+            return Integer.valueOf("1");
+        }else{
+            Integer maxSort = ((Number) maxSorts.get(0).get("sort")).intValue();
+            return maxSort;
+        }
+    }
 }

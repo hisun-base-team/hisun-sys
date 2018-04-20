@@ -14,4 +14,5 @@ import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
  */
 public interface TenantResourceDao extends BaseDao<TenantResource,String> {
 
+    Integer getMaxSort(String pId);
 }

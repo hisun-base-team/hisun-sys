@@ -7,10 +7,22 @@
 package com.hisun.saas.sys.tenant.resource.service;
 
 import com.hisun.base.service.BaseService;
+import com.hisun.saas.sys.admin.resource.entity.Resource;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
 
 /**
  * @author Rocky {rockwithyou@126.com}
  */
 public interface TenantResourceService extends BaseService<TenantResource,String>{
+
+
+    public void saveResource(TenantResource resource) throws Exception;
+    public void updateResources(TenantResource resource, String oldPid) throws Exception;
+    public Integer getMaxSort(String pId);
+    public void updateSortAndQueryCode(TenantResource resource,Integer oldSort)throws Exception;
+    public void refreshQueryCodeToTmp(String oldQueryCode)throws Exception;
+    public void refreshQueryCodeToFormal(String oldQueryCode,String newQueryCode)throws Exception;
+
+
+
 }

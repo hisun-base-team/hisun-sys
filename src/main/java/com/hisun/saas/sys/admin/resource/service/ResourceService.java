@@ -3,15 +3,7 @@ package com.hisun.saas.sys.admin.resource.service;
 import com.hisun.saas.sys.admin.resource.entity.Resource;
 import com.hisun.base.service.BaseService;
 
-/**
- * <p>类名称：PlatfResourceService</p>
- * <p>类描述: </p>
- * <p>公司：湖南海数互联信息技术有限公司</p>
- *
- * @创建人：Jason
- * @创建时间：2015-3-18 15 :43:37
- * @创建人联系方式：jason4j@qq.com
- */
+
 public interface ResourceService extends BaseService<Resource, String> {
 
 
