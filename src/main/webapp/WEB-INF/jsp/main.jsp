@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@include file="/WEB-INF/jsp/inc/taglib.jsp" %>
-<%@include file="/WEB-INF/jsp/inc/servlet.jsp" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><sitemesh:write property="title"/></title>
+<%@include file="/WEB-INF/jsp/inc/servlet.jsp" %>
 <%@include file="/WEB-INF/jsp/inc/import.jsp" %>
 <sitemesh:write property="head"/>
 <style type="text/css">
