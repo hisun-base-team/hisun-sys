@@ -22,6 +22,7 @@ import com.hisun.saas.sys.admin.user.vo.UserVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.privilege.PrivilegeDetails;
+import com.hisun.saas.sys.privilege.RequiresPrivileges;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
@@ -500,7 +501,7 @@ public class UserController extends BaseController {
 		}
 	}
 
-	@RequiresPermissions(value = {"adminsys:*","admin-platform:user_add"},logical = Logical.OR)
+	@RequiresPermissions(value = {"adminsys:*"})
 	@RequestMapping(value = "/list")
 	public String list(HttpServletRequest request,
 			@RequestParam(value="pageNum",defaultValue="1")int pageNum,
@@ -508,6 +509,7 @@ public class UserController extends BaseController {
 			@RequestParam(value="searchContent",required=false)String searchContent,
 					   PrivilegeDetails privilegeDetails) throws GenericException {
 		try{
+
 			UserLoginDetails currentUser = UserLoginDetailsUtil.getUserLoginDetails();
 			PagerVo<UserVo> pager = null;
 			if(StringUtils.isBlank(searchContent)){

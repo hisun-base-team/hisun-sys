@@ -60,7 +60,7 @@
             data : $("#form1").serialize(),
             dataType : "json",
             success : function(json){
-                if(json.privilegeCode == 1){
+                if(json.code == 1){
                     window.location.href = "${path}/login";
                 }else{
                     alert(json.message);

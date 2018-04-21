@@ -145,7 +145,7 @@
 
 	function del(id){
 		actionByConfirm1('',"${path}/sys/tenant/tenant/delete/"+id,null,function(json){
-			if(json.privilegeCode == 1){
+			if(json.code == 1){
 				showTip("提示","操作成功");
 				setTimeout(function(){
 					window.location.href ="${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&name=" + encodeURI(encodeURI("${name}"))
@@ -160,7 +160,7 @@
 
 	function activate(id){
 		actionByConfirm1('',"${path}/sys/tenant/tenant/activate/"+id,null,function(json){
-			if(json.privilegeCode == 1){
+			if(json.code == 1){
 				showTip("提示","操作成功");
 				setTimeout(function(){
 					window.location.reload();

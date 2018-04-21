@@ -141,7 +141,7 @@
                         <prop key="kaptcha.image.height">30</prop>  
                         <prop key="kaptcha.noise.impl">${kaptcha.noise.impl}</prop>
                         <prop key="kaptcha.textproducer.font.size">24</prop>
-                        <prop key="kaptcha.session.key">privilegeCode</prop>
+                        <prop key="kaptcha.session.key">code</prop>
                         <prop key="kaptcha.textproducer.char.length">4</prop>
                         <prop key="kaptcha.textproducer.char.space">4</prop>  
                         <prop key="kaptcha.textproducer.char.string">abcde23456789fhkmnwxrstABCDEFGHKMNRSTWX</prop>  

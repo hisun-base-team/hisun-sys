@@ -115,7 +115,7 @@
     <bean id="ajaxNoAuthenticationFilter"
           class="com.hisun.base.auth.filter.AjaxNoAuthenticationFilter">
         <constructor-arg>
-            <value><![CDATA[{"success":false,"privilegeCode":-1,"message":"登录会话已过期，请重新登录"}]]></value>
+            <value><![CDATA[{"success":false,"code":-1,"message":"登录会话已过期，请重新登录"}]]></value>
         </constructor-arg>
         <property name="loginUrl" value="/login" />
     </bean>

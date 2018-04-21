@@ -80,7 +80,7 @@
                                 <i class="icon-lock"
                                    style="font-size: 20px;color: #CCCCCC;padding: 3px 5px 0 5px; cursor: default !important;"></i>
                                 <input class="m-wrap placeholder-no-fix" type="text" placeholder="验证码"
-                                       style="padding-left:44px !important;" name="privilegeCode" id="privilegeCode"
+                                       style="padding-left:44px !important;" name="code" id="code"
                                        style="width: 150px;"/>
 
                             </div>
@@ -128,7 +128,7 @@
         var bool = true;
         $(".msgs").click(function () {
             var time = 30;
-            var privilegeCode = $(this);
+            var code = $(this);
             if (validCode) {
                 if ($("#username").val() === "") {
                     $("#usernameGroup").append("<label for=\"username\" class=\"help-inline help-small no-left-padding\">用户名不能为空.</label>");
@@ -140,21 +140,21 @@
                 }
                 if (bool) {
                     $.ajax({
-                        url: "${path }/admin/sms/send/privilegeCode",
+                        url: "${path }/admin/sms/send/code",
                         type: "post",
                         data: {"username": $("#username").val()},
                         success: function (data) {
                             if (data.success) {
                                 validCode = false;
-                                privilegeCode.addClass("msgs1");
+                                code.addClass("msgs1");
                                 var t = setInterval(function () {
                                     time--;
-                                    privilegeCode.html(time + "秒重新获取");
+                                    code.html(time + "秒重新获取");
                                     if (time == 0) {
                                         clearInterval(t);
-                                        privilegeCode.html("获取短信验证码");
+                                        code.html("获取短信验证码");
                                         validCode = true;
-                                        privilegeCode.removeClass("msgs1");
+                                        code.removeClass("msgs1");
 
                                     }
                                 }, 1000);

@@ -41,7 +41,7 @@
 				</div>
 			</div>
 			<div class="control-group" style=" overflow:hidden;">
-				<input type="text" class="span3 m-wrap fl" placeholder="验证码"  style=" width:200px;" id="privilegeCode" name="privilegeCode">
+				<input type="text" class="span3 m-wrap fl" placeholder="验证码"  style=" width:200px;" id="code" name="code">
 				<span class="msgs" style=" height:40px; line-height:40px;margin: 0 0 0 8px;">获取短信验证码</span>
 
 			</div>
@@ -83,7 +83,7 @@
 		var bool = true;
 		$(".msgs").click (function  () {
 			var time=30;
-			var privilegeCode=$(this);
+			var code=$(this);
 			if (validCode) {
 				if($("#email").val()===""){
 					$("#emailId").remove();
@@ -92,22 +92,22 @@
 				}
 				if(bool){
 					$.ajax({
-						url : "${path }/admin/sms/send/privilegeCode/email",
+						url : "${path }/admin/sms/send/code/email",
 						type : "post",
 						data : {"email":$("#email").val()},
 						success : function(data){
 							if (data.success==="0") {
 								$("#emailId").remove();
 								validCode=false;
-								privilegeCode.addClass("msgs1");
+								code.addClass("msgs1");
 								var t=setInterval(function  () {
 									time--;
-									privilegeCode.html(time+"秒重新获取");
+									code.html(time+"秒重新获取");
 									if (time==0) {
 										clearInterval(t);
-										privilegeCode.html("获取短信验证码");
+										code.html("获取短信验证码");
 										validCode=true;
-										privilegeCode.removeClass("msgs1");
+										code.removeClass("msgs1");
 
 									}
 								},1000);

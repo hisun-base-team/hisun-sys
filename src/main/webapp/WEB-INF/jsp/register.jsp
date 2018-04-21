@@ -109,7 +109,7 @@
                 dataType : "json",
                 success : function(json){
                     myLoading.hide();
-                    if(json.privilegeCode == 1){
+                    if(json.code == 1){
                         showTip("","申请成功，请注意查收邮件完成激活",2000);
                         setTimeout(function(){window.location.href = "${path}/sys/tenant/register/suc/"+json.id},2000) ;
                     }else{

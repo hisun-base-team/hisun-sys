@@ -302,9 +302,9 @@
 			if(bool){
 				var url = $(url).attr('taget');
 				/*if(url.indexOf('?')>0){
-				 url +="&privilegeCode="+topMenus;
+				 url +="&code="+topMenus;
 				 }else{
-				 url +="?privilegeCode="+topMenus;
+				 url +="?code="+topMenus;
 				 } */
 				var len = url.indexOf("#");
 				len = len >= 0 ? len : url.length;

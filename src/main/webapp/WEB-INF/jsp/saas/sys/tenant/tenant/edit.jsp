@@ -73,7 +73,7 @@
 				dataType : "json",
 				success : function(json){
 					myLoading.hide();
-					if(json.privilegeCode == 1){
+					if(json.code == 1){
 						showTip("提示","操作成功",2000);
 						setTimeout(function(){
 							window.location.href = "${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"

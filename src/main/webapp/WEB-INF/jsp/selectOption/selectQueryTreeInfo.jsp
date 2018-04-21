@@ -398,8 +398,8 @@
 							if(radioOrCheckBox=="radio"){
 								tree1.ExpandSelectedNodeByKeys(reqText);
 							}else{
-								var privilegeCode=reqText.split(";");
-								tree1.ExpandByKeys(privilegeCode);
+								var code=reqText.split(";");
+								tree1.ExpandByKeys(code);
 							}
 						}
 					},
@@ -414,8 +414,8 @@
 //					if(radioOrCheckBox=="radio"){
 //						tree1.ExpandSelectedNodeByKeys(reqText);
 //					}else{
-//						var privilegeCode=reqText.split(";");
-//						tree1.ExpandByKeys(privilegeCode);
+//						var code=reqText.split(";");
+//						tree1.ExpandByKeys(code);
 //					}
 //				}
 //			});
@@ -705,10 +705,10 @@
 				treetext=texts;
 				treekey=codes;
 			}else{
-				var privilegeCode=codes.split(",");
+				var code=codes.split(",");
 				var text=texts.split("/");
 				treetext=text[text.length-1];
-				treekey=privilegeCode[privilegeCode.length-1];
+				treekey=code[code.length-1];
 			}
 			changeCheckedStatue_static(treekey,true,'2')
 
@@ -1841,10 +1841,10 @@
 				selectValueobj.value=texts;
 				selectkeyobj.value=codes;
 			}else{
-				var privilegeCode=codes.split(",");
+				var code=codes.split(",");
 				var text=texts.split("/");
 				selectValueobj.value=text[text.length-1];
-				selectkeyobj.value=privilegeCode[privilegeCode.length-1];
+				selectkeyobj.value=code[code.length-1];
 			}
 			//setDynamicAttriByChangeValue(selectkeyobj.value);
 			//window.setTimeout("setDynamicAttriByChangeValue('"+selectkeyobj.value+"')",100);
@@ -1880,10 +1880,10 @@
 				selectValueobj.value=texts;
 				selectkeyobj.value=codes;
 			}else{
-				var privilegeCode=codes.split(",");
+				var code=codes.split(",");
 				var text=texts.split("/");
 				selectValueobj.value=text[text.length-1];
-				selectkeyobj.value=privilegeCode[privilegeCode.length-1];
+				selectkeyobj.value=code[code.length-1];
 			}
 
 			setDynamicAttriByChangeValue(selectkeyobj.value);
@@ -2129,8 +2129,8 @@
 								//break;
 							}
 						}else{
-							var privilegeCode=checkboxkeys.split(",");
-							if(attribute[1]==privilegeCode[privilegeCode.length-1]){
+							var code=checkboxkeys.split(",");
+							if(attribute[1]==code[code.length-1]){
 								checkboxobj[j].checked=true;
 								//break;
 							}
@@ -2189,8 +2189,8 @@
 								return false;
 							}
 						}else{
-							var privilegeCode=checkboxkeys.split(",");
-							if(key==privilegeCode[privilegeCode.length-1]){
+							var code=checkboxkeys.split(",");
+							if(key==code[code.length-1]){
 								checkboxobj[i].checked=ischecked;
 								return false;
 							}
@@ -2251,10 +2251,10 @@
 				treetext=texts;
 				treekey=codes;
 			}else{
-				var privilegeCode=codes.split(",");
+				var code=codes.split(",");
 				var text=texts.split("/");
 				treetext=text[text.length-1];
-				treekey=privilegeCode[privilegeCode.length-1];
+				treekey=code[code.length-1];
 			}
 
 
@@ -2300,8 +2300,8 @@
 			var tree1=getObjByMainDivId("showTree");
 			var newCode = codes;
 			if(codes.indexOf(",")!="-1"){
-				var privilegeCode=codes.split(",");
-				newCode=privilegeCode[privilegeCode.length-1];
+				var code=codes.split(",");
+				newCode=code[code.length-1];
 			}
 
 			var isChecked = true;

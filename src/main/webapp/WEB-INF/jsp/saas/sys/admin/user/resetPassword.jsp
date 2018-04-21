@@ -110,7 +110,7 @@
 				dataType : "json",
 				success : function(json){
 					myLoading.hide();
-					if(json.privilegeCode == 1){
+					if(json.code == 1){
 						showTip("","重置密码成功",2000);
 						setTimeout(function(){window.location.href = "${path}/admin/login"},2000) ;
 					}else{

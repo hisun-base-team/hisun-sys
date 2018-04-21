@@ -139,9 +139,9 @@
 
 										<div class="controls">
 
-											<textarea id="tplContent" name="tplContent" class="span6 m-wrap" required maxlength="255" rows="3" placeholder="您的验证码是#privilegeCode#"></textarea>
+											<textarea id="tplContent" name="tplContent" class="span6 m-wrap" required maxlength="255" rows="3" placeholder="您的验证码是#code#"></textarea>
 										</div>
-										<span class="help-inline">变量格式：变量以两个半角的#号包围，变量名可以是英文(区分大小写)，数字或者下划线，如：#privilegeCode#,#n_1#</span>
+										<span class="help-inline">变量格式：变量以两个半角的#号包围，变量名可以是英文(区分大小写)，数字或者下划线，如：#code#,#n_1#</span>
 									</div>
 									
 									<div class="control-group mybutton-group">

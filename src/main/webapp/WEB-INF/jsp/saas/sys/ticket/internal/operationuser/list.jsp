@@ -91,7 +91,7 @@
 		
 		function del(id){
 			actionByConfirm1('',"${path}${modualBasePath}/delete/"+id,null,function(json){
-				if(json.privilegeCode == 1){
+				if(json.code == 1){
 					showTip("提示","操作成功");
 					setTimeout(function(){
 						window.location.href = "${path}${modualBasePath}/list";

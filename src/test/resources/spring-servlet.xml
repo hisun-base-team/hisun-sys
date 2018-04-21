@@ -139,9 +139,9 @@
     <!-- message资源文件 -->
     <util:properties id="resourcesProperties" location="classpath:testresources.properties"></util:properties>
 
-    <bean id="kaptchaProducer" class="com.google.privilegeCode.kaptcha.impl.DefaultKaptcha">
+    <bean id="kaptchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
         <property name="config">
-            <bean class="com.google.privilegeCode.kaptcha.util.Config">
+            <bean class="com.google.code.kaptcha.util.Config">
                 <constructor-arg>
                     <props>
                         <prop key="kaptcha.border">no</prop>
@@ -151,7 +151,7 @@
                         <prop key="kaptcha.image.height">30</prop>
                         <prop key="kaptcha.noise.impl">${kaptcha.noise.impl}</prop> <!-- 去掉干扰线 -->
                         <prop key="kaptcha.textproducer.font.size">24</prop>
-                        <prop key="kaptcha.session.key">privilegeCode</prop>
+                        <prop key="kaptcha.session.key">code</prop>
                         <prop key="kaptcha.textproducer.char.length">4</prop>
                         <prop key="kaptcha.textproducer.char.space">4</prop>
                         <prop key="kaptcha.textproducer.char.string">abcde23456789fhkmnwxrstABCDEFGHKMNRSTWX</prop>
