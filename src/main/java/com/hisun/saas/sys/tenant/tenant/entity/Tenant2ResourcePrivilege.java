@@ -20,16 +20,16 @@ import java.util.List;
  * @author Rocky {rockwithyou@126.com}
  */
 @Entity
-@Table(name = "sys_tenant_2_privilege")
-public class Tenant2Privilege implements Serializable{
+@Table(name = "sys_tenant_2_resource_privilege")
+public class Tenant2ResourcePrivilege implements Serializable{
 
     private String id;
     private Tenant tenant;
+    private Tenant2Resource tenant2Resource;
     private TenantPrivilege tenantPrivilege;
     private String sqlFilterExpress;
     private String hqlFilterExpress;
     private String selectedExpress;
-
     private List<TenantRoleResourcePrivilege> tenantRoleResourcePrivileges;
 
     @Id
@@ -43,15 +43,19 @@ public class Tenant2Privilege implements Serializable{
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Tenant.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "tenant_id")
     public Tenant getTenant() {
         return tenant;
     }
-
     public void setTenant(Tenant tenant) {
         this.tenant = tenant;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tenant_2_resource_id")
+    public Tenant2Resource getTenant2Resource() { return tenant2Resource; }
+    public void setTenant2Resource(Tenant2Resource tenant2Resource) { this.tenant2Resource = tenant2Resource;}
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "privilege_id")
@@ -83,7 +87,7 @@ public class Tenant2Privilege implements Serializable{
         this.hqlFilterExpress = hqlFilterExpress;
     }
 
-    @OneToMany(mappedBy = "tenant2Privilege")
+    @OneToMany(mappedBy = "tenant2ResourcePrivilege")
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     public List<TenantRoleResourcePrivilege> getTenantRoleResourcePrivileges() {
         return tenantRoleResourcePrivileges;

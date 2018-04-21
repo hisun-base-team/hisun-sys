@@ -110,7 +110,7 @@
               dataType: "json",
               success: function (json) {
                   myLoading.hide();
-                  if (json.code == 1) {
+                  if (json.privilegeCode == 1) {
                       showTip("注册成功", 2000);
                       setTimeout(function () {
                           window.location.href = "${path}/login"

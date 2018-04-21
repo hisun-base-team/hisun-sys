@@ -83,7 +83,7 @@
 				},
 				success : function(json){
 					myLoading.hide();
-					if(json.code == 1){
+					if(json.privilegeCode == 1){
 						showTip("提示","操作成功",2000);
 						setTimeout(function(){
 							window.location.href = "${path}/sys/tenant/tenant/own/view?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}";

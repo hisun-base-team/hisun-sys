@@ -171,7 +171,7 @@ $('#browseTemplate').unbind().bind('change',function(){
 				},
 				dataType : "json",
 				success : function(json){
-					if(json.code == 1){
+					if(json.privilegeCode == 1){
 						myLoading.hide();
 						$("#preservaButton").html("<i class='icon-ok'></i> 确定");
 						$("#preservaButton").removeAttr("disabled");

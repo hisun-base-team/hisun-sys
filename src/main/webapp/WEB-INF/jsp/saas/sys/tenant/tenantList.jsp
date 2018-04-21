@@ -333,11 +333,11 @@ table {
 						
 						/* var propertySelection = $('#property');
 						$.each(data.propertySelections, function(index,element) {
-							propertySelection.append("<option class='selections' value='" + element.code + "' " + element.selected + " >" + element.detail + "</option>");
+							propertySelection.append("<option class='selections' value='" + element.privilegeCode + "' " + element.selected + " >" + element.detail + "</option>");
 						});
 						var typeSelection = $('#type');
 						$.each(data.typeSelections, function(index,element) {
-							typeSelection.append("<option class='selections' value='" + element.code + "' " + element.selected + " >" + element.detail + "</option>");
+							typeSelection.append("<option class='selections' value='" + element.privilegeCode + "' " + element.selected + " >" + element.detail + "</option>");
 						}); */
 						
 						$('#myModal').modal({

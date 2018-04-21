@@ -67,7 +67,7 @@ li {
 
 </style>
 <script>
-var iscode = "${param.code}";
+var iscode = "${param.privilegeCode}";
 var tenantUrl = "platform/admin";
 jQuery(document).ready(function() {
     var tenant = "${tenant}";
@@ -286,9 +286,9 @@ function topMenus(topMenus,url,bool){
 	if(bool){
 		 var url = $(url).attr('taget');
 		 /*if(url.indexOf('?')>0){
-			url +="&code="+topMenus;
+			url +="&privilegeCode="+topMenus;
 		}else{
-			url +="?code="+topMenus;
+			url +="?privilegeCode="+topMenus;
 		} */
 		var len = url.indexOf("#");
 		len = len >= 0 ? len : url.length;

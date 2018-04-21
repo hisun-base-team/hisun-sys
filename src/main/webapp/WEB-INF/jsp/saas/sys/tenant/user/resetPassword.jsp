@@ -102,7 +102,7 @@
 				},
 				success : function(json){
 					myLoading.hide();
-					if(json.code == 1){
+					if(json.privilegeCode == 1){
 						showTip("提示","重置密码成功",2000);
 						setTimeout(function(){window.location.href = "${path}/login"},2000) ;
 					}else{

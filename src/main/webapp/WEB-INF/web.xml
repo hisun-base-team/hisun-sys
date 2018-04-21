@@ -184,23 +184,23 @@
 		<welcome-file>/</welcome-file>
 	</welcome-file-list>
 	<error-page>
-		<error-code>400</error-code> 
+		<error-privilegeCode>400</error-privilegeCode>
 		<location>/WEB-INF/jsp/error/400.jsp</location> 
 	</error-page> 
 	<error-page> 
-		<error-code>403</error-code> 
+		<error-privilegeCode>403</error-privilegeCode>
 		<location>/WEB-INF/jsp/error/403.jsp</location> 
 	</error-page> 
 	<error-page> 
-		<error-code>404</error-code> 
+		<error-privilegeCode>404</error-privilegeCode>
 		<location>/WEB-INF/jsp/error/404.jsp</location> 
 	</error-page> 
 	<error-page> 
-		<error-code>405</error-code> 
+		<error-privilegeCode>405</error-privilegeCode>
 		<location>/WEB-INF/jsp/error/405.jsp</location> 
 	</error-page> 
 	<error-page> 
-		<error-code>500</error-code> 
+		<error-privilegeCode>500</error-privilegeCode>
 		<location>/WEB-INF/jsp/error/500.jsp</location> 
 	</error-page>
 	<login-config>

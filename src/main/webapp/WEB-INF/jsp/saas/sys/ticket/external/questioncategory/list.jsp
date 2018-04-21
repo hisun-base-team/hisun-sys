@@ -110,7 +110,7 @@
 
 	function del(id){
 		actionByConfirm1('',"${path}/sys/tenant/tenant/delete/"+id,null,function(json){
-			if(json.code == 1){
+			if(json.privilegeCode == 1){
 				showTip("提示","操作成功");
 				setTimeout(function(){
 					window.location.href ="${path}/sys/tenant/tenant/list?name=" + encodeURI(encodeURI("${name}"))
@@ -125,7 +125,7 @@
 
 	function activate(id){
 		actionByConfirm1('',"${path}/sys/tenant/tenant/activate/"+id,null,function(json){
-			if(json.code == 1){
+			if(json.privilegeCode == 1){
 				showTip("提示","操作成功");
 				setTimeout(function(){
 					/*window.location.href ="${path}/sys/tenant/tenant/list?name=" + encodeURI(encodeURI("${name}"))

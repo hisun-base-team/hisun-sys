@@ -21,12 +21,14 @@ import com.hisun.saas.sys.admin.user.service.UserService;
 import com.hisun.saas.sys.admin.user.vo.UserVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.sys.privilege.PrivilegeDetails;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.joda.time.DateTime;
@@ -498,13 +500,13 @@ public class UserController extends BaseController {
 		}
 	}
 
-	@RequiresPermissions("adminsys:*")
+	@RequiresPermissions(value = {"adminsys:*","admin-platform:user_add"},logical = Logical.OR)
 	@RequestMapping(value = "/list")
 	public String list(HttpServletRequest request,
 			@RequestParam(value="pageNum",defaultValue="1")int pageNum,
 			@RequestParam(value="pageSize",defaultValue="10") int pageSize,
-			@RequestParam(value="searchContent",required=false)String searchContent) throws GenericException {
-		
+			@RequestParam(value="searchContent",required=false)String searchContent,
+					   PrivilegeDetails privilegeDetails) throws GenericException {
 		try{
 			UserLoginDetails currentUser = UserLoginDetailsUtil.getUserLoginDetails();
 			PagerVo<UserVo> pager = null;

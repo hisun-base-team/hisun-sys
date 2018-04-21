@@ -38,7 +38,7 @@
                 <div class="portlet-body form">
                     <form action="" class="form-horizontal" id="addForm" method="post">
                         <input type="hidden" id="id" name="id" value="${id}"/>
-                        <input type="hidden" id="code" name="code" value="${code}"/>
+                        <input type="hidden" id="privilegeCode" name="privilegeCode" value="${privilegeCode}"/>
                         <div id="code1Group" class="control-group">
 
                             <label class="control-label">短信内容<span class="required">*</span></label>
@@ -46,7 +46,7 @@
                             <div class="controls">
 
 
-                                您的验证码是<input id="code1" style="width: 55px;" class="validcode" name="code1" type="text" placeholder="请填写验证码" disabled="" value="${code}">
+                                您的验证码是<input id="code1" style="width: 55px;" class="validcode" name="code1" type="text" placeholder="请填写验证码" disabled="" value="${privilegeCode}">
                                 <!-- <span class="help-inline">Some hint here</span> -->
 
                             </div>

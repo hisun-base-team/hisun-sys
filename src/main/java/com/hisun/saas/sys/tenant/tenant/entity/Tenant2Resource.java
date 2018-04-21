@@ -26,6 +26,7 @@ public class Tenant2Resource {
     private Tenant tenant;
     private TenantResource tenantResource;
     private List<TenantRoleResource> tenantRoleResources;
+    private List<Tenant2ResourcePrivilege> tenant2ResourcePrivileges;
 
     @Id
     @GenericGenerator(name="generator",strategy="uuid")
@@ -65,5 +66,15 @@ public class Tenant2Resource {
 
     public void setTenantRoleResources(List<TenantRoleResource> tenantRoleResources) {
         this.tenantRoleResources = tenantRoleResources;
+    }
+
+    @OneToMany(mappedBy = "tenant2Resource")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    public List<Tenant2ResourcePrivilege> getTenant2ResourcePrivileges() {
+        return tenant2ResourcePrivileges;
+    }
+
+    public void setTenant2ResourcePrivileges(List<Tenant2ResourcePrivilege> tenant2ResourcePrivileges) {
+        this.tenant2ResourcePrivileges = tenant2ResourcePrivileges;
     }
 }

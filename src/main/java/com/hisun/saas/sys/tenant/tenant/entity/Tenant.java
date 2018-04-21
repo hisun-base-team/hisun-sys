@@ -34,7 +34,6 @@ public class Tenant extends TombstoneEntity implements Serializable {
     private List<TenantUser> users;
     private List<TenantRole> roles;
     private List<Tenant2Resource> tenant2Resources;
-    private List<Tenant2Privilege> tenant2Privileges;
 
     public Tenant() {}
     public Tenant(String id) {
@@ -126,15 +125,5 @@ public class Tenant extends TombstoneEntity implements Serializable {
 
     public void setTenant2Resources(List<Tenant2Resource> tenant2Resources) {
         this.tenant2Resources = tenant2Resources;
-    }
-
-    @OneToMany(mappedBy = "tenant", fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    public List<Tenant2Privilege> getTenant2Privileges() {
-        return tenant2Privileges;
-    }
-
-    public void setTenant2Privileges(List<Tenant2Privilege> tenant2Privileges) {
-        this.tenant2Privileges = tenant2Privileges;
     }
 }

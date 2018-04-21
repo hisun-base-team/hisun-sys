@@ -7,12 +7,10 @@
 package com.hisun.saas.sys.tenant.privilege.entity;
 
 import com.hisun.base.entity.AbstractPrivilege;
-import com.hisun.base.entity.TombstoneEntity;
-import com.hisun.saas.sys.tenant.tenant.entity.Tenant2Privilege;
+import com.hisun.saas.sys.tenant.tenant.entity.Tenant2ResourcePrivilege;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -27,16 +25,15 @@ public class TenantPrivilege extends AbstractPrivilege implements Serializable {
 
     private static final long serialVersionUID = 2768991738347437057L;
 
-    private List<Tenant2Privilege> tenant2Privileges;
+    private List<Tenant2ResourcePrivilege> tenant2ResourcePrivileges;
 
     @OneToMany(mappedBy = "tenantPrivilege")
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    public List<Tenant2Privilege> getTenant2Privileges() {
-        return tenant2Privileges;
+    public List<Tenant2ResourcePrivilege> getTenant2Privileges() {
+        return tenant2ResourcePrivileges;
     }
-
-    public void setTenant2Privileges(List<Tenant2Privilege> tenant2Privileges) {
-        this.tenant2Privileges = tenant2Privileges;
+    public void setTenant2Privileges(List<Tenant2ResourcePrivilege> tenant2ResourcePrivileges) {
+        this.tenant2ResourcePrivileges = tenant2ResourcePrivileges;
     }
 
     @Override

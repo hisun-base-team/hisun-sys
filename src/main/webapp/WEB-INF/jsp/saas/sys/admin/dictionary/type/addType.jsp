@@ -61,7 +61,7 @@
 
 										<div class="controls">
 											
-											<input type="text" id="code" name="code" class="span6 m-wrap" maxlength="255" placeholder="保证唯一标示">
+											<input type="text" id="privilegeCode" name="privilegeCode" class="span6 m-wrap" maxlength="255" placeholder="保证唯一标示">
 											
 										</div>
 

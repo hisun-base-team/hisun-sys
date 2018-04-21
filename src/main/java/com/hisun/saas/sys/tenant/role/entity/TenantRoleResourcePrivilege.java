@@ -10,7 +10,7 @@ import com.hisun.base.entity.AbstractRoleResourcePrivilege;
 import com.hisun.saas.sys.tenant.privilege.entity.TenantPrivilege;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResourcePrivilege;
-import com.hisun.saas.sys.tenant.tenant.entity.Tenant2Privilege;
+import com.hisun.saas.sys.tenant.tenant.entity.Tenant2ResourcePrivilege;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -27,7 +27,7 @@ public class TenantRoleResourcePrivilege extends AbstractRoleResourcePrivilege i
     private TenantRole tenantRole;
     private TenantResource tenantResource;
     private TenantPrivilege tenantPrivilege;
-    private Tenant2Privilege tenant2Privilege;
+    private Tenant2ResourcePrivilege tenant2ResourcePrivilege;
     private TenantRoleResource tenantRoleResource;
     private TenantResourcePrivilege tenantResourcePrivilege;
 
@@ -74,13 +74,13 @@ public class TenantRoleResourcePrivilege extends AbstractRoleResourcePrivilege i
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="tenant_2_privilege_id")
-    public Tenant2Privilege getTenant2Privilege() {
-        return tenant2Privilege;
+    @JoinColumn(name="tenant_2_resource_privilege_id")
+    public Tenant2ResourcePrivilege getTenant2ResourcePrivilege() {
+        return tenant2ResourcePrivilege;
     }
 
-    public void setTenant2Privilege(Tenant2Privilege tenant2Privilege) {
-        this.tenant2Privilege = tenant2Privilege;
+    public void setTenant2ResourcePrivilege(Tenant2ResourcePrivilege tenant2ResourcePrivilege) {
+        this.tenant2ResourcePrivilege = tenant2ResourcePrivilege;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

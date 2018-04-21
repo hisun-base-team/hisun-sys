@@ -99,7 +99,7 @@
 				data : $('#form1').serialize(),
 				dataType : "json",
 				success : function(json){
-					if(json.code == 1){
+					if(json.privilegeCode == 1){
 						showTip("提示","操作成功",2000);
 						setTimeout(function(){
 							window.location.href = "${path}${modualBasePath}/list"

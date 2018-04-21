@@ -9,7 +9,7 @@
   }
 %>
 <c:if test="${isAjax}">
-  {"success":false,"code":-1,"message":"无效请求"}
+  {"success":false,"privilegeCode":-1,"message":"无效请求"}
 </c:if>
 <c:if test="${!isAjax}">
   <!DOCTYPE html>

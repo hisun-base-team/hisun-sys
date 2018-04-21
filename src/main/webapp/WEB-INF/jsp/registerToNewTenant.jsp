@@ -192,7 +192,7 @@
             success: function (json) {
                 myLoading.hide();
                 showTip(json.message, 2000);
-                if (json.code == 0) {
+                if (json.privilegeCode == 0) {
                     setTimeout(function () {
                         window.location.href = "${path}/login"
                     }, 1000);
@@ -222,12 +222,12 @@
             data: $('#form1').serialize(),
             dataType: "json",
             success: function (json) {
-                if (json.code == "1"){
+                if (json.privilegeCode == "1"){
                     showTip(json.message, 2000);
-                } else if(json.code == "2"){
+                } else if(json.privilegeCode == "2"){
                     $("#oldR").css("display", "none");
                     $("#newR").css("display", "");
-                } else if (json.code == "-1"){
+                } else if (json.privilegeCode == "-1"){
                     showTip(json.message, 2000);
                     $("#getActivate").removeAttr("disabled");
                 }
@@ -251,7 +251,7 @@
                 dataType: "json",
                 success: function (json) {
                     myLoading.hide();
-                    if (json.code == 1) {
+                    if (json.privilegeCode == 1) {
                         showTip("注册成功", 2000);
                         setTimeout(function () {
                             window.location.href = "${path}/login"

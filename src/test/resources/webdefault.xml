@@ -223,7 +223,7 @@
   <!--   javaEncoding        Java file encoding to use for generating java  -->
   <!--                       source files. [UTF-8]                          -->
   <!--                                                                      -->
-  <!--   keepgenerated       Should we keep the generated Java source code  -->
+  <!--   keepgenerated       Should we keep the generated Java source privilegeCode  -->
   <!--                       for each page instead of deleting it? [true]   -->
   <!--                                                                      -->
   <!--   logVerbosityLevel   The level of detailed messages to be produced  -->

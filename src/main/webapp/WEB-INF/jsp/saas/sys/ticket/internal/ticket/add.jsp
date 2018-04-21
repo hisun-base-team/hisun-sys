@@ -130,7 +130,7 @@ var myLoading = new MyLoading("${path}",20000);
 			enctype : "multipart/form-data",
 			success : function(json){
 				myLoading.hide();
-				if(json.code == 1){
+				if(json.privilegeCode == 1){
 					showTip("提示","操作成功",2000);
 					setTimeout(function(){window.location.href = "${path}${modualBasePath}/myticket";},2000) ;
 				}else{

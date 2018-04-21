@@ -49,7 +49,7 @@
 													</td>
 													<td><fmt:formatDate value="${dictionary.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
 													<td>
-															<c:out value="${dictionary.code }"></c:out>
+															<c:out value="${dictionary.privilegeCode }"></c:out>
 													</td>
 													<td title='${cloud:htmlEscape(dictionary.remark)}'>
 															<c:out value="${dictionary.remark }"></c:out>
