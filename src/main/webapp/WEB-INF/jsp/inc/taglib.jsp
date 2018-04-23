@@ -7,4 +7,4 @@
 <%@taglib prefix="cloud"  uri="/WEB-INF/tld/cloud-function.tld" %>
 <%@taglib prefix="csrf"   uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld"  %>
 <%@taglib prefix="Tree" uri="/WEB-INF/tld/Tree.tld"  %>
-<%@taglib prefix="SelectOption" uri="/WEB-INF/tld/SelectOption.tld"  %>
+<%@taglib prefix="SelectTag" uri="/WEB-INF/tld/SelectTag.tld"  %>

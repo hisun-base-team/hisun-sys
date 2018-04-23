@@ -9,12 +9,14 @@
 <html>
 <head>
 
-
+	<link href="<%=path%>/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
 
 	<script src="${contextPath}/js/zipjs/zip.js" charset=“utf-8”></script>
 	<script src="${contextPath}/js/zipjs/mime-types.js"  charset=“utf-8”></script>
 	<%--<script src="http://apps.bdimg.com/libs/jquery/1.9.0/jquery.js"></script>--%>
 	<script src="${contextPath}/js/zipjs/UnZipArchive.js"  charset=“utf-8”></script>
+
+
 	<%--<script src="${contextPath}/js/zipjs/z-worker.js"></script>--%>
 	<!-- END PAGE LEVEL STYLES -->
 	<title>树测试</title>
@@ -25,6 +27,13 @@
 	</style>
 </head>
 <body>
+<script type="text/javascript">
+
+	function onClick1(treeId, treeNode){
+		//dirSel(treeId,treeNode);
+	}
+
+</script>
 <div id="selectOptionModal" class="modal container hide fade" tabindex="-1" data-width="700" data-height="550">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -42,21 +51,29 @@
 <TABLE height="100%" width="100%" border="0" bordercolor="red" cellspacing="0" cellpadding="0" >
 
 	<TR valign="top">
-		<TD colspan="2">
-			<div id="b01Tree"><Tree:tree divId="b01Tree" checkboxDisplay="yes" radioOrCheckbox="checkbox" parentRadioEnable="true"
-							   parentCheckboxEnable="true" parentChildIsolate="true"
-							   dataSource="b01TreeDataSource"
-							   userParameter="" /></div>
+		<TD colspan="2" style="height: 200px">
+				<Tree:tree id="testTree" treeUrl="sys/admin/resource/tree" token="${sessionScope.OWASP_CSRFTOKEN}" onClick="onClick1" submitType="post" dataType="json" isSearch="true"/>
 			<%--<div id="showTree1">--%>
 
 			<%--<Gzzbtree:tree divId="showTree1" userParameter="aa:666" dblonclick="aaa()" checkboxDisplay="no" radioOrCheckbox="checkbox" parentRadioEnable="true" parentCheckboxEnable="true" parentChildIsolate="true" dataSource="com.hisun.saas.sys.tools.taglib.tree.impl.TreeDataSource"/>--%>
 			<%--</div> 													--%>
 		</TD>
 	</TR>
+	<TR valign="top">
+		<TD colspan="2" style="width: 300px">
+			<Tree:tree id="selectTree" treeUrl="sys/admin/resource/select/tree" token="${sessionScope.OWASP_CSRFTOKEN}" selectClass="m-wrap span4" radioOrCheckbox="radio" submitType="post" dataType="json" isSearch="true" isSelectTree="true"/>
+			<%--<SelectOption:SelectOption id="manageUnitId"  textClass="m-wrap span4" allownull="false" onchange="changeA01z1();"--%>
+			<%--des="档案管理单位" textFontSize="10pt" width="200px" isshowtree="yes" token="${sessionScope.OWASP_CSRFTOKEN}"--%>
+			<%--formName="eApplyE01z8Form" fieldCode="manageUnitId" fieldText="manageUnitName"--%>
+			<%--staticdata="no" isEnterQuery="false" radioOrCheckbox="checkbox" matchingsetup="2,1,0,0,0,0,0"--%>
+			<%--selectvaluetype="1" checkboxDisplay="yes" isDisabled="false" title=""--%>
+			<%--dataSource="b01TreeDataSource" userParameter="isShowDepart:false;"/>--%>
+		</TD>
+	</TR>
 	<TR  valign="top">
 		<TD colspan="2" width="300px">
 			<div class="controls" >
-				<SelectOption:SelectOption id="sex1" textClass="span4 chosen"  isshowtree="no"
+				<SelectTag:SelectTag id="sex1" textClass="span4 chosen"
 										   radioOrCheckbox="radio" moreSelectSearch="yes"  dataSource="sexDataSource"/>
 				<%--<select class="m-wrap span4" required name="tblx" id="tblx" disabled>--%>
 					<%--<option value="" ></option>--%>
@@ -70,88 +87,14 @@
 	<TR  valign="top">
 		<TD colspan="2" width="300px">
 			<div class="controls">
-				<SelectOption:SelectOption id="sex" textClass="m-wrap span4"  isshowtree="no" defaultkeys="0,1"
+				<SelectTag:SelectTag id="sex" textClass="m-wrap span4"  defaultkeys="0,1"
 										   radioOrCheckbox="checkbox"	moreSelectSearch="yes"	   dataSource="sexDataSource"/>
-				<%--<select name="qweqwew" multiple="multiple" class="span6 m-wrap" id="qweqwew" disabled>--%>
-					<%--<option value="AK">Alaska</option>--%>
-					<%--<option value="AZ">Arizona</option>--%>
-					<%--<option value="AR">Arkansas</option>--%>
-					<%--<option value="CA">California</option>--%>
-					<%--<option value="CO">Colorado</option>--%>
-					<%--<option value="CT">Connecticut</option>--%>
-					<%--<option value="DE">Delaware</option>--%>
-					<%--<option value="FL">Florida</option>--%>
-					<%--<option value="GA">Georgia</option>--%>
-					<%--<option value="HI">Hawaii</option>--%>
-					<%--<option value="ID">Idaho</option>--%>
-					<%--<option value="IL">Illinois</option>--%>
-					<%--<option value="IN">Indiana</option>--%>
-					<%--<option value="IA">Iowa</option>--%>
-					<%--<option value="KS">Kansas</option>--%>
-					<%--<option value="KY">Kentucky</option>--%>
-					<%--<option value="LA">Louisiana</option>--%>
-					<%--<option value="ME">Maine</option>--%>
-					<%--<option value="MD">Maryland</option>--%>
-					<%--<option value="MA">Massachusetts</option>--%>
-					<%--<option value="MI">Michigan</option>--%>
-					<%--<option value="MN">Minnesota</option>--%>
-					<%--<option value="MS">Mississippi</option>--%>
-					<%--<option value="MO">Missouri</option>--%>
-					<%--<option value="MT">Montana</option>--%>
-					<%--<option value="NE">Nebraska</option>--%>
-					<%--<option value="NV">Nevada</option>--%>
-					<%--<option value="NH">New Hampshire</option>--%>
-					<%--<option value="NJ">New Jersey</option>--%>
-					<%--<option value="NM">New Mexico</option>--%>
-					<%--<option value="NY">New York</option>--%>
-					<%--<option value="NC">North Carolina</option>--%>
-					<%--<option value="ND">North Dakota</option>--%>
-					<%--<option value="OH">Ohio</option>--%>
-					<%--<option value="OK">Oklahoma</option>--%>
-					<%--<option value="OR">Oregon</option>--%>
-					<%--<option value="PA">Pennsylvania</option>--%>
-					<%--<option value="RI">Rhode Island</option>--%>
-					<%--<option value="SC">South Carolina</option>--%>
-					<%--<option value="SD">South Dakota</option>--%>
-					<%--<option value="TN">Tennessee</option>--%>
-					<%--<option value="TX">Texas</option>--%>
-					<%--<option value="UT">Utah</option>--%>
-					<%--<option value="VT">Vermont</option>--%>
-					<%--<option value="VA">Virginia</option>--%>
-					<%--<option value="WA">Washington</option>--%>
-					<%--<option value="WV">West Virginia</option>--%>
-					<%--<option value="WI">Wisconsin</option>--%>
-					<%--<option value="WY">Wyoming</option>--%>
-				<%--</select>--%>
+
 			</div>
 		</TD>
 	</TR>
-	<%--<TR height="100%" valign="top">--%>
-		<%--<TD colspan="2" width="300px">--%>
-			<%--<div class="controls">--%>
-				<%--<select name="demo3" multiple="multiple" class="span4 m-wrap" id="demo3">--%>
-					<%--<option value="阿斯顿撒">阿斯顿撒</option>--%>
-					<%--<option value="发俄方v">发俄方v</option>--%>
-					<%--<option value="文过饰非">文过饰非</option>--%>
-					<%--<option value="风格风格">风格风格</option>--%>
-					<%--<option value="和团结他人">和团结他人</option>--%>
-					<%--<option value="沿途有">沿途有</option>--%>
-					<%--<option value="爱对方的观点">爱对方的观点</option>--%>
-					<%--<option value="日以后就让她怀孕">日以后就让她怀孕</option>--%>
-				<%--</select>--%>
-			<%--</div>--%>
-		<%--</TD>--%>
-	<%--</TR>--%>
-	<TR valign="top">
-		<TD colspan="2" style="width: 300px">
-			<SelectOption:SelectOption id="manageUnitId"  textClass="m-wrap span4" allownull="false" onchange="changeA01z1();"
-									   des="档案管理单位" textFontSize="10pt" width="200px" isshowtree="yes" token="${sessionScope.OWASP_CSRFTOKEN}"
-									   formName="eApplyE01z8Form" fieldCode="manageUnitId" fieldText="manageUnitName"
-									   staticdata="no" isEnterQuery="false" radioOrCheckbox="checkbox" matchingsetup="2,1,0,0,0,0,0"
-									   selectvaluetype="1" checkboxDisplay="yes" isDisabled="false" title=""
-									   dataSource="b01TreeDataSource" userParameter="isShowDepart:false;"/>
-		</TD>
-	</TR>
+
+
 
 	<%--<TR height="100%" valign="top">--%>
 		<%--<TD colspan="2" width="300px">--%>
@@ -176,6 +119,8 @@
 <script type="text/javascript" src="${path }/js/common/loading.js"></script>
 
 <script type="text/javascript">
+
+
 	$("#file").change(function (e) {
 		var file = this.files[0];
 		window.un = new UnZipArchive( file );

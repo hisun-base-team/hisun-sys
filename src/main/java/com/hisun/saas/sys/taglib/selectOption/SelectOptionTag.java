@@ -192,7 +192,7 @@ public final class SelectOptionTag extends BodyTagSupport {
 		staticdata="no";
 		matchingsetup="2,1,0,0,2,0,0";
 		selectvaluetype="0";
-		width="200";
+		width="";
 		divmaxwidth="300";//初始化最大宽度为300
 		divmaxheight="300";//初始化最大高度为300
 		defaultvalues="";

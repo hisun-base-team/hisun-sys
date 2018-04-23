@@ -3,48 +3,68 @@
 <taglib>
     <tlib-version>1.0</tlib-version>
     <jsp-version>1.2</jsp-version>
-    <short-name>TreeTag</short-name>
-
-
+    <short-name>tree</short-name>
  <tag>
     <name>tree</name>
-    <tag-class>com.hisun.saas.sys.taglib.tree.TreeTag</tag-class>
+    <tag-class>com.hisun.saas.sys.taglib.treeTag.TreeTag</tag-class>
+	<attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+	<attribute>
+      <name>treeUrl</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+     <attribute>
+         <name>token</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+    <attribute>
+      <name>isSelectTree</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+     <attribute>
+         <name>valueName</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+     <attribute>
+         <name>radioOrCheckbox</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
 
-	<attribute>
-      <name>divId</name>
-      <required>true</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-	<attribute>
-      <name>dataSource</name>
-      <required>true</required>
+     <attribute>
+         <name>required</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+     <attribute>
+         <name>selectClass</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+
+    <attribute>
+      <name>isSearch</name>
+      <required>false</required>
       <rtexprvalue>true</rtexprvalue>
     </attribute>
     <attribute>
-      <name>checkboxDisplay</name>
-      <required>true</required>
+      <name>chkboxType</name>
+      <required>false</required>
       <rtexprvalue>true</rtexprvalue>
     </attribute>
-    <attribute>
-      <name>radioOrCheckbox</name>
-      <required>true</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>parentRadioEnable</name>
-      <required>true</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>parentCheckboxEnable</name>
-      <required>true</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>parentChildIsolate</name>
-      <required>true</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
+     <attribute>
+         <name>dataType</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+
     <attribute>
       <name>userParameter</name>
       <required>false</required>
@@ -56,96 +76,25 @@
       <rtexprvalue>true</rtexprvalue>
     </attribute>
     <attribute>
-      <name>isInit</name>
+      <name>onClick</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
     </attribute>
     <attribute>
-      <name>aclickDefault</name>
+      <name>dynamicLoading</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
     </attribute>
     <attribute>
-      <name>checkboxclickDefault</name>
+      <name>otherParam</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
     </attribute>
     <attribute>
-      <name>imgclickDefault</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>dblonclick</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>auto_dynamic_load</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <!-- 单击标题是否会影响复选框 -->
-    <attribute>
-      <name>seletedCheckboxByTitle</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>firstSelectedByTitle</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>selectedTitleByCheckbox</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>type</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>openOnclick</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>expandByCheckbox</name>
+      <name>submitType</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
     </attribute>
 
-    <attribute>
-      <name>parentSelectedWithChild</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>parentClearWithChild</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>lowerSelectedAllWithSuperior</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>lowerClearWithSuperior</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>lowerClearAllWithSuperior</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <name>lowerSelectedWithSuperior</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
   </tag>
 </taglib>

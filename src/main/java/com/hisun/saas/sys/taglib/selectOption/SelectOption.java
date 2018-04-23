@@ -572,7 +572,7 @@ public final class SelectOption{
 //					this.getStyle().addStyles("width:100%;height:21px;");
 				}else{
 					try{
-						this.getStyle().addStyles("width:"+Integer.toString(Integer.parseInt(width)-20)+";");
+						this.getStyle().addStyles("width:"+Integer.toString(Integer.parseInt(width)-28)+"px;");
 					}catch(Exception e){
 //						this.getStyle().addStyles("width:100%;height:21px;");
 					}
@@ -588,6 +588,7 @@ public final class SelectOption{
 
 			results.append(" "+this.getStyle().toHtml());
 		}else{
+			this.style = new Style();
 			if(isSpecialWidthType.equals("false")){
 //				this.style.addStyles("width:100%;height:21px;");
 			}else{
@@ -595,20 +596,21 @@ public final class SelectOption{
 //					this.getStyle().addStyles("width:100%;height:21px;");
 				}else{
 					try{
-						this.getStyle().addStyles("width:"+Integer.toString(Integer.parseInt(width)-20)+";");
+						this.getStyle().addStyles("width:"+Integer.toString(Integer.parseInt(width)-28)+"px;");
 					}catch(Exception e){
 //						this.getStyle().addStyles("width:100%;height:21px;");
 					}
 				}
 			}
-
+			results.append(" "+this.getStyle().toHtml());
 			if(!textFontColor.equals("")){
-				results.append("color:"+textFontColor+";");
+				this.getStyle().addStyles("color:"+textFontColor+"");
 			}
 			if(!textFontSize.equals("")){
-				results.append("font-size:"+textFontSize+";");
+				this.getStyle().addStyles("font-size:"+textFontSize+"");
 			}
-			results.append(" \"");
+
+			results.append(" "+this.getStyle().toHtml());
 		}
 //		super.appendHtmlOfAttributes(results);
 //		results.append(this.getVerify().toHtml());
@@ -633,7 +635,7 @@ public final class SelectOption{
 		results.append("/>");
 //		results.append("</td>");
 //		results.append("<td style=\"padding-left:0px;padding-bottom:11px;\">");
-		results.append("<span class=\"add-on\" id=\"").append(newid).append("_img\"");
+		results.append("<span class=\"add-on\" style=\"height:24px\" id=\"").append(newid).append("_img\"");
 //		results.append(" style=\"border:0;margin-top:0px;padding-top:0px;\"");
 //		results.append(" src=\"").append(applicationName).append("/images/option/pick-button4.gif\"");
 		//多级下拉和单级下拉的点击事件和失去焦点时间不同
@@ -659,9 +661,9 @@ public final class SelectOption{
 //		if (canWrite == false){
 //			results.append(" disabled");
 //		}
-		results.append("style=\"height:24px\" ><i class=\"icon-search\"></i></span>");
+		results.append(" ><i class=\"icon-search\" ></i></span>");
 
-				results.append("<script type=\"text/javascript\">$(\"#"+newid+"_text\").css(\"width\", window.document.getElementById(\""+newid+"_text\").offsetWidth-28);</script>");
+				results.append("<script type=\"text/javascript\">if(window.document.getElementById(\""+newid+"_text\").offsetWidth!=0{$(\"#"+newid+"_text\").css(\"width\", window.document.getElementById(\""+newid+"_text\").offsetWidth-28);}</script>");
 //				results.append("</td></tr>");
 		// 用于多选的时候判断是否有空值的key 	value不为空的情况  如果有则需要生成和value个数相同的key的已‘，’分开的空格 如传入的value为 部长，处长  key为空 则需把key转为 ， ，
 		if(defaultvalues!=null && !defaultvalues.equals("")&&radioOrCheckbox.equals("checkbox")){
@@ -798,100 +800,100 @@ public final class SelectOption{
 
 		results.append("/>\n");
 		if(isshowtree.equals("no")){
-//			results.append("<tr valign=\"middle\" style=\"background-color: "+divBackgroundColor+"\">\n<td colspan=2 width=\"100%\" style=\"padding-left:0px;height:0px;background-color:"+divBackgroundColor+"\">");
-//			if(radioOrCheckbox.equals("radio")){//onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV_Input_Onblur(this);\" onblur=\"_gzzzb_selectOption_hidden_Select('"+newid+"');\"
-//				results.append("<div id=\"gzzzb_"+newid+"_main\" style=\"width:100%;z-index:99;position:absolute;background-color: "+divBackgroundColor+"; border:1px;border-style:solid;border-color:Gray;  filter:progid:DXImageTransform.Microsoft.Shadow(color='dimgray', Direction=135, Strength=2);display:none;\" onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV_Input_Onblur('"+newid+"');\" onmouseout=\"_gzzzb_selectOption_hidden_Select_MainDiv('"+newid+"');\">");
-//				//用来把生成模拟的保存数据的标签
-//				results.append("<B style=\"line-height:0px;visibility:hidden;\">");
-//				if(optionType.equals("tag")){
-//					if(!this.getId().equals(fieldCode))
-//						results.append("<input type=\"hidden\" name=\""+fieldCode+"\" value=\""+defaultkeys+"\" />");
-//					if(!defaultvalues.equals(""))//如果是修改 则生成一个模拟的保存内容的hidden
-//						results.append("<input type=\"hidden\" name=\""+fieldText+"\" value=\""+defaultvalues+"\" />");
-//				}
-//				results.append("</B>");
-//				results.append("<div id=\""+newid+"_option\" style=\"white-space:nowrap;background-color:"+divBackgroundColor+";\" onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV('"+newid+"','2');\"><p align=\"left\" style=\"color:#E1D355;font-size:14px;\"><img src=\""+applicationName+"/images/option/loadingImg.gif\" style=\"width:24px;height:24px;\"><b>正在加载数据 请稍候....</b></p></div>");
-//				results.append("<div id=\""+newid+"_hidden_option_all\" style=\"overflow-y:hidden;white-space:nowrap;background-color: "+divBackgroundColor+";display:none;\"></div>\n");
-//			}else{// onmouseover=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onblur=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','1');\"
-//				results.append("<div id=\"gzzzb_"+newid+"_main\" style=\"width:100%;z-index:99;position:absolute;background-color: "+divBackgroundColor+"; border:1px;border-style:solid;border-color:Gray;  filter:progid:DXImageTransform.Microsoft.Shadow(color='dimgray', Direction=135, Strength=2);display:none\"  onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV_Input_Onblur('"+newid+"');\" onmouseout=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox_mainDIv('"+newid+"','1');\" >");
-//				//			用来把生成模拟的保存数据的标签
-//				results.append("<B style=\"line-height:0px;visibility:hidden;\">");
-//				if(optionType.equals("tag")){
-//					if(defaultvalues!=""){
-//						String[] defaultkey=defaultkeys.split(",");
-//						String[] defaultvalue=defaultvalues.split(",");
-//						if(mainField!=null&&!mainField.equals("")){
-//							for(int i=0;i<defaultvalue.length;i++){
-//								if(defaultvalue[i]!=""){
-//									results.append("<input type=\"hidden\" name=\""+collectMeans+"["+i+"]."+fieldCode+"\" value=\""+defaultkey[i]+"\"/><input type=\"hidden\" name=\""+collectMeans+"["+i+"]."+fieldText+"\" value=\""+defaultvalue[i]+"\"/>");
-//								}
-//							}
-//						}else{
-//							if(fieldText!=null&&fieldText!=""){
-//								results.append("<input type=\"hidden\" name=\""+fieldText+"\" value=\""+defaultvalues+"\"/>");
-//							}
-//						}
-//					}
-//				}
-//				results.append("</B>");
-//				results.append("<div id=\""+newid+"_option\"  style=\"swhite-space:nowrap;background-color: "+divBackgroundColor+";\" onscroll=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onclick=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onblur=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','1');\"><p align=\"left\" style=\"color:#E1D355;font-size:14px;\"><img src=\""+applicationName+"/images/option/loadingImg.gif\" style=\"width:24px;height:24px;\"><b>正在加载数据 请稍候....</b></p></div>\n");
-//				results.append("<div id=\""+newid+"_hidden_option_all\" style=\"overflow-y:hidden;white-space:nowrap;background-color: "+divBackgroundColor+";display:none;\" onscroll=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onclick=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onblur=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','1');\"></div>\n");
-//			}
-//			results.append("<div id=\""+newid+"_option_old\" style=\"overflow-y:hidden;white-space:nowrap;background-color:"+divBackgroundColor+";display:none;\"></div>\n");
-//
-//			////输出下面的按钮  单选只输出一个取消按钮    如果dictionaryEdit为true则显示一个字典维护的按钮
-//			if(radioOrCheckbox.equals("radio")){
-//				/*results.append("<table width=\"100%\" bgColor=\""+divBackgroundColor+"\" cellSpacing=0 cellPadding=0><tr><td align=center><input type=\"button\" value=\"取消\" onclick=\"show_parentvalue('"+newid+"','1');\"");
-//				if(buttonstyle!=null&&!buttonstyle.equals("")){
-//					results.append(" style=\""+buttonstyle+"\"");
-//				}
-//				if(buttoncss!=null&&!buttoncss.equals("")){
-//					results.append(" css=\""+buttoncss+"\"");
-//				}
-//				results.append(">");
-//				if(dictionaryEdit.equals("true")){
-//					results.append("<input type=\"button\" value=\" 字典维护 \" onclick=\""+dictionaryEditFunc+"\"");
-//					if(buttonstyle!=null&&!buttonstyle.equals("")){
-//						results.append(" style=\""+buttonstyle+"\"");
-//					}
-//					if(buttoncss!=null&&!buttoncss.equals("")){
-//						results.append(" css=\""+buttoncss+"\"");
-//					}
-//					results.append(">");
-//				}
-//				results.append("</td>\n</tr>\n</table>\n");
-//				*/
-//				results.append("</div>\n");
-//			}else{//复选输出确定按钮和复选按钮   如果dictionaryEdit为true则显示一个字典维护的按钮
-//				results.append(" &nbsp;&nbsp;<input type=\"button\" value=\"确定\" onclick=\"checkbox_submit('"+newid+"');\"");
-//				if(buttonstyle!=null&&!buttonstyle.equals("")){
-//					results.append(" style=\""+buttonstyle+"\"");
-//				}
-//				if(buttoncss!=null&&!buttoncss.equals("")){
-//					results.append(" css=\""+buttoncss+"\"");
-//				}
-//				results.append(">&nbsp;&nbsp;<input type=\"button\" value=\"取消\" onclick=\"show_parentvalue('"+newid+"','1');\"");
-//				if(buttonstyle!=null&&!buttonstyle.equals("")){
-//					results.append(" style=\""+buttonstyle+"\"");
-//				}
-//				if(buttoncss!=null&&!buttoncss.equals("")){
-//					results.append(" css=\""+buttoncss+"\"");
-//				}
-//				results.append(">");
-//				if(dictionaryEdit.equals("true")){
-//					results.append("<input type=\"button\" value=\"字典维护\" onclick=\""+dictionaryEditFunc+"\"");
-//					if(buttonstyle!=null&&!buttonstyle.equals("")){
-//						results.append(" style=\""+buttonstyle+"\"");
-//					}
-//					if(buttoncss!=null&&!buttoncss.equals("")){
-//						results.append(" css=\""+buttoncss+"\"");
-//					}
-//					results.append(">");
-//				}
-//				results.append("</div>");
-//			}
-//
-////			results.append("</td></tr>\n");
+			results.append("<tr valign=\"middle\" style=\"background-color: "+divBackgroundColor+"\">\n<td colspan=2 width=\"100%\" style=\"padding-left:0px;height:0px;background-color:"+divBackgroundColor+"\">");
+			if(radioOrCheckbox.equals("radio")){//onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV_Input_Onblur(this);\" onblur=\"_gzzzb_selectOption_hidden_Select('"+newid+"');\"
+				results.append("<div id=\"gzzzb_"+newid+"_main\" style=\"width:100%;z-index:99;position:absolute;background-color: "+divBackgroundColor+"; border:1px;border-style:solid;border-color:Gray;  filter:progid:DXImageTransform.Microsoft.Shadow(color='dimgray', Direction=135, Strength=2);display:none;\" onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV_Input_Onblur('"+newid+"');\" onmouseout=\"_gzzzb_selectOption_hidden_Select_MainDiv('"+newid+"');\">");
+				//用来把生成模拟的保存数据的标签
+				results.append("<B style=\"line-height:0px;visibility:hidden;\">");
+				if(optionType.equals("tag")){
+					if(!this.getId().equals(fieldCode))
+						results.append("<input type=\"hidden\" name=\""+fieldCode+"\" value=\""+defaultkeys+"\" />");
+					if(!defaultvalues.equals(""))//如果是修改 则生成一个模拟的保存内容的hidden
+						results.append("<input type=\"hidden\" name=\""+fieldText+"\" value=\""+defaultvalues+"\" />");
+				}
+				results.append("</B>");
+				results.append("<div id=\""+newid+"_option\" style=\"white-space:nowrap;background-color:"+divBackgroundColor+";\" onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV('"+newid+"','2');\"><p align=\"left\" style=\"color:#E1D355;font-size:14px;\"><img src=\""+applicationName+"/images/option/loadingImg.gif\" style=\"width:24px;height:24px;\"><b>正在加载数据 请稍候....</b></p></div>");
+				results.append("<div id=\""+newid+"_hidden_option_all\" style=\"overflow-y:hidden;white-space:nowrap;background-color: "+divBackgroundColor+";display:none;\"></div>\n");
+			}else{// onmouseover=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onblur=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','1');\"
+				results.append("<div id=\"gzzzb_"+newid+"_main\" style=\"width:100%;z-index:99;position:absolute;background-color: "+divBackgroundColor+"; border:1px;border-style:solid;border-color:Gray;  filter:progid:DXImageTransform.Microsoft.Shadow(color='dimgray', Direction=135, Strength=2);display:none\"  onmousemove=\"_gzzzb_selectOption_hidden_Select_DIV_Input_Onblur('"+newid+"');\" onmouseout=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox_mainDIv('"+newid+"','1');\" >");
+				//			用来把生成模拟的保存数据的标签
+				results.append("<B style=\"line-height:0px;visibility:hidden;\">");
+				if(optionType.equals("tag")){
+					if(defaultvalues!=""){
+						String[] defaultkey=defaultkeys.split(",");
+						String[] defaultvalue=defaultvalues.split(",");
+						if(mainField!=null&&!mainField.equals("")){
+							for(int i=0;i<defaultvalue.length;i++){
+								if(defaultvalue[i]!=""){
+									results.append("<input type=\"hidden\" name=\""+collectMeans+"["+i+"]."+fieldCode+"\" value=\""+defaultkey[i]+"\"/><input type=\"hidden\" name=\""+collectMeans+"["+i+"]."+fieldText+"\" value=\""+defaultvalue[i]+"\"/>");
+								}
+							}
+						}else{
+							if(fieldText!=null&&fieldText!=""){
+								results.append("<input type=\"hidden\" name=\""+fieldText+"\" value=\""+defaultvalues+"\"/>");
+							}
+						}
+					}
+				}
+				results.append("</B>");
+				results.append("<div id=\""+newid+"_option\"  style=\"swhite-space:nowrap;background-color: "+divBackgroundColor+";\" onscroll=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onclick=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onblur=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','1');\"><p align=\"left\" style=\"color:#E1D355;font-size:14px;\"><img src=\""+applicationName+"/images/option/loadingImg.gif\" style=\"width:24px;height:24px;\"><b>正在加载数据 请稍候....</b></p></div>\n");
+				results.append("<div id=\""+newid+"_hidden_option_all\" style=\"overflow-y:hidden;white-space:nowrap;background-color: "+divBackgroundColor+";display:none;\" onscroll=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onclick=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','2');\" onblur=\"_gzzzb_selectOption_hidden_Select_DIV_checkbox('"+newid+"','1');\"></div>\n");
+			}
+			results.append("<div id=\""+newid+"_option_old\" style=\"overflow-y:hidden;white-space:nowrap;background-color:"+divBackgroundColor+";display:none;\"></div>\n");
+
+			////输出下面的按钮  单选只输出一个取消按钮    如果dictionaryEdit为true则显示一个字典维护的按钮
+			if(radioOrCheckbox.equals("radio")){
+				/*results.append("<table width=\"100%\" bgColor=\""+divBackgroundColor+"\" cellSpacing=0 cellPadding=0><tr><td align=center><input type=\"button\" value=\"取消\" onclick=\"show_parentvalue('"+newid+"','1');\"");
+				if(buttonstyle!=null&&!buttonstyle.equals("")){
+					results.append(" style=\""+buttonstyle+"\"");
+				}
+				if(buttoncss!=null&&!buttoncss.equals("")){
+					results.append(" css=\""+buttoncss+"\"");
+				}
+				results.append(">");
+				if(dictionaryEdit.equals("true")){
+					results.append("<input type=\"button\" value=\" 字典维护 \" onclick=\""+dictionaryEditFunc+"\"");
+					if(buttonstyle!=null&&!buttonstyle.equals("")){
+						results.append(" style=\""+buttonstyle+"\"");
+					}
+					if(buttoncss!=null&&!buttoncss.equals("")){
+						results.append(" css=\""+buttoncss+"\"");
+					}
+					results.append(">");
+				}
+				results.append("</td>\n</tr>\n</table>\n");
+				*/
+				results.append("</div>\n");
+			}else{//复选输出确定按钮和复选按钮   如果dictionaryEdit为true则显示一个字典维护的按钮
+				results.append(" &nbsp;&nbsp;<input type=\"button\" value=\"确定\" onclick=\"checkbox_submit('"+newid+"');\"");
+				if(buttonstyle!=null&&!buttonstyle.equals("")){
+					results.append(" style=\""+buttonstyle+"\"");
+				}
+				if(buttoncss!=null&&!buttoncss.equals("")){
+					results.append(" css=\""+buttoncss+"\"");
+				}
+				results.append(">&nbsp;&nbsp;<input type=\"button\" value=\"取消\" onclick=\"show_parentvalue('"+newid+"','1');\"");
+				if(buttonstyle!=null&&!buttonstyle.equals("")){
+					results.append(" style=\""+buttonstyle+"\"");
+				}
+				if(buttoncss!=null&&!buttoncss.equals("")){
+					results.append(" css=\""+buttoncss+"\"");
+				}
+				results.append(">");
+				if(dictionaryEdit.equals("true")){
+					results.append("<input type=\"button\" value=\"字典维护\" onclick=\""+dictionaryEditFunc+"\"");
+					if(buttonstyle!=null&&!buttonstyle.equals("")){
+						results.append(" style=\""+buttonstyle+"\"");
+					}
+					if(buttoncss!=null&&!buttoncss.equals("")){
+						results.append(" css=\""+buttoncss+"\"");
+					}
+					results.append(">");
+				}
+				results.append("</div>");
+			}
+
+//			results.append("</td></tr>\n");
 		}else{
 			results.append("<div id=\"gzzzb_"+newid+"_main\" style=\"z-index:99;position:absolute;background-color: "+divBackgroundColor+"; border:1px;border-style:solid;border-color:Gray;  filter:progid:DXImageTransform.Microsoft.Shadow(color='dimgray', Direction=135, Strength=2);display:none;\" >\n");
 			//用来把生成模拟的保存数据的标签

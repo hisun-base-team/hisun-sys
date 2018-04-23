@@ -39,13 +39,14 @@
 <!-- END CORE PLUGINS -->
 
 <!-- start 树控件引用-->
-<link href='<c:url value="/css/zTreeStyle/zzbxtree.css" />' rel="stylesheet" type="text/css" />
-<script src='<c:url value="/js/hisunTree/hisunxtree.js" />' type="text/javascript" ></script>
-<script src='<c:url value="/js/hisunTree/xtree.js" />' type="text/javascript" ></script>
-
-
+<%--<link href='<c:url value="/css/zTreeStyle/zzbxtree.css" />' rel="stylesheet" type="text/css" />--%>
+<%--<script src='<c:url value="/js/hisunTree/hisunxtree.js" />' type="text/javascript" ></script>--%>
+<%--<script src='<c:url value="/js/hisunTree/xtree.js" />' type="text/javascript" ></script>--%>
+<script src='<c:url value="/js/zTree/jquery.ztree.all-3.5.30.min.js" />' type="text/javascript" ></script>
+<script src='<c:url value="/js/zTree/jquery.ztree.exhide-3.5.min.js" />' type="text/javascript" ></script>
+<script src='<c:url value="/js/zTree/ztree_tag_3.5.js" />' type="text/javascript" ></script>
 <!-- start 下拉控件引用-->
-<script src='<c:url value="/js/select_option.js" />' type="text/javascript" ></script>
+<%--<script src='<c:url value="/js/select_option.js" />' type="text/javascript" ></script>--%>
 <link href='<c:url value="/css/selectCheckBox/jquery.multiselect.css" />' rel="stylesheet" type="text/css" />
 <script src='<c:url value="/js/selectCheckBox/jquery.multiselect.js" />' type="text/javascript" ></script>
 <link href='<c:url value="/css/chosen.css" />' rel="stylesheet" type="text/css" />
