@@ -108,7 +108,8 @@ public class NoticeController extends BaseController{
 	}
 	@RequestMapping(value = "/add")
 	public ModelAndView add() {
-		return new ModelAndView("saas/sys/admin/notice/addNotice");
+//		return new ModelAndView("saas/sys/admin/notice/addNotice");
+		return new ModelAndView("test/TreeTagTest");
 	}
 	
 	@RequestMapping(value="/update/{id}",method = RequestMethod.GET)
