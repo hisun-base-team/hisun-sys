@@ -6,10 +6,9 @@
 
 package com.hisun.saas.sys.auth;
 
-import com.hisun.base.auth.AbstractUserLoginDetails;
-import com.hisun.base.entity.AbstractResource;
-import com.hisun.base.entity.AbstractRole;
-import com.hisun.base.entity.AbstractUser;
+import com.hisun.saas.sys.entity.AbstractResource;
+import com.hisun.saas.sys.entity.AbstractRole;
+import com.hisun.saas.sys.entity.AbstractUser;
 import com.hisun.saas.sys.admin.Constants;
 import com.hisun.saas.sys.admin.resource.vo.ResourceMenuItem;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;

@@ -122,7 +122,7 @@ table {
 							<tr>
 								<td><c:out value="${logs.ip }"></c:out></td>
 								<td><c:out value="${logs.userName }"></c:out></td>
-								<td><fmt:formatDate value="${logs.createTime }" pattern="yyyy年MM月dd日 HH:mm:ss"/>  </td>
+								<td><fmt:formatDate value="${logs.operateTime }" pattern="yyyy年MM月dd日 HH:mm:ss"/>  </td>
 								<td>
 									<c:choose>
 										<c:when test="${logs.type==1}"><c:out value="新增"></c:out></c:when>

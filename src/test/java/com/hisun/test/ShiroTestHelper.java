@@ -1,6 +1,6 @@
 package com.hisun.test;
 
-import com.hisun.base.auth.Constants;
+import com.hisun.saas.sys.auth.Constants;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SimpleSession;
 import org.apache.shiro.subject.Subject;

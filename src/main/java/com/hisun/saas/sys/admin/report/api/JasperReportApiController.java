@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 import com.hisun.saas.sys.admin.report.entity.JasperReportTemp;
 import com.hisun.saas.sys.admin.report.service.JasperReportTempService;
 import com.hisun.saas.sys.admin.report.vo.JasperReportVo;
-import com.hisun.base.auth.Constants;
+import com.hisun.saas.sys.auth.Constants;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonRestrictions;

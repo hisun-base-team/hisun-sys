@@ -6,7 +6,7 @@
 
 package com.hisun.saas.sys.tenant.role.entity;
 
-import com.hisun.base.entity.AbstractRoleResourcePrivilege;
+import com.hisun.saas.sys.entity.AbstractRoleResourcePrivilege;
 import com.hisun.saas.sys.tenant.privilege.entity.TenantPrivilege;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResourcePrivilege;

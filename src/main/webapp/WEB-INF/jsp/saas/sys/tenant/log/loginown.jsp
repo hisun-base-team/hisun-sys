@@ -52,7 +52,7 @@
 						<c:forEach items="${pager.datas}" var="logs">
 							<tr>
 								<td><c:out value="${logs.ip }"></c:out></td>
-								<td><fmt:formatDate value="${logs.createTime }" pattern="yyyy年MM月dd日 HH:mm:ss"/>  </td>
+								<td><fmt:formatDate value="${logs.operateTime }" pattern="yyyy年MM月dd日 HH:mm:ss"/>  </td>
 							</tr>
 						</c:forEach>
 						</tbody>

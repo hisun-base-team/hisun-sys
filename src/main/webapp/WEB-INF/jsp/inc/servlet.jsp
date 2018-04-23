@@ -1,4 +1,4 @@
-<%@page import="com.hisun.base.auth.Constants"%>
+<%@page import="com.hisun.saas.sys.auth.Constants"%>
 <%@page import="com.hisun.saas.sys.admin.resource.entity.Resource"%>
 <%@page import="com.hisun.saas.sys.auth.UserLoginDetails"%>
 <%@page import="org.apache.commons.lang3.StringUtils"%>

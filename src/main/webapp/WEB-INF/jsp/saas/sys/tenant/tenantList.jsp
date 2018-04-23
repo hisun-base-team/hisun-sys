@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.hisun.base.auth.Constants" %>
+<%@ page import="com.hisun.saas.sys.auth.Constants" %>
 <%@include file="../../../inc/servlet.jsp" %>
 <%@include file="../../../inc/taglib.jsp" %>
 <!DOCTYPE html>

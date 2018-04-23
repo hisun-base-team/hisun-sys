@@ -1,6 +1,6 @@
 package com.hisun.saas.sys.admin.log.dao;
 
-import com.hisun.saas.sys.admin.log.entity.Log;
+import com.hisun.saas.sys.admin.log.entity.SysLog;
 import com.hisun.base.dao.BaseDao;
 
 /**
@@ -14,6 +14,6 @@ import com.hisun.base.dao.BaseDao;
  * @date 2015年5月21日 上午11:25:35 
  * @version 
  */
-public interface LogDao extends BaseDao<Log, String> {
+public interface SysLogDao extends BaseDao<SysLog, String> {
 
 }

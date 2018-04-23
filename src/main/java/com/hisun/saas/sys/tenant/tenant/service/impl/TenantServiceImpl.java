@@ -8,9 +8,9 @@ package com.hisun.saas.sys.tenant.tenant.service.impl;
 
 import com.hisun.saas.sys.tenant.role.dao.TenantRoleDao;
 import com.hisun.saas.sys.tenant.user.entity.TenantUserRole;
-import com.hisun.base.auth.service.PasswordHelper;
-import com.hisun.base.auth.service.SessionHelper;
-import com.hisun.base.auth.vo.PasswordSecurity;
+import com.hisun.saas.sys.auth.service.PasswordHelper;
+import com.hisun.saas.sys.auth.service.SessionHelper;
+import com.hisun.saas.sys.auth.vo.PasswordSecurity;
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
@@ -30,10 +30,10 @@ import com.hisun.saas.sys.tenant.tenant.vo.TenantVo;
 import com.hisun.saas.sys.tenant.user.dao.TenantUserDao;
 import com.hisun.saas.sys.tenant.user.dao.TenantUserRoleDao;
 import com.hisun.saas.sys.tenant.user.entity.TenantUser;
+import com.hisun.saas.sys.util.EntityWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -99,7 +99,7 @@ public class TenantServiceImpl extends
 		Tenant entity = new Tenant();
 		BeanUtils.copyProperties(vo,entity);
 		entity.setId(null);
-		setCreateUser(UserLoginDetailsUtil.getUserLoginDetails(), entity);
+		EntityWrapper.wrapperSaveBaseProperties(entity,UserLoginDetailsUtil.getUserLoginDetails());
 		tenantDao.save(entity);
 
 		//创建管理员
@@ -128,7 +128,7 @@ public class TenantServiceImpl extends
 	public Tenant update(TenantVo vo) {
 		Tenant entity = tenantDao.getByPK(vo.getId());
 		BeanUtils.copyProperties(vo,entity);
-		setUpdateUser(UserLoginDetailsUtil.getUserLoginDetails(), entity);
+		EntityWrapper.wrapperUpdateBaseProperties(entity,UserLoginDetailsUtil.getUserLoginDetails());
 		tenantDao.update(entity);
 		return entity;
 	}
@@ -136,7 +136,7 @@ public class TenantServiceImpl extends
 	@Override
 	public void deleteById(String id) {
 		Tenant tenant = tenantDao.getByPK(id);
-		setUpdateUser(UserLoginDetailsUtil.getUserLoginDetails(),tenant);
+		EntityWrapper.wrapperUpdateBaseProperties(tenant,UserLoginDetailsUtil.getUserLoginDetails());
 		tenant.setTombstone(TombstoneEntity.TOMBSTONE_TRUE);
 		tenantDao.update(tenant);
 		//注销租户下的用户
@@ -163,7 +163,7 @@ public class TenantServiceImpl extends
 	@Override
 	public void updateActivate(String id) {
 		Tenant tenant = tenantDao.getByPK(id);
-		setUpdateUser(UserLoginDetailsUtil.getUserLoginDetails(), tenant);
+		EntityWrapper.wrapperUpdateBaseProperties(tenant,UserLoginDetailsUtil.getUserLoginDetails());
 		tenant.setTombstone(TombstoneEntity.TOMBSTONE_FALSE);
 		tenantDao.update(tenant);
 		//用户全部也要激活

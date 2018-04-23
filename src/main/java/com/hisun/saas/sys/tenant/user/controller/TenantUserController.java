@@ -8,8 +8,8 @@ package com.hisun.saas.sys.tenant.user.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.hisun.base.auth.Constants;
-import com.hisun.base.auth.service.SessionHelper;
+import com.hisun.saas.sys.auth.Constants;
+import com.hisun.saas.sys.auth.service.SessionHelper;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonRestrictions;

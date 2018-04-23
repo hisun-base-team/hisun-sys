@@ -1,6 +1,6 @@
 package com.hisun.test.saas.sys.admin.resource.controller;
 
-import com.hisun.base.entity.AbstractResource;
+import com.hisun.saas.sys.entity.AbstractResource;
 import com.hisun.saas.sys.admin.resource.controller.AdminResourceController;
 import com.hisun.saas.sys.admin.resource.service.ResourceService;
 import com.hisun.saas.sys.auth.UserLoginDetails;

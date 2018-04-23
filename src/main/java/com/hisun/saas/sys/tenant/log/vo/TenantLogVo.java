@@ -1,33 +1,31 @@
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
+
 package com.hisun.saas.sys.tenant.log.vo;
 
 import java.util.Date;
 
-/**
- * <p>Title: TenantLog.java </p>
- * <p>Package com.hisun.saas.sys.entity </p>
- * <p>Description: 日志记录表</p>
- * <p>Copyright: Copyright (c) 2015</p>
- * <p>Company: 湖南海数互联信息技术有限公司</p>
- * @author Jason
- * @email jason4j@qq.com
- * @date 2015年5月20日 下午7:45:28 
- * @version 
- */
+
 public class TenantLogVo {
 
 	private String id;
 	
-	private String userId;//操作人
+	private String userId;
 	
 	private String userName;
 	
-	private Date createTime;//操作时间
+	private Date operateTime;
 	
 	private String ip;
 	
-	private short type;//操作类型 1新增 2修改 3删除 4登录 5登出 6异常
+	private int type;
 	
-	private String content;//日志内容
+	private String content;
+	
+	private int status;
 
 	public String getId() {
 		return id;
@@ -45,12 +43,12 @@ public class TenantLogVo {
 		this.userId = userId;
 	}
 
-	public Date getCreateTime() {
-		return createTime;
+	public Date getOperateTime() {
+		return operateTime;
 	}
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+	public void setOperateTime(Date operateTime) {
+		this.operateTime = operateTime;
 	}
 
 	public String getIp() {
@@ -61,11 +59,11 @@ public class TenantLogVo {
 		this.ip = ip;
 	}
 
-	public short getType() {
+	public int getType() {
 		return type;
 	}
 
-	public void setType(short type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 
@@ -84,5 +82,12 @@ public class TenantLogVo {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
 }

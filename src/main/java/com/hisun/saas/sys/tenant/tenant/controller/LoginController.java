@@ -7,12 +7,12 @@
 package com.hisun.saas.sys.tenant.tenant.controller;
 
 import com.google.common.collect.Maps;
-import com.hisun.base.auth.Constants;
-import com.hisun.base.auth.KaptchaUsernamePasswordToken;
+import com.hisun.saas.sys.auth.Constants;
+import com.hisun.saas.sys.auth.KaptchaUsernamePasswordToken;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonRestrictions;
-import com.hisun.base.entity.AbstractRole;
+import com.hisun.saas.sys.entity.AbstractRole;
 import com.hisun.base.entity.TombstoneEntity;
 import com.hisun.base.exception.GenericException;
 import com.hisun.saas.sys.admin.message.service.NoticeService;
@@ -129,7 +129,7 @@ public class LoginController extends BaseController {
                 } finally{
                     log.setIp(ip);
                     log.setUserId(userLoginDetails.getUserid());
-                    log.setCreateTime(new Date());
+                    log.setOperateTime(new Date());
                     log.setType(Short.valueOf("4"));
                     log.setTenant(new Tenant(userLoginDetails.getTenantId()));
                     tenantLogService.log(log);

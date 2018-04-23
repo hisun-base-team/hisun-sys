@@ -6,7 +6,7 @@
 
 package com.hisun.saas.sys.tenant.privilege.entity;
 
-import com.hisun.base.entity.AbstractPrivilege;
+import com.hisun.saas.sys.entity.AbstractPrivilege;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant2ResourcePrivilege;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

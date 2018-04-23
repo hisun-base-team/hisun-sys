@@ -188,7 +188,7 @@ table {
 												</c:choose>
 											</td>
 											<%-- <td title="<c:out value="${org.createUser}"></c:out>"><c:out value="${org.createUser}"></c:out></td>
-											<td title="<c:out value="${org.createTime}"></c:out>"><c:out value="${org.createTime}"></c:out></td>
+											<td title="<c:out value="${org.operateTime}"></c:out>"><c:out value="${org.operateTime}"></c:out></td>
 											<td>
 													<c:choose>
 														<c:when test="${org.status}"><c:out value="是"></c:out></c:when>
@@ -445,7 +445,7 @@ table {
 													</c:choose>
 												</td>
 												<%-- <td title="<c:out value="${tenant.createUser}"></c:out>"><c:out value="${tenant.createUser}"></c:out></td> --%>
-												<td title="<c:out value="${tenant.createTime}"></c:out>"><fmt:formatDate value="${tenant.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
+												<td title="<c:out value="${tenant.operateTime}"></c:out>"><fmt:formatDate value="${tenant.operateTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
 												<td>
 														<c:choose>
 															<c:when test="${tenant.status}"><c:out value="是"></c:out></c:when>

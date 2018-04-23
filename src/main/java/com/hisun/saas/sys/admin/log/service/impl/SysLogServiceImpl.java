@@ -11,11 +11,11 @@ import com.google.common.collect.Maps;
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.base.vo.PagerVo;
+import com.hisun.saas.sys.admin.log.dao.SysLogDao;
+import com.hisun.saas.sys.admin.log.entity.SysLog;
+import com.hisun.saas.sys.admin.log.service.SysLogService;
+import com.hisun.saas.sys.admin.log.vo.SysLogVo;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
-import com.hisun.saas.sys.admin.log.dao.LogDao;
-import com.hisun.saas.sys.admin.log.entity.Log;
-import com.hisun.saas.sys.admin.log.service.LogService;
-import com.hisun.saas.sys.admin.log.vo.LogVo;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -32,25 +32,25 @@ import java.util.Map;
  * @author Rocky {rockwithyou@126.com}
  */
 @Service
-public class LogServiceImpl extends BaseServiceImpl<Log, String> implements LogService {
+public class SysLogServiceImpl extends BaseServiceImpl<SysLog, String> implements SysLogService {
 
-	private LogDao logDao;
+	private SysLogDao logDao;
 	
 	@Resource
-	public void setBaseDao(BaseDao<Log, String> logDao) {
+	public void setBaseDao(BaseDao<SysLog, String> logDao) {
 		this.baseDao = logDao;
-		this.logDao = (LogDao) logDao;
+		this.logDao = (SysLogDao) logDao;
 	}
 
 	@Override
-	public void log(Log log) {
+	public void log(SysLog log) {
 		this.logDao.save(log);
 	}
 
 	@Override
-	public PagerVo<LogVo> selectLog(int pageSize, int pageNum, String property) {
+	public PagerVo<SysLogVo> selectLog(int pageSize, int pageNum, String property) {
 		Session session = logDao.getSession();
-		PagerVo<LogVo> pager = null;
+		PagerVo<SysLogVo> pager = null;
 		Map<String,Object> map = Maps.newHashMap();
 		String str = new String(" FROM SYS_USER u,SYS_LOG l WHERE l.user_id=u.id " +
 				" AND l.type <> '4' ORDER BY l.create_time DESC");
@@ -62,7 +62,7 @@ public class LogServiceImpl extends BaseServiceImpl<Log, String> implements LogS
 	}
 
 	@Override
-	public PagerVo<LogVo> searchAllSecurityLogList(int pageSize, int pageNum, String start, String end, String searchContent) {
+	public PagerVo<SysLogVo> searchAllSecurityLogList(int pageSize, int pageNum, String start, String end, String searchContent) {
 		Map<String,Object> paramMap = Maps.newHashMap();
 		StringBuilder sql = new StringBuilder(" from sys_log log , sys_user user where 1=1 ");
 		if(StringUtils.isNotBlank(start)){
@@ -82,13 +82,13 @@ public class LogServiceImpl extends BaseServiceImpl<Log, String> implements LogS
 		List<Map> list = logDao.countReturnMapBySql("select log.ip ip,log.create_time createTime, user.real_name realname " + sql.toString(),paramMap);
 		int count = logDao.countBySql("select count(1) " + sql.toString(),paramMap);
 
-		List<LogVo> logVoList = Lists.newArrayList();
-		LogVo logVo;
+		List<SysLogVo> logVoList = Lists.newArrayList();
+		SysLogVo logVo;
 		for (Map map : list) {
-			logVo = new LogVo();
+			logVo = new SysLogVo();
 			logVo.setIp(map.get("ip").toString());
 			//logVo.setContent(map.get("content").toString());
-			logVo.setCreateTime((Date)map.get("createTime"));
+			logVo.setOperateTime((Date)map.get("createTime"));
 			logVo.setUserName(map.get("realname").toString());
 			//logVo.setType(Short.valueOf(map.get("type").toString()));
 			logVoList.add(logVo);
@@ -97,7 +97,7 @@ public class LogServiceImpl extends BaseServiceImpl<Log, String> implements LogS
 	}
 
 	@Override
-	public PagerVo<LogVo> searchOwnSecurityLogList(int pageSize, int pageNum, String start, String end, String searchContent) {
+	public PagerVo<SysLogVo> searchOwnSecurityLogList(int pageSize, int pageNum, String start, String end, String searchContent) {
 		Map<String,Object> paramMap = Maps.newHashMap();
 		StringBuilder sql = new StringBuilder(" from sys_log log , sys_user user where user.id = :userId ");
 		paramMap.put("userId", UserLoginDetailsUtil.getUserLoginDetails().getUserid());
@@ -118,13 +118,13 @@ public class LogServiceImpl extends BaseServiceImpl<Log, String> implements LogS
 		List<Map> list = logDao.countReturnMapBySql("select log.ip ip,log.create_time createTime, user.real_name realname " + sql.toString(),paramMap);
 		int count = logDao.countBySql("select count(1) " + sql.toString(),paramMap);
 
-		List<LogVo> logVoList = Lists.newArrayList();
-		LogVo logVo;
+		List<SysLogVo> logVoList = Lists.newArrayList();
+		SysLogVo logVo;
 		for (Map map : list) {
-			logVo = new LogVo();
+			logVo = new SysLogVo();
 			logVo.setIp(map.get("ip").toString());
 			//logVo.setContent(map.get("content").toString());
-			logVo.setCreateTime((Date)map.get("createTime"));
+			logVo.setOperateTime((Date)map.get("createTime"));
 			logVo.setUserName(map.get("realname").toString());
 			//logVo.setType(Short.valueOf(map.get("type").toString()));
 			logVoList.add(logVo);
@@ -133,7 +133,7 @@ public class LogServiceImpl extends BaseServiceImpl<Log, String> implements LogS
 	}
 
 	@Override
-	public PagerVo<LogVo> searchLogList(int pageSize, int pageNum, String property, String start, String end, String userName, String type) {
+	public PagerVo<SysLogVo> searchLogList(int pageSize, int pageNum, String property, String start, String end, String userName, String type) {
 		Map<String,Object> paramMap = Maps.newHashMap();
 		StringBuilder sql = new StringBuilder(" from sys_log log , sys_user user where 1=1 ");
 		if(StringUtils.isNotBlank(start)){
@@ -158,13 +158,13 @@ public class LogServiceImpl extends BaseServiceImpl<Log, String> implements LogS
 		List<Map> list = logDao.countReturnMapBySql("select log.ip ip,log.create_time createTime, log.content content, log.type type, user.real_name realname, user.user_name userName  " + sql.toString(),paramMap);
 		int count = logDao.countBySql("select count(1) " + sql.toString(),paramMap);
 
-		List<LogVo> logVoList = Lists.newArrayList();
-		LogVo logVo;
+		List<SysLogVo> logVoList = Lists.newArrayList();
+		SysLogVo logVo;
 		for (Map map : list) {
-			logVo = new LogVo();
+			logVo = new SysLogVo();
 			logVo.setIp(map.get("ip").toString());
 			logVo.setContent(map.get("content").toString());
-			logVo.setCreateTime((Date)map.get("createTime"));
+			logVo.setOperateTime((Date)map.get("createTime"));
 			logVo.setUserName(map.get("realname") == null ? map.get("userName").toString():map.get("realname").toString());
 			logVo.setType(Short.valueOf(map.get("type").toString()));
 			logVoList.add(logVo);
@@ -172,10 +172,10 @@ public class LogServiceImpl extends BaseServiceImpl<Log, String> implements LogS
 		return new PagerVo<>(logVoList, count, pageNum, pageSize);
 	}
 
-	private PagerVo<LogVo> extracted(int pageSize, int pageNum,
-			Session session, Map<String, Object> map, String str, String str1,
-			String str2) {
-		PagerVo<LogVo> pager;
+	private PagerVo<SysLogVo> extracted(int pageSize, int pageNum,
+										Session session, Map<String, Object> map, String str, String str1,
+										String str2) {
+		PagerVo<SysLogVo> pager;
 		int count;
 		Query query = session.createSQLQuery(str2+str);
 		query.setProperties(map);
@@ -187,23 +187,23 @@ public class LogServiceImpl extends BaseServiceImpl<Log, String> implements LogS
 		query.setFirstResult((pageNum-1)*pageSize);
 		List<Object[]> objects=query.list();
 		
-		List<LogVo> list = new ArrayList<LogVo>();
-		LogVo logVo = null;
+		List<SysLogVo> list = new ArrayList<SysLogVo>();
+		SysLogVo logVo = null;
 		if(objects!=null&&objects.size()>0){
 			for(Object[] obs:objects){
 				int index=0;
-				logVo = new LogVo();
+				logVo = new SysLogVo();
 				logVo.setUserName((String)obs[index++]);
 				logVo.setId((String)obs[index++]);
 				logVo.setContent((String)obs[index++]);
-				logVo.setCreateTime((Date)obs[index++]);
+				logVo.setOperateTime((Date)obs[index++]);
 				logVo.setIp((String)obs[index++]);
-				logVo.setType((short)obs[index++]);
+				logVo.setType((int)obs[index++]);
 				logVo.setUserId((String)obs[index++]);
 				list.add(logVo);
 			}
 		}
-		pager = new PagerVo<LogVo>(list,count,pageNum,pageSize);
+		pager = new PagerVo<SysLogVo>(list,count,pageNum,pageSize);
 		return pager;
 	}
 

@@ -6,7 +6,7 @@
 
 package com.hisun.saas.sys.tenant.resource.entity;
 
-import com.hisun.base.entity.AbstractResource;
+import com.hisun.saas.sys.entity.AbstractResource;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant2Resource;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;

@@ -6,6 +6,7 @@
 
 package com.hisun.saas.sys.admin.log.entity;
 
+import com.hisun.saas.sys.admin.log.aop.LogOperateStatus;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -18,16 +19,19 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "sys_log")
-public class Log implements Serializable {
+public class SysLog implements Serializable {
 
 
     private static final long serialVersionUID = 3178374645306668534L;
     private String id;//逻辑主键
-    private String userId;//操作人
-    private Date createTime = new Date();//操作时间
+    private String userId;//操作人ID
+    private String userName;//操作人姓名
     private String ip;
-    private short type;//操作类型 1新增 2修改 3删除 4登录 5登出 6异常
+    private Date operateTime;//操作时间
     private String content;//日志内容
+    private int type;
+    private int status = LogOperateStatus.NORMAL.getStatus();
+
 
     @Id
     @GenericGenerator(name = "generator", strategy = "uuid")
@@ -46,20 +50,23 @@ public class Log implements Serializable {
     public String getUserId() {
         return userId;
     }
-
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
 
-    @Column(name = "create_time", nullable = false)
+    @Column(name = "user_name", nullable = false)
+    public String getUserName() { return userName;}
+    public void setUserName(String userName) { this.userName = userName;}
+
+    @Column(name = "operate_time", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    public Date getCreateTime() {
-        return createTime;
+    public Date getOperateTime() {
+        return operateTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setOperateTime(Date operateTime) {
+        this.operateTime = operateTime;
     }
 
 
@@ -74,11 +81,11 @@ public class Log implements Serializable {
 
 
     @Column(name = "type", nullable = false, length = 1)
-    public short getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(short type) {
+    public void setType(int type) {
         this.type = type;
     }
 
@@ -89,9 +96,14 @@ public class Log implements Serializable {
     public String getContent() {
         return content;
     }
-
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Column(name = "status", nullable = false)
+    public int getStatus() { return status;}
+    public void setStatus(int status) {
+        this.status = status;
     }
 
 }

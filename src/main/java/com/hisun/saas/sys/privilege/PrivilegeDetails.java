@@ -16,8 +16,21 @@ import java.util.List;
  */
 public class PrivilegeDetails {
 
+    public final static String AND = "and";
+    public final static String OR = "or";
+    private String logic = AND;
     private List<PrivilegeDetail> privilegeDetails = Lists.newArrayList();
-    public PrivilegeDetails(){}
+
+    public PrivilegeDetails() {
+    }
+
+    public String getLogic() {
+        return logic;
+    }
+
+    public void setLogic(String logic) {
+        this.logic = logic;
+    }
 
     public List<PrivilegeDetail> getPrivilegeDetails() {
         return privilegeDetails;
@@ -27,47 +40,36 @@ public class PrivilegeDetails {
         this.privilegeDetails = privilegeDetails;
     }
 
-    public void add(PrivilegeDetail privilegeDetail){
+    public void add(PrivilegeDetail privilegeDetail) {
         privilegeDetails.add(privilegeDetail);
     }
 
-    public List<PrivilegeDetail> get(String code){
-        List<PrivilegeDetail> returnPrivilegeDetails = Lists.newArrayList();
-        for(PrivilegeDetail privilegeDetail : privilegeDetails){
-            if(privilegeDetail.getPrivilegeCode().equals(code)){
-                returnPrivilegeDetails.add(privilegeDetail);
-            }
-        }
-        return returnPrivilegeDetails;
-    }
 
-    public String getSqlFilterExpress(String code){
+    public String getSqlFilterExpress() {
         StringBuffer sb = new StringBuffer();
-        int j =0;
-        for(PrivilegeDetail privilegeDetail : privilegeDetails){
-            if(privilegeDetail.getPrivilegeCode().equals(code)
-                    &&(!StringUtils.isEmpty(privilegeDetail.getSqlFilterExpress()))){
-                    if (j == 0) {
-                        sb.append("(").append(privilegeDetail.getSqlFilterExpress()).append(")");
-                    }else{
-                        sb.append(" or ").append("(").append(privilegeDetail.getSqlFilterExpress()).append(")");
-                    }
-                    j++;
+        int j = 0;
+        for (PrivilegeDetail privilegeDetail : privilegeDetails) {
+            if (!StringUtils.isEmpty(privilegeDetail.getSqlFilterExpress())){
+                if (j == 0) {
+                    sb.append(" (").append(privilegeDetail.getSqlFilterExpress()).append(") ");
+                } else {
+                    sb.append(" ").append(logic).append(" (").append(privilegeDetail.getSqlFilterExpress()).append(")");
                 }
+                j++;
+            }
         }
         return sb.toString();
     }
 
-    public String getHqlFilterExpress(String code){
+    public String getHqlFilterExpress() {
         StringBuffer sb = new StringBuffer();
-        int j =0;
-        for(PrivilegeDetail privilegeDetail : privilegeDetails){
-            if(privilegeDetail.getPrivilegeCode().equals(code)
-                    &&(!StringUtils.isEmpty(privilegeDetail.getHqlFilterExpress()))){
+        int j = 0;
+        for (PrivilegeDetail privilegeDetail : privilegeDetails) {
+            if (!StringUtils.isEmpty(privilegeDetail.getHqlFilterExpress())){
                 if (j == 0) {
-                    sb.append("(").append(privilegeDetail.getHqlFilterExpress()).append(")");
-                }else{
-                    sb.append(" or ").append("(").append(privilegeDetail.getHqlFilterExpress()).append(")");
+                    sb.append(" (").append(privilegeDetail.getHqlFilterExpress()).append(") ");
+                } else {
+                    sb.append(" ").append(logic).append(" (").append(privilegeDetail.getHqlFilterExpress()).append(")");
                 }
                 j++;
             }
@@ -78,7 +80,8 @@ public class PrivilegeDetails {
     @Override
     public String toString() {
         return "PrivilegeDetails{" +
-                "privilegeDetails=" + privilegeDetails +
+                "logic='" + logic + '\'' +
+                ", privilegeDetails=" + privilegeDetails +
                 '}';
     }
 }

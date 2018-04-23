@@ -5,7 +5,7 @@
  */
 package com.hisun.saas.sys.admin.resource.entity;
 
-import com.hisun.base.entity.AbstractResource;
+import com.hisun.saas.sys.entity.AbstractResource;
 import com.hisun.saas.sys.admin.role.entity.RoleResource;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

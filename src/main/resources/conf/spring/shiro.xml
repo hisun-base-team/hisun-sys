@@ -15,7 +15,7 @@
 	</bean>
 	<!-- 缓存管理器 -->
 	<bean id="cacheManager"
-		  class="com.hisun.base.auth.cache.SpringCacheManagerWrapper">
+		  class="com.hisun.saas.sys.auth.cache.SpringCacheManagerWrapper">
 		<property name="cacheManager" ref="springCacheManager" />
 	</bean>
 
@@ -25,7 +25,7 @@
 
 
 	<!-- 凭证匹配器 主要实现了密码错误次数限制-->
-	<bean id="credentialsMatcher" class="com.hisun.base.auth.credentials.RetryLimitHashedCredentialsMatcher">
+	<bean id="credentialsMatcher" class="com.hisun.saas.sys.auth.credentials.RetryLimitHashedCredentialsMatcher">
 		<constructor-arg ref="cacheManager" />
 		<property name="hashAlgorithmName" value="md5" />
 		<property name="hashIterations" value="2" />
@@ -82,7 +82,7 @@
 
 	<!-- 会话管理器 定时清除没用SESSION -->
 	<bean id="sessionManager"
-		  class="com.hisun.base.auth.session.SimpleWebSessionManager">
+		  class="com.hisun.saas.sys.auth.session.SimpleWebSessionManager">
 		<property name="globalSessionTimeout" value="600000" />
 		<property name="sessionValidationInterval" value="30000" />
 		<property name="cacheManager" ref="cacheManager" />
@@ -121,7 +121,7 @@
 
 	<!-- 验证码 -->
 	<bean id="kaptchaFormAuthenticationFilter"
-		  class="com.hisun.base.auth.filter.KaptchaFormAuthenticationFilter">
+		  class="com.hisun.saas.sys.auth.filter.KaptchaFormAuthenticationFilter">
 		<property name="usernameParam" value="username" />
 		<property name="passwordParam" value="password" />
 		<property name="rememberMeParam" value="rememberMe" />
@@ -131,7 +131,7 @@
 
 	<!-- 超时后，异步请求返回处理 -->
 	<bean id="ajaxNoAuthenticationFilter"
-		  class="com.hisun.base.auth.filter.AjaxNoAuthenticationFilter">
+		  class="com.hisun.saas.sys.auth.filter.AjaxNoAuthenticationFilter">
 		<constructor-arg>
 			<value><![CDATA[{"success":false,"code":-1,"message":"登录会话已过期，请重新登录"}]]></value>
 		</constructor-arg>
@@ -141,7 +141,7 @@
 	<bean id="freezeTenantUserFilter" class="com.hisun.saas.sys.auth.filter.FreezeTenantUserFilter"></bean>
 	<bean id="sysUserFilter" class="com.hisun.saas.sys.auth.filter.SysUserFilter" />
 	<!-- 登出删除SESSION -->
-	<bean id="forceLogoutFilter" class="com.hisun.base.auth.filter.ForceLogoutFilter" ></bean>
+	<bean id="forceLogoutFilter" class="com.hisun.saas.sys.auth.filter.ForceLogoutFilter" ></bean>
 
 	<!-- Shiro的Web过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
@@ -178,28 +178,28 @@
 				/forgetPassword = anon
 				/admin/forgot = anon
 				/load/assignment/** = anon
-				/platform/user/activate = anon
-				/platform/user/checkUserName = anon
-				/platform/user/save = anon
-				/platform/user/forget/password = anon
-				/platform/admin/user/un/** = anon
-				/platform/admin/user/forget/password = anon
-				/platform/admin/user/forgot = anon
-				/platform/user/profile/password = anon
-				/platform/admin/user/profile/password = anon
-				/platform/user/changePwd = anon
-				/platform/admin/user/pwdreset = anon
-				/platform/tenant/user/forgot = anon
-				/platform/tenant/user/pwdreset/** = anon
-				/platform/tenant/user/getActivateLink/** = anon
-				/platform/tenant/user/activate/** = anon
-				/platform/tenant/user/registerToNewTenant/** = anon
+				/sys/user/activate = anon
+				/sys/user/checkUserName = anon
+				/sys/user/save = anon
+				/sys/user/forget/password = anon
+				/sys/admin/user/un/** = anon
+				/sys/admin/user/forget/password = anon
+				/sys/admin/user/forgot = anon
+				/sys/user/profile/password = anon
+				/sys/admin/user/profile/password = anon
+				/sys/user/changePwd = anon
+				/sys/admin/user/pwdreset = anon
+				/sys/tenant/user/forgot = anon
+				/sys/tenant/user/pwdreset/** = anon
+				/sys/tenant/user/getActivateLink/** = anon
+				/sys/tenant/user/activate/** = anon
+				/sys/tenant/user/registerToNewTenant/** = anon
 
 				/outside/** = anon
 				/register/** = anon <!-- 注册页面 -->
 				/un/** = anon  <!-- 过滤所有不用权限验证过滤的URL -->
-				/platform/tenant/user/un/** = anon  <!-- 过滤所有不用权限验证过滤的URL -->
-				/platform/tenant/register/** = anon <!-- 注册控制器，不用权限 -->
+				/sys/tenant/user/un/** = anon  <!-- 过滤所有不用权限验证过滤的URL -->
+				/sys/tenant/register/** = anon <!-- 注册控制器，不用权限 -->
 				<!-- /logout = logout -->
 				/authenticated = authc
 				/** = ajaxNoAuthc,forceLogoutFilter,user,sysUser

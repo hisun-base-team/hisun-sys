@@ -6,7 +6,7 @@
 
 package com.hisun.saas.sys.tenant.role.entity;
 
-import com.hisun.base.entity.AbstractRole;
+import com.hisun.saas.sys.entity.AbstractRole;
 import com.hisun.saas.sys.tenant.base.entity.TenantEntityInterface;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.sys.tenant.user.entity.TenantUserRole;

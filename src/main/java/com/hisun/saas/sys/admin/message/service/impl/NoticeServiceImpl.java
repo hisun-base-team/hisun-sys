@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
- * <p>Title: LogServiceImpl.java </p>
+ * <p>Title: SysLogService.java </p>
  * <p>Package com.hisun.cloud.sys.service.impl </p>
  * <p>Description: TODO</p>
  * <p>Copyright: Copyright (c) 2015</p>

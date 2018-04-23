@@ -1,12 +1,11 @@
 package com.hisun.saas.sys.auth.realm;
 
 import com.google.common.collect.Sets;
-import com.hisun.base.entity.AbstractResource;
-import com.hisun.saas.sys.admin.resource.entity.Resource;
+import com.hisun.saas.sys.entity.AbstractResource;
 import com.hisun.saas.sys.admin.user.service.UserService;
 import com.hisun.saas.sys.auth.UserLoginDetails;
-import com.hisun.base.auth.Constants;
-import com.hisun.base.entity.AbstractRole;
+import com.hisun.saas.sys.auth.Constants;
+import com.hisun.saas.sys.entity.AbstractRole;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;

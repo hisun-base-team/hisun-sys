@@ -6,10 +6,7 @@
 
 package com.hisun.saas.sys.auth;
 
-import com.hisun.base.auth.Constants;
-import com.hisun.util.ApplicationContextUtil;
 import org.apache.shiro.SecurityUtils;
-import org.springframework.web.util.WebUtils;
 
 /**
  * @author Rocky {rockwithyou@126.com}

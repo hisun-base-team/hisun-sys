@@ -2,15 +2,15 @@ package com.hisun.saas.sys.admin.user.controller;
 
 import com.google.common.collect.Maps;
 import com.hisun.saas.sys.admin.user.entity.User;
-import com.hisun.base.auth.Constants;
-import com.hisun.base.auth.KaptchaUsernamePasswordToken;
+import com.hisun.saas.sys.auth.Constants;
+import com.hisun.saas.sys.auth.KaptchaUsernamePasswordToken;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
-import com.hisun.saas.sys.admin.log.entity.Log;
-import com.hisun.saas.sys.admin.log.service.LogService;
+import com.hisun.saas.sys.admin.log.entity.SysLog;
+import com.hisun.saas.sys.admin.log.service.SysLogService;
 import com.hisun.saas.sys.admin.message.entity.Notice;
 import com.hisun.saas.sys.admin.message.service.NoticeService;
 import com.hisun.saas.sys.admin.resource.service.ResourceService;
@@ -47,7 +47,7 @@ public class AdminLoginController extends BaseController {
 	@Resource
 	private UserService userService;
 	@Resource
-	private LogService logService;
+	private SysLogService logService;
 	@Resource
 	private NoticeService noticeService;
 	
@@ -84,8 +84,7 @@ public class AdminLoginController extends BaseController {
 				return "redirect:/admin/login";
 			}else{
 				currentUser.getSession().setAttribute(Constants.CURRENT_USER, userLoginDetails);
-
-				Log log = new Log();
+				SysLog log = new SysLog();
 				String ip = WrapWebUtils.getRemoteIp();
 				try {
 					if(smsOn) {
@@ -97,7 +96,7 @@ public class AdminLoginController extends BaseController {
 					log.setIp(ip);
 					//log.setContent(content);
 					log.setUserId(userLoginDetails.getUserid());
-					log.setCreateTime(new Date());
+					log.setOperateTime(new Date());
 					log.setType(Short.valueOf("4"));
 					logService.log(log);
 				}
@@ -124,7 +123,6 @@ public class AdminLoginController extends BaseController {
 				model.addAttribute("error", "1");
 			}
 			model.addAttribute("username", loginUser.getUsername());
-			
 			return "redirect:/admin/login";
 		}
 	}

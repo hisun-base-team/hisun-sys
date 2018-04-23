@@ -7,10 +7,10 @@
 package com.hisun.saas.sys.admin.resource.controller;
 
 import com.google.common.collect.Maps;
-import com.hisun.base.entity.AbstractResource;
+import com.hisun.saas.sys.entity.AbstractResource;
 import com.hisun.saas.sys.admin.resource.service.ResourceService;
 import com.hisun.saas.sys.auth.UserLoginDetails;
-import com.hisun.base.auth.Constants;
+import com.hisun.saas.sys.auth.Constants;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;

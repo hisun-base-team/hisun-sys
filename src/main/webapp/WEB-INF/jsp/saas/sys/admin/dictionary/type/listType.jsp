@@ -47,7 +47,7 @@
 													<td>
 															<c:out value="${dictionary.sort }"></c:out>
 													</td>
-													<td><fmt:formatDate value="${dictionary.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
+													<td><fmt:formatDate value="${dictionary.operateTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
 													<td>
 															<c:out value="${dictionary.code }"></c:out>
 													</td>

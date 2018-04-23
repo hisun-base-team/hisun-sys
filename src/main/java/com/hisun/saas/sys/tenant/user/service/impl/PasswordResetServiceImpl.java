@@ -1,7 +1,7 @@
 package com.hisun.saas.sys.tenant.user.service.impl;
 
-import com.hisun.base.auth.service.PasswordHelper;
-import com.hisun.base.auth.vo.PasswordSecurity;
+import com.hisun.saas.sys.auth.service.PasswordHelper;
+import com.hisun.saas.sys.auth.vo.PasswordSecurity;
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonRestrictions;

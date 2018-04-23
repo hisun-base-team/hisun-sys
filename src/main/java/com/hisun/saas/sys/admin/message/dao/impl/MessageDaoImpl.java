@@ -6,7 +6,7 @@ import com.hisun.saas.sys.admin.message.entity.Message;
 import org.springframework.stereotype.Repository;
 
 /**
- * <p>Title: LogDaoImpl.java </p>
+ * <p>Title: SysLogDao.java </p>
  * <p>Package com.hisun.saas.sys.dao.impl </p>
  * <p>Description: TODO</p>
  * <p>Copyright: Copyright (c) 2015</p>

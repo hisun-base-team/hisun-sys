@@ -7,11 +7,10 @@
 package com.hisun.saas.sys.auth.realm;
 
 import com.google.common.collect.Sets;
-import com.hisun.base.auth.Constants;
-import com.hisun.base.auth.KaptchaUsernamePasswordToken;
-import com.hisun.base.auth.realm.BaseRealm;
-import com.hisun.base.entity.AbstractResource;
-import com.hisun.base.entity.AbstractRole;
+import com.hisun.saas.sys.auth.Constants;
+import com.hisun.saas.sys.auth.KaptchaUsernamePasswordToken;
+import com.hisun.saas.sys.entity.AbstractResource;
+import com.hisun.saas.sys.entity.AbstractRole;
 import com.hisun.base.exception.GenericException;
 import com.hisun.saas.sys.admin.user.entity.User;
 import com.hisun.saas.sys.admin.user.service.UserService;

@@ -50,8 +50,8 @@
 
     <!-- 上下文初始化 -->
 	<bean class="com.hisun.util.ApplicationContextUtil"></bean>
-    <bean id="passwordHelper" class="com.hisun.base.auth.service.PasswordHelper"/>
-    <bean id="sessionHelper" class="com.hisun.base.auth.service.SessionHelper"/>
+    <bean id="passwordHelper" class="com.hisun.saas.sys.auth.service.PasswordHelper"/>
+    <bean id="sessionHelper" class="com.hisun.saas.sys.auth.service.SessionHelper"/>
     <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.MemorySessionDAO"/>
 
     <!-- 配置托管 -->

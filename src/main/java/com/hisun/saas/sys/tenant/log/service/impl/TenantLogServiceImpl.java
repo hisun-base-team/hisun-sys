@@ -14,14 +14,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
 
 /**
- * <p>Title: LogServiceImpl.java </p>
+ * <p>Title: SysLogService.java </p>
  * <p>Package com.hisun.cloud.sys.service.impl </p>
  * <p>Description: TODO</p>
  * <p>Copyright: Copyright (c) 2015</p>
@@ -120,7 +119,7 @@ public class TenantLogServiceImpl extends BaseServiceImpl<TenantLog, String> imp
 				logVo.setUserName((String)obs[index++]);
 				logVo.setId((String)obs[index++]);
 				logVo.setContent((String)obs[index++]);
-				logVo.setCreateTime((Date)obs[index++]);
+				logVo.setOperateTime((Date)obs[index++]);
 				logVo.setIp((String)obs[index++]);
 				logVo.setType((short)obs[index++]);
 				logVo.setUserId((String)obs[index++]);
@@ -209,7 +208,7 @@ public class TenantLogServiceImpl extends BaseServiceImpl<TenantLog, String> imp
             logVo = new TenantLogVo();
             logVo.setIp(map.get("ip").toString());
             logVo.setContent(map.get("content").toString());
-            logVo.setCreateTime((Date)map.get("createTime"));
+            logVo.setOperateTime((Date)map.get("createTime"));
             logVo.setUserName(map.get("realname") == null ? map.get("userName").toString():map.get("realname").toString());
             logVo.setType(Short.valueOf(map.get("type").toString()));
             logVoList.add(logVo);

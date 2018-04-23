@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
+
 package com.hisun.saas.sys.admin.log.controller;
 
 import com.google.common.collect.Lists;
@@ -9,12 +15,12 @@ import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
-import com.hisun.base.entity.AbstractRole;
+import com.hisun.saas.sys.entity.AbstractRole;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
-import com.hisun.saas.sys.admin.log.entity.Log;
-import com.hisun.saas.sys.admin.log.service.LogService;
-import com.hisun.saas.sys.admin.log.vo.LogVo;
+import com.hisun.saas.sys.admin.log.entity.SysLog;
+import com.hisun.saas.sys.admin.log.service.SysLogService;
+import com.hisun.saas.sys.admin.log.vo.SysLogVo;
 import com.hisun.saas.sys.admin.user.service.UserService;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import org.apache.commons.lang3.StringUtils;
@@ -32,23 +38,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>Title: LogController.java </p>
- * <p>Package com.hisun.saas.sys.controller </p>
- * <p>Description: TODO</p>
- * <p>Copyright: Copyright (c) 2015</p>
- * <p>Company: 湖南海数互联信息技术有限公司</p>
- * @author Jason
- * @email jason4j@qq.com
- * @date 2015年5月22日 下午2:15:01 
- * @version 
- */
+
 @Controller
 @RequestMapping("/sys/admin/log")
-public class LogController extends BaseController {
+public class SysLogController extends BaseController {
 
 	@Resource
-	private LogService logService;
+	private SysLogService logService;
 	
 	@Resource
 	private UserService userService;
@@ -71,18 +67,18 @@ public class LogController extends BaseController {
 			Long total = this.logService.count(query);
 			CommonOrderBy orderBy = new CommonOrderBy();
 			orderBy.add(CommonOrder.desc("createTime"));
-			List<Log> queryList = this.logService.list(query, orderBy, pageNum, pageSize);
-			List<LogVo> logvos = Lists.newArrayList();
-			LogVo logvo;
-			for(Log log : queryList){
-				logvo = new LogVo();
+			List<SysLog> queryList = this.logService.list(query, orderBy, pageNum, pageSize);
+			List<SysLogVo> logvos = Lists.newArrayList();
+			SysLogVo logvo;
+			for(SysLog log : queryList){
+				logvo = new SysLogVo();
 				BeanUtils.copyProperties(log, logvo);
 				User user = this.userService.getByPK(log.getUserId());
 				logvo.setUserName(user.getRealname());
 				logvos.add(logvo);
 			}
 
-			PagerVo<LogVo> pager = new PagerVo<LogVo>(logvos, total.intValue(), pageNum, pageSize);
+			PagerVo<SysLogVo> pager = new PagerVo<SysLogVo>(logvos, total.intValue(), pageNum, pageSize);
 			map.put("pager", pager);
 			
 		}catch(Exception e){
@@ -105,15 +101,15 @@ public class LogController extends BaseController {
 				roleCodes.add(StringUtils.trim(role.getRoleCode()));
 			}
 			CommonConditionQuery query = new CommonConditionQuery();
-			query.add(CommonRestrictions.and(" type=:type ", "type", Short.valueOf("4")));
+			query.add(CommonRestrictions.and(" type=:type ", "type", 4));
 			Long total = this.logService.count(query);
 			CommonOrderBy orderBy = new CommonOrderBy();
 			orderBy.add(CommonOrder.desc("createTime"));
-			List<Log> queryList = this.logService.list(query, orderBy, pageNum, pageSize);
-			List<LogVo> logvos = Lists.newArrayList();
-			LogVo logvo;
-			for(Log log : queryList){
-				logvo = new LogVo();
+			List<SysLog> queryList = this.logService.list(query, orderBy, pageNum, pageSize);
+			List<SysLogVo> logvos = Lists.newArrayList();
+			SysLogVo logvo;
+			for(SysLog log : queryList){
+				logvo = new SysLogVo();
 				BeanUtils.copyProperties(log, logvo);
 				User user = this.userService.getByPK(log.getUserId());
 				if(user!=null){
@@ -122,7 +118,7 @@ public class LogController extends BaseController {
 				logvos.add(logvo);
 			}
 
-			PagerVo<LogVo> pager = new PagerVo<LogVo>(logvos, total.intValue(), pageNum, pageSize);
+			PagerVo<SysLogVo> pager = new PagerVo<SysLogVo>(logvos, total.intValue(), pageNum, pageSize);
 			map.put("pager", pager);
 			//}
 
@@ -139,7 +135,7 @@ public class LogController extends BaseController {
 			@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="20") int pageSize) throws GenericException {
 		Map<String, Object> map = Maps.newHashMap();
 		try{
-			PagerVo<LogVo> pager = this.logService.selectLog(pageSize, pageNum, null);
+			PagerVo<SysLogVo> pager = this.logService.selectLog(pageSize, pageNum, null);
 			map.put("pager", pager);
 		}catch(Exception e){
 			throw new GenericException(e);
@@ -153,7 +149,7 @@ public class LogController extends BaseController {
 	public String searchLogList(HttpServletRequest request,
 			@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="20") int pageSize,String start,String end) throws GenericException {
 		try{
-			PagerVo<LogVo> pager = this.logService.searchOwnSecurityLogList(pageSize, pageNum, start,end,null);
+			PagerVo<SysLogVo> pager = this.logService.searchOwnSecurityLogList(pageSize, pageNum, start,end,null);
 			request.setAttribute("pager", pager);
 		}catch(Exception e){
 			throw new GenericException(e);
@@ -166,7 +162,7 @@ public class LogController extends BaseController {
 	public String searchAllLogList(HttpServletRequest request,
 								@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="20") int pageSize,String start,String end,@RequestParam(value = "searchContent",required = false) String searchContent) throws GenericException {
 		try{
-			PagerVo<LogVo> pager = this.logService.searchAllSecurityLogList(pageSize, pageNum, start,end,searchContent);
+			PagerVo<SysLogVo> pager = this.logService.searchAllSecurityLogList(pageSize, pageNum, start,end,searchContent);
 			request.setAttribute("pager", pager);
 			request.setAttribute("searchContent", searchContent);
 		}catch(Exception e){
@@ -180,7 +176,7 @@ public class LogController extends BaseController {
 	public String searchLogList(HttpServletRequest request,
 								@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="20") int pageSize,String starttime,String endtime,String userName,String type) throws GenericException {
 		try{
-			PagerVo<LogVo> pager = this.logService.searchLogList(pageSize, pageNum, null, starttime,endtime,userName,type);
+			PagerVo<SysLogVo> pager = this.logService.searchLogList(pageSize, pageNum, null, starttime,endtime,userName,type);
 			request.setAttribute("pager", pager);
 			request.setAttribute("userName", userName);
 		}catch(Exception e){

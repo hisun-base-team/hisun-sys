@@ -7,13 +7,13 @@
 package com.hisun.saas.sys.tenant.resource.controller;
 
 import com.google.common.collect.Maps;
-import com.hisun.base.auth.Constants;
+import com.hisun.saas.sys.auth.Constants;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
-import com.hisun.base.entity.AbstractResource;
+import com.hisun.saas.sys.entity.AbstractResource;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;

@@ -15,6 +15,7 @@ import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.tenant.role.dao.TenantRoleDao;
 import com.hisun.saas.sys.tenant.role.entity.TenantRole;
 import com.hisun.saas.sys.tenant.role.vo.TenantRoleVo;
+import com.hisun.saas.sys.util.EntityWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>类名称:TenantRoleServiceImpl</p>
- * <p>类描述:</p>
- * <p>公司:湖南海数互联信息技术有限公司</p>
- *
- * @创建者:init
- * @创建人:15/11/18下午2:15
- * @创建人联系方式:init@hn-hisun.com
- */
+
 @Service
 public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole,String> implements TenantRoleService {
 
@@ -53,7 +46,7 @@ public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole,String> im
         TenantRole entity = new TenantRole();
         BeanUtils.copyProperties(vo, entity);
         entity.setId(null);
-        setCreateUser(details, entity);
+        EntityWrapper.wrapperSaveBaseProperties(entity,details);
         tenantRoleDao.save(entity);
         return entity;
     }
@@ -76,7 +69,7 @@ public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole,String> im
         UserLoginDetails details = UserLoginDetailsUtil.getUserLoginDetails();
         TenantRole entity = tenantRoleDao.getByPK(vo.getId());
         BeanUtils.copyProperties(vo, entity);
-        setUpdateUser(details, entity);
+        EntityWrapper.wrapperUpdateBaseProperties(entity,details);
         tenantRoleDao.update(entity);
         return entity;
     }

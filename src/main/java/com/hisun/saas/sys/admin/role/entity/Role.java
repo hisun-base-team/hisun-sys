@@ -6,8 +6,7 @@
 
 package com.hisun.saas.sys.admin.role.entity;
 
-import com.hisun.saas.sys.admin.resource.entity.Resource;
-import com.hisun.base.entity.AbstractRole;
+import com.hisun.saas.sys.entity.AbstractRole;
 import com.hisun.saas.sys.admin.user.entity.UserRole;
 import org.hibernate.annotations.*;
 

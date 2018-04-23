@@ -6,8 +6,7 @@
 
 package com.hisun.saas.sys.admin.user.entity;
 
-import com.hisun.base.entity.AbstractUser;
-import org.apache.commons.lang3.StringUtils;
+import com.hisun.saas.sys.entity.AbstractUser;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;

@@ -8,8 +8,7 @@ package com.hisun.saas.sys.tenant.user.entity;
 
 import com.hisun.saas.sys.tenant.base.entity.TenantEntityInterface;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
-import com.hisun.base.entity.AbstractUser;
-import org.apache.commons.lang3.StringUtils;
+import com.hisun.saas.sys.entity.AbstractUser;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;

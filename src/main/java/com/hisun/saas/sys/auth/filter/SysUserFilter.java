@@ -6,13 +6,12 @@
 
 package com.hisun.saas.sys.auth.filter;
 
-import com.hisun.base.entity.AbstractResource;
+import com.hisun.saas.sys.entity.AbstractResource;
 import com.hisun.saas.sys.admin.resource.service.ResourceService;
 import com.hisun.saas.sys.admin.user.service.UserService;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
-import com.hisun.base.auth.Constants;
-import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
+import com.hisun.saas.sys.auth.Constants;
 import com.hisun.saas.sys.tenant.resource.service.TenantResourceService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
