@@ -29,9 +29,10 @@ public class TenantLog extends TenantEntity implements Serializable {
 	private String userName;//操作人姓名
 	private String ip;
 	private Date operateTime;//操作时间
+	private String invokeMethod;//调用方法名
 	private String content;//日志内容
-	private int type;
-	private int status = LogOperateStatus.NORMAL.getStatus();
+	private int type;//日志类型
+	private int status = LogOperateStatus.NORMAL.getStatus();//运行状态
 
 	@Id
 	@GenericGenerator(name = "generator", strategy = "uuid")
@@ -83,6 +84,14 @@ public class TenantLog extends TenantEntity implements Serializable {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public String getInvokeMethod() {
+		return invokeMethod;
+	}
+
+	public void setInvokeMethod(String invokeMethod) {
+		this.invokeMethod = invokeMethod;
 	}
 
 	@Column(name="content")

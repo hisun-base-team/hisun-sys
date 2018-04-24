@@ -30,4 +30,14 @@ public enum LogOperateType {
         return description;
     }
 
+
+    public static LogOperateType getEnum(int type){
+        for(LogOperateType l:LogOperateType.values()){
+            if(l.type==type){
+                return l;
+            }
+        }
+        return null;
+    }
+
 }

@@ -35,11 +35,10 @@ public class TenantResource extends AbstractResource
     }
 
     @OneToMany(mappedBy = "tenantResource")
-    @Cascade({CascadeType.ALL})
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     public List<Tenant2Resource> getTenant2Resources() {
         return tenant2Resources;
     }
-
     public void setTenant2Resources(List<Tenant2Resource> tenant2Resources) {
         this.tenant2Resources = tenant2Resources;
     }

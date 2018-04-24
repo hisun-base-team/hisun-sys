@@ -221,7 +221,6 @@ public class TenantResourceController extends BaseController {
             if (StringUtils.isNotBlank(id)) {
                 CommonConditionQuery query = new CommonConditionQuery();
                 query.add(CommonRestrictions.and(" pId = :pId ", "pId", id));
-//                query.add(CommonRestrictions.and(" type = :type ","type" ,1));
                 Long total = tenantResourceService.count(query);
                 if(total>0){
                     map.put("success", false);

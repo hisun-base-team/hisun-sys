@@ -58,34 +58,49 @@ public class LogAspect {
 
 
     @Pointcut("@annotation(com.hisun.saas.sys.log.RequiresLog)")
-    public void requiresLogPointcut(){}
+    public void requiresLogPointcut() {
+    }
 
     @AfterReturning(value = "requiresLogPointcut()")
-    public void requiresLogAfterReturningCalls(JoinPoint joinPoint)throws Throwable{
-        Method method = this.getMethod(joinPoint);
-        if(method!=null){
-            RequiresLog requiresLog = method.getAnnotation(RequiresLog.class);
-            int type = requiresLog.operateType().getType();
-            String decription = requiresLog.description();
-            String parseDescription = parseDescription(decription,joinPoint,method);
-            //可对描述进行扩展,以提高可读性
-            saveLog(parseDescription,type,LogOperateStatus.NORMAL.getStatus());
+    public void requiresLogAfterReturningCalls(JoinPoint joinPoint) {
+        try {
+            Method method = this.getMethod(joinPoint);
+            if (method != null) {
+                RequiresLog requiresLog = method.getAnnotation(RequiresLog.class);
+                int type = requiresLog.operateType().getType();
+                String decription = requiresLog.description();
+                String parseDescription = parseDescription(decription, joinPoint, method);
+                String invokeMethod = joinPoint.getTarget().getClass().getName() + "." + method.getName();
+                //可对描述进行扩展,以提高可读性
+                saveLog(parseDescription, invokeMethod, type, LogOperateStatus.NORMAL.getStatus());
+            }
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
         }
 
     }
 
     @AfterThrowing(pointcut = "requiresLogPointcut()", throwing = "e")
-    public void requiresLogAfterThrowingCalls(JoinPoint joinPoint, Throwable e) {
-        Method method = this.getMethod(joinPoint);
-        if(method!=null){
-            RequiresLog requiresLog = method.getAnnotation(RequiresLog.class);
-            int type = requiresLog.operateType().getType();
-            String decription = requiresLog.description()+",错误:"+e.getMessage();
-            saveLog(decription, type,LogOperateStatus.EXCEPTION.getStatus());
+    public void requiresLogAfterThrowingCalls(JoinPoint joinPoint, Throwable e) throws Throwable {
+        try {
+            Method method = this.getMethod(joinPoint);
+            if (method != null) {
+                RequiresLog requiresLog = method.getAnnotation(RequiresLog.class);
+                int type = requiresLog.operateType().getType();
+                String decription = requiresLog.description() + ",错误:" + e.getMessage();
+                String parseDescription = parseDescription(decription, joinPoint, method);
+                String invokeMethod = joinPoint.getTarget().getClass().getName() + "." + method.getName();
+                saveLog(parseDescription,invokeMethod, type, LogOperateStatus.EXCEPTION.getStatus());
+            }
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+
         }
     }
 
-    private void saveLog(String description ,int type,int status){
+    private void saveLog(String description, String invokeMethod,int type, int status) {
         String ip = this.getIp();
         UserLoginDetails userLoginDetails = (UserLoginDetails) SecurityUtils.getSubject().getSession().getAttribute(Constants.CURRENT_USER);
         try {
@@ -96,6 +111,7 @@ public class LogAspect {
                     log.setUserName(userLoginDetails.getRealname());
                     log.setOperateTime(new Date());
                     log.setIp(ip);
+                    log.setInvokeMethod(invokeMethod);
                     log.setContent(description);
                     log.setType(type);
                     log.setStatus(status);
@@ -106,6 +122,7 @@ public class LogAspect {
                     tenantLog.setUserName(userLoginDetails.getRealname());
                     tenantLog.setOperateTime(new Date());
                     tenantLog.setIp(ip);
+                    tenantLog.setInvokeMethod(invokeMethod);
                     tenantLog.setContent(description);
                     tenantLog.setType(type);
                     tenantLog.setStatus(status);
@@ -117,21 +134,22 @@ public class LogAspect {
                 log.setUserName("后台程序");
                 log.setOperateTime(new Date());
                 log.setIp(ip);
+                log.setInvokeMethod(invokeMethod);
                 log.setContent(description);
                 log.setType(type);
                 log.setStatus(status);
                 this.logService.save(log);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
     }
 
-    private String getIp(){
+    private String getIp() {
         String ip = WrapWebUtils.getRemoteIp();
-        if(StringUtils.isEmpty(ip)){
-            ip="localhost";
-        }else{
+        if (StringUtils.isEmpty(ip)) {
+            ip = "localhost";
+        } else {
             try {
                 if (outernet) {
                     ip = AddressUtil.getIpInformation(ip);
@@ -143,9 +161,9 @@ public class LogAspect {
         return ip;
     }
 
-    private Method getMethod(JoinPoint joinPoint){
+    private Method getMethod(JoinPoint joinPoint) {
         Object target = joinPoint.getTarget();
-        Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
+        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         try {
             method = target.getClass().getMethod(method.getName(), method.getParameterTypes());
         } catch (Exception e) {
@@ -154,68 +172,68 @@ public class LogAspect {
         return method;
     }
 
-    private String  parseDescription(String src, JoinPoint joinPoint,Method method)throws Exception{
+    private String parseDescription(String src, JoinPoint joinPoint, Method method) throws Exception {
         String reg = "(?<=(?<!\\\\)\\$\\{)(.*?)(?=(?<!\\\\)\\})";
         Matcher matcher = Pattern.compile(reg).matcher(src);
         List<String> descs = new ArrayList<String>();
         while (matcher.find()) {
             descs.add(matcher.group());
         }
-        if(descs.size()>0){
-            for(String desc : descs){
+        if (descs.size() > 0) {
+            for (String desc : descs) {
                 String paramName = null;
                 String fieldName = null;
                 int dot = desc.indexOf(".");
-                if(dot>-1){
-                     paramName = desc.substring(0,dot);
-                     fieldName = desc.substring(dot+1,desc.length());
-                }else{
-                     paramName = desc;
+                if (dot > -1) {
+                    paramName = desc.substring(0, dot);
+                    fieldName = desc.substring(dot + 1, desc.length());
+                } else {
+                    paramName = desc;
                 }
-                String value = this.getValue(paramName,fieldName,joinPoint,method);
-                src = src.replace("${"+desc+"}",value);
+                String value = this.getValue(paramName, fieldName, joinPoint, method);
+                src = src.replace("${" + desc + "}", value);
             }
         }
         return src;
     }
 
-    private String getValue(String param,String field,JoinPoint joinPoint,Method method)throws Exception{
+    private String getValue(String param, String field, JoinPoint joinPoint, Method method) throws Exception {
         String value = "";
         int paramIndex = 0;
         ParameterNameDiscoverer parameterNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
         String[] parameterNames = parameterNameDiscoverer.getParameterNames(method);
         int j = 0;
-        for(String paramName : parameterNames){
-            if(param.equals(paramName)){
+        for (String paramName : parameterNames) {
+            if (param.equals(paramName)) {
                 paramIndex = j;
             }
             j++;
         }
         Object[] args = joinPoint.getArgs();
-        if(field!=null){
+        if (field != null) {
             Object obj = args[paramIndex];
-            Method m = findGetMethod(obj.getClass(),field);
-            if(m!=null){
-                Object valueObj =  m.invoke(obj);
-                value = com.hisun.util.StringUtils.trimNull2Empty(String.valueOf(valueObj==null?"":valueObj));
+            Method m = findGetMethod(obj.getClass(), field);
+            if (m != null) {
+                Object valueObj = m.invoke(obj);
+                value = com.hisun.util.StringUtils.trimNull2Empty(String.valueOf(valueObj == null ? "" : valueObj));
             }
-        }else{
-            value = com.hisun.util.StringUtils.trimNull2Empty(String.valueOf(args[paramIndex]==null?"":args[paramIndex]));
+        } else {
+            value = com.hisun.util.StringUtils.trimNull2Empty(String.valueOf(args[paramIndex] == null ? "" : args[paramIndex]));
         }
         return value;
     }
 
-    private  Method findGetMethod(Class clz,String name)throws Exception{
-        Method method =null;
+    private Method findGetMethod(Class clz, String name) throws Exception {
+        Method method = null;
         try {
             method = clz.getMethod("get" + getMethodName(name));
-        }catch (NoSuchMethodException e){
+        } catch (NoSuchMethodException e) {
 
         }
-        return  method;
+        return method;
     }
 
-    private  String getMethodName(String fieldName) throws Exception{
+    private String getMethodName(String fieldName) throws Exception {
         byte[] items = fieldName.getBytes();
         items[0] = (byte) ((char) items[0] - 'a' + 'A');
         return new String(items);

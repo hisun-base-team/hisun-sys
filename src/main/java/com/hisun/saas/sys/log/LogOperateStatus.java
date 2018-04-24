@@ -35,4 +35,14 @@ public enum LogOperateStatus {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
+    public static LogOperateStatus getEnum(int status){
+        for(LogOperateStatus l:LogOperateStatus.values()){
+            if(l.status==status){
+                return l;
+            }
+        }
+        return null;
+    }
 }

@@ -1,22 +1,23 @@
 package com.hisun.saas.sys.admin.log.vo;
 
+import com.hisun.saas.sys.log.LogOperateStatus;
+import com.hisun.saas.sys.log.LogOperateType;
+
 import java.util.Date;
 
 public class SysLogVo {
 
 	private String id;
-	
 	private String userId;
-	
 	private String userName;
-	
 	private Date operateTime;
-	
 	private String ip;
-	
-	private int type;
-	
+	private String invokeMethod;
 	private String content;
+	private int type;
+	private String typeStr;
+	private int status;
+	private String statusStr;
 
 	public String getId() {
 		return id;
@@ -58,6 +59,10 @@ public class SysLogVo {
 		this.type = type;
 	}
 
+	public String getInvokeMethod() { return invokeMethod; }
+
+	public void setInvokeMethod(String invokeMethod) { this.invokeMethod = invokeMethod;}
+
 	public String getContent() {
 		return content;
 	}
@@ -73,5 +78,29 @@ public class SysLogVo {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
+
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getStatusStr() {
+		return LogOperateStatus.getEnum(this.status).getDescription();
+	}
+
+	public void setStatusStr(String statusStr) {
+		this.statusStr = statusStr;
+	}
+
+	public String getTypeStr() {
+		return LogOperateType.getEnum(this.type).getDescription();
+	}
+
+	public void setTypeStr(String typeStr) {
+		this.typeStr = typeStr;
+	}
 }

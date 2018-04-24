@@ -40,17 +40,16 @@ public class Tenant2Resource {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(columnDefinition = "tenant_id")
+    @JoinColumn(name = "tenant_id")
     public Tenant getTenant() {
         return tenant;
     }
-
     public void setTenant(Tenant tenant) {
         this.tenant = tenant;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(columnDefinition = "resource_id")
+    @JoinColumn(name = "resource_id")
     public TenantResource getTenantResource() {
         return tenantResource;
     }

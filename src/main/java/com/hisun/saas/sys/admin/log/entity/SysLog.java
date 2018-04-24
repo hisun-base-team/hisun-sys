@@ -28,6 +28,7 @@ public class SysLog implements Serializable {
     private String userName;//操作人姓名
     private String ip;
     private Date operateTime;//操作时间
+    private String invokeMethod;//调用方法名
     private String content;//日志内容
     private int type;
     private int status = LogOperateStatus.NORMAL.getStatus();
@@ -87,6 +88,15 @@ public class SysLog implements Serializable {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    @Column(name = "invoke_method",length = 200)
+    public String getInvokeMethod() {
+        return invokeMethod;
+    }
+
+    public void setInvokeMethod(String invokeMethod) {
+        this.invokeMethod = invokeMethod;
     }
 
     @Column(name = "content")

@@ -2,108 +2,71 @@
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/jsp/inc/servlet.jsp" %>
 <%@include file="/WEB-INF/jsp/inc/taglib.jsp" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>登录日志</title>
 <!-- BEGIN PAGE LEVEL STYLES -->
-
-<link rel="stylesheet" type="text/css"
-	href="<%=path%>/css/select2_metro.css" />
-
+<link rel="stylesheet" type="text/css" href="<%=path%>/css/select2_metro.css" />
 <link rel="stylesheet" href="<%=path%>/css/DT_bootstrap.css" />
-
-
 <style type="text/css">
-.mybodyfont{
-	font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI',
-		'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif !important;
-}
 
-.mycontent {
-	margin-top: 20px;
-}
-
-.mylabel {
-	font-size: 16px;
-	cursor: default;
-	font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI',
-		'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif;
-}
-
-.mybutton-group {
-	text-align: right;
-}
-
-.mybutton {
-	font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI',
-		'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif;
-	font-size: 16px;
-}
-
-.btn {
-	font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI',
-		'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif !important;
-}
-
-table {
-	border-collapse:collapse !important;
-}
 </style>
 <!-- END PAGE LEVEL STYLES -->
 </head>
 <body>
 
 			<div class="container-fluid">
-				
+
 				<div class="span6" style="width: 100%; margin: 0px;">
 
 					<div class="portlet-title" style="vertical-align: middle; margin-bottom: 0px; border-bottom:0;">
 						<div class="caption">登录日志</div>
-						<%--<div class="btn-group fr">
-                            <a id="sample_editable_1_new" class="btn green" href="${path }/sys/tenant/tenant/add">
-                                <i class="icon-plus"></i> 创 建
-                            </a>
-                        </div>--%>
 					</div>
 
 					<div class="portlet-body">
 						<div class="row-fluid" style="font-size: 14px;">
 							<div id="query" style="float: left;margin-left: 10px;width: 100%;">
-								<form action="${path}/sys/admin/log/security/search" id="getLogForm" style="margin: 0 0 10px;" method="get" class="form-horizontal">
+								<form action="${path}/sys/admin/log/security/list" id="getLogForm" style="margin: 0 0 10px;" method="get" class="form-horizontal">
 									<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}">
 									开始日期：
 									<div class="input-append" id="starttimeDiv">
-										<input type="text" class="span12" value='<c:out value="${param.start }"></c:out>' name="start" id="start" readonly/>
+										<input type="text" class="span12"  style="width: 100px;" value='<c:out value="${param.start }"></c:out>' name="start" id="start" readonly/>
 									</div>
 									<span class="inp_name" style="">结束日期：</span>
 									<div class="input-append" id="endtimeDiv">
-										<input type="text" class="span12" value='<c:out value="${param.end }"></c:out>' name="end" id="end" readonly/>
+										<input type="text" class="span12" style="width: 100px;" value='<c:out value="${param.end }"></c:out>' name="end" id="end" readonly/>
 									</div>
-									<span class="inp_name" style=""></span>
-									<button type="submit" class="btn blue Short_but">查询</button>
-									<button type="button" class="btn blue Short_but" onclick="searchReset()">清空</button>
+									<span class="inp_name" style="">内容：</span>
+									<input type="text" class="m-wrap" style="width: 100px;" name="searchContent" id="searchContent" placeholder="" value="${cloud:htmlEscape(param.searchContent)}">
+									<button type="submit" class="btn Short_but">查询</button>
+									<button type="button" class="btn Short_but" onclick="searchReset()">清空</button>
 								</form>
 							</div>
 						</div>
 					</div>
-				<table
-					class="table table-striped table-bordered table-hover dataTable table-set">
+				<table class="table table-striped table-bordered table-hover dataTable table-set">
 					<thead>
 						<tr>
-							<th style="width: 70%">登录地址</th>
-							<th style="width: 10%">操作人</th>
-							<th style="width: 20%">登录时间</th>
+							<th style="width: 8%">用户</th>
+							<th style="width: 10%">地址</th>
+							<th style="width: 15%">操作时间</th>
+							<th >说明</th>
+							<th style="width: 8%">类型</th>
+							<th style="width: 8%">状态</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach items="${pager.datas}" var="logs">
 							<tr>
-								<td><c:out value="${logs.ip }"></c:out></td>
 								<td><c:out value="${logs.userName }"></c:out></td>
+								<td><c:out value="${logs.ip }"></c:out></td>
 								<td><fmt:formatDate value="${logs.operateTime }" pattern="yyyy年MM月dd日 HH:mm:ss"/>  </td>
+								<td><c:out value="${logs.content }"></c:out></td>
+								<td><c:out value="${logs.typeStr }"></c:out></td>
+								<td><c:out value="${logs.statusStr }"></c:out></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -117,14 +80,12 @@ table {
 
 
 			</div>
-			
+
 		</div>
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
 
 	<script type="text/javascript" src="<%=path%>/js/select2.min.js"></script>
-
-	<script type="text/javascript"
-		src="<%=path%>/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="<%=path%>/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="<%=path%>/js/jquery.form.js"></script>
 	<script type="text/javascript" src="<%=path%>/js/DT_bootstrap.js"></script>
 	<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.js"></script>

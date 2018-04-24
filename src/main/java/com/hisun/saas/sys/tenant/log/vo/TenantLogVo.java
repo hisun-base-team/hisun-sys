@@ -12,19 +12,13 @@ import java.util.Date;
 public class TenantLogVo {
 
 	private String id;
-	
 	private String userId;
-	
 	private String userName;
-	
 	private Date operateTime;
-	
 	private String ip;
-	
-	private int type;
-	
+	private String invokeMethod;
 	private String content;
-	
+	private int type;
 	private int status;
 
 	public String getId() {
@@ -65,6 +59,14 @@ public class TenantLogVo {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public String getInvokeMethod() {
+		return invokeMethod;
+	}
+
+	public void setInvokeMethod(String invokeMethod) {
+		this.invokeMethod = invokeMethod;
 	}
 
 	public String getContent() {

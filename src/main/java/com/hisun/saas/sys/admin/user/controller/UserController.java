@@ -500,7 +500,6 @@ public class UserController extends BaseController {
 		}
 	}
 
-	@RequiresLog(operateType = LogOperateType.QUERY,description = "用户列表,查询条件为:${searchContent}")
 	@RequiresPermissions(value = {"adminsys:*"})
 	@RequestMapping(value = "/list")
 	public String list(HttpServletRequest request,

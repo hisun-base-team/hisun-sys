@@ -51,16 +51,9 @@ public class AdminResourceController extends BaseController {
 	@javax.annotation.Resource
 	ResourceService resourceService;
 	
-	//@Resource
-	//private SessionDAO sessionDAO;
-	
-	//@javax.annotation.Resource
-	//private SessionHelper sessionHelper;
-
 	@RequiresPermissions("adminResource:tree")
 	@RequestMapping("/list/tree")
 	public ModelAndView treeResources() {
-		//Set<String> sets = sessionHelper.sessionPrincipal();
 		return  new ModelAndView("/saas/sys/admin/resource/listTreeResource");
 	}
 	
