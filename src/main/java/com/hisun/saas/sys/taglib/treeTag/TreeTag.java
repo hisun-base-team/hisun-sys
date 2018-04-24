@@ -7,11 +7,14 @@
 package com.hisun.saas.sys.taglib.treeTag;
 
 import com.hisun.saas.sys.taglib.tree.Tree;
+import com.hisun.util.StringUtils;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-
+/**
+ * @author liuzj {279421824@qq.com}
+ */
 public final class TreeTag extends BodyTagSupport {
 
 	private String text;
@@ -71,6 +74,10 @@ public final class TreeTag extends BodyTagSupport {
 
 	private String token;
 
+	private String defaultvalues="";//默认的值 要有多个必须和key的内容对应  用,分开
+
+	private String defaultkeys="";//默认的知道的相应key值 要有多个必须和值的内容对应  用,分开
+
 	@Override
 	public int doStartTag() throws JspTagException {
 		return EVAL_BODY_BUFFERED;
@@ -97,7 +104,7 @@ public final class TreeTag extends BodyTagSupport {
 	public String buildHTML(){
 		StringBuffer nodesHtml=new StringBuffer();
 		if(isSelectTree.equals("false")){
-			if(this.isSearch!=null && !this.isSearch.equals("")) {
+			if(this.isSearch!=null && this.isSearch.equals("true")) {
 				nodesHtml.append("<div class=\"input-append date form_datetime\" >");
 				nodesHtml.append("<input type = \"text\" id = \""+id+"_keyword\" placeholder = \"搜索关键字...\" class=\"span6 m-wrap\"");
 				nodesHtml.append("style = \"width:175px;height:16px !important\" name = \"keyword\" value = \"\" / >");
@@ -112,9 +119,9 @@ public final class TreeTag extends BodyTagSupport {
 			if(valueName==null || valueName.equals("")){
 				valueName = id+"_value";
 			}
-			nodesHtml.append("<input type=\"hidden\" id=\""+id+"\" name=\""+id+"\" value=\"\"/>");
+			nodesHtml.append("<input type=\"hidden\" id=\""+id+"\" name=\""+id+"\" value=\""+ StringUtils.trimNullCharacter2Empty(this.defaultkeys)+"\"/>");
 			nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tree_valueName\" name=\""+id+"_tree_valueName\" value=\""+valueName+"\"/>");
-			nodesHtml.append("<input type=\"text\" id=\""+valueName+"\" name=\""+valueName+"\" readonly=\"readonly\" required=\""+required+"\" style=\"cursor: pointer;\" onclick=\"showTagDivTree('"+id+"_treeSelDiv')\"");
+			nodesHtml.append("<input type=\"text\" id=\""+valueName+"\" name=\""+valueName+"\" value=\""+StringUtils.trimNullCharacter2Empty(this.defaultvalues)+"\" readonly=\"readonly\" required=\""+required+"\" style=\"cursor: pointer;\" onclick=\"showTagDivTree('"+id+"_treeSelDiv','"+id+"','"+valueName+"','"+isSearch+"')\"");
 			if(selectClass!=null && !selectClass.equals("")){
 				nodesHtml.append("class=\""+selectClass+"\"");
 			}else{
@@ -122,26 +129,31 @@ public final class TreeTag extends BodyTagSupport {
 			}
 			nodesHtml.append(">");
 			nodesHtml.append("<div tabindex=\"0\" style=\"border: 1px solid #aaa;position: absolute;z-index: 9999999;display: none;float: left;" +
-					"list-style: none;text-shadow: none;margin-top: -10px;\" id=\""+id+"_treeSelDiv\">");
-			nodesHtml.append("<div class=\"input-append date form_datetime\" id=\""+id+"_searchDiv\" style=\"z-index: 9999998;margin-bottom:0px\">");
-			nodesHtml.append("<input type=\"text\" id=\""+id+"_tree_keyword\" placeholder=\"搜索关键字...\" style=\"width:240px;height:16px !important\"");
-			if(selectClass!=null && !selectClass.equals("")){
-				nodesHtml.append("class=\""+selectClass+"\"");
-			}else{
-				nodesHtml.append("class=\"m-wrap span6\"");
+					"list-style: none;text-shadow: none;\" id=\""+id+"_treeSelDiv\">");//margin-top: -10px;
+			if(this.isSearch!=null && this.isSearch.equals("true")) {
+				nodesHtml.append("<div class=\"input-append date form_datetime\" id=\"" + id + "_searchDiv\" style=\"z-index: 9999998;margin-bottom:0px\">");
+				nodesHtml.append("<input type=\"text\" id=\"" + id + "_tree_keyword\" placeholder=\"搜索关键字...\" style=\"width:240px;height:16px !important\"");
+				if (selectClass != null && !selectClass.equals("")) {
+					nodesHtml.append("class=\"" + selectClass + "\"");
+				} else {
+					nodesHtml.append("class=\"m-wrap span6\"");
+				}
+				nodesHtml.append("/>");
+				nodesHtml.append("<span class=\"add-on\" onclick=\"clearTreeQuery('" + id + "_tree_keyword','" + dataType + "','" + submitType + "','" + treeUrl + "','" + id + "',setting_" + id + ",'" + isSearch + "','" + token + "');\"><i class=\"icon-remove\"></i></span>");
+				nodesHtml.append("</div>");
 			}
-			nodesHtml.append("/>");
-			nodesHtml.append("<span class=\"add-on\" onclick=\"clearTreeQuery('"+id+"_tree_keyword','"+dataType+"','"+submitType+"','"+treeUrl+"','"+id+"',setting_"+id+",'"+isSearch+"','"+token+"');\"><i class=\"icon-remove\"></i></span>");
-			nodesHtml.append("</div>");
-			nodesHtml.append("<ul id=\""+id+"_tree\" class=\"ztree\" style=\"height:300px; overflow-x: auto; margin: 0px;padding: 0px; border: solid 1px #ddd;border-top:none;\"></ul>");
+			nodesHtml.append("<ul id=\""+id+"_tree\" class=\"ztree\" style=\"background:#FFFFFF !important;height:300px; overflow-x: auto; margin: 0px;padding: 0px; border-top:none;\"></ul>");
 			nodesHtml.append("</div>");
 		}
+		nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" onClickFunc=\""+onClick+"\" radioOrCheckbox=\""+radioOrCheckbox+"\" dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\" token=\""+token+"\">");
 		nodesHtml.append("<script>");
-		if(isSelectTree!=null && isSelectTree.equals("true")) {
-			nodesHtml.append("if(window.document.getElementById(\"" + valueName + "\").offsetWidth!=0){$(\"#" + id + "_treeSelDiv\").css(\"width\", window.document.getElementById(\"" + valueName + "\").offsetWidth-2);}");
-			nodesHtml.append("if(window.document.getElementById(\"" + valueName + "\").offsetWidth!=0){$(\"#" + id + "_searchDiv\").css(\"width\", window.document.getElementById(\"" + valueName + "\").offsetWidth-2);}");
-			nodesHtml.append("if(window.document.getElementById(\"" + valueName + "\").offsetWidth!=0){$(\"#" + id + "_tree_keyword\").css(\"width\", window.document.getElementById(\"" + valueName + "\").offsetWidth-30);}");
-		}
+//		if(isSelectTree!=null && isSelectTree.equals("true")) {
+//			nodesHtml.append("if(window.document.getElementById(\"" + valueName + "\").offsetWidth!=0){$(\"#" + id + "_treeSelDiv\").css(\"width\",window.document.getElementById(\"" + valueName + "\").offsetWidth-2);}");
+//			if(this.isSearch!=null && this.isSearch.equals("true")) {
+//				nodesHtml.append("if(window.document.getElementById(\"" + valueName + "\").offsetWidth!=0){$(\"#" + id + "_searchDiv\").css(\"width\", window.document.getElementById(\"" + valueName + "\").offsetWidth-2);}");
+//				nodesHtml.append("if(window.document.getElementById(\"" + valueName + "\").offsetWidth!=0){$(\"#" + id + "_tree_keyword\").css(\"width\", window.document.getElementById(\"" + valueName + "\").offsetWidth-30);}");
+//			}
+//		}
 		nodesHtml.append("\n\tvar setting_"+id+" = {");
 		if(radioOrCheckbox!=null && radioOrCheckbox.equals("checkbox")) {
 			nodesHtml.append("\n\t\tcheck: {");
@@ -169,11 +181,11 @@ public final class TreeTag extends BodyTagSupport {
 		nodesHtml.append("\n\t\tcallback: {");
 		//单选使用
 		if(radioOrCheckbox!=null && radioOrCheckbox.equals("radio")) {
-			if (onClick != null && !onClick.equals("")) {
-				nodesHtml.append("\n\t\t\tonClick :" + onClick + "");
-			} else {
+//			if (onClick != null && !onClick.equals("")) {
+//				nodesHtml.append("\n\t\t\tonClick :" + onClick + "");
+//			} else {
 				nodesHtml.append("\n\t\t\tonClick :onClickByTreeTag");
-			}
+//			}
 		}
 		//复选使用
 		if(radioOrCheckbox!=null && radioOrCheckbox.equals("checkbox")){
@@ -333,5 +345,21 @@ public final class TreeTag extends BodyTagSupport {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getDefaultvalues() {
+		return defaultvalues;
+	}
+
+	public void setDefaultvalues(String defaultvalues) {
+		this.defaultvalues = defaultvalues;
+	}
+
+	public String getDefaultkeys() {
+		return defaultkeys;
+	}
+
+	public void setDefaultkeys(String defaultkeys) {
+		this.defaultkeys = defaultkeys;
 	}
 }

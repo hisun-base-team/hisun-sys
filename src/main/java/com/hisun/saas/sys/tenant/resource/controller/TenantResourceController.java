@@ -100,7 +100,7 @@ public class TenantResourceController extends BaseController {
             //String userId = userLoginDetails.getUserid();
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" pId = :pId ", "pId", pId));
-            query.add(CommonRestrictions.and(" type = :type ","type" ,1));
+//            query.add(CommonRestrictions.and(" type = :type ","type" ,1));
             Long total = tenantResourceService.count(query);
             CommonOrderBy orderBy = new CommonOrderBy();
             orderBy.add(CommonOrder.asc("sort"));
@@ -126,7 +126,7 @@ public class TenantResourceController extends BaseController {
             if(status!=null){
                 query.add(CommonRestrictions.and(" status = :status ", "status", Integer.valueOf(0)));
             }
-            query.add(CommonRestrictions.and(" type = :type ","type" ,1));
+//            query.add(CommonRestrictions.and(" type = :type ","type" ,1));
             resources = tenantResourceService.list(query, orderBy);
             List<TenantResourceVo> resourceVos = new ArrayList<TenantResourceVo>();
             TenantResourceVo resourceVo = new TenantResourceVo();
@@ -221,7 +221,7 @@ public class TenantResourceController extends BaseController {
             if (StringUtils.isNotBlank(id)) {
                 CommonConditionQuery query = new CommonConditionQuery();
                 query.add(CommonRestrictions.and(" pId = :pId ", "pId", id));
-                query.add(CommonRestrictions.and(" type = :type ","type" ,1));
+//                query.add(CommonRestrictions.and(" type = :type ","type" ,1));
                 Long total = tenantResourceService.count(query);
                 if(total>0){
                     map.put("success", false);

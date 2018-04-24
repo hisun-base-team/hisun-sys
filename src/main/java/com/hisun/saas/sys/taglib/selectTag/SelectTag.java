@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
+
 package com.hisun.saas.sys.taglib.selectTag;
 
 import com.hisun.saas.sys.taglib.selectOption.SelectOption;
@@ -10,10 +16,10 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import java.util.List;
-
 /**
- * Created by Administrator on 2018/4/22.
+ * @author liuzj {279421824@qq.com}
  */
+
 public final class SelectTag extends BodyTagSupport {
     /**
      * 字典类别，可以被dataSource类使用来读取需要的字典类别信息     */

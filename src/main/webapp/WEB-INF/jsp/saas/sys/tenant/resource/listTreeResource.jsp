@@ -30,9 +30,11 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 								<div class="caption mainlefttop">资源树</div>
 							</div>
 							<div class="portlet-body leftbody">
-								<div class="zTreeDemoBackground" id="tree">
-									<ul id="treeDemo" class="ztree"></ul>
-								</div>
+								<Tree:tree id="treeDemo" treeUrl="sys/tenant/resource/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
+										   onClick="onClickByTree" submitType="post" dataType="json" isSearch="false"/>
+								<%--<div class="zTreeDemoBackground" id="tree">--%>
+									<%--<ul id="treeDemo" class="ztree"></ul>--%>
+								<%--</div>--%>
 							</div>
 						</div>
 					</div>
@@ -77,11 +79,14 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 										<label class="control-label">上级资源<span class="required">*</span></label>
 
 										<div class="controls">
-											<input type="hidden" id="newpId" name="newpId" value=""/>
-											<input type="text" id="pName" name="pName" readonly="readonly" required="true" class="m-wrap span6" style="cursor: pointer;" onclick="$('#treeSelDiv').toggle();">
-											<div tabindex="0" style=" width:268px;position: absolute;top: 103px;left: 195px;z-index: 110050;display: none;float: left;list-style: none;text-shadow: none;padding: 0px;margin: 0px;" id="treeSelDiv">
-												<ul id="ztree1" class="ztree" style="height:400px; overflow-x: auto; margin: 0px;padding: 0px; border: solid 1px #ddd;border-top:none;"></ul>
-											</div>
+											<Tree:tree id="newpId" valueName="pName" treeUrl="sys/tenant/resource/select/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
+													   required="true" onClick="setSotByPid" selectClass="m-wrap span6" radioOrCheckbox="radio" submitType="post"
+													   dataType="json" isSearch="false" isSelectTree="true"/>
+											<%--<input type="hidden" id="newpId" name="newpId" value=""/>--%>
+											<%--<input type="text" id="pName" name="pName" readonly="readonly" required="true" class="m-wrap span6" style="cursor: pointer;" onclick="$('#treeSelDiv').toggle();">--%>
+											<%--<div tabindex="0" style=" width:268px;position: absolute;top: 103px;left: 195px;z-index: 110050;display: none;float: left;list-style: none;text-shadow: none;padding: 0px;margin: 0px;" id="treeSelDiv">--%>
+												<%--<ul id="ztree1" class="ztree" style="height:400px; overflow-x: auto; margin: 0px;padding: 0px; border: solid 1px #ddd;border-top:none;"></ul>--%>
+											<%--</div>--%>
 
 										</div>
 
@@ -206,7 +211,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 		
 
 	</div>
-	<script type="text/javascript" src="<%=path%>/js/zTree/jquery.ztree.all-3.5.js"></script>
+
 	<script type="text/javascript" src="<%=path%>/js/common/est-validate-init.js"></script>
 	<script type="text/javascript">
 		var updateResource = function(id){
@@ -219,7 +224,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 				},
 				success : function(json){
 					if(json.success){
-						var node = $.fn.zTree.getZTreeObj("treeDemo").getNodeByParam('id', json.data.pId);// 获取id为-1的点
+						var node = $.fn.zTree.getZTreeObj("newpId_tree").getNodeByParam('id', json.data.pId);// 获取id为-1的点
 						if(node)
 						$("#pName").val(node.name);
 						$("#newpId").val(json.data.pId);
@@ -235,76 +240,33 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 						$("#resourceIcon").val(json.data.resourceIcon);
 						$("#add").show();
 						$("#modal").show();
-						zTree1.selectNode(node);
+						var selectzTree = $.fn.zTree.getZTreeObj("newpId_tree");
+						selectzTree.selectNode(node);
 					}
 				}
 			});
 		};
-		var setting = {
-			view: {
-				selectedMulti: false
-			},
-			edit: {
-				enable: true,
-				showRemoveBtn: false,
-				showRenameBtn: false
-			},
-			data: {
-				simpleData: {
-					enable: true
-				}
-			},
-			callback: {
-				beforeDrag: beforeDrag,
-				onClick :onClick
-			}
-		};
 
-		var setting1 = {
-				async: {
-					enable: true,
-					url:"${path}/sys/tenant/resource/select/tree",
-					dataType : "json",
-					headers: {
-						"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
-					},
-					onAsyncError : function(){
-						alert("请求失败");
-					}
-				},
-				view: {
-					dblClickExpand: false
-				},
-				edit: {
-				},
-				data: {
-					simpleData: {
-						enable: true
-					}
-				},
-				callback: {
-					onClick : onClick1
-				}
-			};
-		function onClick1(event, treeId, treeNode){
-			dirSel(treeId,treeNode);
-		}
+//		function onClick1(event, treeId, treeNode){
+//			dirSel(treeId,treeNode);
+//		}
 		
-		function dirSel(treeId,treeNode){
-			var text = treeNode.name;
-			$('#newpId').val(treeNode.id);
-			$('#pName').val(text);
-			$.get("${path}/sys/tenant/resource/max/sort/",{"pId":treeNode.id},function(data){
+		function setSotByPid(event, treeId, treeNode){
+//			var text = treeNode.name;
+//			$('#newpId').val(treeNode.id);
+//			$('#pName').val(text);
+			<%--$.get("${path}/sys/tenant/resource/max/sort/",{"pId":treeNode.id},function(data){--%>
+				<%--$("#sort").val(data.maxSort);--%>
+			<%--})--%>
+			localPost("${path}/sys/tenant/resource/max/sort/",{"pId":treeNode.id},function(data){
 				$("#sort").val(data.maxSort);
-			})
-			$('#treeSelDiv').toggle();
+			},"json",{"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"});
+//			$('#treeSelDiv').toggle();
 		}
 		
-		function beforeDrag(treeId, treeNodes) {
-			return false;
-		}
 
-		function onClick (event, treeId, treeNode){
+
+		function onClickByTree (event, treeId, treeNode){
 			$("#pId").val(treeNode.id);
 			$.ajax({
 				url : "${path}/sys/tenant/resource/sitemesh/list?pId="+treeNode.id,
@@ -322,36 +284,14 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 				}
 			});
 		}
-		function treeLoad(){
-			$.ajax({
-				async : false,
-				cache:false,
-				type: 'POST',
-				dataType : "json",
-				headers: {
-					"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
-				},
-				url: "${path}/sys/tenant/resource/select/tree",// 请求的action路径
-				error: function () {// 请求失败处理函数
-					alert('请求失败');
-				},
-				success:function(data){
-					if(data.success){
-						$.fn.zTree.init($("#ztree1"), setting1, data.data);
-						zTree1 = $.fn.zTree.getZTreeObj("ztree1");
-					}else{
-						 alert('请求失败');  
-					}
-				}
-			});
-		}
+
 		var zTree1;
 		var addForm = new EstValidate("addForm");
 		$(document).ready(function(){
 			//初始化菜单
 			App.init();//必须，不然导航栏及其菜单无法折叠
 			
-			treeLoad();
+//			treeLoad();
 			//$("#modal").hide();
 			//$("#add").hide();
 			$("#submit").on("click",function(event){
@@ -536,49 +476,29 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 					}
 				} , "json", {"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"});
 			});
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			// zTree.expandAll(true);
+			var node = zTree.getNodeByParam('id', '1');// 获取id为-1的点
+			//$("#listResource").load("${path}/sys/tenant/resource/sitemesh/list?pId=1");
 			$.ajax({
-				async : false,
 				cache:false,
 				type: 'POST',
-				dataType : "json",
-				url: "${path}/sys/tenant/resource/tree",// 请求的action路径
+				dataType : "html",
 				headers: {
 					"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
 				},
+				url: "${path}/sys/tenant/resource/sitemesh/list?pId=1",// 请求的action路径
 				error: function () {// 请求失败处理函数
 					alert('请求失败');
 				},
-				success:function(data){
-					if(data.success){
-						$.fn.zTree.init($("#treeDemo"), setting, data.data);
-						var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-						// zTree.expandAll(true);
-						var node = zTree.getNodeByParam('id', data.data[0].id);// 获取id为-1的点
-						//$("#listResource").load("${path}/sys/tenant/resource/sitemesh/list?pId=1");
-						$.ajax({
-							cache:false,
-							type: 'POST',
-							dataType : "html",
-							headers: {
-								"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
-							},
-							url: "${path}/sys/tenant/resource/sitemesh/list?pId=1",// 请求的action路径
-							error: function () {// 请求失败处理函数
-								alert('请求失败');
-							},
-							success:function(html){
-								$("#listResource").html(html);
-							}
-						});
-						zTree.selectNode(node);
-						$("#pId").val(node.id);
-						selectId=node.id;
-						zTree.expandNode(node, true, false , true);
-					}else{
-						 alert('请求失败');  
-					}
+				success:function(html){
+					$("#listResource").html(html);
 				}
 			});
+			zTree.selectNode(node);
+			$("#pId").val(node.id);
+			selectId=node.id;
+			zTree.expandNode(node, true, false , true);
 		});
 		
 		function iFrameHeight() {   
@@ -588,40 +508,52 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 			   ifm.height = subWeb.body.scrollHeight;
 			   ifm.width = subWeb.body.scrollWidth;
 			}   
-		}  
-		
-		/** * 刷新树 */
-		function refreshTree() {
-			treeLoad();
-			$("#treeDemo").empty();
-			$.ajax({  
-		        async : false,  
-		        cache:false,  
-		        type: 'POST',  
-		        // data:{"userid":Rand},
-		        dataType : "json",  
-		        url: "${path}/sys/tenant/resource/tree",// 请求的action路径
-				headers: {
-					"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
-				},
-		        error: function () {// 请求失败处理函数
-		            alert('请求失败');  
-		        },  
-		        success:function(data){
-		        	if(data.success){
-						$.fn.zTree.init($("#treeDemo"), setting, data.data);
-						var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-						var id = $("#pId").val();
-						var node = zTree.getNodeByParam('id',id==null?data.data[0].id:id);// 获取id为-1的点
-						zTree.selectNode(node);
-						zTree.expandNode(node, true, false , true);
-						//zTree.expandAll(true);
-		        	}else{
-		        		 alert('请求失败');  
-		        	}
-		        }  
-		    });
 		}
+		function refreshTree() {
+			$("#treeDemo").empty();
+			refreshTreeTag("treeDemo", setting_treeDemo, "");
+			refreshSelectTreeTag("newpId", setting_newpId, "");
+			selectNodeTree();
+		}
+		function selectNodeTree(){
+			var zTree11 = $.fn.zTree.getZTreeObj("treeDemo");
+			var id = $("#pId").val();
+			var node = zTree11.getNodeByParam('id',id);// 获取id为-1的点
+			zTree11.selectNode(node);
+			zTree11.expandNode(node, true, false , true);
+		}
+		/** * 刷新树 */
+		<%--function refreshTree() {--%>
+<%--//			treeLoad();--%>
+			<%--$("#treeDemo").empty();--%>
+			<%--$.ajax({  --%>
+		        <%--async : false,  --%>
+		        <%--cache:false,  --%>
+		        <%--type: 'POST',  --%>
+		        <%--// data:{"userid":Rand},--%>
+		        <%--dataType : "json",  --%>
+		        <%--url: "${path}/sys/tenant/resource/tree",// 请求的action路径--%>
+				<%--headers: {--%>
+					<%--"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"--%>
+				<%--},--%>
+		        <%--error: function () {// 请求失败处理函数--%>
+		            <%--alert('请求失败');  --%>
+		        <%--},  --%>
+		        <%--success:function(data){--%>
+		        	<%--if(data.success){--%>
+						<%--$.fn.zTree.init($("#treeDemo"), setting, data.data);--%>
+						<%--var zTree = $.fn.zTree.getZTreeObj("treeDemo");--%>
+						<%--var id = $("#pId").val();--%>
+						<%--var node = zTree.getNodeByParam('id',id==null?data.data[0].id:id);// 获取id为-1的点--%>
+						<%--zTree.selectNode(node);--%>
+						<%--zTree.expandNode(node, true, false , true);--%>
+						<%--//zTree.expandAll(true);--%>
+		        	<%--}else{--%>
+		        		 <%--alert('请求失败');  --%>
+		        	<%--}--%>
+		        <%--}  --%>
+		    <%--});--%>
+		<%--}--%>
 		function pagehref (pageNum ,pageSize){
 			/*$.get("<%=path%>/sys/tenant/resource/sitemesh/list?pId="+$('#pId').val()+"&pageNum="+pageNum+"&pageSize="+pageSize,function(data){
 				$("#listResource").html(data);

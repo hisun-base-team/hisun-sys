@@ -61,7 +61,9 @@
 	</TR>
 	<TR valign="top">
 		<TD colspan="2" style="width: 300px">
-			<Tree:tree id="selectTree" treeUrl="sys/admin/resource/select/tree" token="${sessionScope.OWASP_CSRFTOKEN}" selectClass="m-wrap span4" radioOrCheckbox="radio" submitType="post" dataType="json" isSearch="true" isSelectTree="true"/>
+			<Tree:tree id="selectTree" treeUrl="sys/admin/resource/select/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
+					   selectClass="m-wrap span4" radioOrCheckbox="radio" submitType="post"
+					   dataType="json" isSearch="true" isSelectTree="true" defaultkeys="2c90a89954098413015409ab385c0003" defaultvalues="云监控"/>
 			<%--<SelectOption:SelectOption id="manageUnitId"  textClass="m-wrap span4" allownull="false" onchange="changeA01z1();"--%>
 			<%--des="档案管理单位" textFontSize="10pt" width="200px" isshowtree="yes" token="${sessionScope.OWASP_CSRFTOKEN}"--%>
 			<%--formName="eApplyE01z8Form" fieldCode="manageUnitId" fieldText="manageUnitName"--%>
@@ -119,8 +121,9 @@
 <script type="text/javascript" src="${path }/js/common/loading.js"></script>
 
 <script type="text/javascript">
+	$(document).ready(function() {
 
-
+	});
 	$("#file").change(function (e) {
 		var file = this.files[0];
 		window.un = new UnZipArchive( file );

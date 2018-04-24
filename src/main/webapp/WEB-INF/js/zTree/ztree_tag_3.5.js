@@ -117,11 +117,23 @@
 		}, 500);
 	}
 }
+/**
+ * 清除查询内容
+ * @param queryName
+ * @param dataType
+ * @param submitType
+ * @param url
+ * @param id
+ * @param setting
+ * @param isSearch
+ * @param token
+ */
 function clearTreeQuery(queryName,dataType,submitType,url,id,setting,isSearch,token){
 	$("#"+queryName+"").val('');
 	treeLoadByTag(dataType,submitType,url,id,setting,isSearch,token);
 }
-function treeLoadByTag(dataType,submitType,treeUrl,id,setting,isSearch,token){
+//执行树加载
+function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,loadAfterMethod){
 	$.ajax({
 		async : false,
 		cache:false,
@@ -136,23 +148,56 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,setting,isSearch,token){
 		},
 		success:function(data){
 			if(data.success){
-				$.fn.zTree.init($("#"+id+""), setting, data.data);
+				$.fn.zTree.init($("#"+id+""), tagSetting, data.data);
 				zTree1 = $.fn.zTree.getZTreeObj(id);
 				if(isSearch=="true") {
-
 					fuzzySearch(id, '#'+id+'_keyword', false, true); //初始化模糊搜索方法
 				}
+				if(loadAfterMethod!=null && loadAfterMethod){
+					eval(loadAfterMethod);
+					//eval(loadAfterMethod+"(event,treeId, treeNode)");
+				}
+				//反选
+
+				var keyObj =document.getElementById(id.substring(0,id.lastIndexOf("_tree")))
+				//var treeValueObj = document.getElementById(id+"_valueName");
+				if(keyObj!=null && keyObj.value!=""){
+					var treeDefineAttObj = document.getElementById(id.substring(0,id.lastIndexOf("_tree"))+"_tagDefineAtt");
+					var radioOrCheckbox = treeDefineAttObj.getAttribute("radioOrCheckbox");
+					var selectzTree = $.fn.zTree.getZTreeObj(id);
+					if(radioOrCheckbox=="radio") {
+						var node = selectzTree.getNodeByParam('id', keyObj.value);
+						selectzTree.selectNode(node);
+					}else if(radioOrCheckbox=="checkbox"){
+						var checkedNodeIds = keyObj.value.split(",");
+						for(var i=0;i<checkedNodeIds.length;i++){
+							var node = selectzTree.getNodeByParam('id', checkedNodeIds[i]);
+							selectzTree.checkNode(node, true, false);
+						}
+					}
+				}
+
 			}else{
 				alert('请求失败');
 			}
 		}
 	});
 }
-//树形下拉隐藏
-function showTagDivTree(treeSelDiv){
+//树形下拉显示
+function showTagDivTree(treeSelDiv,id,valueName,isSearch){
+	if(window.document.getElementById(valueName).offsetWidth!=0){
+		$("#" + id + "_treeSelDiv").css("width",window.document.getElementById(valueName).offsetWidth-3);
+	}
+	if(isSearch!=null && isSearch=="true"){
+		if(window.document.getElementById(valueName).offsetWidth!=0){
+			$("#" + id + "_searchDiv").css("width", window.document.getElementById(valueName).offsetWidth-3);
+			$("#" + id + "_tree_keyword").css("width", window.document.getElementById(valueName).offsetWidth-30);
+		}
+	}
 	$('#'+treeSelDiv).toggle();
 	$("body").bind("mousedown",{treeSelDiv:treeSelDiv},onBodyDownByTagTree);
 }
+//树形下拉隐藏
 function hideTagDivTree(treeSelDiv) {
 	$('#'+treeSelDiv).fadeOut("fast");
 	$("body").unbind("mousedown", onBodyDownByTagTree);
@@ -162,18 +207,33 @@ function onBodyDownByTagTree(event) {//|| event.target.id == ""
 		hideTagDivTree(event.data.treeSelDiv);
 	}
 }
-
-function onClickByTreeTag(event,treeId, treeNode){
+//树形控件单选
+function onClickByTreeTag(event,treeId, treeNode) {
+	var treeDefineAttObj = document.getElementById(treeId+ "_tagDefineAtt");
+	if (treeDefineAttObj == null) {
+		treeDefineAttObj = document.getElementById(treeId.substring(0, treeId.lastIndexOf("_tree")) + "_tagDefineAtt");
+	}
+	if (treeDefineAttObj != null) {
+		var onClickFunc = treeDefineAttObj.getAttribute("onclickfunc");
+		if(onClickFunc!=null && onClickFunc!=""){
+			eval(onClickFunc+"(event,treeId, treeNode)");
+		}
+	}
 	setValuesByRadio(treeId, treeNode);
 	$('#'+treeId+'SelDiv').toggle();
 }
+//单选树赋值
 function setValuesByRadio(treeId,treeNode){
-	var keyObj =document.getElementById(treeId.substring(0,treeId.lastIndexOf("_tree")))
-	var treeValueObj = document.getElementById(treeId+"_valueName");
-	var text = treeNode.name;
-	keyObj.value=treeNode.id;
-	$('#'+treeValueObj.value).val(text);
+	try{
+		var keyObj =document.getElementById(treeId.substring(0,treeId.lastIndexOf("_tree")))
+		var treeValueObj = document.getElementById(treeId+"_valueName");
+		var text = treeNode.name;
+		keyObj.value=treeNode.id;
+		$('#'+treeValueObj.value).val(text);
+	}catch(e){
+	}
 }
+
 //多选方法
 function beforeClickByTreeCheckBox(treeId, treeNode) {
 	var zTree = $.fn.zTree.getZTreeObj(treeId);
@@ -196,4 +256,36 @@ function onCheckByTreeCheckBox(e, treeId, treeNode) {
 	var treeValueObj = document.getElementById(treeId+"_valueName");
 	keyObj.value=keys;
 	$('#'+treeValueObj.value).val(values);
+}
+/**
+ * 刷新树
+ * @param id 定义ID
+ * @param tagSetting setting_加id  如定义id为demoTree 则传入setting_demoTree
+ * @param loadAfterMethod 刷新后调用的私有方法
+ */
+function refreshTreeTag(id,tagSetting,loadAfterMethod){
+	var treeDefineAttObj = document.getElementById(id+"_tagDefineAtt");
+	var dataType = treeDefineAttObj.getAttribute("dataType");
+	var submitType = treeDefineAttObj.getAttribute("submitType");
+	var url = treeDefineAttObj.getAttribute("url");
+	var isSearch = treeDefineAttObj.getAttribute("isSearch");
+	var token = treeDefineAttObj.getAttribute("token");
+	treeLoadByTag(dataType,submitType,url,id,tagSetting,isSearch,token,loadAfterMethod);
+}
+
+/**
+ * 刷新树
+ * @param id 定义ID
+ * @param tagSetting setting_加id  如定义id为demoTree 则传入setting_demoTree
+ * @param loadAfterMethod 刷新后调用的私有方法
+ */
+function refreshSelectTreeTag(id,tagSetting,loadAfterMethod){
+	var treeDefineAttObj = document.getElementById(id+"_tagDefineAtt");
+	var dataType = treeDefineAttObj.getAttribute("dataType");
+	var submitType = treeDefineAttObj.getAttribute("submitType");
+	var url = treeDefineAttObj.getAttribute("url");
+	var isSearch = treeDefineAttObj.getAttribute("isSearch");
+	var token = treeDefineAttObj.getAttribute("token");
+
+	treeLoadByTag(dataType,submitType,url,id+"_tree",tagSetting,isSearch,token,loadAfterMethod);
 }

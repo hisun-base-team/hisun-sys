@@ -1,14 +1,12 @@
-package com.hisun.saas.sys.taglib.treeTag.vo;
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
 
+package com.hisun.saas.sys.taglib.treeTag.vo;
 /**
- * 
- *<p>类名称：TreeNodeVo</p>
- *<p>类描述: </p>
- *<p>公司：湖南海数互联信息技术有限公司</p>
- *@创建人：liuzj
- *@创建时间：2018年4月22日
- *@创建人联系方式：liuzj@qq.com
- *@version
+ * @author liuzj {279421824@qq.com}
  */
 public class TreeNodeVo {
 
