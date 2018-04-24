@@ -8,8 +8,6 @@ import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.admin.communication.service.MailService;
-import com.hisun.saas.sys.log.LogOperateType;
-import com.hisun.saas.sys.log.RequiresLog;
 import com.hisun.saas.sys.admin.role.entity.Role;
 import com.hisun.saas.sys.admin.role.service.RoleService;
 import com.hisun.saas.sys.admin.role.vo.RoleSelection;
@@ -500,7 +498,7 @@ public class UserController extends BaseController {
 		}
 	}
 
-	@RequiresPermissions(value = {"adminsys:*"})
+	@RequiresPermissions("adminUser:*")
 	@RequestMapping(value = "/list")
 	public String list(HttpServletRequest request,
 			@RequestParam(value="pageNum",defaultValue="1")int pageNum,
@@ -514,7 +512,7 @@ public class UserController extends BaseController {
 				StringBuilder hql1 = new StringBuilder();
 				boolean bool = false ;
 				List<Object> list = Lists.newArrayList();
-				hql.append("select count(1) FROM User user where user.username !='admin'");
+				hql.append("select count(1) FROM User user where user.username <>'admin'");
 				hql1.append(" FROM User user where user.username !='admin' order by user.username");
 				int total = this.userService.count(hql.toString(),list);
 				//CommonOrderBy orderBy = new CommonOrderBy();

@@ -11,6 +11,7 @@ import com.hisun.saas.sys.admin.user.dao.UserRoleDao;
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.admin.user.entity.UserRole;
+import com.hisun.util.UUIDUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,7 @@ public class RoleServiceImpl extends
 	
 	@Override
 	public void saveRoleResourceWithoutDelete(final String roleId,final List<String> resource) {
-		final StringBuilder sb = new StringBuilder(" INSERT INTO SYS_ROLE_RESOURCE(role_id,resource_id) values(?,?)");
+		final StringBuilder sb = new StringBuilder(" insert into SYS_ROLE_RESOURCE(id,role_id,resource_id) values(?,?,?)");
 		this.roleDao.getSession().doWork(new Work() {
 			@Override
 			public void execute(Connection connection) throws SQLException {
@@ -74,8 +75,9 @@ public class RoleServiceImpl extends
 					stmt = connection.prepareStatement(sb.toString());
 					for (int i = 1; i < resource.size(); i++) {
 						if (StringUtils.isNotBlank(resource.get(i))) {
-							stmt.setString(1, roleId);
-							stmt.setString(2, resource.get(i));
+							stmt.setString(1,UUIDUtil.getUUID());
+							stmt.setString(2, roleId);
+							stmt.setString(3, resource.get(i));
 							stmt.addBatch();
 						}
 					}
