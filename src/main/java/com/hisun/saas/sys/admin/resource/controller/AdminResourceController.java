@@ -7,6 +7,8 @@
 package com.hisun.saas.sys.admin.resource.controller;
 
 import com.google.common.collect.Maps;
+import com.hisun.saas.sys.log.LogOperateType;
+import com.hisun.saas.sys.log.RequiresLog;
 import com.hisun.saas.sys.entity.AbstractResource;
 import com.hisun.saas.sys.admin.resource.service.ResourceService;
 import com.hisun.saas.sys.auth.UserLoginDetails;
@@ -193,6 +195,7 @@ public class AdminResourceController extends BaseController {
 		return map;
 	}
 
+	@RequiresLog(operateType = LogOperateType.ADD,description = "新增资源:${resource.resourceName}")
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> add(Resource resource,HttpServletRequest request)  throws GenericException {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -215,6 +218,7 @@ public class AdminResourceController extends BaseController {
 		return map;
 	}
 
+	@RequiresLog(operateType = LogOperateType.DELETE,description = "删除资源:${id}")
 	@RequestMapping(value = "/delete/{id}")
 	public @ResponseBody Map<String, Object> delete(
 			@PathVariable("id") String id)  throws GenericException {
@@ -242,6 +246,7 @@ public class AdminResourceController extends BaseController {
 		return map;
 	}
 
+	@RequiresLog(operateType = LogOperateType.UPDATE,description = "修改资源:${resource.resourceName}")
 	@RequestMapping(value = "/update")
 	public @ResponseBody Map<String, Object> update(Resource resource,HttpServletRequest request) throws GenericException {
 		Map<String, Object> map = new HashMap<String, Object>();

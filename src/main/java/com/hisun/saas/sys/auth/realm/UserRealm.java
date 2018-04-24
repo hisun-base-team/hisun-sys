@@ -36,12 +36,10 @@ public class UserRealm extends BaseRealm {
 
     @javax.annotation.Resource
     private UserService userService;
-
-    @Value(value = "${kaptcha.activated}")
-    private boolean captchaActivated;
-
     @javax.annotation.Resource
     private TenantUserService tenantUserService;
+    @Value(value = "${kaptcha.activated}")
+    private boolean captchaActivated;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -65,6 +63,7 @@ public class UserRealm extends BaseRealm {
         authorizationInfo.setStringPermissions(permissions);
         return authorizationInfo;
     }
+
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
@@ -112,9 +111,9 @@ public class UserRealm extends BaseRealm {
             if (user == null) {
                 throw new UnknownAccountException();//没找到帐号
             }
-            /*if(Boolean.TRUE.equals(user.isLocked())) {
+            if(Boolean.TRUE.equals(user.getLocked())) {
                 throw new LockedAccountException(); //帐号锁定
-            }*/
+            }
             //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，
             SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                     user.getUsername(), //用户名
@@ -128,9 +127,9 @@ public class UserRealm extends BaseRealm {
             if (user == null) {
                 throw new UnknownAccountException();//没找到帐号
             }
-            /*if(Boolean.TRUE.equals(user.isLocked())) {
+            if(Boolean.TRUE.equals(user.getLocked())) {
                 throw new LockedAccountException(); //帐号锁定
-            }*/
+            }
             //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，
             SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                     user.getUsername(), //用户名

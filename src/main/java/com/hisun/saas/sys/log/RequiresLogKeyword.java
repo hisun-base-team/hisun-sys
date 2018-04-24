@@ -6,8 +6,15 @@
 
 package com.hisun.saas.sys.log;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * @author Rocky {rockwithyou@126.com}
  */
-public class LogInterceptor {
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequiresLogKeyword {
 }

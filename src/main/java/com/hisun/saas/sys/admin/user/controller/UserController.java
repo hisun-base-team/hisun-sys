@@ -2,15 +2,14 @@ package com.hisun.saas.sys.admin.user.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.hisun.saas.sys.auth.Constants;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.admin.communication.service.MailService;
-import com.hisun.saas.sys.admin.log.aop.LogOperateType;
-import com.hisun.saas.sys.admin.log.aop.RequiresLog;
+import com.hisun.saas.sys.log.LogOperateType;
+import com.hisun.saas.sys.log.RequiresLog;
 import com.hisun.saas.sys.admin.role.entity.Role;
 import com.hisun.saas.sys.admin.role.service.RoleService;
 import com.hisun.saas.sys.admin.role.vo.RoleSelection;
@@ -21,6 +20,7 @@ import com.hisun.saas.sys.admin.user.service.SerialService;
 import com.hisun.saas.sys.admin.user.service.UserRoleService;
 import com.hisun.saas.sys.admin.user.service.UserService;
 import com.hisun.saas.sys.admin.user.vo.UserVo;
+import com.hisun.saas.sys.auth.Constants;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import org.apache.commons.beanutils.BeanUtils;
@@ -392,7 +392,7 @@ public class UserController extends BaseController {
 				sb.append(domain + "/sys/admin/user/profile/password?key=").append(key);
 				boolean bool = this.serialService.save(serial, user.getRealname(), email, sb.toString());
 				//sb.append("尊敬的" +user.getRealname()+ ":\n");
-				//sb.append("您最近请求重设自己的 三零优异 帐户密码。\n\n");
+				//sb.append("您最近请求重设自己的  帐户密码。\n\n");
 				//sb.append("请单击下面链接以重设您的密码。此链接的有效期为 1 天，只能使用一次：\n");
 				//logger.info(sb.toString());
 				if (bool) {
@@ -500,7 +500,7 @@ public class UserController extends BaseController {
 		}
 	}
 
-	@RequiresLog(operateType = LogOperateType.QUERY)
+	@RequiresLog(operateType = LogOperateType.QUERY,description = "用户列表,查询条件为:${searchContent}")
 	@RequiresPermissions(value = {"adminsys:*"})
 	@RequestMapping(value = "/list")
 	public String list(HttpServletRequest request,

@@ -1,6 +1,8 @@
 package com.hisun.saas.sys.admin.user.controller;
 
 import com.google.common.collect.Maps;
+import com.hisun.saas.sys.log.LogOperateStatus;
+import com.hisun.saas.sys.log.LogOperateType;
 import com.hisun.saas.sys.admin.user.entity.User;
 import com.hisun.saas.sys.auth.Constants;
 import com.hisun.saas.sys.auth.KaptchaUsernamePasswordToken;
@@ -22,6 +24,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.owasp.csrfguard.CsrfGuard;
@@ -65,67 +69,90 @@ public class AdminLoginController extends BaseController {
 	private boolean captchaActivated;
 	@Value(value = "${communication.sms.on}")
 	private boolean smsOn;
+	@Value(value = "${sys.deploy.internet}")
+	private boolean outernet;
 
 	@RequestMapping(value = "/signin")
 	public String signin(User loginUser, Model model, boolean remember, String code, HttpServletRequest req) {
-		Subject currentUser = SecurityUtils.getSubject();
+		Subject subject = SecurityUtils.getSubject();
 		KaptchaUsernamePasswordToken token = new KaptchaUsernamePasswordToken(
 				loginUser.getUsername(), loginUser.getPassword(),false,code,true);
 		//if(remember){
 			token.setRememberMe(false);
 		//}
 		try {
-			currentUser.login(token);
+			subject.login(token);
 			UserLoginDetails userLoginDetails = userService.findUserLoginDetails(loginUser.getUsername());
 			User user = userService.getByPK(userLoginDetails.getUserid());
-			if(user!=null && user.getLocked()){
-				model.addAttribute("error","3");
-				model.addAttribute("username", loginUser.getUsername());
-				return "redirect:/admin/login";
+			subject.getSession().setAttribute(Constants.CURRENT_USER, userLoginDetails);
+			String ip = this.getIp();
+			SysLog log = new SysLog();
+			log.setUserId(userLoginDetails.getUserid());
+			log.setUserName(userLoginDetails.getRealname());
+			log.setOperateTime(new Date());
+			log.setIp(ip);
+			log.setContent("");
+			log.setType(LogOperateType.LOGIN.getType());
+			log.setStatus(LogOperateStatus.NORMAL.getStatus());
+			this.logService.save(log);
+			CsrfGuard csrfGuard = CsrfGuard.getInstance();
+			csrfGuard.updateToken(WrapWebUtils.getSession());
+			if(user.getAdmin()){
+				return "redirect:/sys/admin/user/list?OWASP_CSRFTOKEN="+ WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
 			}else{
-				currentUser.getSession().setAttribute(Constants.CURRENT_USER, userLoginDetails);
-				SysLog log = new SysLog();
-				String ip = WrapWebUtils.getRemoteIp();
-				try {
-					if(smsOn) {
-						ip = AddressUtil.getIpInformation(ip);
-					}
-				} catch (Exception e1) {
-					logger.error(e1.getMessage());
-				} finally{
-					log.setIp(ip);
-					//log.setContent(content);
-					log.setUserId(userLoginDetails.getUserid());
-					log.setOperateTime(new Date());
-					log.setType(Short.valueOf("4"));
-					logService.log(log);
-				}
-				CsrfGuard csrfGuard = CsrfGuard.getInstance();
-				csrfGuard.updateToken(WrapWebUtils.getSession());
-				if(user.getAdmin()){
-					return "redirect:/sys/admin/user/list?OWASP_CSRFTOKEN="+ WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
-				}else{
-					return "redirect:/sys/admin/user/profile?OWASP_CSRFTOKEN="+ WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
-				}
-
+				return "redirect:/sys/admin/user/profile?OWASP_CSRFTOKEN="+ WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
 			}
-
 		} catch (AuthenticationException e) {
 			token.clear();
+			String content = "";
 			if(e.getCause() instanceof GenericException){
-				logger.error("验证码错误!");
+				content="验证码错误!";
 				model.addAttribute("error", "2");
 			} else if(e instanceof ExcessiveAttemptsException){
-				logger.error("当天错误输入5次密码，该账号已被锁定!");
+				content="当天错误输入5次密码，该账号已被锁定!";
 				model.addAttribute("error","3");
+			}else if(e instanceof UnknownAccountException){
+				content="不存在此账号!";
+				model.addAttribute("error","4");
+			}else if(e instanceof LockedAccountException){
+				content="账号已冻结!";
+				model.addAttribute("error","5");
 			} else{
-				logger.error(e,e);
+				content = e.getMessage();
 				model.addAttribute("error", "1");
 			}
+			logger.error(content);
+			String ip = this.getIp();
+			SysLog log = new SysLog();
+			log.setUserName(loginUser.getUsername());
+			log.setOperateTime(new Date());
+			log.setIp(ip);
+			log.setContent(content);
+			log.setType(LogOperateType.LOGIN.getType());
+			log.setStatus(LogOperateStatus.EXCEPTION.getStatus());
+			this.logService.save(log);
 			model.addAttribute("username", loginUser.getUsername());
 			return "redirect:/admin/login";
 		}
 	}
+
+
+	private String getIp(){
+		String ip = WrapWebUtils.getRemoteIp();
+		if(StringUtils.isEmpty(ip)){
+			ip="localhost";
+		}else{
+			try {
+				if (outernet) {
+					ip = AddressUtil.getIpInformation(ip);
+				}
+			} catch (Exception e1) {
+				logger.error(e1.getMessage(), e1);
+			}
+		}
+		return ip;
+	}
+
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(HttpServletRequest req, Model model) {

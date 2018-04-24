@@ -45,6 +45,20 @@
                             账号已被锁定,15分钟自动解锁!
                         </div>
                     </c:if>
+                    <c:if test="${param.error eq 4}">
+                        <div class="alert alert-error hide"
+                             style="display: block;width: 241px;margin: 15px auto 0 auto;color: #f00;">
+                            <button class="close" data-dismiss="alert" style="top: -6px;right: -33px;"></button>
+                            不存在此账号!
+                        </div>
+                    </c:if>
+                    <c:if test="${param.error eq 5}">
+                        <div class="alert alert-error hide"
+                             style="display: block;width: 241px;margin: 15px auto 0 auto;color: #f00;">
+                            <button class="close" data-dismiss="alert" style="top: -6px;right: -33px;"></button>
+                            账号已冻结!
+                        </div>
+                    </c:if>
                     <div class="control-group">
                         <label class="control-label visible-ie8 visible-ie9">用户名</label>
                         <div class="controls login_controls" id="usernameGroup">

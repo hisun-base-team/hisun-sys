@@ -4,7 +4,7 @@
  * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
  */
 
-package com.hisun.saas.sys.admin.log.aop;
+package com.hisun.saas.sys.log;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

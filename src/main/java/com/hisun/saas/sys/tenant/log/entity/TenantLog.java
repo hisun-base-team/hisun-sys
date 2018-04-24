@@ -6,7 +6,7 @@
 
 package com.hisun.saas.sys.tenant.log.entity;
 
-import com.hisun.saas.sys.admin.log.aop.LogOperateStatus;
+import com.hisun.saas.sys.log.LogOperateStatus;
 import com.hisun.saas.sys.tenant.base.entity.TenantEntity;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
