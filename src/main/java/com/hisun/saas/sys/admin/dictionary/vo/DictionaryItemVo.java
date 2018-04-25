@@ -1,52 +1,30 @@
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
+
 package com.hisun.saas.sys.admin.dictionary.vo;
 
-/**
- * 
- *<p>类名称：DictionaryItemVo</p>
- *<p>类描述: </p>
- *<p>公司：湖南海数互联信息技术有限公司</p>
- *@创建人：Jason
- *@创建时间：2015年3月19日 下午14:35:28
- *@创建人联系方式：jason4j@qq.com
- *@version
- */
-public class DictionaryItemVo {
 
-	/**
-	 * 节点id
-	 */
+import com.hisun.base.vo.BaseVo;
+
+public class DictionaryItemVo extends BaseVo {
+
 	private String id;
-	
-	/**
-	 * 节点父id
-	 */
 	private String pId;
-	
-	/**
-	 * 树节点名字
-	 */
 	private String name;
-	
-	private String value;
-	/**
-	 * 是否打开节点
-	 */
+	private String code;
 	private boolean open;
-
-	
 	private String href;
-	
 	private String url;
-	
 	private Integer sort;
-	
 	private String remark;
-	
 	private String queryCode;
-	
 	private String typeName;
-	
 	private String typeId;
+
+
 	
 	public String getTypeId() {
 		return typeId;
@@ -136,12 +114,12 @@ public class DictionaryItemVo {
 		this.queryCode = queryCode;
 	}
 
-	public String getValue() {
-		return value;
+	public String getCode() {
+		return code;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setCode(String code) {
+		this.code = code;
 	}
 	
 }

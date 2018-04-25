@@ -6,29 +6,30 @@
 
 package com.hisun.saas.sys.admin.dictionary.entity;
 
+import com.hisun.base.entity.TombstoneEntity;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.List;
 
 /**
  * @author Rocky {rockwithyou@126.com}
  */
 @Entity
 @Table(name = "sys_dict_type")
-public class DictionaryType implements Serializable {
+public class DictionaryType extends TombstoneEntity implements Serializable {
 
 
 	private static final long serialVersionUID = 8092682463630146605L;
 	private String id;//逻辑主键
 	private String name;//字典类型名称
+	private String code;//字典类型代码
 	private String remark;//备注说明
-	private String code;//字典类型编码
-	private Integer sort = BigDecimal.ZERO.intValue();//排序
-	private Date createTime = new Date();//创建时间
-	private String createUser;//创建人
+
+
+	private List<DictionaryItem> dictionaryItems;
 
 	@Id
 	@GenericGenerator(name = "generator", strategy = "uuid")
@@ -43,7 +44,7 @@ public class DictionaryType implements Serializable {
 	}
 
 
-	@Column(name="name",length=50)
+	@Column(name="name",length=200)
 	public String getName() {
 		return name;
 	}
@@ -52,8 +53,16 @@ public class DictionaryType implements Serializable {
 		this.name = name;
 	}
 
+	@Column(name="code",length=100,nullable = false, unique = true)
+	public String getCode() {
+		return code;
+	}
 
-	@Column(name="remark")
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	@Column(name="remark",length=255)
 	public String getRemark() {
 		return remark;
 	}
@@ -62,45 +71,13 @@ public class DictionaryType implements Serializable {
 		this.remark = remark;
 	}
 
-
-	@Column(name = "sort")
-	public Integer getSort() {
-		return sort;
+	@OneToMany(mappedBy = "dictionaryType", fetch = FetchType.LAZY)
+	@Cascade({org.hibernate.annotations.CascadeType.ALL})
+	public List<DictionaryItem> getDictionaryItems() {
+		return dictionaryItems;
 	}
 
-	public void setSort(Integer sort) {
-		this.sort = sort;
+	public void setDictionaryItems(List<DictionaryItem> dictionaryItems) {
+		this.dictionaryItems = dictionaryItems;
 	}
-
-
-	@Column(name="create_time",nullable=false)
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-
-	@Column(name="user_id",length=32)
-	public String getCreateUser() {
-		return createUser;
-	}
-
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-
-
-	@Column(name="code",nullable = false, unique = true)
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-	
 }

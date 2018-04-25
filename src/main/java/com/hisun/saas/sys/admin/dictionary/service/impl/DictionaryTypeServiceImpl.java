@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
+
 package com.hisun.saas.sys.admin.dictionary.service.impl;
 
 import com.hisun.saas.sys.admin.dictionary.service.DictionaryTypeService;
@@ -8,29 +14,19 @@ import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.admin.dictionary.dao.DictionaryTypeDao;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-/**
- * <p>Title: DictionaryTypeServiceImpl.java </p>
- * <p>Package com.hisun.saas.sys.dictionary.service.impl </p>
- * <p>Description: TODO</p>
- * <p>Copyright: Copyright (c) 2015</p>
- * <p>Company: 湖南海数互联信息技术有限公司</p>
- * @author Jason
- * @email jason4j@qq.com
- * @date 2015年8月7日 上午10:03:39 
- * @version 
- */
+
 @Service
 public class DictionaryTypeServiceImpl extends BaseServiceImpl<DictionaryType, String> implements DictionaryTypeService {
 
 	private DictionaryTypeDao dictionaryTypeDao;
 	
-	@Resource
-	private DictionaryItemDao dictionaryItemDao;
+
 	@Override
 	@Resource
 	public void setBaseDao(BaseDao<DictionaryType, String> dictionaryTypeDao) {
@@ -38,12 +34,15 @@ public class DictionaryTypeServiceImpl extends BaseServiceImpl<DictionaryType, S
 		this.dictionaryTypeDao = (DictionaryTypeDao) dictionaryTypeDao;
 	}
 
-	@Override
-	public void deleteByPK(String pk) {
-		CommonConditionQuery query = new CommonConditionQuery();
-		query.add(CommonRestrictions.and(" dictionaryType.id=:id ", "id", pk));
-		dictionaryItemDao.deleteBatch(query);
-		super.deleteByPK(pk);
-	}
 
+	public boolean existCode(String code){
+		CommonConditionQuery query = new CommonConditionQuery();
+		query.add(CommonRestrictions.and(" code >= :code", "code",code));
+		Long total = this.dictionaryTypeDao.count(query);
+		if(total>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }

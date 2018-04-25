@@ -47,23 +47,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-/**
- * 
- * <p>
- * 类名称：UserController
- * </p>
- * <p>
- * 类描述:
- * </p>
- * <p>
- * 公司：湖南海数互联信息技术有限公司
- * </p>
- *
- * @创建人：qinjw
- * @创建时间：2015年3月18日 下午3:55:47
- * @创建人联系方式：qinjw@30wish.net
- * @version
- */
 
 @Controller
 @RequestMapping("/sys/admin/user")
@@ -87,7 +70,7 @@ public class UserController extends BaseController {
 	@Value(value= "${sys.domain}")
 	public String domain;
 
-	@RequiresPermissions("admin-platform:user_add")
+	@RequiresPermissions("adminUser:*")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> save(@ModelAttribute("userVo") UserVo userVo, HttpServletRequest request) throws GenericException {
 
@@ -106,12 +89,12 @@ public class UserController extends BaseController {
 		return map;
 	}
 
-	@RequiresPermissions("admin-platform:user_add")
+	@RequiresPermissions("adminUser:*")
 	@RequestMapping(value = "/add")
 	public ModelAndView add(){
 		return new ModelAndView("saas/sys/admin/user/addUser");
 	}
-	
+
 	/**
 	 * 手动新增用户的保存处理
 	 * @param userVo
@@ -120,7 +103,6 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/saveByAdd", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> saveByAdd(@ModelAttribute("userVo") UserVo userVo,
 			HttpServletRequest request) throws GenericException {
-
 		Map<String, Object> map = new HashMap<String, Object>();
 		User user = new User();
 		
@@ -238,7 +220,7 @@ public class UserController extends BaseController {
 		return map;
 	}
 
-	@RequiresPermissions("admin-platform:user_delete")
+	@RequiresPermissions("adminUser:*")
 	@RequestMapping(value = "/delete/{userId}")
 	public @ResponseBody Map<String, Object> delete(
 			@PathVariable("userId") String userId) throws GenericException {
@@ -560,7 +542,7 @@ public class UserController extends BaseController {
 	 * @return
 	 * @throws GenericException
 	 */
-	@RequiresPermissions("admin-platform:user_save_rolerelation")
+	@RequiresPermissions("adminUser:*")
 	@RequestMapping(value = "/saveRelation", method = RequestMethod.POST)
 	public @ResponseBody Map<String,Object> saveRelation(
 			@RequestParam(value="userId") String userId,
@@ -578,7 +560,7 @@ public class UserController extends BaseController {
 		return map;
 	}
 
-	@RequiresPermissions("admin-platform:user_lock")
+	@RequiresPermissions("adminUser:*")
 	@RequestMapping(value = "/locked", method = RequestMethod.POST)
 	public @ResponseBody Map<String,Object> locked(
 			@RequestParam(value="userid") String userid,

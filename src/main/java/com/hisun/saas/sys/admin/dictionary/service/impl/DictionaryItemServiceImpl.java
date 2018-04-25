@@ -17,17 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>Title: DictionaryItemServiceImpl.java </p>
- * <p>Package com.hisun.cloud.sys.dictionary.service.impl </p>
- * <p>Description: TODO</p>
- * <p>Copyright: Copyright (c) 2015</p>
- * <p>Company: 湖南海数互联信息技术有限公司</p>
- * @author Jason
- * @email jason4j@qq.com
- * @date 2015年8月7日 上午9:59:37 
- * @version 
- */
+
 @Service
 public class DictionaryItemServiceImpl extends BaseServiceImpl<DictionaryItem, String> implements DictionaryItemService {
 
@@ -59,26 +49,22 @@ public class DictionaryItemServiceImpl extends BaseServiceImpl<DictionaryItem, S
 	@Override
 	public void saveDictionaryItem(DictionaryItem dictionaryItem)
 			throws Exception {
-		Integer oldSort = this.getMaxSort(dictionaryItem.getpId());
+		Integer oldSort = this.getMaxSort(dictionaryItem.getParentItem().getId());
 		Integer newSort = dictionaryItem.getSort();
-		
 		int retval = newSort.compareTo(oldSort);
-		
 		if(retval>0){
 			newSort = oldSort;
 		}
 		
 		String queryCode = "";
 		DecimalFormat decimalFormat = new DecimalFormat("000"); 
-		if(!StringUtils.equals("1", dictionaryItem.getpId())){
-			DictionaryItem parentdictionaryItem = this.dictionaryItemDao.getByPK(dictionaryItem.getpId());
-			queryCode = parentdictionaryItem.getQueryCode()+decimalFormat.format(newSort);
+		if(dictionaryItem.getParentItem()!=null){
+			queryCode = dictionaryItem.getParentItem().getQueryCode()+decimalFormat.format(newSort);
 		}else{
 			queryCode = decimalFormat.format(newSort);
 		}
 		dictionaryItem.setQueryCode(queryCode);
 		dictionaryItem.setSort(newSort);
-		
 		this.updateSortAndQueryCode(dictionaryItem, oldSort);
 		this.save(dictionaryItem);
 		
@@ -91,12 +77,11 @@ public class DictionaryItemServiceImpl extends BaseServiceImpl<DictionaryItem, S
 		String newQueryCode = dictionaryItem.getQueryCode();
 		
 		DecimalFormat decimalFormat = new DecimalFormat("000"); 
-		DictionaryItem parentDictionaryItem = this.dictionaryItemDao.getByPK(dictionaryItem.getpId());
-		String oldQueryCode;
-		if(parentDictionaryItem==null){
+		String oldQueryCode = "";
+		if(dictionaryItem.getParentItem()==null){
 			oldQueryCode = decimalFormat.format(oldSort);
 		}else{
-			oldQueryCode = parentDictionaryItem.getQueryCode()+decimalFormat.format(oldSort);
+			oldQueryCode = dictionaryItem.getParentItem().getQueryCode()+decimalFormat.format(oldSort);
 		}
 		
 		//String oldQueryCode = this.generateQueryCode(currentOrg.getParent().getQueryCode(), oldOrder, "0000");
@@ -107,7 +92,7 @@ public class DictionaryItemServiceImpl extends BaseServiceImpl<DictionaryItem, S
 		}else{
 			sql+="t.SORT=t.SORT+1";
 		}
-		sql+=" where t.p_id='"+dictionaryItem.getpId()+"'";
+		sql+=" where t.p_id='"+dictionaryItem.getParentItem().getId()+"'";
 		if(newSort>oldSort){
 			sql+=" and t.SORT<="+newSort+" and t.SORT >"+oldSort;
 		}else{
@@ -155,16 +140,15 @@ public class DictionaryItemServiceImpl extends BaseServiceImpl<DictionaryItem, S
 		DictionaryItem dictionaryItem2 = this.dictionaryItemDao.getByPK(dictionaryItem.getId());
 			
 		int newSort = dictionaryItem.getSort().intValue();
-		int maxSort = this.getMaxSort(dictionaryItem.getpId());
+		int maxSort = this.getMaxSort(dictionaryItem.getParentItem().getId());
 		if(newSort>maxSort){
 			newSort = maxSort;
 		}
 		
 		String queryCode = "";
-		DecimalFormat decimalFormat = new DecimalFormat("000"); 
-		if(!StringUtils.equals("1", dictionaryItem.getpId())){
-			DictionaryItem parentDictionaryItem = this.dictionaryItemDao.getByPK(dictionaryItem.getpId());
-			queryCode = parentDictionaryItem.getQueryCode()+decimalFormat.format(newSort);
+		DecimalFormat decimalFormat = new DecimalFormat("000");
+		if(dictionaryItem.getParentItem()!=null){
+			queryCode = dictionaryItem.getParentItem().getQueryCode()+decimalFormat.format(newSort);
 		}else{
 			queryCode = decimalFormat.format(newSort);
 		}
@@ -172,7 +156,7 @@ public class DictionaryItemServiceImpl extends BaseServiceImpl<DictionaryItem, S
 		dictionaryItem.setSort(newSort);
 		
 		this.refreshQueryCodeToTmp(dictionaryItem2.getQueryCode());
-		if(StringUtils.equals(dictionaryItem.getpId(), oldPid)){
+		if(StringUtils.equals(dictionaryItem.getParentItem().getId(), oldPid)){
 			this.updateSortAndQueryCode(dictionaryItem, dictionaryItem2.getSort());
 		}else{
 			this.updateSortAndQueryCode(dictionaryItem, maxSort);

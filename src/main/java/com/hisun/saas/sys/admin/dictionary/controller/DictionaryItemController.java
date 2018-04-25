@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
+
 package com.hisun.saas.sys.admin.dictionary.controller;
 
 import com.google.common.collect.Lists;
@@ -30,44 +36,89 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>Title: DictionaryTypeController.java </p>
- * <p>Package com.hisun.saas.sys.dictionary.controller </p>
- * <p>Description: TODO</p>
- * <p>Copyright: Copyright (c) 2015</p>
- * <p>Company: 湖南海数互联信息技术有限公司</p>
- * @author Jason
- * @email jason4j@qq.com
- * @date 2015年8月7日 上午10:54:57 
- * @version 
- */
+
 @Controller
 @RequestMapping("/sys/admin/dictionary/item")
 public class DictionaryItemController extends BaseController {
 
 	@Resource
 	private DictionaryItemService dictionaryItemService;
-	
 	@Resource
 	private DictionaryTypeService dictionaryTypeService;
+
+
+
+	@RequestMapping("/index/{typeId}")
+	public @ResponseBody Map<String, Object> tree(@PathVariable("typeId") String typeId) throws GenericException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<DictionaryItem> dictionaryItems;
+		try {
+
+			CommonConditionQuery query = new CommonConditionQuery();
+			query.add(CommonRestrictions.and(" dictionaryType.id=:typeId ", "typeId", typeId));
+			CommonOrderBy orderBy = new CommonOrderBy();
+			orderBy.add(CommonOrder.asc("queryCode"));
+
+			dictionaryItems = dictionaryItemService.list(query, orderBy);
+			List<DictionaryItemVo> dictionaryItemVos = new ArrayList<DictionaryItemVo>();
+			DictionaryType dictionaryType = dictionaryTypeService.getByPK(typeId);
+
+			DictionaryItemVo dictionaryItemVo;
+			dictionaryItemVo = new DictionaryItemVo();
+			dictionaryItemVo.setId("1");
+			dictionaryItemVo.setName(dictionaryType.getName());
+			dictionaryItemVo.setOpen(true);
+			dictionaryItemVo.setpId(null);
+			dictionaryItemVos.add(dictionaryItemVo);
+			for (DictionaryItem dictionaryItem : dictionaryItems) {
+				dictionaryItemVo = new DictionaryItemVo();
+				BeanUtils.copyProperties(dictionaryItemVo,dictionaryItem);
+				dictionaryItemVo.setpId(dictionaryItem.getParentItem().getId());
+				dictionaryItemVos.add(dictionaryItemVo);
+			}
+			map.put("success", true);
+			map.put("data", dictionaryItemVos);
+		} catch (Exception e) {
+			logger.error(e, e);
+			map.put("success", false);
+		}
+		return map;
+	}
+
+	@RequestMapping("/ajax/list")
+	public ModelAndView resources(HttpServletRequest req,String pId,
+								  @RequestParam(value="pageNum",defaultValue="1")int pageNum,
+								  @RequestParam(value="pageSize",defaultValue="20") int pageSize) throws GenericException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try{
+			CommonConditionQuery query = new CommonConditionQuery();
+			query.add(CommonRestrictions.and(" parentItem.id = :pId ", "pId", pId));
+			Long total = dictionaryItemService.count(query);
+			CommonOrderBy orderBy = new CommonOrderBy();
+			orderBy.add(CommonOrder.asc("queryCode"));
+			List<DictionaryItem> resultList = dictionaryItemService.list(query, orderBy, pageNum, pageSize);
+			PagerVo<DictionaryItem> pager = new PagerVo<DictionaryItem>(resultList, total.intValue(), pageNum, pageSize);
+			map.put("pager", pager);
+		}catch(Exception e){
+			logger.error(e);
+			throw new GenericException(e);
+		}
+		return new ModelAndView("/saas/sys/admin/dictionary/item/listDetails", map);
+	}
 	
 	@RequestMapping(value = "/list/{typeId}")
 	public ModelAndView list(HttpServletRequest request,
-			@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="10") int pageSize,@PathVariable("typeId") String typeId) throws GenericException {
+			@RequestParam(value="pageNum",defaultValue="1")int pageNum,
+							 @RequestParam(value="pageSize",defaultValue="10") int pageSize,
+							 @PathVariable("typeId") String typeId) throws GenericException {
 		Map<String, Object> map = Maps.newHashMap();
-		
 		try{
 			CommonConditionQuery query = new CommonConditionQuery();
-			query.add(CommonRestrictions.and(" dictionaryType.id=:id ", "id", typeId));
+			query.add(CommonRestrictions.and(" dictionaryType.id=:typeId ", "typeId", typeId));
 			Long total = this.dictionaryItemService.count(query);
 			CommonOrderBy orderBy = new CommonOrderBy();
+			orderBy.add(CommonOrder.asc("queryCode"));
 			List<DictionaryItem> queryList = this.dictionaryItemService.list(query, orderBy, pageNum, pageSize);
-			//List<TenantVo> resultList = new ArrayList<TenantVo>();
-			/*for (Tenant entity : queryList) {
-				TenantVo vo = new TenantVo();
-				BeanUtils.copyProperties(vo, entity);
-				resultList.add(vo);
-			}*/
 			PagerVo<DictionaryItem> pager = new PagerVo<DictionaryItem>(queryList, total.intValue(), pageNum, pageSize);
 			map.put("pager", pager);
 			map.put("typeId", typeId);
@@ -87,11 +138,10 @@ public class DictionaryItemController extends BaseController {
 		 
 		try {
 			if(StringUtils.isNotBlank(newpId)){
-				dictionaryItem.setpId(newpId);
+				dictionaryItem.setParentItem(this.dictionaryItemService.getByPK(newpId));
 			}
 			DictionaryType dictionaryType = this.dictionaryTypeService.getByPK(type);
 			dictionaryItem.setDictionaryType(dictionaryType);
-			dictionaryItem.setCreateUser(UserLoginDetailsUtil.getUserLoginDetails().getUserid());
 			dictionaryItemService.saveDictionaryItem(dictionaryItem);
 			map.put("success", true);
 			map.put("data", dictionaryItem);
@@ -110,7 +160,7 @@ public class DictionaryItemController extends BaseController {
 		try {
 			if (StringUtils.isNotBlank(id)) {
 				CommonConditionQuery query = new CommonConditionQuery();
-				query.add(CommonRestrictions.and(" pId = :pId ", "pId", id));
+				query.add(CommonRestrictions.and(" parentItem.id = :pId ", "pId", id));
 				Long total = dictionaryItemService.count(query);
 				if(total>0){
 					map.put("success", false);
@@ -134,8 +184,8 @@ public class DictionaryItemController extends BaseController {
 		String newpId = request.getParameter("newpId");
 		String type = request.getParameter("type");
 		try {
-			String oldPid = dictionaryItem.getpId();
-			dictionaryItem.setpId(newpId);
+			String oldPid = dictionaryItem.getParentItem().getId();
+			dictionaryItem.setParentItem(this.dictionaryItemService.getByPK(newpId));
 			DictionaryType dictionaryType = this.dictionaryTypeService.getByPK(type);
 			dictionaryItem.setDictionaryType(dictionaryType);
 			this.dictionaryItemService.updateDictionaryItem(dictionaryItem, oldPid, Integer.valueOf(0));
@@ -165,7 +215,6 @@ public class DictionaryItemController extends BaseController {
 				BeanUtils.copyProperties(vo, entity);
 				vo.setTypeName(entity.getDictionaryType().getName());
 				vo.setTypeId(entity.getDictionaryType().getId());
-				vo.setName(entity.getItem());
 				map.put("data", vo);
 				map.put("success", true);
 			} else {
@@ -177,64 +226,9 @@ public class DictionaryItemController extends BaseController {
 		return map;
 	}
 	
-	@RequestMapping("/tree/{typeId}")
-	public @ResponseBody Map<String, Object> tree(@PathVariable("typeId") String typeId) throws GenericException {
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<DictionaryItem> dictionaryItems;
-		try {
-			CommonOrderBy orderBy = new CommonOrderBy();
-			CommonConditionQuery query = new CommonConditionQuery();
-			query.add(CommonRestrictions.and(" dictionaryType.id=:id ", "id", typeId));
-			orderBy.add(CommonOrder.asc("sort"));
-			dictionaryItems = dictionaryItemService.list(null, orderBy);
-			List<DictionaryItemVo> dictionaryItemVos = new ArrayList<DictionaryItemVo>();
-			DictionaryType dictionaryType = dictionaryTypeService.getByPK(typeId);
-			
-			DictionaryItemVo dictionaryItemVo;
-			dictionaryItemVo = new DictionaryItemVo();
-			dictionaryItemVo.setId("1");
-			dictionaryItemVo.setName(dictionaryType.getName());
-			dictionaryItemVo.setOpen(true);
-			dictionaryItemVo.setpId(null);
-			dictionaryItemVos.add(dictionaryItemVo);
-			for (DictionaryItem dictionaryItem : dictionaryItems) {
-				dictionaryItemVo = new DictionaryItemVo();
-				BeanMapper.copy(dictionaryItem, dictionaryItemVo);
-				dictionaryItemVo.setName(dictionaryItem.getItem());
-				//dictionaryItemVo.setHref(dictionaryItem.getUrl());
-				dictionaryItemVos.add(dictionaryItemVo);
-			}
-			map.put("success", true);
-			map.put("data", dictionaryItemVos);
-		} catch (Exception e) {
-			logger.error(e, e);
-			map.put("success", false);
-		}
-		return map;
-	}
+
 	
-	@RequestMapping("/ajax/list")
-	public ModelAndView resources(HttpServletRequest req,String pId,
-			@RequestParam(value="pageNum",defaultValue="1")int pageNum, @RequestParam(value="pageSize",defaultValue="20") int pageSize) throws GenericException {
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		//User user = (User) req.getAttribute(Constants.CURRENT_USER);
-		try{
-			//String userId = userLoginDetails.getUserid();
-			CommonConditionQuery query = new CommonConditionQuery();
-			query.add(CommonRestrictions.and(" pId = :pId ", "pId", pId));
-			Long total = dictionaryItemService.count(query);
-			CommonOrderBy orderBy = new CommonOrderBy();
-			orderBy.add(CommonOrder.asc("sort"));
-			List<DictionaryItem> resultList = dictionaryItemService.list(query, orderBy, pageNum, pageSize);
-			PagerVo<DictionaryItem> pager = new PagerVo<DictionaryItem>(resultList, total.intValue(), pageNum, pageSize);
-			map.put("pager", pager);
-		}catch(Exception e){
-			logger.error(e);
-			throw new GenericException(e);
-		}
-		return new ModelAndView("/saas/sys/admin/dictionary/item/listDetails", map);
-	}
+
 	
 	@RequestMapping("/max/sort")
 	public @ResponseBody Map<String, Object> getMaxSort(@RequestParam(value="pId")String pId) {

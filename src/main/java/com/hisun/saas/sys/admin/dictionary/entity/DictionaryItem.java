@@ -6,32 +6,33 @@
 
 package com.hisun.saas.sys.admin.dictionary.entity;
 
+import com.hisun.base.entity.TombstoneEntity;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.List;
 
 /**
  * @author Rocky {rockwithyou@126.com}
  */
 @Entity
 @Table(name = "sys_dict_item")
-public class DictionaryItem implements Serializable {
+public class DictionaryItem  extends TombstoneEntity implements Serializable {
 
     private static final long serialVersionUID = -6174662855194278964L;
 
     private String id;//逻辑主键
-    private String pId;//父id
-    private DictionaryType dictionaryType;
-    private String item;//字典项
-    private String value;//字典项值
+    private DictionaryItem parentItem;//上级字典项
+    private String name;//字典项名称
+    private String code;//字典项值
     private String remark;//备注说明
-    private Integer sort = BigDecimal.ZERO.intValue();//排序
-    private String queryCode;
-    private Date createTime = new Date();//创建时间
-    private String createUser;//创建人
+    private Integer sort = 1;//排序
+    private String queryCode;//查询code(树形结构查询定位专用,最多9层)
+
+    private DictionaryType dictionaryType;
+    private List<DictionaryItem> childrenItems;
 
     @Id
     @GenericGenerator(name = "generator", strategy = "uuid")
@@ -45,7 +46,7 @@ public class DictionaryItem implements Serializable {
         this.id = id;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dict_type_id")
     public DictionaryType getDictionaryType() {
         return dictionaryType;
@@ -55,25 +56,43 @@ public class DictionaryItem implements Serializable {
         this.dictionaryType = dictionaryType;
     }
 
-    @Column(name = "item", length = 50)
-    public String getItem() {
-        return item;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "p_id")
+    public DictionaryItem getParentItem() {
+        return parentItem;
     }
 
-    public void setItem(String item) {
-        this.item = item;
+    public void setParentItem(DictionaryItem parentItem) {
+        this.parentItem = parentItem;
     }
 
-
-    @Column(name = "value", length = 50)
-    public String getValue() {
-        return value;
+    @Column(name = "name",nullable = false,length = 200)
+    public String getName() {
+        return name;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    @Column(name = "code",nullable = false,length = 50)
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @OneToMany(mappedBy = "parentItem", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    public List<DictionaryItem> getChildrenItems() {
+        return childrenItems;
+    }
+
+    public void setChildrenItems(List<DictionaryItem> childrenItems) {
+        this.childrenItems = childrenItems;
+    }
 
     @Column(name = "remark")
     public String getRemark() {
@@ -92,37 +111,6 @@ public class DictionaryItem implements Serializable {
 
     public void setSort(Integer sort) {
         this.sort = sort;
-    }
-
-
-    @Column(name = "create_time", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-
-    @Column(name = "user_id", length = 32)
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-
-    @Column(name = "p_id", length = 32)
-    public String getpId() {
-        return pId;
-    }
-
-    public void setpId(String pId) {
-        this.pId = pId;
     }
 
     @Column(name = "query_code", unique = true, length = 27, nullable = false)
