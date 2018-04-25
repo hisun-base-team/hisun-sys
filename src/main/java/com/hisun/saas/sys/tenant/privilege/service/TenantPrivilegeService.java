@@ -14,5 +14,6 @@ import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
  * @author Rocky {rockwithyou@126.com}
  */
 public interface TenantPrivilegeService extends BaseService<TenantPrivilege,String>{
-
+    Integer getMaxSort() ;
+    void updateSort(int oldSort,int newSort);
 }

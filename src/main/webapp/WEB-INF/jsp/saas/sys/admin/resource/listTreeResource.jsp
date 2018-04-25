@@ -25,9 +25,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 				<div class="row-fluid">
 					<div class="main_left">
 						<div class="portlet box grey mainleft">
-							<div class="portlet-title">
-								<div class="caption mainlefttop">资源树</div>
-							</div>
+
 							<div class="portlet-body leftbody">
 								<%--<div class="zTreeDemoBackground" id="tree">--%>
 									<%--<ul id="treeDemo" class="ztree"></ul>--%>
@@ -336,6 +334,17 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 			<%--});--%>
 		<%--}--%>
 
+$(function(){
+	changeTreeDivHeight();
+	//当浏览器大小改变的时候,要重新计算
+	$(window).resize(function(){
+		changeTreeDivHeight();
+	})
+});
+function changeTreeDivHeight(){
+	var divHeight = $(window).height()-60;
+	$("#treeDemo_div").css('height',divHeight);
+}
 		var zTree1;
 		var addForm = new EstValidate("addForm");
 		$(document).ready(function(){

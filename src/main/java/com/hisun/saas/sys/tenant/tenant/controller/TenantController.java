@@ -1,14 +1,19 @@
 package com.hisun.saas.sys.tenant.tenant.controller;
 
+import com.google.common.collect.Maps;
 import com.hisun.base.controller.BaseController;
+import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.sys.tenant.privilege.entity.TenantPrivilege;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.sys.tenant.tenant.service.TenantService;
 import com.hisun.saas.sys.tenant.tenant.vo.TenantVo;
 import com.hisun.saas.sys.tenant.user.service.TenantUserService;
+import com.hisun.saas.sys.util.PinyinUtil;
 import com.hisun.util.ValidateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -44,7 +49,7 @@ public class TenantController extends BaseController {
     @Resource
     private TenantUserService tenantUserService;
 
-    @RequiresPermissions("tenant:tenantlist")
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/list")
     public ModelAndView list(String name,String start,String end,@RequestParam(value="tombstone",defaultValue = "-1")int tombstone
             ,@RequestParam(value="pageNum",defaultValue = "1")int pageNum,@RequestParam(value = "pageSize",defaultValue = "15")int pageSize) throws UnsupportedEncodingException {
@@ -64,13 +69,13 @@ public class TenantController extends BaseController {
         return new ModelAndView("saas/sys/tenant/tenant/list",model);
     }
 
-    @RequiresPermissions("tenant:tenantadd")
+//    @RequiresPermissions("tenant:tenantadd")
     @RequestMapping("/add")
     public ModelAndView add(){
         return new ModelAndView("saas/sys/tenant/tenant/add");
     }
 
-    @RequiresPermissions("tenant:tenantadd")
+//    @RequiresPermissions("tenant:tenantadd")
     @RequestMapping("/save")
     public @ResponseBody Map<String,Object> save(TenantVo vo) throws GenericException {
         Map<String,Object> returnMap = new HashMap<String,Object>();
@@ -95,7 +100,7 @@ public class TenantController extends BaseController {
         return returnMap;
     }
 
-    @RequiresPermissions("tenant:tenantupdate")
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable("id") String id){
         Map<String,Object> model = new HashMap<String,Object>();
@@ -104,7 +109,7 @@ public class TenantController extends BaseController {
         return new ModelAndView("saas/sys/tenant/tenant/edit", model);
     }
 
-    @RequiresPermissions("tenant:tenantupdate")
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/update")
     public @ResponseBody Map<String,Object> update(TenantVo vo) throws GenericException{
         Map<String,Object> returnMap = new HashMap<String,Object>();
@@ -135,7 +140,7 @@ public class TenantController extends BaseController {
      * @param id
      * @return
      */
-    @RequiresPermissions("tenant:tenantdelactivate")
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/delete/{id}")
     public @ResponseBody Map<String,Object> delete(@PathVariable("id") String id) throws GenericException{
         Map<String,Object> returnMap = new HashMap<String,Object>();
@@ -155,7 +160,7 @@ public class TenantController extends BaseController {
      * @param id
      * @return
      */
-    @RequiresPermissions("tenant:tenantdelactivate")
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/activate/{id}")
     public @ResponseBody Map<String,Object> activate(@PathVariable("id") String id) throws GenericException{
         Map<String,Object> returnMap = new HashMap<String,Object>();
@@ -170,7 +175,7 @@ public class TenantController extends BaseController {
         return returnMap;
     }
 
-    @RequiresPermissions("tenant:tenantownview")
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/own/view")
     public ModelAndView ownView(){
         Map<String,Object> model = new HashMap<String,Object>();
@@ -186,7 +191,7 @@ public class TenantController extends BaseController {
      * 打开维护本组织信息页面
      * @return
      */
-    @RequiresPermissions("tenant:tenantownupdate")
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping(value="/own/update",method = RequestMethod.GET)
     public ModelAndView openOwnUpdate(){
         UserLoginDetails details = UserLoginDetailsUtil.getUserLoginDetails();
@@ -200,7 +205,7 @@ public class TenantController extends BaseController {
      * 提交维护本组织信息
      * @return
      */
-    @RequiresPermissions("tenant:tenantownupdate")
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping(value="/own/update",method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> ownUpdate(TenantVo vo){
         tenantService.updateOwn(vo);
@@ -213,7 +218,7 @@ public class TenantController extends BaseController {
      * 平台管理员查看租户信息
      * @return
      */
-    @RequiresPermissions("tenant:tenantplatfadminview")
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/sysadmin/view/{tenantId}")
     public ModelAndView platfAdminView(@PathVariable(value="tenantId")String tenantId){
         Map<String,Object> model = new HashMap<String,Object>();
@@ -222,5 +227,20 @@ public class TenantController extends BaseController {
         model.put("entity",tenant);
         model.put("memberCount", count);
         return new ModelAndView("saas/sys/tenant/tenant/viewPlatfAdmin",model);
+    }
+
+    @RequestMapping(value = "/ajax/getTenantNameCode")
+    public @ResponseBody Map<String, Object> getTenantNameCode(
+            @RequestParam("name") String name,@RequestParam(value="shortName",required=false)String shortName) throws GenericException {
+        Map<String, Object> map = Maps.newHashMap();
+        String pinYinHead = "";
+        if(shortName.equals("") == false){
+            pinYinHead = PinyinUtil.getPinYinHeadChar(shortName);
+        }else{
+            pinYinHead = PinyinUtil.getPinYinHeadChar(name);
+        }
+        map.put("pinYinHead", pinYinHead);
+        map.put("success", true);
+        return map;
     }
 }

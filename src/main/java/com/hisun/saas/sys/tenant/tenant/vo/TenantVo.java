@@ -24,14 +24,22 @@ public class TenantVo {
 	private String id;//主键
 
 	@NotBlank
-	@Size(min=1,max=15)
+	@Size(min=1,max=100)
 	private String name;//组织名
+
+	@NotBlank
+	@Size(min=1,max=60)
+	private String shortName;//组织简称
+
+	@NotBlank
+	@Size(min=1,max=15)
+	private String shortNamePy;//拼音简称
 
 	@NotBlank
 	@Size(min=4, max = 30)
 	private String username;
 
-	@NotBlank
+//	@NotBlank
 	@Size(max = 50)
 	@Pattern(regexp = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")
 	private String email;
@@ -78,5 +86,21 @@ public class TenantVo {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
+	public String getShortNamePy() {
+		return shortNamePy;
+	}
+
+	public void setShortNamePy(String shortNamePy) {
+		this.shortNamePy = shortNamePy;
 	}
 }

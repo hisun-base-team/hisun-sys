@@ -32,23 +32,32 @@
 							<div class="tab-pane active" id="tab1">
 								<div>
 									<div id="nameGroup" class="control-group">
-										<label class="control-label mylabel">租户名称<span
+										<label class="control-label mylabel">租户全称<span
 												class="required">*</span>
 										</label>
 										<div class="controls">
-											<input class="span6 m-wrap" type="text" name="name" id="name" required maxlength="15">
+											<input class="span6 m-wrap" type="text" name="name" id="name" required maxlength="100" onblur="getSimpleName();">
 										</div>
 									</div>
-									<div id="emailGroup" class="control-group">
-										<label class="control-label mylabel">邮箱<span
+									<div id="shortNameGroup" class="control-group">
+										<label class="control-label mylabel">租户简称<span
 												class="required">*</span>
 										</label>
 										<div class="controls">
-											<input class="span6 m-wrap" type="text" name="email" id="email" required maxlength="50" customEmail="true" tenantEmailUnique="true"  csrftoken="${sessionScope.OWASP_CSRFTOKEN}">
+											<input class="span6 m-wrap" type="text" name="shortName" id="shortName" required maxlength="60" onblur="getSimpleName();">
 										</div>
 									</div>
+									<div id="shortNamePyGroup" class="control-group">
+										<label class="control-label mylabel">拼音简称<span
+												class="required">*</span>
+										</label>
+										<div class="controls">
+											<input class="span6 m-wrap" type="text" name="shortNamePy" id="shortNamePy"  required maxlength="15">
+										</div>
+									</div>
+
 									<div id="usernameGroup" class="control-group">
-										<label class="control-label mylabel">登录名<span
+										<label class="control-label mylabel">租户管理员账号<span
 												class="required">*</span>
 										</label>
 										<div class="controls">
@@ -56,21 +65,14 @@
 										</div>
 									</div>
 									<div id="passwordGroup" class="control-group">
-										<label class="control-label mylabel">密码<span
+										<label class="control-label mylabel">租户管理员密码<span
 												class="required">*</span>
 										</label>
 										<div class="controls">
 											<input class="span6 m-wrap" type="password" name="password" id="password" required="true" minlength="6" maxlength="20" >
 										</div>
 									</div>
-									<div id="repasswordGroup" class="control-group">
-										<label class="control-label mylabel">重复密码<span
-												class="required">*</span>
-										</label>
-										<div class="controls">
-											<input class="span6 m-wrap" type="password" name="repassword" id="repassword" required="true" minlength="6" maxlength="20" equals="password">
-										</div>
-									</div>
+
 									<div  class="form-actions">
 										<button id="submitBtn" type="button" class="btn green mybutton" onclick="saveSubmit()"><i class='icon-ok'></i> 确定</button>
 										<a href="${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" class="btn btn-default"
@@ -125,6 +127,23 @@
 				}
 			});
 		}
+	}
+	function getSimpleName(){
+		var name = $("#name").val().trim();
+
+		var myForm = document.getElementById("/UnitForm");
+		var a = new AJAXInteraction("${contextPath}/DealUnitCodeAjaxServlet.san?type=getSimpleName", function(reqText) {
+			if(reqText != ""){
+				document.getElementById("simpleName").value = reqText;
+				document.getElementById("adminAccounts").value = reqText+"_admin";
+				document.getElementById("adminPassword").value = reqText+"_admin111111";
+				document.getElementById("securityAdminAccounts").value = reqText+"_s_admin";
+				document.getElementById("securityAdminPassword").value = reqText+"_s_admin111111";
+				document.getElementById("auditAdminAccounts").value = reqText+"_a_admin";
+				document.getElementById("auditAdminPassword").value = reqText+"_a_admin111111";
+			}
+		});
+		a.doPost(getRequestBody(myForm));
 	}
 </script>
 </body>

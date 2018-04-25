@@ -112,7 +112,7 @@ public final class TreeTag extends BodyTagSupport {
 				nodesHtml.append("</div>");
 			}
 			//单独使用的树
-			nodesHtml.append("<div class=\"zTreeDemoBackground\" id=\""+id+"_div\">");
+			nodesHtml.append("<div class=\"zTreeDemoBackground\" id=\""+id+"_div\" style=\" overflow: auto;margin: 0px;padding: 0px\">");
 			nodesHtml.append("<ul id=\""+id+"\" class=\"ztree\"></ul>");
 			nodesHtml.append("</div>");
 		}else{

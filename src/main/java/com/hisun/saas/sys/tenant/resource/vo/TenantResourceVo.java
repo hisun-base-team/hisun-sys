@@ -7,7 +7,7 @@
 package com.hisun.saas.sys.tenant.resource.vo;
 
 
-public class TenantResourceVo {
+public class TenantResourceVo{
 
 
 	private String id;

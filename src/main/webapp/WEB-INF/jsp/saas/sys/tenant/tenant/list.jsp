@@ -22,13 +22,13 @@
 			<div class="portlet box grey">
 				<div class="portlet-title" style="vertical-align: middle;">
 					<div class="caption">租户列表</div>
-					<shiro:hasPermission name="tenant:tenantadd">
+					<%--<shiro:hasPermission name="tenant:tenantadd">--%>
 						<div class="btn-group fr">
 							<a id="sample_editable_1_new" class="btn green" href="${path }/sys/tenant/tenant/add?&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
 								<i class="icon-plus"></i> 创 建
 							</a>
 						</div>
-					</shiro:hasPermission>
+					<%--</shiro:hasPermission>--%>
 				</div>
 
 				<div class="portlet-body">
@@ -78,9 +78,7 @@
 								</td>
 								<td>${userCountList[varStatus.index]}</td>
 								<td class="Left_alignment">
-									<shiro:hasPermission name="tenant:tenantplatfadminview">
 										<a href="${path }/sys/tenant/tenant/sysadmin/view/${entity.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" >查看信息</a> |
-									</shiro:hasPermission>
 									<a href="${path }/sys/tenant/user/sysAdmin/list?tenantId=${entity.id}&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">查看成员</a>
 									<c:if test="${entity.tombstone == 0}">
 										| <a href="javascript:void(0)" onclick="del('${entity.id }')">冻结</a>
