@@ -139,7 +139,7 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,
 		cache:false,
 		type: submitType,
 		dataType : dataType,
-		url: "/"+treeUrl,// 请求的action路径
+		url: treeUrl,// 请求的action路径
 		headers: {
 			"OWASP_CSRFTOKEN":token
 		},
