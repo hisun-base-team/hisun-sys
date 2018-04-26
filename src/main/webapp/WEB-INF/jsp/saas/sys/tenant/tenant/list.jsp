@@ -78,6 +78,7 @@
 								</td>
 								<td>${userCountList[varStatus.index]}</td>
 								<td class="Left_alignment">
+									<a href="${path }/sys/tenant/tenant/sysadmin/privilegeManage/${entity.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" >授权</a> |
 										<a href="${path }/sys/tenant/tenant/sysadmin/view/${entity.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" >查看信息</a> |
 									<a href="${path }/sys/tenant/user/sysAdmin/list?tenantId=${entity.id}&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">查看成员</a>
 									<c:if test="${entity.tombstone == 0}">
