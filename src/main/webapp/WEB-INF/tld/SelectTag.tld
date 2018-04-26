@@ -14,14 +14,14 @@
          <rtexprvalue>true</rtexprvalue>
      </attribute>
      <attribute>
-         <name>dataSource</name>
+         <name>selectUrl</name>
          <required>true</required>
          <rtexprvalue>true</rtexprvalue>
      </attribute>
 
 
      <attribute>
-         <name>dictionaryType</name>
+         <name>userParameter</name>
          <required>false</required>
          <rtexprvalue>true</rtexprvalue>
      </attribute>
@@ -66,6 +66,11 @@
      </attribute>
      <attribute>
          <name>defaultkeys</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+     <attribute>
+         <name>token</name>
          <required>false</required>
          <rtexprvalue>true</rtexprvalue>
      </attribute>

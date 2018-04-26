@@ -8,6 +8,7 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.sys.taglib.selectTag.SelectNode;
 import com.hisun.saas.sys.tenant.privilege.entity.TenantPrivilege;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.sys.tenant.tenant.service.TenantService;
@@ -240,6 +241,30 @@ public class TenantController extends BaseController {
             pinYinHead = PinyinUtil.getPinYinHeadChar(name);
         }
         map.put("pinYinHead", pinYinHead);
+        map.put("success", true);
+        return map;
+    }
+    @RequestMapping(value = "/ajax/getZtOptions")
+    public @ResponseBody Map<String, Object> getZtOptions(@RequestParam(value="dictionaryType",required=false)String dictionaryType,String bb) throws GenericException {
+        Map<String, Object> map = Maps.newHashMap();
+        List<SelectNode> selectNodes = new ArrayList<SelectNode>();
+        SelectNode selectNode = new SelectNode();
+        selectNode.setOptionKey("-1");
+        selectNode.setOptionValue("全部");
+
+        selectNodes.add(selectNode);
+        selectNode = new SelectNode();
+        selectNode.setOptionKey("0");
+        selectNode.setOptionValue("正常");
+        selectNode.setSelected("true");
+        selectNodes.add(selectNode);
+
+        selectNode = new SelectNode();
+        selectNode.setOptionKey("1");
+        selectNode.setOptionValue("冻结");
+        selectNodes.add(selectNode);
+        map.put("data",selectNodes);
+//        map.put("options", SelectUtil.createOptionHtml(selectNodes,defaultkeys));
         map.put("success", true);
         return map;
     }

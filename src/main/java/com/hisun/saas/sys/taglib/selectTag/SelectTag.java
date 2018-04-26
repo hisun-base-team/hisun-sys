@@ -18,20 +18,20 @@ import java.util.List;
  */
 
 public final class SelectTag extends BodyTagSupport {
-    /**
-     * 字典类别，可以被dataSource类使用来读取需要的字典类别信息     */
-    private String dictionaryType = null;
+        //用于存储自定义属性 dictionaryType:bo1_type
+    private String userParameter="";
     private String id;//显示层的id  (必填项)
-    private String dataSource;//实现SanTreeDataSourceInterface接口的类  (必填项)
+    private String selectUrl;//调用下拉菜单的url
     private String width;//文本框的宽度
     private String radioOrCheckbox; //单选还是复选 radio单选 checkbox复选
     private String onchange;//改变事件
     private String textClass;//文本框样式
     private Style style = new Style();//内部使用的样式
-    private String moreSelectSearch; // yes为显示多选的search栏
-    private String moreSelectAll; // yes为显示多选的全选
+    private String moreSelectSearch; // true为显示多选的search栏
+    private String moreSelectAll; // true为显示多选的全选
     private String defaultvalues;//默认的值 要有多个必须和key的内容对应  用,分开
     private String defaultkeys;//默认的知道的相应key值 要有多个必须和值的内容对应  用,分开
+    private String token;
     @Override
     public int doStartTag() throws JspTagException {
         return EVAL_BODY_BUFFERED;
@@ -74,7 +74,7 @@ public final class SelectTag extends BodyTagSupport {
             if(this.getStyle()!=null){
                 if(width!=null && !width.equals("")){
                     try{
-                        this.getStyle().addStyles("width:"+width+";");
+                        this.getStyle().addStyles("margin-bottom: 0px;width:"+width+";");
                     }catch(Exception e){
                     }
                 }
@@ -86,34 +86,38 @@ public final class SelectTag extends BodyTagSupport {
                 if(width!=null && !width.equals("")){
                 } else {
                     try {
-                        this.getStyle().addStyles("width:"+width+";");
+                        this.getStyle().addStyles("margin-bottom: 0px;width:"+width+";");
                     } catch (Exception e) {
                     }
                 }
             }
             noTreeresults.append(" >");
-            try {
-                SelectDataSource obj = ApplicationContextUtil.getBean(this.dataSource, AbstractSelectObject.class);
-                if(obj.getDataOptions()!=null && obj.getDataOptions().size()>0){
-                    List<SelectNode> selectNodes = obj.getDataOptions();
-                    for(SelectNode node : selectNodes){
-                        noTreeresults.append("<option value=\""+ StringUtils.trimNull2Empty(node.getOptionKey())+"\"");
-                        if(defaultkeys!=null && defaultkeys!="") {
-                            String[] defaultkey = defaultkeys.split(",");
-                            for(int i=0;i<defaultkey.length;i++) {
-                                if (defaultkey[i] != null && defaultkey[i].equals(node.getOptionKey())) {
-                                    noTreeresults.append("selected");
-                                }
-                            }
-                        }
-                        noTreeresults.append(">"+StringUtils.trimNull2Empty(node.getOptionValue())+"</option>");
-                    }
-                }
-            }catch (Exception e){
-                e.printStackTrace();;
-            }
+//            try {
+//                SelectDataSource obj = ApplicationContextUtil.getBean(this.dataSource, AbstractSelectObject.class);
+//                if(obj.getDataOptions()!=null && obj.getDataOptions().size()>0){
+//                    List<SelectNode> selectNodes = obj.getDataOptions();
+//                    for(SelectNode node : selectNodes){
+//                        noTreeresults.append("<option value=\""+ StringUtils.trimNull2Empty(node.getOptionKey())+"\"");
+//                        if(defaultkeys!=null && defaultkeys!="") {
+//                            String[] defaultkey = defaultkeys.split(",");
+//                            for(int i=0;i<defaultkey.length;i++) {
+//                                if (defaultkey[i] != null && defaultkey[i].equals(node.getOptionKey())) {
+//                                    noTreeresults.append("selected");
+//                                }
+//                            }
+//                        }
+//                        noTreeresults.append(">"+StringUtils.trimNull2Empty(node.getOptionValue())+"</option>");
+//                    }
+//                }
+//            }catch (Exception e){
+//                e.printStackTrace();;
+//            }
 
-            noTreeresults.append("</select");
+            noTreeresults.append("</select>");
+            noTreeresults.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" radioOrCheckbox=\""+radioOrCheckbox+"\" url=\""+selectUrl+"\" defaultkeys=\""+defaultkeys+"\" token=\""+token+"\" userParameter=\""+userParameter+"\">");
+            noTreeresults.append("<script type=\"text/javascript\">");
+            noTreeresults.append("selectLoadByTag(\""+selectUrl+"\",\""+id+"\",\""+token+"\");");
+            noTreeresults.append("</script>");
         }else{
             //复选的输出
             noTreeresults.append("<div>");
@@ -128,7 +132,7 @@ public final class SelectTag extends BodyTagSupport {
             if(this.getStyle()!=null){
                 if(width!=null && !width.equals("")){
                     try{
-                        this.getStyle().addStyles("width:"+width+";");
+                        this.getStyle().addStyles("margin-bottom: 0px;width:"+width+";");
                     }catch(Exception e){
                     }
                 }
@@ -140,57 +144,61 @@ public final class SelectTag extends BodyTagSupport {
                 if(width!=null && !width.equals("")){
                 } else {
                     try {
-                        this.getStyle().addStyles("width:"+width+";");
+                        this.getStyle().addStyles("margin-bottom: 0px;width:"+width+";");
                     } catch (Exception e) {
                     }
                 }
             }
             noTreeresults.append(" >");
-            try {
-                SelectDataSource obj = ApplicationContextUtil.getBean(this.dataSource, AbstractSelectObject.class);
-                if(obj.getDataOptions()!=null && obj.getDataOptions().size()>0){
-                    List<SelectNode> selectNodes = obj.getDataOptions();
-                    for(SelectNode node : selectNodes){
-                        noTreeresults.append("<option value=\""+StringUtils.trimNull2Empty(node.getOptionKey())+"\"");
-                        if(defaultkeys!=null&& defaultkeys!="") {
-                            String[] defaultkey = defaultkeys.split(",");
-                            for(int i=0;i<defaultkey.length;i++) {
-                                if (defaultkey[i] != null && defaultkey[i].equals(node.getOptionKey())) {
-                                    noTreeresults.append(" selected");
-                                }
-                            }
-                        }
-                        noTreeresults.append(">"+StringUtils.trimNull2Empty(node.getOptionValue())+"</option>");
-                    }
-                }
-            }catch (Exception e){
-                e.printStackTrace();;
-            }
-            noTreeresults.append("</select");
+//            try {
+//                SelectDataSource obj = ApplicationContextUtil.getBean(this.dataSource, AbstractSelectObject.class);
+//                if(obj.getDataOptions()!=null && obj.getDataOptions().size()>0){
+//                    List<SelectNode> selectNodes = obj.getDataOptions();
+//                    for(SelectNode node : selectNodes){
+//                        noTreeresults.append("<option value=\""+StringUtils.trimNull2Empty(node.getOptionKey())+"\"");
+//                        if(defaultkeys!=null&& defaultkeys!="") {
+//                            String[] defaultkey = defaultkeys.split(",");
+//                            for(int i=0;i<defaultkey.length;i++) {
+//                                if (defaultkey[i] != null && defaultkey[i].equals(node.getOptionKey())) {
+//                                    noTreeresults.append(" selected");
+//                                }
+//                            }
+//                        }
+//                        noTreeresults.append(">"+StringUtils.trimNull2Empty(node.getOptionValue())+"</option>");
+//                    }
+//                }
+//            }catch (Exception e){
+//                e.printStackTrace();;
+//            }
+
+            noTreeresults.append("</select>");
             noTreeresults.append("</div>");
+            noTreeresults.append("<input type=\"hidden\" id=\""+id+"_Select_tagDefineAtt\" radioOrCheckbox=\""+radioOrCheckbox+"\" url=\""+selectUrl+"\"" +
+                    " token=\""+token+"\" userParameter=\""+userParameter+"\" defaultkeys=\""+defaultkeys+"\" moreSelectSearch=\""+moreSelectSearch+"\" moreSelectAll=\""+moreSelectAll+"\">");
             noTreeresults.append("<script type=\"text/javascript\">");
-            noTreeresults.append("$('#"+id+"_Select').multiselect({");
-            noTreeresults.append("columns:1,");
-            noTreeresults.append("placeholder: '请选择...',");
-            if(moreSelectSearch!=null && moreSelectSearch.equals("yes")) {
-                noTreeresults.append("search: true,");
-            }
-            noTreeresults.append("selectGroup: true,");
-            if(moreSelectAll!=null && moreSelectAll.equals("yes")) {
-                noTreeresults.append("selectAll: true");
-            }
-            noTreeresults.append("});");
+            noTreeresults.append("selectLoadByTag(\""+selectUrl+"\",\""+id+"_Select\",\""+token+"\");");
+//            noTreeresults.append("$('#"+id+"_Select').multiselect({");
+//            noTreeresults.append("columns:1,");
+//            noTreeresults.append("placeholder: '请选择...',");
+//            if(moreSelectSearch!=null && moreSelectSearch.equals("yes")) {
+//                noTreeresults.append("search: true,");
+//            }
+//            noTreeresults.append("selectGroup: true,");
+//            if(moreSelectAll!=null && moreSelectAll.equals("yes")) {
+//                noTreeresults.append("selectAll: true");
+//            }
+//            noTreeresults.append("});");
             noTreeresults.append("</script>");
         }
         return noTreeresults.toString();
     }
 
-    public String getDictionaryType() {
-        return dictionaryType;
+    public String getUserParameter() {
+        return userParameter;
     }
 
-    public void setDictionaryType(String dictionaryType) {
-        this.dictionaryType = dictionaryType;
+    public void setUserParameter(String userParameter) {
+        this.userParameter = userParameter;
     }
 
     @Override
@@ -203,12 +211,12 @@ public final class SelectTag extends BodyTagSupport {
         this.id = id;
     }
 
-    public String getDataSource() {
-        return dataSource;
+    public String getSelectUrl() {
+        return selectUrl;
     }
 
-    public void setDataSource(String dataSource) {
-        this.dataSource = dataSource;
+    public void setSelectUrl(String selectUrl) {
+        this.selectUrl = selectUrl;
     }
 
     public String getWidth() {
@@ -281,5 +289,13 @@ public final class SelectTag extends BodyTagSupport {
 
     public void setRadioOrCheckbox(String radioOrCheckbox) {
         this.radioOrCheckbox = radioOrCheckbox;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

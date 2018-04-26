@@ -134,12 +134,32 @@ function clearTreeQuery(queryName,dataType,submitType,url,id,setting,isSearch,to
 }
 //执行树加载
 function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,loadAfterMethod){
+	var treeDefineAttObj = document.getElementById(id+"_tagDefineAtt");
+	if(treeDefineAttObj==null){
+		treeDefineAttObj = document.getElementById(id.substring(0,id.lastIndexOf("_tree"))+"_tagDefineAtt");
+	}
+	var userParameter = treeDefineAttObj.getAttribute("userParameter");
+	var dataValue = "";
+	if(userParameter!=null && userParameter!="") {
+		var userParameterArr = userParameter.split(";");
+		for (var i = 0; i < userParameterArr.length; i++) {
+			var nv = userParameterArr[i].split(":");
+			var name = nv[0];
+			var value ="";
+			if (nv.length >= 2) {
+				value = nv[1];
+			}
+			dataValue = dataValue+"'"+name+"':'"+value+"',";
+		}
+		dataValue ="\{"+dataValue+"\}";
+	}
 	$.ajax({
 		async : false,
 		cache:false,
 		type: submitType,
 		dataType : dataType,
 		url: treeUrl,// 请求的action路径
+		//data:dataValue,
 		headers: {
 			"OWASP_CSRFTOKEN":token
 		},
@@ -162,7 +182,7 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,
 				var keyObj =document.getElementById(id.substring(0,id.lastIndexOf("_tree")))
 				//var treeValueObj = document.getElementById(id+"_valueName");
 				if(keyObj!=null && keyObj.value!=""){
-					var treeDefineAttObj = document.getElementById(id.substring(0,id.lastIndexOf("_tree"))+"_tagDefineAtt");
+
 					var radioOrCheckbox = treeDefineAttObj.getAttribute("radioOrCheckbox");
 					var selectzTree = $.fn.zTree.getZTreeObj(id);
 					if(radioOrCheckbox=="radio") {

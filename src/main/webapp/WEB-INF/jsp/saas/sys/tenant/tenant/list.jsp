@@ -10,6 +10,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
+	<script src="${contextPath}/js/selectTag.js"  charset=“utf-8”></script>
+
 	<!-- END PAGE LEVEL STYLES -->
 	<title>租户列表</title>
 </head>
@@ -42,7 +44,10 @@
 							<div class="input-append" id="toDateDiv" style="margin-bottom: 0px;">
 								<input size="16" type="text" readonly="" id="end" name="end" class="span12" value="${param.end }" onchange="endChange()" style="width: 90px;">
 							</div>
-							状态：<select name="tombstone" id="tombstone" style="margin-bottom: 0px;width:80px;">
+							状态：
+							<%--<SelectTag:SelectTag id="tombstone" token="${sessionScope.OWASP_CSRFTOKEN}" defaultkeys="${tombstone}" width="80"--%>
+													<%--radioOrCheckbox="radio" selectUrl="${path }/sys/tenant/tenant/ajax/getZtOptions"/>--%>
+							<select name="tombstone" id="tombstone" style="margin-bottom: 0px;width:80px;">
 									<option value="-1" ${tombstone == -1?'selected="selected"':''}>全部</option>
 									<option value="0" ${tombstone == 0?'selected="selected"':''}>正常</option>
 									<option value="1" ${tombstone ==1?'selected="selected"':''}>冻结</option>

@@ -91,7 +91,7 @@ public class TenantResourcePrivilegeController extends BaseController {
     }
 
     @RequestMapping("/tree")
-    public @ResponseBody Map<String, Object> tree(@RequestParam(value="status",required=false) Integer status)
+    public @ResponseBody Map<String, Object> tree(@RequestParam(value="status",required=false) Integer status,String dictionaryType)
             throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         List<TenantResource> resources;
