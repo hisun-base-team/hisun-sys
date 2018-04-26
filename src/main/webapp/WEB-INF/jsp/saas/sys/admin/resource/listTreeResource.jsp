@@ -30,7 +30,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 								<%--<div class="zTreeDemoBackground" id="tree">--%>
 									<%--<ul id="treeDemo" class="ztree"></ul>--%>
 								<%--</div>--%>
-								<Tree:tree id="treeDemo" treeUrl="sys/admin/resource/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
+								<Tree:tree id="treeDemo" treeUrl="${path}/sys/admin/resource/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
 										   onClick="onClickByTree" submitType="post" dataType="json" isSearch="false"/>
 							</div>
 						</div>
@@ -79,7 +79,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 										<label class="control-label">上级资源<span class="required">*</span></label>
 
 										<div class="controls">
-											<Tree:tree id="newpId" valueName="pName" treeUrl="sys/admin/resource/select/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
+											<Tree:tree id="newpId" valueName="pName" treeUrl="${path}/sys/admin/resource/select/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
 													   required="true" onClick="setSotByPid" selectClass="m-wrap span6" radioOrCheckbox="radio" submitType="post"
 													   dataType="json" isSearch="false" isSelectTree="true"/>
 
