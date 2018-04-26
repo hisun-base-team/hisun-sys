@@ -12,7 +12,6 @@ import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
-import com.hisun.saas.sys.taglib.tree.Tree;
 import com.hisun.saas.sys.taglib.treeTag.TreeNode;
 import com.hisun.saas.sys.tenant.privilege.entity.TenantPrivilege;
 import com.hisun.saas.sys.tenant.privilege.service.TenantPrivilegeService;
@@ -24,7 +23,9 @@ import com.hisun.saas.sys.tenant.resource.service.TenantResourceService;
 import com.hisun.util.BeanMapper;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;

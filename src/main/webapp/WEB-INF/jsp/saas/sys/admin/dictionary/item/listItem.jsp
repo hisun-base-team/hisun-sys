@@ -10,24 +10,40 @@
 <link href="${path}/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
 .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
-</style>
+	</style>
 </head>
 <body>
 <div class="container-fluid">
-	<div class="row-fluid">
-		<div class="main_left">
-			<div class="portlet box grey mainleft">
-				<div class="portlet-body leftbody">
-					<Tree:tree id="dicTree" treeUrl="${path}/sys/tenant/resourcePrivilege/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
-							   onClick="onClickByTree" submitType="post" dataType="json" isSearch="false"/>
-					<%--<div class="zTreeDemoBackground" id="tree">--%>
-					<%--<ul id="treeDemo" class="ztree"></ul>--%>
-					<%--</div>--%>
+
+
+			<div class="row-fluid">
+
+				<div class="span3">
+
+					<div class="portlet box grey">
+
+						<div class="portlet-title">
+
+							<div class="caption">字典树</div>
+
+						</div>
+
+						<div class="portlet-body" style="clear: both; min-height: 500px;">
+
+							<div class="zTreeDemoBackground" id="tree">
+								<ul id="treeDemo" class="ztree"></ul>
+							</div>
+
+						</div>
+
+					</div>
+
 				</div>
+
+				<div class="span9" id="listResource" >
+				</div>
+
 			</div>
-		</div>
-		<div class="main_right" id="rightList" ></div>
-	</div>
 
 			<%-- END PAGE CONTENT--%>
 			<div class="modal-scrollable" style="z-index: 10050;display: none;" id="add">

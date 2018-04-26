@@ -14,7 +14,6 @@ import com.hisun.saas.sys.admin.dictionary.service.DictionaryItemService;
 import com.hisun.saas.sys.admin.dictionary.service.DictionaryTypeService;
 import com.hisun.saas.sys.admin.dictionary.vo.DictionaryItemVo;
 import com.hisun.saas.sys.admin.dictionary.vo.DictionaryTypeVo;
-import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
@@ -22,6 +21,8 @@ import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
+import com.hisun.saas.sys.taglib.treeTag.TreeNode;
+import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
 import com.hisun.util.BeanMapper;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -47,37 +48,47 @@ public class DictionaryItemController extends BaseController {
 	private DictionaryTypeService dictionaryTypeService;
 
 
-
 	@RequestMapping("/index/{typeId}")
+	public ModelAndView index(@PathVariable("typeId") String typeId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("typeId",typeId);
+		return new ModelAndView("saas/sys/admin/dictionary/item/index");
+	}
+
+	@RequestMapping("/tree/{typeId}")
 	public @ResponseBody Map<String, Object> tree(@PathVariable("typeId") String typeId) throws GenericException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<DictionaryItem> dictionaryItems;
 		try {
-
 			CommonConditionQuery query = new CommonConditionQuery();
 			query.add(CommonRestrictions.and(" dictionaryType.id=:typeId ", "typeId", typeId));
 			CommonOrderBy orderBy = new CommonOrderBy();
 			orderBy.add(CommonOrder.asc("queryCode"));
-
 			dictionaryItems = dictionaryItemService.list(query, orderBy);
-			List<DictionaryItemVo> dictionaryItemVos = new ArrayList<DictionaryItemVo>();
 			DictionaryType dictionaryType = dictionaryTypeService.getByPK(typeId);
-
-			DictionaryItemVo dictionaryItemVo;
-			dictionaryItemVo = new DictionaryItemVo();
-			dictionaryItemVo.setId("1");
-			dictionaryItemVo.setName(dictionaryType.getName());
-			dictionaryItemVo.setOpen(true);
-			dictionaryItemVo.setpId(null);
-			dictionaryItemVos.add(dictionaryItemVo);
+			List<TreeNode> treeNodes = new ArrayList<TreeNode>();
+			//--------字典类型节点
+			TreeNode treeNode = new TreeNode();
+			treeNode.setId(dictionaryType.getId());
+			treeNode.setName(dictionaryType.getName());
+			treeNode.setOpen(true);
+			//treeNode.setpId("-1");
+			treeNodes.add(treeNode);
+			//-------字典项节点
+			TreeNode childTreeNode=null;
 			for (DictionaryItem dictionaryItem : dictionaryItems) {
-				dictionaryItemVo = new DictionaryItemVo();
-				BeanUtils.copyProperties(dictionaryItemVo,dictionaryItem);
-				dictionaryItemVo.setpId(dictionaryItem.getParentItem().getId());
-				dictionaryItemVos.add(dictionaryItemVo);
+				childTreeNode = new TreeNode();
+				childTreeNode.setId(dictionaryItem.getId());
+				childTreeNode.setName(dictionaryItem.getName());
+				if(dictionaryItem.getParentItem()==null){
+					childTreeNode.setpId(dictionaryType.getId());
+				}else{
+					childTreeNode.setpId(dictionaryItem.getParentItem().getId());
+				}
+				treeNodes.add(childTreeNode);
 			}
 			map.put("success", true);
-			map.put("data", dictionaryItemVos);
+			map.put("data", treeNodes);
 		} catch (Exception e) {
 			logger.error(e, e);
 			map.put("success", false);
