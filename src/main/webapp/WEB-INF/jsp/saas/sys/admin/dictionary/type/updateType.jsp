@@ -99,6 +99,7 @@
 						}
 					},
 					error : function(){
+						showTip("警告","修改字典类型失败!",2000);
 						document.getElementById("addForm").reset();
 						$(".control-group").removeClass("error").removeClass("success");
 						$(".help-inline").remove();

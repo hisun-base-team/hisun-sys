@@ -163,7 +163,7 @@ public class DictionaryTypeController extends BaseController {
 		try {
 			DictionaryType dictionaryType = this.dictionaryTypeService.getByPK(vo.getId());
 			BeanUtils.copyProperties(dictionaryType,vo);
-			this.dictionaryTypeService.update(null);
+			this.dictionaryTypeService.update(dictionaryType);
 			map.put("success", true);
 		} catch (Exception e) {
 			logger.error(e);
@@ -171,14 +171,11 @@ public class DictionaryTypeController extends BaseController {
 		}
 		return map;
 	}
-	
 
-	
-
-	
+	@RequiresLog(operateType = LogOperateType.UPDATE,description = "修改字典:${vo.name}")
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping(value = "/delete/{id}")
-	public @ResponseBody Map<String, Object> delete(
-			@PathVariable("id") String id)  throws GenericException {
+	public @ResponseBody Map<String, Object> delete(@PathVariable("id") String id)  throws GenericException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			if (StringUtils.isNotBlank(id)) {
@@ -187,11 +184,9 @@ public class DictionaryTypeController extends BaseController {
 			}
 		} catch (Exception e) {
 			logger.error(e);
-			map.put("success", false);
+			throw new GenericException(e.getMessage());
 		}
 		return map;
 	}
-	
 
-	
 }

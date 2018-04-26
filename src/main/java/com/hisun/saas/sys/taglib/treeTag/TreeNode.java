@@ -4,11 +4,11 @@
  * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
  */
 
-package com.hisun.saas.sys.taglib.treeTag.vo;
+package com.hisun.saas.sys.taglib.treeTag;
 /**
  * @author liuzj {279421824@qq.com}
  */
-public class TreeNodeVo {
+public class TreeNode {
 
 	/**
 	 * 树节点id
@@ -44,7 +44,7 @@ public class TreeNodeVo {
 	//父节点自定义展开时图标的 URL 路径
 	private String iconOpen;
 
-//父节点自定义折叠时图标的 URL 路径
+    //父节点自定义折叠时图标的 URL 路径
 	private String iconClose;
 
 	public String getId() {

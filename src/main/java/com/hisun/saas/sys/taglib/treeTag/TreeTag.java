@@ -6,7 +6,6 @@
 
 package com.hisun.saas.sys.taglib.treeTag;
 
-import com.hisun.saas.sys.taglib.tree.Tree;
 import com.hisun.util.StringUtils;
 
 import javax.servlet.jsp.JspException;

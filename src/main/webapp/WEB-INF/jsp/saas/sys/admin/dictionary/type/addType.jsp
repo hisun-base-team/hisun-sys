@@ -77,7 +77,7 @@
 					success : function(json){
 						if(json.success){
 							showTip("提示","新增字典类型成功!",2000);
-							setTimeout("window.location.href=${path}/sys/admin/dictionary/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}",1300);
+							setTimeout("window.location.href='${path}/sys/admin/dictionary/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}'",1300);
 						}else{
 							document.getElementById("addForm").reset();
 							$(".control-group").removeClass("error").removeClass("success");

@@ -38,7 +38,7 @@
 							<tbody>
 								<c:forEach items="${pager.datas}" var="dictionary" >
 									<tr style="height: 50px;">
-										<td><a href="${path }/sys/admin/dictionary/item/list/${dictionary.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"><c:out value="${dictionary.name }"></c:out></a></td>
+										<td><a href="${path }/sys/admin/dictionary/item/index/${dictionary.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"><c:out value="${dictionary.name }"></c:out></a></td>
 										<td><c:out value="${dictionary.code }"></c:out></td>
 										<td title='${cloud:htmlEscape(dictionary.remark)}'><c:out value="${dictionary.remark }"></c:out></td>
 										<td class="Left_alignment">

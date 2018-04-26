@@ -1,17 +1,9 @@
 package com.hisun.saas.sys.test;
-import com.google.common.collect.Lists;
-import com.hisun.base.dao.util.CommonConditionQuery;
-import com.hisun.base.dao.util.CommonOrder;
-import com.hisun.base.dao.util.CommonOrderBy;
-import com.hisun.base.dao.util.CommonRestrictions;
 
 import com.hisun.saas.sys.taglib.selectTag.AbstractSelectObject;
-import com.hisun.saas.sys.taglib.selectTag.vo.SelectNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.hisun.saas.sys.taglib.selectTag.SelectNode;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 

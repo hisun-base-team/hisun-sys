@@ -6,18 +6,14 @@
 
 package com.hisun.saas.sys.tenant.resource.controller;
 
-import com.google.common.collect.Maps;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
-import com.hisun.base.vo.PagerVo;
-import com.hisun.saas.sys.auth.UserLoginDetails;
-import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.taglib.tree.Tree;
-import com.hisun.saas.sys.taglib.treeTag.vo.TreeNodeVo;
+import com.hisun.saas.sys.taglib.treeTag.TreeNode;
 import com.hisun.saas.sys.tenant.privilege.entity.TenantPrivilege;
 import com.hisun.saas.sys.tenant.privilege.service.TenantPrivilegeService;
 import com.hisun.saas.sys.tenant.privilege.vo.TenantPrivilegeVo;
@@ -25,20 +21,13 @@ import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResourcePrivilege;
 import com.hisun.saas.sys.tenant.resource.service.TenantResourcePrivilegeService;
 import com.hisun.saas.sys.tenant.resource.service.TenantResourceService;
-import com.hisun.saas.sys.tenant.tenant.service.TenantService;
-import com.hisun.saas.sys.tenant.user.service.TenantUserService;
-import com.hisun.saas.sys.util.EntityWrapper;
 import com.hisun.util.BeanMapper;
-import com.hisun.util.ValidateUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,15 +102,15 @@ public class TenantResourcePrivilegeController extends BaseController {
                 query.add(CommonRestrictions.and(" status = :status ", "status", Integer.valueOf(0)));
             }
             resources = tenantResourceService.list(query, orderBy);
-            List<TreeNodeVo> treeNodeVos = new ArrayList<TreeNodeVo>();
-            TreeNodeVo treeNodeVo = new TreeNodeVo();
+            List<TreeNode> treeNodeVos = new ArrayList<TreeNode>();
+            TreeNode treeNodeVo = new TreeNode();
             treeNodeVo.setId("1");
             treeNodeVo.setName("资源树");
             treeNodeVo.setOpen(true);
             treeNodeVo.setpId("-1");
             treeNodeVos.add(treeNodeVo);
             for (TenantResource resource : resources) {
-                treeNodeVo = new TreeNodeVo();
+                treeNodeVo = new TreeNode();
                 BeanMapper.copy(resource, treeNodeVo);
                 treeNodeVo.setName(resource.getResourceName());
                 treeNodeVo.setUrl(resource.getUrl());
@@ -135,6 +124,7 @@ public class TenantResourcePrivilegeController extends BaseController {
         }
         return map;
     }
+
     @RequiresPermissions("sys-tenantResourcePrivilege:*")
     @RequestMapping("/ajax/save")
     public @ResponseBody Map<String,Object> save(String resourceId,String privilegeIds) throws GenericException {

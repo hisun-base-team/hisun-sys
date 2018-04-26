@@ -160,7 +160,7 @@ li {
         </div>
     </div>
 </div>
-<!-- BEGIN CONFIRM&TIP@IMPORTANT MODAL DIV -->
+<!-- END CONFIRM&TIP@IMPORTANT MODAL DIV -->
 <div class="header navbar navbar-inverse navbar-fixed-top">
     <!-- BEGIN TOP NAVIGATION BAR -->
     <div class="navbar-inner">
@@ -571,7 +571,6 @@ li {
                     }
                 }, "json", {"OWASP_CSRFTOKEN": "${sessionScope.OWASP_CSRFTOKEN}"});
     }
-
     function topMenus(topMenus, url, bool) {
 
         $(".systemLi").removeClass("active");
@@ -597,7 +596,6 @@ li {
             window.location.href = url;
         }
     }
-
     function leftMenus(leftMenus, url, bool) {
 
         var ul = $("#" + leftMenus + " +ul");
@@ -634,7 +632,6 @@ li {
             }
         }
     }
-
     function initMenus(id, url) {
         localPost("${path}/" + tenantUrl + "/resource/link", {"menuCode": id}, function (data) {
             if (data.success) {

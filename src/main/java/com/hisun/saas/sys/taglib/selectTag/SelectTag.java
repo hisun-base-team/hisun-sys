@@ -8,7 +8,6 @@ package com.hisun.saas.sys.taglib.selectTag;
 
 import com.hisun.saas.sys.taglib.selectOption.SelectOption;
 import com.hisun.saas.sys.taglib.selectOption.Style;
-import com.hisun.saas.sys.taglib.selectTag.vo.SelectNode;
 import com.hisun.util.ApplicationContextUtil;
 import com.hisun.util.StringUtils;
 
