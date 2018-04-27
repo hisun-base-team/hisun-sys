@@ -8,12 +8,6 @@ package com.hisun.saas.sys.admin.dictionary.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.hisun.saas.sys.admin.dictionary.entity.DictionaryItem;
-import com.hisun.saas.sys.admin.dictionary.entity.DictionaryType;
-import com.hisun.saas.sys.admin.dictionary.service.DictionaryItemService;
-import com.hisun.saas.sys.admin.dictionary.service.DictionaryTypeService;
-import com.hisun.saas.sys.admin.dictionary.vo.DictionaryItemVo;
-import com.hisun.saas.sys.admin.dictionary.vo.DictionaryTypeVo;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
@@ -21,11 +15,15 @@ import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
+import com.hisun.saas.sys.admin.dictionary.entity.DictionaryItem;
+import com.hisun.saas.sys.admin.dictionary.entity.DictionaryType;
+import com.hisun.saas.sys.admin.dictionary.service.DictionaryItemService;
+import com.hisun.saas.sys.admin.dictionary.service.DictionaryTypeService;
+import com.hisun.saas.sys.admin.dictionary.vo.DictionaryItemVo;
+import com.hisun.saas.sys.admin.dictionary.vo.DictionaryTypeVo;
 import com.hisun.saas.sys.taglib.treeTag.TreeNode;
-import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
-import com.hisun.util.BeanMapper;
+import com.hisun.util.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -72,7 +70,6 @@ public class DictionaryItemController extends BaseController {
 			treeNode.setId(dictionaryType.getId());
 			treeNode.setName(dictionaryType.getName());
 			treeNode.setOpen(true);
-			//treeNode.setpId("-1");
 			treeNodes.add(treeNode);
 			//-------字典项节点
 			TreeNode childTreeNode=null;
@@ -97,29 +94,43 @@ public class DictionaryItemController extends BaseController {
 	}
 
 	@RequestMapping("/ajax/list")
-	public ModelAndView resources(HttpServletRequest req,String pId,
+	public ModelAndView listItem(HttpServletRequest request,
 								  @RequestParam(value="pageNum",defaultValue="1")int pageNum,
 								  @RequestParam(value="pageSize",defaultValue="20") int pageSize) throws GenericException {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = Maps.newHashMap();
+		String currentNodeId = request.getParameter("currentNodeId");
+		String currentNodeParentId = request.getParameter("currentNodeParentId");//取得当前树节点的父ID属性
 		try{
 			CommonConditionQuery query = new CommonConditionQuery();
-			query.add(CommonRestrictions.and(" parentItem.id = :pId ", "pId", pId));
+			if(StringUtils.isBlank(StringUtils.trimNullCharacter2Empty(currentNodeParentId))){//如果为最高层节点,则为字典
+				query.add(CommonRestrictions.and(" dictionaryType.id=:typeId ", "typeId", currentNodeId));
+			}else{//其他为字典项
+				query.add(CommonRestrictions.and(" parentItem.id = :id ", "id", currentNodeId));
+			}
+
 			Long total = dictionaryItemService.count(query);
 			CommonOrderBy orderBy = new CommonOrderBy();
 			orderBy.add(CommonOrder.asc("queryCode"));
-			List<DictionaryItem> resultList = dictionaryItemService.list(query, orderBy, pageNum, pageSize);
-			PagerVo<DictionaryItem> pager = new PagerVo<DictionaryItem>(resultList, total.intValue(), pageNum, pageSize);
+			List<DictionaryItem> entities = this.dictionaryItemService.list(query, orderBy, pageNum, pageSize);
+			List<DictionaryItemVo> vos = new ArrayList<>();
+			DictionaryItemVo vo = null;
+			if(entities!=null){
+				for(DictionaryItem entity : entities){
+					vo = new DictionaryItemVo();
+					BeanUtils.copyProperties(vo,entities);
+				}
+			}
+			PagerVo<DictionaryItemVo> pager = new PagerVo<DictionaryItemVo>(vos, total.intValue(), pageNum, pageSize);
 			map.put("pager", pager);
 		}catch(Exception e){
 			logger.error(e);
 			throw new GenericException(e);
 		}
-		return new ModelAndView("/saas/sys/admin/dictionary/item/listDetails", map);
+		return new ModelAndView("/saas/sys/admin/dictionary/item/listItem", map);
 	}
 	
-	@RequestMapping(value = "/list/{typeId}")
-	public ModelAndView list(HttpServletRequest request,
-			@RequestParam(value="pageNum",defaultValue="1")int pageNum,
+	@RequestMapping(value = "/type/ajax/list/{typeId}")
+	public ModelAndView list(@RequestParam(value="pageNum",defaultValue="1")int pageNum,
 							 @RequestParam(value="pageSize",defaultValue="10") int pageSize,
 							 @PathVariable("typeId") String typeId) throws GenericException {
 		Map<String, Object> map = Maps.newHashMap();
@@ -129,27 +140,45 @@ public class DictionaryItemController extends BaseController {
 			Long total = this.dictionaryItemService.count(query);
 			CommonOrderBy orderBy = new CommonOrderBy();
 			orderBy.add(CommonOrder.asc("queryCode"));
-			List<DictionaryItem> queryList = this.dictionaryItemService.list(query, orderBy, pageNum, pageSize);
-			PagerVo<DictionaryItem> pager = new PagerVo<DictionaryItem>(queryList, total.intValue(), pageNum, pageSize);
+			List<DictionaryItem> entities = this.dictionaryItemService.list(query, orderBy, pageNum, pageSize);
+			List<DictionaryItemVo> vos = new ArrayList<>();
+			DictionaryItemVo vo = null;
+			if(entities!=null){
+				for(DictionaryItem entity : entities){
+					vo = new DictionaryItemVo();
+					BeanUtils.copyProperties(vo,entities);
+				}
+			}
+			PagerVo<DictionaryItemVo> pager = new PagerVo<DictionaryItemVo>(vos, total.intValue(), pageNum, pageSize);
 			map.put("pager", pager);
 			map.put("typeId", typeId);
 		}catch(Exception e){
 			logger.error(e);
 			throw new GenericException(e);
 		}
-		
 		return new ModelAndView("saas/sys/admin/dictionary/item/listItem",map);
 	}
-	
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> add(DictionaryItem dictionaryItem,HttpServletRequest request) throws GenericException {
+
+
+	@RequestMapping("/ajax/add")
+	public ModelAndView add(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String newpId = request.getParameter("newpId");
-		String type = request.getParameter("type");
-		 
+		String currentNodeId = request.getParameter("currentNodeId");
+		String currentNodeParentId = request.getParameter("currentNodeParentId");
+		DictionaryItemVo vo = new DictionaryItemVo();
+
+		return new ModelAndView("saas/sys/admin/dictionary/item/addItem");
+	}
+
+	
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> save(DictionaryItem dictionaryItem,HttpServletRequest request) throws GenericException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String pId = request.getParameter("pId");
+		String type = request.getParameter("typeId");
 		try {
-			if(StringUtils.isNotBlank(newpId)){
-				dictionaryItem.setParentItem(this.dictionaryItemService.getByPK(newpId));
+			if(StringUtils.isNotBlank(pId)){
+				dictionaryItem.setParentItem(this.dictionaryItemService.getByPK(pId));
 			}
 			DictionaryType dictionaryType = this.dictionaryTypeService.getByPK(type);
 			dictionaryItem.setDictionaryType(dictionaryType);

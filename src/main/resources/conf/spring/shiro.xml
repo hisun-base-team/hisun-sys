@@ -86,7 +86,6 @@
 		<property name="globalSessionTimeout" value="600000" />
 		<property name="sessionValidationInterval" value="30000" />
 		<property name="cacheManager" ref="cacheManager" />
-		<!-- <property name="globalSessionTimeout" value="1800000" /> -->
 		<property name="deleteInvalidSessions" value="true" />
 		<property name="sessionValidationSchedulerEnabled" value="true" />
 		<property name="sessionValidationScheduler" ref="sessionValidationScheduler" />

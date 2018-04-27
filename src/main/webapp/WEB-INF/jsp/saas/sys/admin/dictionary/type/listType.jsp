@@ -17,7 +17,7 @@
 				<div class="portlet-title" style="vertical-align: middle;">
 					<div class="caption">字典管理</div>
 					<div class="clearfix fr">
-						<a id="sample_editable_1_new" class="btn green" href="${path}/sys/admin/dictionary/add?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+						<a id="addDicType" class="btn green" href="${path}/sys/admin/dictionary/add?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
 							<i class="icon-plus"></i> 添加
 						</a>
 					</div>

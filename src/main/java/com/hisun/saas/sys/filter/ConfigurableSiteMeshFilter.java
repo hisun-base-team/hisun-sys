@@ -78,8 +78,7 @@ public class ConfigurableSiteMeshFilter extends org.sitemesh.config.Configurable
         if (!initialized) {
             throw new ServletException(getClass().getName() + ".init(FilterConfig) was not called");
         }
-        /*Ajax调用不装饰*/
-        String requestType =(String) ((HttpServletRequest)servletRequest).getHeader("X-Requested-With");   
+        String requestType = ((HttpServletRequest)servletRequest).getHeader("X-Requested-With");
         if(StringUtils.isBlank(requestType)&&!StringUtils.equals(AJAX_REQUEST_HEADER, requestType)){//is not ajax request
         	reloadIfNecessary();
         }

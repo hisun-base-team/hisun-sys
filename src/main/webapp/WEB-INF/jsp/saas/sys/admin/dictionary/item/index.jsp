@@ -15,8 +15,14 @@
 <title>字典项管理</title>
 <link href="${path}/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
-.ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
-</style>
+	.ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+	.page-content{   padding: 0 !important; }
+	ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
+	.portlet.box.grey.mainleft{background-color: #f1f3f6;overflow: hidden; padding: 0px !important; margin-bottom: 0px;}
+	.main_left{float:left; width:220px;  margin-right:10px; background-color: #f1f3f6; }
+	.main_right{display: table-cell; width:2000px; padding:20px 20px; }
+	.portlet-title .caption.mainlefttop{ border: none !important; background-color:#eaedf1;width: 220px; height: 48px;line-height: 48px;padding: 0;margin: 0;text-indent: 1em; }
+	.portlet.box .portlet-body.leftbody{padding: 15px 8px;}</style>
 </head>
 <body>
 <div class="container-fluid">
@@ -24,7 +30,9 @@
 		<div class="main_left">
 			<div class="portlet box grey mainleft">
 				<div class="portlet-body leftbody">
-					<Tree:tree id="leftTree" treeUrl="${path}sys/admin/dictionary/item/tree/${typeId}" token="${sessionScope.OWASP_CSRFTOKEN}"
+					<input type="hidden" id="currentNodeId"  name="currentNodeId" value="" />
+					<input type="hidden" id="currentNodeParentId"  name="currentNodeParentId" value="" />
+					<Tree:tree id="leftTree" treeUrl="${path}/sys/admin/dictionary/item/tree/${typeId}" token="${sessionScope.OWASP_CSRFTOKEN}"
 							   onClick="onClickByTree" submitType="post" dataType="json" isSearch="false"/>
 				</div>
 			</div>
@@ -32,7 +40,6 @@
 		<div class="main_right" id="rightList" ></div>
 	</div>
 </div>
-<script type="text/javascript" src="${path}/js/zTree/jquery.ztree.all-3.5.js"></script>
 <script type="text/javascript" src="${path}/js/common/est-validate-init.js"></script>
 <script type="text/javascript" src="${path}/js/common/validate-message.js"></script>
 <script type="text/javascript">
@@ -48,12 +55,11 @@
 		$("#leftTree_div").css('height',divHeight);
 	}
 
-
-
 	function onClickByTree (event, treeId, treeNode){
-		$("#resourceId").val(treeNode.id);
+		$("#currentNodeId").val(treeNode.id);//赋值
+		$("#currentNodeParentId").val(treeNode.pId);//赋值
 		$.ajax({
-			url : "${path}/sys/tenant/resourcePrivilege/ajax/privilegeList?resourceId="+treeNode.id+"&resourceName="+treeNode.name,
+			url : "${path}/sys/admin/dictionary/item/ajax/list?currentNodeId="+treeNode.id+"&currentNodeParentId="+treeNode.pId,
 			type : "get",
 			data : null,
 			dataType : "html",
@@ -61,7 +67,7 @@
 				"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
 			},
 			success : function(html){
-				$("#listResource").html(html);
+				$("#rightList").html(html);
 			},
 			error : function(){
 
@@ -70,14 +76,11 @@
 	}
 
 	$(document).ready(function(){
-		//初始化菜单
 		App.init();//必须，不然导航栏及其菜单无法折叠
-
-		var zTree = $.fn.zTree.getZTreeObj("leftTree");
-		// zTree.expandAll(true);
-
+		var zTree = $.fn.zTree.getZTreeObj("leftTree");//取得树对象
 		var node = zTree.getNodes()[0];// 获取第一个点
-		//$("#listResource").load("${path}/sys/tenant/resourcePrivilege/privilegeList?resourceId=1");
+		$("#currentNodeId").val(node.id);//赋值
+		$("#currentNodeParentId").val(node.pId);//赋值
 		$.ajax({
 			cache:false,
 			type: 'POST',
@@ -85,18 +88,16 @@
 			headers: {
 				"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
 			},
-			url: "${path}/sys/tenant/resourcePrivilege/ajax/privilegeList?resourceId="+node.id+"&resourceName="+node.name,// 请求的action路径
+			url: "${path}/sys/admin/dictionary/item/type/ajax/list/${typeId}",// 请求的action路径
 			error: function () {// 请求失败处理函数
 				alert('请求失败');
 			},
 			success:function(html){
-				$("#listResource").html(html);
+				$("#rightList").html(html);
 			}
 		});
-		zTree.selectNode(node);
-		$("#resourceId").val(node.id);
-		selectId=node.id;
-		zTree.expandNode(node, true, false , true);
+		zTree.selectNode(node);//默认选中
+		zTree.expandNode(node, true, false , true);//展开
 	});
 
 	function refreshTree() {
@@ -113,6 +114,8 @@
 	}
 
 	function pagehref (pageNum ,pageSize){
+		var currentNodeId = $("#currentNodeId").val();
+		var currentNodeParentId = $("#currentNodeParentId").val();
 		$.ajax({
 			cache:false,
 			type: 'POST',
@@ -120,7 +123,13 @@
 			headers: {
 				"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
 			},
-			url: "${path}/sys/tenant/resourcePrivilege/ajax/privilegeList?resourceId="+$('#resourceId').val()+"&pageNum="+pageNum+"&pageSize="+pageSize,// 请求的action路径
+			data:{
+					"currentNodeId":currentNodeId,
+				    "currentNodeParentId":currentNodeParentId,
+					"pageNum":pageNum,
+					"pageSize":pageSize
+			    },
+			url: "${path}/sys/admin/dictionary/item/ajax/list",// 请求的action路径
 			error: function () {// 请求失败处理函数
 				alert('请求失败');
 			},
