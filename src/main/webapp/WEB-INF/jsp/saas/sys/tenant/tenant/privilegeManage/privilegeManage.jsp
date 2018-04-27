@@ -18,23 +18,33 @@
 .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
 .page-content{   padding: 0 !important; }
 ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
-.portlet.box.grey.mainleft{background-color: #f1f3f6;overflow: hidden; padding: 0px !important; margin-bottom: 0px;} 
+.portlet.box.grey.mainleft{background-color: #f1f3f6;overflow: hidden; padding: 0px !important; margin-bottom: 0px;}
 .main_left{float:left; width:220px;  margin-right:10px; background-color: #f1f3f6; }
 .main_right{display: table-cell; width:2000px; padding:20px 20px; }
 .portlet-title .caption.mainlefttop{ border: none !important; background-color:#eaedf1;width: 220px; height: 48px;line-height: 48px;padding: 0;margin: 0;text-indent: 1em; }
 .portlet.box .portlet-body.leftbody{padding: 15px 8px;}
 </style>
-<title>资源管理</title>
+<title>租户授权管理</title>
 </head>
 <body>
-	
+
 			<div class="container-fluid">
+
 				<div class="row-fluid">
-					<div class="main_left">
+					<div class="portlet-title" style="vertical-align: middle;margin-top: 10px;">
+						<div class="caption">${tenantName} 权限管理</div>
+						<div class="clearfix fr" style="margin-right: 20px;">
+							<a id="sample_editable_1_new" class="btn green" href="javascript:;" onclick="addResource();">
+								保存
+							</a>
+							<a class="btn" href="${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"><i class="icon-undo"></i>返回</a>
+						</div>
+					</div>
+					<div  class="main_left" style="float:left; width:220px;  margin-right:10px;height: 0px">
 						<div class="portlet box grey mainleft">
 							<div class="portlet-body leftbody">
-								<Tree:tree id="treeDemo" treeUrl="sys/tenant/resourcePrivilege/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
-										   onClick="onClickByTree" submitType="post" dataType="json" isSearch="false"/>
+								<Tree:tree id="treeDemo" treeUrl="${path}/sys/tenant/tenant/tree" token="${sessionScope.OWASP_CSRFTOKEN}"  chkboxType=" 'Y' : 'ps', 'N' : 'ps'"
+										   onClick="onClickByTree" radioOrCheckbox="checkbox" submitType="post" dataType="json" isSearch="false"/>
 								<%--<div class="zTreeDemoBackground" id="tree">--%>
 									<%--<ul id="treeDemo" class="ztree"></ul>--%>
 								<%--</div>--%>
@@ -45,10 +55,8 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 					</div>
 				</div>
 			</div>
-		</div>
-		
 
-	</div>
+
 
 	<script type="text/javascript" src="<%=path%>/js/common/est-validate-init.js"></script>
 	<script type="text/javascript">
@@ -60,16 +68,15 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 			})
 		});
 		function changeTreeDivHeight(){
-			var divHeight = $(window).height()-60;
+			var divHeight = $(window).height()-130;
 			$("#treeDemo_div").css('height',divHeight);
 		}
 
 
 
 		function onClickByTree (event, treeId, treeNode){
-			$("#resourceId").val(treeNode.id);
 			$.ajax({
-				url : "${path}/sys/tenant/resourcePrivilege/ajax/privilegeList?resourceId="+treeNode.id+"&resourceName="+treeNode.name,
+				url : "${path}/sys/tenant/tenant/ajax/privilegeSet?resourceId="+treeNode.id+"&resourceName="+treeNode.name,
 				type : "get",
 				data : null,
 				dataType : "html",
@@ -80,12 +87,11 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 					$("#listResource").html(html);
 				},
 				error : function(){
-					
+
 				}
 			});
 		}
 
-		var zTree1;
 		var addForm = new EstValidate("addForm");
 		$(document).ready(function(){
 			//初始化菜单
@@ -95,7 +101,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 			// zTree.expandAll(true);
 
 			var node = zTree.getNodes()[0];// 获取第一个点
-			//$("#listResource").load("${path}/sys/tenant/resourcePrivilege/privilegeList?resourceId=1");
+			//$("#listResource").load("${path}/sys/tenant/tenant/privilegeSet?resourceId=1");
 			$.ajax({
 				cache:false,
 				type: 'POST',
@@ -103,7 +109,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 				headers: {
 					"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
 				},
-				url: "${path}/sys/tenant/resourcePrivilege/ajax/privilegeList?resourceId="+node.id+"&resourceName="+node.name,// 请求的action路径
+				url: "${path}/sys/tenant/tenant//ajax/privilegeSet?resourceId="+node.id+"&resourceName="+node.name,// 请求的action路径
 				error: function () {// 请求失败处理函数
 					alert('请求失败');
 				},
@@ -116,48 +122,12 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 			selectId=node.id;
 			zTree.expandNode(node, true, false , true);
 		});
-		
-		function iFrameHeight() {   
-			var ifm= document.getElementById("datas");   
-			var subWeb = document.frames ? document.frames["datas"].document : ifm.contentDocument;   
-			if(ifm != null && subWeb != null) {
-			   ifm.height = subWeb.body.scrollHeight;
-			   ifm.width = subWeb.body.scrollWidth;
-			}   
-		}
-		function refreshTree() {
-			$("#treeDemo").empty();
-			refreshTreeTag("treeDemo", setting_treeDemo, "");
-			selectNodeTree();
-		}
-		function selectNodeTree(){
-			var zTree11 = $.fn.zTree.getZTreeObj("treeDemo");
-			var id = $("#resourceId").val();
-			var node = zTree11.getNodeByParam('id',id);// 获取id为-1的点
-			zTree11.selectNode(node);
-			zTree11.expandNode(node, true, false , true);
-		}
 
-		function pagehref (pageNum ,pageSize){
-			$.ajax({
-				cache:false,
-				type: 'POST',
-				dataType : "html",
-				headers: {
-					"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
-				},
-				url: "<%=path%>/sys/tenant/resourcePrivilege/ajax/privilegeList?resourceId="+$('#resourceId').val()+"&pageNum="+pageNum+"&pageSize="+pageSize,// 请求的action路径
-				error: function () {// 请求失败处理函数
-					alert('请求失败');
-				},
-				success:function(html){
-					$("#listResource").html(html);
-				}
-			});
-		}
+
+
 	</script>
 	<script type="text/javascript" src="${path }/js/common/est-validate-init.js"></script>
 	<script type="text/javascript" src="${path }/js/common/validate-message.js"></script>
-	
+
 </body>
 </html>

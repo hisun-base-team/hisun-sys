@@ -24,52 +24,59 @@
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12 responsive">
-			<%-- 表格开始 --%>
-			<div class="portlet box grey">
-				<div class="portlet-title" style="vertical-align: middle;">
-					<div class="caption">${resourceName} 权限资源配置</div>
-					<%--<shiro:hasPermission name="tenant:tenantadd">--%>
-					<div class="btn-group fr">
-						<a id="sample_editable_1_new" class="btn green" href="javascript:save()">
-							保存
-						</a>
-					</div>
-					<%--</shiro:hasPermission>--%>
+			<c:if test="${privilegeSetting == 0 }">
+				<div style="height: 100%;width: 100%;text-align: center;padding-top: 200px">
+					<p style="font-size: 16px; "><b>${resourceName} 不需要设置数据权限</b></p>
 				</div>
+			</c:if>
+			<c:if test="${privilegeSetting == 1 }">
+				<%-- 表格开始 --%>
+				<div class="portlet box grey">
+					<div class="portlet-title" style="vertical-align: middle;">
+						<div class="caption">${resourceName} 权限资源配置</div>
+						<%--<shiro:hasPermission name="tenant:tenantadd">--%>
+						<div class="btn-group fr">
+							<a id="sample_editable_1_new" class="btn green" href="javascript:save()">
+								保存
+							</a>
+						</div>
+						<%--</shiro:hasPermission>--%>
+					</div>
 
 
-				<table class="table table-striped table-bordered table-hover dataTable table-set">
-					<thead>
-					<tr>
-						<th style="width: 20px;"><input type="checkbox" id="allCheck" onchange="dataAllcheckChange()" ></th>
-						<th width="30px">排序</th>
-						<th width="100px">名称</th>
-						<th width="100px">code</th>
-						<th width="200px">实现类</th>
+					<table class="table table-striped table-bordered table-hover dataTable table-set">
+						<thead>
+						<tr>
+							<th style="width: 20px;"><input type="checkbox" id="allCheck" onchange="dataAllcheckChange()" ></th>
+							<th width="30px">排序</th>
+							<th width="100px">名称</th>
+							<th width="100px">code</th>
+							<th width="200px">实现类</th>
 
-						<th>描述</th>
-
-					</tr>
-					</thead>
-					<tbody>
-					<c:forEach items="${requestScope.vos}" var="vo" varStatus="varStatus">
-						<tr style="text-overflow:ellipsis;">
-							<td><input type="checkbox" value="${vo.id }" name="dataIds" <c:if test="${vo.isChecked eq 'true'}">checked</c:if>></td>
-							<td><c:out value="${vo.sort }"></c:out></td>
-							<td><c:out value="${vo.name }"></c:out></td>
-							<td><c:out value="${vo.code }"></c:out></td>
-							<td><c:out value="${vo.impclass }"></c:out>
-							<td><c:out value="${vo.description }"></c:out>
-							</td>
+							<th>描述</th>
 
 						</tr>
-					</c:forEach>
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+						<c:forEach items="${requestScope.vos}" var="vo" varStatus="varStatus">
+							<tr style="text-overflow:ellipsis;">
+								<td><input type="checkbox" value="${vo.id }" name="dataIds" <c:if test="${vo.isChecked eq 'true'}">checked</c:if>></td>
+								<td><c:out value="${vo.sort }"></c:out></td>
+								<td><c:out value="${vo.name }"></c:out></td>
+								<td><c:out value="${vo.code }"></c:out></td>
+								<td><c:out value="${vo.impclass }"></c:out>
+								<td><c:out value="${vo.description }"></c:out>
+								</td>
 
+							</tr>
+						</c:forEach>
+						</tbody>
+					</table>
+
+				</div>
 			</div>
-		</div>
-		<%-- 表格结束 --%>
+			<%-- 表格结束 --%>
+		</c:if>
 	</div>
 </div>
 

@@ -146,6 +146,20 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 										</div>
 
 									</div>
+									<div class="control-group" id="privilegeSettingGroup">
+
+										<label class="control-label">是否设置数据权限<span class="required">*</span></label>
+
+										<div class="controls">
+
+											<select class="span6 m-wrap" id="privilegeSetting" name="privilegeSetting" data-placeholder="Choose a Category" tabindex="1" required>
+												<option value="0">否</option>
+												<option value="1">是</option>
+											</select>
+
+										</div>
+
+									</div>
 
 									<div id="sortGroup" class="control-group">
 
@@ -243,6 +257,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 						$("#resourceType").val(json.data.resourceType);
 						$("#permission").val(json.data.permission);
 						$("#status").val(json.data.status);
+						$("#privilegeSetting").val(json.data.privilegeSetting);
 						$("#url").val(json.data.url);
 						$("#sort").val(json.data.sort);
 						$("#description").val(json.data.description);

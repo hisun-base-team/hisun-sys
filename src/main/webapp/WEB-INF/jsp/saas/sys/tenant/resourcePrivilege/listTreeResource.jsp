@@ -54,7 +54,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 		})
 	});
 	function changeTreeDivHeight(){
-		var divHeight = $(window).height()-60;
+		var divHeight = $(window).height()-80;
 		$("#treeDemo_div").css('height',divHeight);
 	}
 

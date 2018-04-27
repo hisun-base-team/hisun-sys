@@ -32,7 +32,7 @@
 <script src='<c:url value="/js/jquery.slimscroll.min.js" />' type="text/javascript"></script>
 <script src='<c:url value="/js/jquery.blockui.min.js" />' type="text/javascript"></script>  
 <script src='<c:url value="/js/jquery.cookie.min.js" />' type="text/javascript"></script>
-<%--<script src='<c:url value="/js/jquery.uniform.min.js" />' type="text/javascript" ></script> 复选框样式 20180420lzj屏蔽--%>
+<script src='<c:url value="/js/jquery.uniform.min.js" />' type="text/javascript" ></script> <%--复选框样式--%>
 <script src='<c:url value="/js/jquery.validate.min.js" />' type="text/javascript" ></script>
 <script src='<c:url value="/js/jquery.form.js" />' type="text/javascript" ></script>
 <script src='<c:url value="/js/app.js" />' type="text/javascript" ></script>

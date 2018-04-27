@@ -1,165 +1,139 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@include file="/WEB-INF/jsp/inc/servlet.jsp"%>
-<%@include file="/WEB-INF/jsp/inc/taglib.jsp"%>
+		 pageEncoding="UTF-8"%>
+<%@include file="/WEB-INF/jsp/inc/servlet.jsp" %>
+<%@include file="/WEB-INF/jsp/inc/taglib.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%--
+  ~ Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+  ~ http://www.hn-hisun.com
+  ~ 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+  --%>
+
+<c:set var="path" value="${pageContext.request.contextPath}"></c:set>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>添加租户</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
+	<!-- END PAGE LEVEL STYLES -->
+	<title>${resourceName} 权限资源配置</title>
 </head>
 <body>
-<!-- BEGIN PAGE CONTAINER-->
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span12">
-				<%-- BEGIN SAMPLE FORM PORTLET 表单主体--%>
 
-				<div class="portlet box grey">
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12 responsive">
+			<%-- 表格开始 --%>
+			<div class="portlet box grey">
+				<div class="portlet-title" style="vertical-align: middle;">
+					<div class="caption">设置“${resourceName} ”的数据范围</div>
+					<%--<shiro:hasPermission name="tenant:tenantadd">--%>
 
-					<div class="portlet-title">
+					<%--</shiro:hasPermission>--%>
+				</div>
+				<table class="table table-striped table-bordered table-hover dataTable table-set">
+					<thead>
+					<tr>
+						<th style="width: 20px;"><input type="checkbox" id="allCheck" onchange="dataAllcheckChange()" ></th>
+						<th width="100px">数据资源名称</th>
+						<th width="300px">范围</th>
+						<th>描述</th>
+					</tr>
+					</thead>
+					<tbody>
+					<c:forEach items="${requestScope.vos}" var="vo" varStatus="varStatus">
+						<tr style="text-overflow:ellipsis;">
+							<td><input type="checkbox" value="${vo.id }" name="dataIds" <c:if test="${vo.isChecked eq 'true'}">checked</c:if>></td>
+							<td><c:out value="${vo.name }"></c:out></td>
+							<td></td>
+							<td><c:out value="${vo.description }"></c:out>
+							</td>
 
-						<div class="caption">
+						</tr>
+					</c:forEach>
+					</tbody>
+				</table>
 
-							<span class="hidden-480">添加租户</span>
-
-						</div>
-					</div>
-
-					<div class="portlet-body form">
-						<form class="form-horizontal myform"
-						id="form1" method="post">
-							<div class="tab-pane active" id="tab1">
-								<div>
-									<div id="nameGroup" class="control-group">
-										<label class="control-label mylabel">租户全称<span
-												class="required">*</span>
-										</label>
-										<div class="controls">
-											<input class="span6 m-wrap" type="text" name="name" id="name" required maxlength="100" onblur="getSimpleName();">
-										</div>
-									</div>
-									<div id="shortNameGroup" class="control-group">
-										<label class="control-label mylabel">租户简称<span
-												class="required">*</span>
-										</label>
-										<div class="controls">
-											<input class="span6 m-wrap" type="text" name="shortName" id="shortName" required maxlength="60" onblur="getSimpleName();">
-										</div>
-									</div>
-									<div id="shortNamePyGroup" class="control-group">
-										<label class="control-label mylabel">拼音简称<span
-												class="required">*</span>
-										</label>
-										<div class="controls">
-											<input class="span6 m-wrap" type="text" name="shortNamePy" id="shortNamePy"  required maxlength="15">
-										</div>
-									</div>
-
-									<div id="usernameGroup" class="control-group">
-										<label class="control-label mylabel">租户管理员账号<span
-												class="required">*</span>
-										</label>
-										<div class="controls">
-											<input class="span6 m-wrap" type="text" name="username" id="username" value="" required minlength="4" maxlength="30" usernamePattern="true" tenantUsernameUnique="true" csrftoken="${sessionScope.OWASP_CSRFTOKEN}">
-										</div>
-									</div>
-									<div id="passwordGroup" class="control-group">
-										<label class="control-label mylabel">租户管理员密码<span
-												class="required">*</span>
-										</label>
-										<div class="controls">
-											<input class="span6 m-wrap" type="text" name="password" id="password"  value="" required="true" minlength="6" maxlength="20" >
-										</div>
-									</div>
-
-									<div  class="form-actions">
-										<button id="submitBtn" type="button" class="btn green mybutton" onclick="saveSubmit()"><i class='icon-ok'></i> 确定</button>
-										<a href="${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" class="btn btn-default"
-							               data-dismiss="modal"><i class='icon-remove-sign'></i> 取消
-							            </a>
-									</div>
-	
-								</div>
-							</div>
-						</form>
-					</div>
-					</div>
 			</div>
 		</div>
+		<%-- 表格结束 --%>
 	</div>
-<script type="application/javascript">
-	window.PATH = "${path}";
-</script>
-<script type="text/javascript" src="${path }/js/common/est-validate-init.js"></script>
-<script type="text/javascript" src="${path }/js/common/custom-validate.js"></script>
-<script type="text/javascript" src="${path }/js/common/validate-message.js"></script>
-<script type="text/javascript" src="${path }/js/common/loading.js"></script>
+</div>
+
+<%-- END PAGE CONTENT--%>
+</div>
+<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.zh-CN.js"></script>
 <script type="text/javascript">
 	(function(){
 		App.init();
-		$("#username").val('');
-		$("#password").val('');
-	})();
 
-	var myVld = new EstValidate2("form1");
-	var myLoading = new MyLoading("${path}",{zindex : 11111});
-	function saveSubmit(){
-		var bool = myVld.form();
-		if(bool){
-			myLoading.show();
-			$.ajax({
-				url : "${path }/sys/tenant/tenant/save",
-				type : "post",
-				data : $('#form1').serialize(),
-				dataType : "json",
-				headers: {
-					"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
-				},
-				success : function(json){
-					myLoading.hide();
-					if(json.code == 1){
-						showTip("提示","操作成功",2000);
-						setTimeout(function(){
-							window.location.href = "${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"
-						},2000) ;
-					}else{
-						showTip("提示", json.message, 2000);
-					}
-				},
-				error : function(arg1, arg2, arg3){
-					myLoading.hide();
-					showTip("提示","出错了请联系管理员",2000);
+	})();
+	function dataAllcheckChange(){
+		var allCheck = document.getElementById("allCheck");
+		var checks = document.getElementsByName("dataIds");
+		if(checks){
+			for(var i=0;i<checks.length;i++) {
+				checks[i].checked = allCheck.checked;
+				if (allCheck.checked == true) {
+					checks[i].parentNode.className = "checked";
+				}else{
+					checks[i].parentNode.className = "";
 				}
-			});
+			}
 		}
 	}
-	function getSimpleName(){
-		var name = $("#name").val().trim();
-		var shortName = $("#shortName").val().trim();
-		if(name!="" && shortName==""){
-			$("#shortName").val(name);
+	function pagehref (pageNum ,pageSize){
+		window.location.href ="${path}/sys/tenant/privilege/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&pageNum="+pageNum+"&pageSize="+pageSize+"&name=" + encodeURI(encodeURI("${name}"))+"&tombstone="+$("#tombstone").val();
+		+"&start=${param.start}&end=${param.end}&status=${param.status}";
+	}
+
+
+	function save(){
+		var resourceId = "${resourceId}";
+		var resourceName = "${resourceName}";
+		if(resourceId=="1"){
+			showTip("提示","不可对“资源树”节点进行配置",2000);
+			return;
+		}
+		var checks = document.getElementsByName("dataIds");
+		var privilegeIds = "";
+		var checkedCount = 0;
+		for(var i=0;i<checks.length;i++){
+			if(checks[i].checked==true){
+				checkedCount ++;
+				if(privilegeIds==""){
+					privilegeIds = checks[i].value;
+				}else{
+					privilegeIds =privilegeIds+","+checks[i].value;
+				}
+			}
+		}
+		if(checkedCount == 0){
+			showTip("提示","请选择权限资源",2000);
+			return;
 		}
 		$.ajax({
-			url : "${path}/sys/tenant/tenant/ajax/getTenantNameCode",
+			url : "${path}/sys/tenant/resourcePrivilege/ajax/save",
 			type : "post",
-			data: {"name":name,
-				"shortName":shortName
+			data: {"resourceId":resourceId,
+				"privilegeIds":privilegeIds
 			},
 			headers:{
 				OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
 			},
-			dataType : "json",
-			success : function(data){
-				$("#shortNamePy").val(data.pinYinHead);
-				$("#username").val(data.pinYinHead+"_admin");
-				$("#password").val(data.pinYinHead+"_admin111111");
+			dataType : "html",
+			success : function(html){
+				showTip("提示","“"+resourceName+"”权限资源配置成功！",2000);
 			},
 			error : function(){
 				showTip("提示","出错了请联系管理员", 1500);
 			}
 		});
 	}
+
+
 </script>
 </body>
 </html>

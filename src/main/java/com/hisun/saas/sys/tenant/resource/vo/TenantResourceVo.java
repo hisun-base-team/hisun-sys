@@ -30,6 +30,7 @@ public class TenantResourceVo{
 	private boolean checked;
 	
 	private boolean sysResource;
+	private Integer privilegeSetting;
 	
 	public boolean isSysResource() {
 		return sysResource;
@@ -158,5 +159,12 @@ public class TenantResourceVo{
 	public void setChecked(boolean checked) {
 		this.checked = checked;
 	}
-	
+
+	public Integer getPrivilegeSetting() {
+		return privilegeSetting;
+	}
+
+	public void setPrivilegeSetting(Integer privilegeSetting) {
+		this.privilegeSetting = privilegeSetting;
+	}
 }

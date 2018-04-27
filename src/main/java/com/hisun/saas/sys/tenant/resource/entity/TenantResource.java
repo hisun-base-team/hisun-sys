@@ -11,10 +11,12 @@ import com.hisun.saas.sys.tenant.tenant.entity.Tenant2Resource;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -24,6 +26,7 @@ import java.util.List;
 @Table(name = "sys_tenant_resource")
 public class TenantResource extends AbstractResource
         implements Serializable, Comparable<TenantResource> {
+    protected Integer privilegeSetting = 0;//是否需要设置数据权限   0表示不设置  1表示需要设置
 
     private static final long serialVersionUID = -7479768004811251553L;
     private List<Tenant2Resource> tenant2Resources;
@@ -41,5 +44,13 @@ public class TenantResource extends AbstractResource
     }
     public void setTenant2Resources(List<Tenant2Resource> tenant2Resources) {
         this.tenant2Resources = tenant2Resources;
+    }
+    @Column(name = "privilege_setting")
+    public Integer getPrivilegeSetting() {
+        return privilegeSetting;
+    }
+
+    public void setPrivilegeSetting(Integer privilegeSetting) {
+        this.privilegeSetting = privilegeSetting;
     }
 }

@@ -20,6 +20,7 @@ import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResourcePrivilege;
 import com.hisun.saas.sys.tenant.resource.service.TenantResourcePrivilegeService;
 import com.hisun.saas.sys.tenant.resource.service.TenantResourceService;
+import com.hisun.saas.sys.tenant.resource.vo.TenantResourceTreeNode;
 import com.hisun.util.BeanMapper;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -58,33 +59,43 @@ public class TenantResourcePrivilegeController extends BaseController {
     @RequestMapping("/ajax/privilegeList")
     public ModelAndView list(String resourceId,String resourceName) throws UnsupportedEncodingException {
         Map<String,Object> model = new HashMap<String,Object>();
-        CommonConditionQuery query = new CommonConditionQuery();
-//        query.add(CommonRestrictions.and(" pId = :pId ", "pId", pId));
-        CommonOrderBy orderBy = new CommonOrderBy();
-        orderBy.add(CommonOrder.asc("sort"));
-        List<TenantPrivilege> resultList = tenantPrivilegeService.list(query,orderBy);
+        if(resourceId!=null && !resourceId.equals("1")) {
+            TenantResource tenantResource = this.tenantResourceService.getByPK(resourceId);
+            int privilegeSetting = tenantResource.getPrivilegeSetting();
+            if(tenantResource.getPrivilegeSetting()==1) {
+                CommonConditionQuery query = new CommonConditionQuery();
+                //        query.add(CommonRestrictions.and(" pId = :pId ", "pId", pId));
+                CommonOrderBy orderBy = new CommonOrderBy();
+                orderBy.add(CommonOrder.asc("sort"));
+                List<TenantPrivilege> resultList = tenantPrivilegeService.list(query, orderBy);
 
-        query = new CommonConditionQuery();
-        query.add(CommonRestrictions.and(" tenantResource.id = :resourceId ", "resourceId", resourceId));
-        List<TenantResourcePrivilege> tenantResourcePrivileges = this.tenantResourcePrivilegeService.list(query,null);
+                query = new CommonConditionQuery();
+                query.add(CommonRestrictions.and(" tenantResource.id = :resourceId ", "resourceId", resourceId));
+                List<TenantResourcePrivilege> tenantResourcePrivileges = this.tenantResourcePrivilegeService.list(query, null);
 
-        List<TenantPrivilegeVo> vos = new ArrayList<TenantPrivilegeVo>();
-        if(resultList!=null){
-            for(TenantPrivilege tenantPrivilege : resultList){
-                TenantPrivilegeVo vo = new TenantPrivilegeVo();
-                BeanMapper.copy(tenantPrivilege, vo);
-                if(tenantResourcePrivileges!=null){
-                    boo:for(TenantResourcePrivilege tenantResourcePrivilege :tenantResourcePrivileges){
-                        if(tenantPrivilege.getId().equals(tenantResourcePrivilege.getTenantPrivilege().getId())){
-                            vo.setIsChecked("true");
-                            break boo;
+                List<TenantPrivilegeVo> vos = new ArrayList<TenantPrivilegeVo>();
+                if (resultList != null) {
+                    for (TenantPrivilege tenantPrivilege : resultList) {
+                        TenantPrivilegeVo vo = new TenantPrivilegeVo();
+                        BeanMapper.copy(tenantPrivilege, vo);
+                        if (tenantResourcePrivileges != null) {
+                            boo:
+                            for (TenantResourcePrivilege tenantResourcePrivilege : tenantResourcePrivileges) {
+                                if (tenantPrivilege.getId().equals(tenantResourcePrivilege.getTenantPrivilege().getId())) {
+                                    vo.setIsChecked("true");
+                                    break boo;
+                                }
+                            }
                         }
+                        vos.add(vo);
                     }
                 }
-                vos.add(vo);
+                model.put("vos", vos);
             }
+            model.put("privilegeSetting",privilegeSetting);
+        }else{
+            model.put("privilegeSetting",0);
         }
-        model.put("vos",vos);
         model.put("resourceId",resourceId);
         model.put("resourceName",resourceName);
         return new ModelAndView("/saas/sys/tenant/resourcePrivilege/list",model);
@@ -95,6 +106,8 @@ public class TenantResourcePrivilegeController extends BaseController {
             throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         List<TenantResource> resources;
+        List<TenantResource> privilegeSettingResources;
+
         try {
             CommonOrderBy orderBy = new CommonOrderBy();
             CommonConditionQuery query = new CommonConditionQuery();
@@ -103,20 +116,31 @@ public class TenantResourcePrivilegeController extends BaseController {
                 query.add(CommonRestrictions.and(" status = :status ", "status", Integer.valueOf(0)));
             }
             resources = tenantResourceService.list(query, orderBy);
-            List<TreeNode> treeNodeVos = new ArrayList<TreeNode>();
-            TreeNode treeNodeVo = new TreeNode();
+
+//            query = new CommonConditionQuery();
+//            query.add(CommonRestrictions.and(" privilegeSetting = :privilegeSetting ", "privilegeSetting", Integer.valueOf(1)));
+//            if(status!=null){
+//                query.add(CommonRestrictions.and(" status = :status ", "status", Integer.valueOf(0)));
+//            }
+//            privilegeSettingResources = tenantResourceService.list(query, orderBy);
+
+            List<TenantResourceTreeNode> treeNodeVos = new ArrayList<TenantResourceTreeNode>();
+            TenantResourceTreeNode treeNodeVo = new TenantResourceTreeNode();
             treeNodeVo.setId("1");
             treeNodeVo.setName("资源树");
             treeNodeVo.setOpen(true);
             treeNodeVo.setpId("-1");
+            treeNodeVo.setPrivilegeSetting("0");
             treeNodeVos.add(treeNodeVo);
             for (TenantResource resource : resources) {
-                treeNodeVo = new TreeNode();
-                BeanMapper.copy(resource, treeNodeVo);
-                treeNodeVo.setName(resource.getResourceName());
-                treeNodeVo.setUrl(resource.getUrl());
-                treeNodeVos.add(treeNodeVo);
+                    treeNodeVo = new TenantResourceTreeNode();
+                    BeanMapper.copy(resource, treeNodeVo);
+                    treeNodeVo.setName(resource.getResourceName());
+                    treeNodeVo.setUrl(resource.getUrl());
+                    treeNodeVo.setPrivilegeSetting(resource.getPrivilegeSetting().toString());
+                    treeNodeVos.add(treeNodeVo);
             }
+
             map.put("success", true);
             map.put("data", treeNodeVos);
         } catch (Exception e) {

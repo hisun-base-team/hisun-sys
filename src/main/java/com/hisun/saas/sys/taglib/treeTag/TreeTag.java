@@ -145,7 +145,7 @@ public final class TreeTag extends BodyTagSupport {
 			nodesHtml.append("</div>");
 		}
 		nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" onClickFunc=\""+onClick+"\" radioOrCheckbox=\""+radioOrCheckbox+"\" " +
-				"dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\" token=\""+token+"\" userParameter=\""+userParameter+"\">");
+				"dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\" onclickFunc=\""+onClick+"\" token=\""+token+"\" userParameter=\""+userParameter+"\">");
 		nodesHtml.append("<script>");
 //		if(isSelectTree!=null && isSelectTree.equals("true")) {
 //			nodesHtml.append("if(window.document.getElementById(\"" + valueName + "\").offsetWidth!=0){$(\"#" + id + "_treeSelDiv\").css(\"width\",window.document.getElementById(\"" + valueName + "\").offsetWidth-2);}");
@@ -184,13 +184,20 @@ public final class TreeTag extends BodyTagSupport {
 //			if (onClick != null && !onClick.equals("")) {
 //				nodesHtml.append("\n\t\t\tonClick :" + onClick + "");
 //			} else {
-				nodesHtml.append("\n\t\t\tonClick :onClickByTreeTag");
+				nodesHtml.append("\n\t\t\tonClick :onClickBySelectTreeTag,");
 //			}
 		}
+//		else if(radioOrCheckbox!=null && radioOrCheckbox.equals("checkbox")) {
+//			if (onClick != null && !onClick.equals("")) {
+//				nodesHtml.append("\n\t\t\tonClick :onClickByTreeTag,");
+//			}
+//		}
 		//复选使用
 		if(radioOrCheckbox!=null && radioOrCheckbox.equals("checkbox")){
 			nodesHtml.append("\n\t\t\tbeforeClick :beforeClickByTreeCheckBox,");
-			nodesHtml.append("\n\t\t\tonCheck :onCheckByTreeCheckBox");
+			if(isSelectTree.equals("true")) {
+				nodesHtml.append("\n\t\t\tonCheck :onCheckByTreeCheckBox");
+			}
 		}
 		nodesHtml.append("\n\t\t}");
 		nodesHtml.append("\n\t};");

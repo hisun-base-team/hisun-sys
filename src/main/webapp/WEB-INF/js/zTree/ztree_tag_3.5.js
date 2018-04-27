@@ -227,8 +227,8 @@ function onBodyDownByTagTree(event) {//|| event.target.id == ""
 		hideTagDivTree(event.data.treeSelDiv);
 	}
 }
-//树形控件单选
-function onClickByTreeTag(event,treeId, treeNode) {
+//选择树形控件单选
+function onClickBySelectTreeTag(event,treeId, treeNode) {
 	var treeDefineAttObj = document.getElementById(treeId+ "_tagDefineAtt");
 	if (treeDefineAttObj == null) {
 		treeDefineAttObj = document.getElementById(treeId.substring(0, treeId.lastIndexOf("_tree")) + "_tagDefineAtt");
@@ -241,6 +241,19 @@ function onClickByTreeTag(event,treeId, treeNode) {
 	}
 	setValuesByRadio(treeId, treeNode);
 	$('#'+treeId+'SelDiv').toggle();
+}
+//树形控件单选
+function onClickByTreeTag(event,treeId, treeNode) {
+	var treeDefineAttObj = document.getElementById(treeId+ "_tagDefineAtt");
+	if (treeDefineAttObj == null) {
+		treeDefineAttObj = document.getElementById(treeId.substring(0, treeId.lastIndexOf("_tree")) + "_tagDefineAtt");
+	}
+	if (treeDefineAttObj != null) {
+		var onClickFunc = treeDefineAttObj.getAttribute("onclickfunc");
+		if(onClickFunc!=null && onClickFunc!=""){
+			eval(onClickFunc+"(event,treeId, treeNode)");
+		}
+	}
 }
 //单选树赋值
 function setValuesByRadio(treeId,treeNode){
@@ -258,6 +271,17 @@ function setValuesByRadio(treeId,treeNode){
 function beforeClickByTreeCheckBox(treeId, treeNode) {
 	var zTree = $.fn.zTree.getZTreeObj(treeId);
 	zTree.checkNode(treeNode, !treeNode.checked, null, true);
+
+	var treeDefineAttObj = document.getElementById(treeId+ "_tagDefineAtt");
+	if (treeDefineAttObj == null) {
+		treeDefineAttObj = document.getElementById(treeId.substring(0, treeId.lastIndexOf("_tree")) + "_tagDefineAtt");
+	}
+	if (treeDefineAttObj != null) {
+		var onClickFunc = treeDefineAttObj.getAttribute("onclickfunc");
+		if(onClickFunc!=null && onClickFunc!=""){
+			eval(onClickFunc+"(event,treeId, treeNode)");
+		}
+	}
 	return false;
 }
 

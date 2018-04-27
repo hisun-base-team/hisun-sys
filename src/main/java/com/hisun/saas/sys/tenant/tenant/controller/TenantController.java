@@ -3,18 +3,28 @@ package com.hisun.saas.sys.tenant.tenant.controller;
 import com.google.common.collect.Maps;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonOrder;
+import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.taglib.selectTag.SelectNode;
+import com.hisun.saas.sys.taglib.treeTag.TreeNode;
 import com.hisun.saas.sys.tenant.privilege.entity.TenantPrivilege;
+import com.hisun.saas.sys.tenant.privilege.service.TenantPrivilegeService;
+import com.hisun.saas.sys.tenant.privilege.vo.TenantPrivilegeVo;
+import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
+import com.hisun.saas.sys.tenant.resource.entity.TenantResourcePrivilege;
+import com.hisun.saas.sys.tenant.resource.service.TenantResourcePrivilegeService;
+import com.hisun.saas.sys.tenant.resource.service.TenantResourceService;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.sys.tenant.tenant.service.TenantService;
 import com.hisun.saas.sys.tenant.tenant.vo.TenantVo;
 import com.hisun.saas.sys.tenant.user.service.TenantUserService;
 import com.hisun.saas.sys.util.PinyinUtil;
+import com.hisun.util.BeanMapper;
 import com.hisun.util.ValidateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -49,6 +59,13 @@ public class TenantController extends BaseController {
 
     @Resource
     private TenantUserService tenantUserService;
+
+    @Resource
+    private TenantPrivilegeService tenantPrivilegeService;
+    @Resource
+    TenantResourceService tenantResourceService;
+    @Resource
+    private TenantResourcePrivilegeService tenantResourcePrivilegeService;
 
     @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/list")
@@ -244,28 +261,83 @@ public class TenantController extends BaseController {
         map.put("success", true);
         return map;
     }
-    @RequestMapping(value = "/ajax/getZtOptions")
-    public @ResponseBody Map<String, Object> getZtOptions(@RequestParam(value="dictionaryType",required=false)String dictionaryType,String bb) throws GenericException {
-        Map<String, Object> map = Maps.newHashMap();
-        List<SelectNode> selectNodes = new ArrayList<SelectNode>();
-        SelectNode selectNode = new SelectNode();
-        selectNode.setOptionKey("-1");
-        selectNode.setOptionValue("全部");
 
-        selectNodes.add(selectNode);
-        selectNode = new SelectNode();
-        selectNode.setOptionKey("0");
-        selectNode.setOptionValue("正常");
-        selectNode.setSelected("true");
-        selectNodes.add(selectNode);
+    @RequestMapping("/privilegeManage/{tenantId}")
+    public ModelAndView privilegeManage(@PathVariable(value="tenantId")String tenantId,String tenantName) {
+        Map<String,Object> model = new HashMap<String,Object>();
+        model.put("tenantId",tenantId);
+        model.put("tenantName",tenantName);
+        return  new ModelAndView("/saas/sys/tenant/tenant/privilegeManage/privilegeManage",model);
+    }
 
-        selectNode = new SelectNode();
-        selectNode.setOptionKey("1");
-        selectNode.setOptionValue("冻结");
-        selectNodes.add(selectNode);
-        map.put("data",selectNodes);
-//        map.put("options", SelectUtil.createOptionHtml(selectNodes,defaultkeys));
-        map.put("success", true);
+    @RequestMapping("/ajax/privilegeSet")
+    public ModelAndView privilegeSet(String resourceId,String resourceName) throws UnsupportedEncodingException {
+        Map<String,Object> model = new HashMap<String,Object>();
+        CommonConditionQuery query = new CommonConditionQuery();
+//        query.add(CommonRestrictions.and(" pId = :pId ", "pId", pId));
+        CommonOrderBy orderBy = new CommonOrderBy();
+        orderBy.add(CommonOrder.asc("sort"));
+        List<TenantPrivilege> resultList = tenantPrivilegeService.list(query,orderBy);
+
+        query = new CommonConditionQuery();
+        query.add(CommonRestrictions.and(" tenantResource.id = :resourceId ", "resourceId", resourceId));
+        List<TenantResourcePrivilege> tenantResourcePrivileges = this.tenantResourcePrivilegeService.list(query,null);
+
+        List<TenantPrivilegeVo> vos = new ArrayList<TenantPrivilegeVo>();
+        if(resultList!=null){
+            for(TenantPrivilege tenantPrivilege : resultList){
+                TenantPrivilegeVo vo = new TenantPrivilegeVo();
+                BeanMapper.copy(tenantPrivilege, vo);
+                if(tenantResourcePrivileges!=null){
+                    boo:for(TenantResourcePrivilege tenantResourcePrivilege :tenantResourcePrivileges){
+                        if(tenantPrivilege.getId().equals(tenantResourcePrivilege.getTenantPrivilege().getId())){
+                            vos.add(vo);
+                            break boo;
+                        }
+                    }
+                }
+
+            }
+        }
+        model.put("vos",vos);
+        model.put("resourceId",resourceId);
+        model.put("resourceName",resourceName);
+        return new ModelAndView("/saas/sys/tenant/tenant/privilegeManage/setDataPrivilege",model);
+    }
+
+    @RequestMapping("/tree")
+    public @ResponseBody Map<String, Object> tree(@RequestParam(value="status",required=false) Integer status,String dictionaryType)
+            throws GenericException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<TenantResource> resources;
+        try {
+            CommonOrderBy orderBy = new CommonOrderBy();
+            CommonConditionQuery query = new CommonConditionQuery();
+            orderBy.add(CommonOrder.asc("sort"));
+            if(status!=null){
+                query.add(CommonRestrictions.and(" status = :status ", "status", Integer.valueOf(0)));
+            }
+            resources = tenantResourceService.list(query, orderBy);
+            List<TreeNode> treeNodeVos = new ArrayList<TreeNode>();
+            TreeNode treeNodeVo = new TreeNode();
+            treeNodeVo.setId("1");
+            treeNodeVo.setName("资源树");
+            treeNodeVo.setOpen(true);
+            treeNodeVo.setpId("-1");
+            treeNodeVos.add(treeNodeVo);
+            for (TenantResource resource : resources) {
+                treeNodeVo = new TreeNode();
+                BeanMapper.copy(resource, treeNodeVo);
+                treeNodeVo.setName(resource.getResourceName());
+                treeNodeVo.setUrl(resource.getUrl());
+                treeNodeVos.add(treeNodeVo);
+            }
+            map.put("success", true);
+            map.put("data", treeNodeVos);
+        } catch (Exception e) {
+            map.put("success", false);
+            logger.error(e);
+        }
         return map;
     }
 }

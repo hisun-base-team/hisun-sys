@@ -35,8 +35,7 @@ public abstract  class AbstractResource extends TombstoneEntity {
     protected String description;
     protected String queryCode;//查询编码 3位一层 001-999
     protected String resourceIcon;//资源图标
-
-    @Id
+       @Id
     @GenericGenerator(name = "generator", strategy = "uuid")
     @GeneratedValue(generator = "generator")
     @Column(name = "id", nullable = false, unique = true, length = 32)
