@@ -44,7 +44,7 @@ public final class TreeTag extends BodyTagSupport {
 	 **/
 	private String  chkboxType="";
 
-	//用于存储自定义属性
+	//用于存储自定义属性 shortName:aaa
 	private String userParameter="";
 
 	//用于捕获节点被点击的事件回调函数
@@ -144,7 +144,8 @@ public final class TreeTag extends BodyTagSupport {
 			nodesHtml.append("<ul id=\""+id+"_tree\" class=\"ztree\" style=\"background:#FFFFFF !important;height:300px; overflow-x: auto; margin: 0px;padding: 0px; border-top:none;\"></ul>");
 			nodesHtml.append("</div>");
 		}
-		nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" onClickFunc=\""+onClick+"\" radioOrCheckbox=\""+radioOrCheckbox+"\" dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\" token=\""+token+"\">");
+		nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" onClickFunc=\""+onClick+"\" radioOrCheckbox=\""+radioOrCheckbox+"\" " +
+				"dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\" token=\""+token+"\" userParameter=\""+userParameter+"\">");
 		nodesHtml.append("<script>");
 //		if(isSelectTree!=null && isSelectTree.equals("true")) {
 //			nodesHtml.append("if(window.document.getElementById(\"" + valueName + "\").offsetWidth!=0){$(\"#" + id + "_treeSelDiv\").css(\"width\",window.document.getElementById(\"" + valueName + "\").offsetWidth-2);}");

@@ -12,6 +12,7 @@ package com.hisun.saas.sys.taglib.selectTag;
 public class SelectNode {
 	private String optionKey="";//选项key
 	private String optionValue="";//选项值
+	private String selected="false";//是否默认选中
 
 	public String getOptionKey() {
 		return optionKey;
@@ -29,8 +30,13 @@ public class SelectNode {
 		this.optionValue = optionValue;
 	}
 
+	public String getSelected() {
+		return selected;
+	}
 
-
+	public void setSelected(String selected) {
+		this.selected = selected;
+	}
 }
 
 

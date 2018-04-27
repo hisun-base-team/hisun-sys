@@ -33,7 +33,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 			<div class="portlet box grey mainleft">
 				<div class="portlet-body leftbody">
 					<Tree:tree id="treeDemo" treeUrl="${path}/sys/tenant/resourcePrivilege/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
-							   onClick="onClickByTree" submitType="post" dataType="json" isSearch="false"/>
+							   onClick="onClickByTree" submitType="post" dataType="json" isSearch="false" userParameter="dictionaryType:aaa"/>
 					<%--<div class="zTreeDemoBackground" id="tree">--%>
 						<%--<ul id="treeDemo" class="ztree"></ul>--%>
 					<%--</div>--%>
@@ -61,7 +61,6 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 
 
 	function onClickByTree (event, treeId, treeNode){
-		$("#resourceId").val(treeNode.id);
 		$.ajax({
 			url : "${path}/sys/tenant/resourcePrivilege/ajax/privilegeList?resourceId="+treeNode.id+"&resourceName="+treeNode.name,
 			type : "get",
@@ -79,8 +78,6 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 		});
 	}
 
-	var zTree1;
-	var addForm = new EstValidate("addForm");
 	$(document).ready(function(){
 		//初始化菜单
 		App.init();//必须，不然导航栏及其菜单无法折叠
@@ -106,49 +103,9 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 			}
 		});
 		zTree.selectNode(node);
-		$("#resourceId").val(node.id);
-		selectId=node.id;
 		zTree.expandNode(node, true, false , true);
 	});
 
-	function iFrameHeight() {
-		var ifm= document.getElementById("datas");
-		var subWeb = document.frames ? document.frames["datas"].document : ifm.contentDocument;
-		if(ifm != null && subWeb != null) {
-			ifm.height = subWeb.body.scrollHeight;
-			ifm.width = subWeb.body.scrollWidth;
-		}
-	}
-	function refreshTree() {
-		$("#treeDemo").empty();
-		refreshTreeTag("treeDemo", setting_treeDemo, "");
-		selectNodeTree();
-	}
-	function selectNodeTree(){
-		var zTree11 = $.fn.zTree.getZTreeObj("treeDemo");
-		var id = $("#resourceId").val();
-		var node = zTree11.getNodeByParam('id',id);// 获取id为-1的点
-		zTree11.selectNode(node);
-		zTree11.expandNode(node, true, false , true);
-	}
-
-	function pagehref (pageNum ,pageSize){
-		$.ajax({
-			cache:false,
-			type: 'POST',
-			dataType : "html",
-			headers: {
-				"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
-			},
-			url: "${path}/sys/tenant/resourcePrivilege/ajax/privilegeList?resourceId="+$('#resourceId').val()+"&pageNum="+pageNum+"&pageSize="+pageSize,// 请求的action路径
-			error: function () {// 请求失败处理函数
-				alert('请求失败');
-			},
-			success:function(html){
-				$("#listResource").html(html);
-			}
-		});
-	}
 </script>
 </body>
 </html>
