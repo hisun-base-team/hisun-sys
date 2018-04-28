@@ -13,6 +13,7 @@ import org.hibernate.annotations.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -20,8 +21,9 @@ import java.util.List;
  */
 @Entity
 @Table(name = "sys_tenant_2_resource")
-public class Tenant2Resource {
+public class Tenant2Resource implements Serializable {
 
+    private static final long serialVersionUID = -712756083582229756L;
     private String id;
     private Tenant tenant;
     private TenantResource tenantResource;

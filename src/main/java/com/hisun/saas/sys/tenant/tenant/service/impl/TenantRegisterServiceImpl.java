@@ -30,15 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>类名称:TenantRegisterServiceImpl</p>
- * <p>类描述:</p>
- * <p>公司:湖南海数互联信息技术有限公司</p>
- *
- * @创建者:init
- * @创建人:15/11/21上午9:46
- * @创建人联系方式:init@hn-hisun.com
- */
 @Service
 public class TenantRegisterServiceImpl extends BaseServiceImpl<TenantRegister,String> implements TenantRegisterService {
 

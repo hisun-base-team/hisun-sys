@@ -64,7 +64,6 @@ public class TenantResourcePrivilegeController extends BaseController {
             int privilegeSetting = tenantResource.getPrivilegeSetting();
             if(tenantResource.getPrivilegeSetting()==1) {
                 CommonConditionQuery query = new CommonConditionQuery();
-                //        query.add(CommonRestrictions.and(" pId = :pId ", "pId", pId));
                 CommonOrderBy orderBy = new CommonOrderBy();
                 orderBy.add(CommonOrder.asc("sort"));
                 List<TenantPrivilege> resultList = tenantPrivilegeService.list(query, orderBy);

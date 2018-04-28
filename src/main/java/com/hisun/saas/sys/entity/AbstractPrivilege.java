@@ -23,6 +23,7 @@ public abstract class AbstractPrivilege extends TombstoneEntity {
     protected String description;
     protected String impclass;//实现类
     protected Integer type = 1;//1-行过滤,2-列过滤
+    protected String selectUrl;
     protected Integer displayType=1;//1-树形selectOption,2-多选selecteOption
     protected Integer sort;
 
@@ -86,6 +87,16 @@ public abstract class AbstractPrivilege extends TombstoneEntity {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    @Basic
+    @Column(name = "select_url", nullable = false)
+    public String getSelectUrl() {
+        return selectUrl;
+    }
+
+    public void setSelectUrl(String selectUrl) {
+        this.selectUrl = selectUrl;
     }
 
     @Basic

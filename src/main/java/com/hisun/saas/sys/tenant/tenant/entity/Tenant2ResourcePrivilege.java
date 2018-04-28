@@ -29,7 +29,8 @@ public class Tenant2ResourcePrivilege implements Serializable{
     private TenantPrivilege tenantPrivilege;
     private String sqlFilterExpress;
     private String hqlFilterExpress;
-    private String selectedExpress;
+    private String selectedNames;
+    private String selectedValues;
     private List<TenantRoleResourcePrivilege> tenantRoleResourcePrivileges;
 
     @Id
@@ -70,13 +71,17 @@ public class Tenant2ResourcePrivilege implements Serializable{
     public String getSqlFilterExpress() { return sqlFilterExpress;}
     public void setSqlFilterExpress(String sqlFilterExpress) { this.sqlFilterExpress = sqlFilterExpress;}
 
-    @Column(name="selected_express",nullable=false)
-    public String getSelectedExpress() {
-        return selectedExpress;
+    @Column(name="selected_names",nullable=false)
+    public String getSelectedNames() {
+        return selectedNames;
     }
-    public void setSelectedExpress(String selectedExpress) {
-        this.selectedExpress = selectedExpress;
+    public void setSelectedNames(String selectedNames) {
+        this.selectedNames = selectedNames;
     }
+
+    @Column(name="selected_values",nullable=false)
+    public String getSelectedValues() { return selectedValues;}
+    public void setSelectedValues(String selectedValues) { this.selectedValues = selectedValues;}
 
     @Column(name="hql_filter_express",nullable=false)
     public String getHqlFilterExpress() {

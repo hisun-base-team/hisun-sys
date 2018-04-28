@@ -16,7 +16,7 @@
 		<groupId>com.hn-hisun</groupId>
 		<artifactId>hisun-pom</artifactId>
 		<version>1.0</version>
-		<relativePath>../hisun-base/pom.xml</relativePath>
+		<relativePath>../hisun-pom/pom.xml</relativePath>
 	</parent>
 
 	<dependencies>

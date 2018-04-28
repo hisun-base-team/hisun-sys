@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018. Hunan Hisun Union Information Technology Co, Ltd. All rights reserved.
+ * http://www.hn-hisun.com
+ * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
+ */
+
 package com.hisun.saas.sys.tenant.tenant.controller;
 
 import com.google.common.collect.Maps;
@@ -19,8 +25,12 @@ import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResourcePrivilege;
 import com.hisun.saas.sys.tenant.resource.service.TenantResourcePrivilegeService;
 import com.hisun.saas.sys.tenant.resource.service.TenantResourceService;
+import com.hisun.saas.sys.tenant.resource.vo.TenantResourcePrivilegeVo;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
+import com.hisun.saas.sys.tenant.tenant.entity.Tenant2Resource;
+import com.hisun.saas.sys.tenant.tenant.service.Tenant2ResourceService;
 import com.hisun.saas.sys.tenant.tenant.service.TenantService;
+import com.hisun.saas.sys.tenant.tenant.vo.Tenant2ResourcePrivilegeVo;
 import com.hisun.saas.sys.tenant.tenant.vo.TenantVo;
 import com.hisun.saas.sys.tenant.user.service.TenantUserService;
 import com.hisun.saas.sys.util.PinyinUtil;
@@ -40,16 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 
- *<p>类名称：OrganizationController</p>
- *<p>类描述: </p>
- *<p>公司：湖南海数互联信息技术有限公司</p>
- *@创建人：qinjw
- *@创建时间：2015年3月27日 上午9:47:09
- *@创建人联系方式：qinjw@30wish.net
- *@version
- */
+
 @Controller
 @RequestMapping("/sys/tenant/tenant")
 public class TenantController extends BaseController {
@@ -66,6 +67,9 @@ public class TenantController extends BaseController {
     TenantResourceService tenantResourceService;
     @Resource
     private TenantResourcePrivilegeService tenantResourcePrivilegeService;
+
+    @Resource
+    private Tenant2ResourceService tenant2ResourceService;
 
     @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/list")
@@ -271,32 +275,41 @@ public class TenantController extends BaseController {
     }
 
     @RequestMapping("/ajax/privilegeSet")
-    public ModelAndView privilegeSet(String resourceId,String resourceName) throws UnsupportedEncodingException {
+    public ModelAndView privilegeSet(String tenantId,String resourceId,String resourceName) throws GenericException {
         Map<String,Object> model = new HashMap<String,Object>();
-        CommonConditionQuery query = new CommonConditionQuery();
-//        query.add(CommonRestrictions.and(" pId = :pId ", "pId", pId));
+
         CommonOrderBy orderBy = new CommonOrderBy();
-        orderBy.add(CommonOrder.asc("sort"));
-        List<TenantPrivilege> resultList = tenantPrivilegeService.list(query,orderBy);
-
-        query = new CommonConditionQuery();
+        orderBy.add(CommonOrder.asc("tenantPrivilege.sort"));
+        CommonConditionQuery query =  new CommonConditionQuery();
         query.add(CommonRestrictions.and(" tenantResource.id = :resourceId ", "resourceId", resourceId));
-        List<TenantResourcePrivilege> tenantResourcePrivileges = this.tenantResourcePrivilegeService.list(query,null);
-
-        List<TenantPrivilegeVo> vos = new ArrayList<TenantPrivilegeVo>();
-        if(resultList!=null){
-            for(TenantPrivilege tenantPrivilege : resultList){
-                TenantPrivilegeVo vo = new TenantPrivilegeVo();
-                BeanMapper.copy(tenantPrivilege, vo);
-                if(tenantResourcePrivileges!=null){
-                    boo:for(TenantResourcePrivilege tenantResourcePrivilege :tenantResourcePrivileges){
-                        if(tenantPrivilege.getId().equals(tenantResourcePrivilege.getTenantPrivilege().getId())){
-                            vos.add(vo);
-                            break boo;
-                        }
+        List<TenantResourcePrivilege> tenantResourcePrivileges = this.tenantResourcePrivilegeService.list(query,orderBy);
+        Tenant2Resource tenant2Resource = this.tenant2ResourceService.findTenant2ResourceByTenantAndReource(tenantId,resourceId);
+        List<Tenant2ResourcePrivilegeVo> vos = new ArrayList<>();
+        if(tenantResourcePrivileges!=null){
+            Tenant2ResourcePrivilegeVo vo = null;
+            for(TenantResourcePrivilege tenantResourcePrivilege : tenantResourcePrivileges){
+                vo = new Tenant2ResourcePrivilegeVo();
+                vo.setId(tenantResourcePrivilege.getId());
+                vo.setPrivilegeName(tenantResourcePrivilege.getTenantPrivilege().getName());
+                vo.setPrivilegeDescription(tenantResourcePrivilege.getTenantPrivilege().getDescription());
+                vo.setPrivilegeImpclass(tenantResourcePrivilege.getTenantPrivilege().getImpclass());
+                vo.setTenantPrivilegeId(tenantResourcePrivilege.getTenantPrivilege().getId());
+                vo.setSelectUrl(tenantResourcePrivilege.getTenantPrivilege().getSelectUrl());
+                if(tenant2Resource!=null){
+                    //如果tenant2Resource!=null,试图去找该资源下配置的数据权限进行页面显示
+                    if(tenant2Resource.getTenant2ResourcePrivileges()!=null){
+                        vo.setSelectedNames(tenant2Resource.getTenant2ResourcePrivileges().get(0).getSelectedNames());
+                        vo.setSelectedValues(tenant2Resource.getTenant2ResourcePrivileges().get(0).getSelectedValues());
+                    }else{
+                        vo.setSelectedNames("");
+                        vo.setSelectedValues("");
                     }
+                }else{
+                    //如果tenant2Resource=null,则为新增
+                    vo.setSelectedNames("");
+                    vo.setSelectedValues("");
                 }
-
+                vos.add(vo);
             }
         }
         model.put("vos",vos);

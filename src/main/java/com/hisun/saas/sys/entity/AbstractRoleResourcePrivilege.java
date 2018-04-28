@@ -17,7 +17,9 @@ public abstract  class AbstractRoleResourcePrivilege {
 
     protected String sqlFilterExpress;
     protected String hqlFilterExpress;
-    protected String selectedExpress;
+    protected String selectedNames;
+    protected String selectedValues;
+
 
 //    public abstract AbstractRole getAbstractRole();
 //    public abstract  AbstractResource getAbstractResource();
@@ -35,11 +37,15 @@ public abstract  class AbstractRoleResourcePrivilege {
     public String getHqlFilterExpress() { return hqlFilterExpress;}
     public void setHqlFilterExpress(String hqlFilterExpress) { this.hqlFilterExpress = hqlFilterExpress;}
 
-    @Column(name="selected_express",nullable=false)
-    public String getSelectedExpress() {
-        return selectedExpress;
+    @Column(name="selected_names",nullable=false)
+    public String getSelectedNames() {
+        return selectedNames;
     }
-    public void setSelectedExpress(String selectedExpress) {
-        this.selectedExpress = selectedExpress;
+    public void setSelectedNames(String selectedNames) {
+        this.selectedNames = selectedNames;
     }
+
+    @Column(name="selected_values",nullable=false)
+    public String getSelectedValues() { return selectedValues;}
+    public void setSelectedValues(String selectedValues) { this.selectedValues = selectedValues;}
 }
