@@ -13,6 +13,8 @@ public class DictionaryItemVo extends BaseVo {
 
 	private String id;
 	private String pId;
+	private String pId_value;
+
 	private String name;
 	private String code;
 	private boolean open;
@@ -50,13 +52,7 @@ public class DictionaryItemVo extends BaseVo {
 		this.id = id;
 	}
 
-	public String getpId() {
-		return pId;
-	}
 
-	public void setpId(String pId) {
-		this.pId = pId;
-	}
 
 	public String getName() {
 		return name;
@@ -121,5 +117,20 @@ public class DictionaryItemVo extends BaseVo {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	
+
+	public String getpId() {
+		return pId;
+	}
+
+	public void setpId(String pId) {
+		this.pId = pId;
+	}
+
+	public String getpId_value() {
+		return pId_value;
+	}
+
+	public void setpId_value(String pId_value) {
+		this.pId_value = pId_value;
+	}
 }

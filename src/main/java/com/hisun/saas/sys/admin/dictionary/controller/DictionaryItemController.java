@@ -24,6 +24,7 @@ import com.hisun.saas.sys.admin.dictionary.vo.DictionaryTypeVo;
 import com.hisun.saas.sys.taglib.treeTag.TreeNode;
 import com.hisun.util.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -87,6 +88,7 @@ public class DictionaryItemController extends BaseController {
 			map.put("success", true);
 			map.put("data", treeNodes);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error(e, e);
 			map.put("success", false);
 		}
@@ -96,14 +98,16 @@ public class DictionaryItemController extends BaseController {
 	@RequestMapping("/ajax/list")
 	public ModelAndView listItem(HttpServletRequest request,
 								  @RequestParam(value="pageNum",defaultValue="1")int pageNum,
-								  @RequestParam(value="pageSize",defaultValue="20") int pageSize) throws GenericException {
+								  @RequestParam(value="pageSize",defaultValue="10") int pageSize) throws GenericException {
 		Map<String, Object> map = Maps.newHashMap();
-		String currentNodeId = request.getParameter("currentNodeId");
-		String currentNodeParentId = request.getParameter("currentNodeParentId");//取得当前树节点的父ID属性
+		String currentNodeId = StringUtils.trimNull2Empty(request.getParameter("currentNodeId"));
+		String currentNodeName = StringUtils.trimNull2Empty(request.getParameter("currentNodeName"));
+		String currentNodeParentId =StringUtils.trimNull2Empty( request.getParameter("currentNodeParentId"));//取得当前树节点的父ID属性
+		String typeId = StringUtils.trimNull2Empty(request.getParameter("typeId"));
 		try{
 			CommonConditionQuery query = new CommonConditionQuery();
-			if(StringUtils.isBlank(StringUtils.trimNullCharacter2Empty(currentNodeParentId))){//如果为最高层节点,则为字典
-				query.add(CommonRestrictions.and(" dictionaryType.id=:typeId ", "typeId", currentNodeId));
+			if(StringUtils.equals(typeId,currentNodeId)){//如果为最高层节点,则为字典
+				query.add(CommonRestrictions.and(" dictionaryType.id=:typeId ", "typeId", typeId));
 			}else{//其他为字典项
 				query.add(CommonRestrictions.and(" parentItem.id = :id ", "id", currentNodeId));
 			}
@@ -117,11 +121,16 @@ public class DictionaryItemController extends BaseController {
 			if(entities!=null){
 				for(DictionaryItem entity : entities){
 					vo = new DictionaryItemVo();
-					BeanUtils.copyProperties(vo,entities);
+					BeanUtils.copyProperties(vo,entity);
+					vos.add(vo);
 				}
 			}
 			PagerVo<DictionaryItemVo> pager = new PagerVo<DictionaryItemVo>(vos, total.intValue(), pageNum, pageSize);
 			map.put("pager", pager);
+			map.put("currentNodeId",currentNodeId);
+			map.put("currentNodeName",currentNodeName);
+			map.put("currentNodeParentId",currentNodeParentId);
+			map.put("typeId",typeId);
 		}catch(Exception e){
 			logger.error(e);
 			throw new GenericException(e);
@@ -129,63 +138,49 @@ public class DictionaryItemController extends BaseController {
 		return new ModelAndView("/saas/sys/admin/dictionary/item/listItem", map);
 	}
 	
-	@RequestMapping(value = "/type/ajax/list/{typeId}")
-	public ModelAndView list(@RequestParam(value="pageNum",defaultValue="1")int pageNum,
-							 @RequestParam(value="pageSize",defaultValue="10") int pageSize,
-							 @PathVariable("typeId") String typeId) throws GenericException {
-		Map<String, Object> map = Maps.newHashMap();
-		try{
-			CommonConditionQuery query = new CommonConditionQuery();
-			query.add(CommonRestrictions.and(" dictionaryType.id=:typeId ", "typeId", typeId));
-			Long total = this.dictionaryItemService.count(query);
-			CommonOrderBy orderBy = new CommonOrderBy();
-			orderBy.add(CommonOrder.asc("queryCode"));
-			List<DictionaryItem> entities = this.dictionaryItemService.list(query, orderBy, pageNum, pageSize);
-			List<DictionaryItemVo> vos = new ArrayList<>();
-			DictionaryItemVo vo = null;
-			if(entities!=null){
-				for(DictionaryItem entity : entities){
-					vo = new DictionaryItemVo();
-					BeanUtils.copyProperties(vo,entities);
-				}
-			}
-			PagerVo<DictionaryItemVo> pager = new PagerVo<DictionaryItemVo>(vos, total.intValue(), pageNum, pageSize);
-			map.put("pager", pager);
-			map.put("typeId", typeId);
-		}catch(Exception e){
-			logger.error(e);
-			throw new GenericException(e);
-		}
-		return new ModelAndView("saas/sys/admin/dictionary/item/listItem",map);
-	}
+
 
 
 	@RequestMapping("/ajax/add")
 	public ModelAndView add(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String currentNodeId = request.getParameter("currentNodeId");
-		String currentNodeParentId = request.getParameter("currentNodeParentId");
+		String currentNodeId =StringUtils.trimNull2Empty(request.getParameter("currentNodeId"));
+		String currentNodeName =StringUtils.trimNull2Empty(request.getParameter("currentNodeName"));
+		String currentNodeParentId = StringUtils.trimNull2Empty(request.getParameter("currentNodeParentId"));
+		String typeId= StringUtils.trimNull2Empty(request.getParameter("typeId"));
+		String pId = currentNodeId;
+		if(StringUtils.equals(pId,typeId)){
+			pId ="";
+		}
+		int sort = this.dictionaryItemService.getMaxSort(pId);
 		DictionaryItemVo vo = new DictionaryItemVo();
-
-		return new ModelAndView("saas/sys/admin/dictionary/item/addItem");
+		map.put("currentNodeId",currentNodeId);
+		map.put("currentNodeName",currentNodeName);
+		map.put("currentNodeParentId",currentNodeParentId);
+		map.put("typeId",typeId);
+		map.put("sort",sort);
+		return new ModelAndView("saas/sys/admin/dictionary/item/addItem",map);
 	}
 
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> save(DictionaryItem dictionaryItem,HttpServletRequest request) throws GenericException {
+	public @ResponseBody Map<String, Object> save(DictionaryItemVo vo,HttpServletRequest request) throws GenericException {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String pId = request.getParameter("pId");
-		String type = request.getParameter("typeId");
+		String pId = vo.getpId();
+		String typeId = vo.getTypeId();
 		try {
-			if(StringUtils.isNotBlank(pId)){
+			DictionaryItem dictionaryItem = new DictionaryItem();
+			BeanUtils.copyProperties(dictionaryItem, vo);
+			if(StringUtils.isNotBlank(pId) && !StringUtils.equals(pId,typeId)){
 				dictionaryItem.setParentItem(this.dictionaryItemService.getByPK(pId));
 			}
-			DictionaryType dictionaryType = this.dictionaryTypeService.getByPK(type);
+			DictionaryType dictionaryType = this.dictionaryTypeService.getByPK(typeId);
 			dictionaryItem.setDictionaryType(dictionaryType);
 			dictionaryItemService.saveDictionaryItem(dictionaryItem);
 			map.put("success", true);
-			map.put("data", dictionaryItem);
+//			map.put("data", dictionaryItem);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error(e);
 			map.put("success", false);
 		}
@@ -217,20 +212,60 @@ public class DictionaryItemController extends BaseController {
 		}
 		return map;
 	}
-	
+
+	@RequestMapping("/ajax/edit/{id}")
+	public ModelAndView edit(@PathVariable("id") String id,HttpServletRequest request){
+		Map<String,Object> model = new HashMap<String,Object>();
+		DictionaryItem dictionaryItem = dictionaryItemService.getByPK(id);
+		DictionaryItemVo vo = new DictionaryItemVo();
+		String currentNodeId =StringUtils.trimNull2Empty(request.getParameter("currentNodeId"));
+		String currentNodeName =StringUtils.trimNull2Empty(request.getParameter("currentNodeName"));
+		String currentNodeParentId = StringUtils.trimNull2Empty(request.getParameter("currentNodeParentId"));
+		String typeId= StringUtils.trimNull2Empty(request.getParameter("typeId"));
+		org.springframework.beans.BeanUtils.copyProperties(dictionaryItem,vo);
+		if(dictionaryItem.getParentItem()==null){
+			vo.setpId(dictionaryItem.getDictionaryType().getId());
+			vo.setpId_value(dictionaryItem.getDictionaryType().getName());
+		}else {
+			vo.setpId(dictionaryItem.getParentItem().getId());
+			vo.setpId_value(dictionaryItem.getParentItem().getName());
+		}
+		model.put("currentNodeId",currentNodeId);
+		model.put("currentNodeName",currentNodeName);
+		model.put("currentNodeParentId",currentNodeParentId);
+		model.put("typeId",typeId);
+		model.put("vo", vo);
+		return new ModelAndView("saas/sys/admin/dictionary/item/editItem", model);
+	}
 	@RequestMapping(value = "/update")
-	public @ResponseBody Map<String, Object> update(DictionaryItem dictionaryItem,HttpServletRequest request) throws GenericException {
+	public @ResponseBody Map<String, Object> update(DictionaryItemVo vo,HttpServletRequest request) throws GenericException {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String newpId = request.getParameter("newpId");
-		String type = request.getParameter("type");
+		String pId = vo.getpId();
+		String typeId = vo.getTypeId();
 		try {
-			String oldPid = dictionaryItem.getParentItem().getId();
-			dictionaryItem.setParentItem(this.dictionaryItemService.getByPK(newpId));
-			DictionaryType dictionaryType = this.dictionaryTypeService.getByPK(type);
+			DictionaryItem dictionaryItem = this.dictionaryItemService.getByPK(vo.getId());
+			String oldPid = "";
+			if(dictionaryItem.getParentItem()!=null){
+				oldPid = dictionaryItem.getParentItem().getId();
+			}
+			BeanUtils.copyProperties(dictionaryItem, vo);
+			if(StringUtils.isNotBlank(pId) && !StringUtils.equals(pId,typeId)){
+				dictionaryItem.setParentItem(this.dictionaryItemService.getByPK(pId));
+			}
+			DictionaryType dictionaryType = this.dictionaryTypeService.getByPK(typeId);
 			dictionaryItem.setDictionaryType(dictionaryType);
 			this.dictionaryItemService.updateDictionaryItem(dictionaryItem, oldPid, Integer.valueOf(0));
+//		String newpId = request.getParameter("newpId");
+//		String type = request.getParameter("type");
+//		try {
+//			String oldPid = dictionaryItem.getParentItem().getId();
+//			dictionaryItem.setParentItem(this.dictionaryItemService.getByPK(newpId));
+//			DictionaryType dictionaryType = this.dictionaryTypeService.getByPK(type);
+//			dictionaryItem.setDictionaryType(dictionaryType);
+//			this.dictionaryItemService.updateDictionaryItem(dictionaryItem, oldPid, Integer.valueOf(0));
 			map.put("success", true);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error(e);
 			map.put("success", false);
 		}
@@ -310,6 +345,35 @@ public class DictionaryItemController extends BaseController {
 		} catch (Exception e) {
 			logger.error(e,e);
 			map.put("success", false);
+		}
+		return map;
+	}
+	@RequestMapping(value = "/code/check")
+	public @ResponseBody Map<String, Object> check(
+			@RequestParam("typeId") String typeId,@RequestParam("code") String code,@RequestParam(value="id",required=false)String id) throws GenericException {
+		Map<String, Object> map = Maps.newHashMap();
+		CommonConditionQuery query = new CommonConditionQuery();
+		query.add(CommonRestrictions.and(" dictionaryType.id=:typeId ", "typeId", typeId));
+		query.add(CommonRestrictions.and(" code = :code ", "code", code));
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(id)){
+			DictionaryItem entity = this.dictionaryItemService.getByPK(id);
+			if(org.apache.commons.lang3.StringUtils.equalsIgnoreCase(entity.getCode(), code)){
+				map.put("success", true);
+			}else{
+				Long total = dictionaryItemService.count(query);
+				if(total>=1){
+					map.put("success", false);
+				}else{
+					map.put("success", true);
+				}
+			}
+		}else{
+			Long total = dictionaryItemService.count(query);
+			if(total>=1){
+				map.put("success", false);
+			}else{
+				map.put("success", true);
+			}
 		}
 		return map;
 	}
