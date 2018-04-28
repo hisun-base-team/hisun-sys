@@ -66,31 +66,40 @@
 		$("#submitbut").on("click",function(){
 			var bool = addForm.form();
 			if(bool){
-				$.ajax({
-					url : "${path}/sys/admin/dictionary/save",
-					type : "post",
-					data : $("#addForm").serialize(),
-					dataType : "json",
-					headers: {
-						"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
-					},
-					success : function(json){
-						if(json.success){
-							showTip("提示","新增字典类型成功!",2000);
-							setTimeout("window.location.href='${path}/sys/admin/dictionary/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}'",1300);
-						}else{
-							document.getElementById("addForm").reset();
-							$(".control-group").removeClass("error").removeClass("success");
-							$(".help-inline").remove();
-							showTip("警告","新增字典类型失败!",2000);
-						}
-					},
-					error : function(){
-						document.getElementById("addForm").reset();
-						$(".control-group").removeClass("error").removeClass("success");
-						$(".help-inline").remove();
+				localPost("${path}/sys/admin/dictionary/code/check",{
+					"code":$("#code").val(),
+					"id":$("#id").val()
+				},function(data) {
+					if(!data.success){
+						showTip("提示", "字典代码必须唯一！");
+					}else{
+						$.ajax({
+							url : "${path}/sys/admin/dictionary/save",
+							type : "post",
+							data : $("#addForm").serialize(),
+							dataType : "json",
+							headers: {
+								"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
+							},
+							success : function(json){
+								if(json.success){
+									showTip("提示","新增字典类型成功!",2000);
+									setTimeout("window.location.href='${path}/sys/admin/dictionary/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}'",1300);
+								}else{
+									document.getElementById("addForm").reset();
+									$(".control-group").removeClass("error").removeClass("success");
+									$(".help-inline").remove();
+									showTip("警告","新增字典类型失败!",2000);
+								}
+							},
+							error : function(){
+								document.getElementById("addForm").reset();
+								$(".control-group").removeClass("error").removeClass("success");
+								$(".help-inline").remove();
+							}
+						});
 					}
-				});
+				},"json", {"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"});
 			}
 		});
 	});

@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrderBy;
+import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.admin.dictionary.entity.DictionaryType;
@@ -120,24 +121,48 @@ public class DictionaryTypeController extends BaseController {
 	}
 
 
-	@RequiresPermissions("adminDictionary:*")
-	@RequestMapping(value = "/exist/{code}", method = RequestMethod.GET)
-	public @ResponseBody Map<String, Object> existCode(@PathVariable("code") String code){
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			if(this.dictionaryTypeService.existCode(code)==false){
-				map.put("exist", false);
+//	@RequiresPermissions("adminDictionary:*")
+//	@RequestMapping(value = "/exist/{code}", method = RequestMethod.POST)
+//	public @ResponseBody Map<String, Object> existCode(@PathVariable("code") String code){
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		try {
+//			if(this.dictionaryTypeService.existCode(code)==false){
+//				map.put("exist", false);
+//			}else{
+//				map.put("exist", true);
+//				logger.error("字典代码已存在!");
+//			}
+//		} catch (Exception e) {
+//			logger.error(e);
+//		}
+//		return map;
+//	}
+
+	@RequestMapping(value = "/code/check")
+	public @ResponseBody Map<String, Object> check(@RequestParam("code") String code,@RequestParam(value="id",required=false)String id) throws GenericException {
+		Map<String, Object> map = Maps.newHashMap();
+		CommonConditionQuery query = new CommonConditionQuery();
+		query.add(CommonRestrictions.and(" code = :code ", "code", code));
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(id)){
+			DictionaryType entity = this.dictionaryTypeService.getByPK(id);
+			if(org.apache.commons.lang3.StringUtils.equalsIgnoreCase(entity.getCode(), code)){
+				map.put("success", true);
 			}else{
-				map.put("exist", true);
-				logger.error("字典代码已存在!");
+				if(this.dictionaryTypeService.existCode(code)==true){
+					map.put("success", false);
+				}else{
+					map.put("success", true);
+				}
 			}
-		} catch (Exception e) {
-			logger.error(e);
+		}else{
+			if(this.dictionaryTypeService.existCode(code)==true){
+				map.put("success", false);
+			}else{
+				map.put("success", true);
+			}
 		}
 		return map;
 	}
-
-
 
 	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping(value="/edit/{id}",method = RequestMethod.GET)

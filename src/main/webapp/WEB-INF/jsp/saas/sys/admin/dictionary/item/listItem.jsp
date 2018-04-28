@@ -21,7 +21,7 @@
 					<th>字典项值</th>
 					<th>排序</th>
 					<th>备注</th>
-					<th width="150">操作</th>
+					<th width="90">操作</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -32,10 +32,12 @@
 						<td><c:out value="${item.sort }"></c:out></td>
 						<td><c:out value="${item.remark }"></c:out> </td>
 						<td>
-							<a href="javascript:;" class="btn mini blue "  onclick="updateItem('${items.id}');"><i class="icon-pencil"></i>&nbsp;修&nbsp;改</a>
-							&nbsp;&nbsp;&nbsp;
-							<a href="javascript:;" class="btn mini red" id="${items.id}" itemname="<c:out value="${items.item }"></c:out>" onclick="delItem(this);"><i class="icon-trash"></i>&nbsp;删&nbsp;除</a>
-							<input type="hidden" name="delId" id="delId" >
+							<%--<a href="javascript:;" class="btn mini blue "  onclick="updateItem('${items.id}');"><i class="icon-pencil"></i>&nbsp;修&nbsp;改</a>--%>
+							<%--&nbsp;&nbsp;&nbsp;--%>
+							<%--<a href="javascript:;" class="btn mini red" id="${items.id}" itemname="<c:out value="${items.item }"></c:out>" onclick="delItem(this);"><i class="icon-trash"></i>&nbsp;删&nbsp;除</a>--%>
+							<%--<input type="hidden" name="delId" id="delId" >--%>
+								<a href="javascript:updateItem('${item.id}');" >编辑</a>
+								|<a id="${item.id}" itemname="<c:out value="${item.name }"></c:out>" href="javascript:void(0)" onclick="delItem(this);">删除</a>
 							<%--<a href="javascript:;" class="btn mini blue "  onclick="updateItem('${item.id}');"><i class="icon-pencil"></i>&nbsp;修&nbsp;改</a>--%>
 							<%--<a href="javascript:;" class="btn mini red" id="${item.id}" itemname="<c:out value="${item.name }"></c:out>" onclick="delItem(this);"><i class="icon-trash"></i>&nbsp;删&nbsp;除</a>--%>
 							<%--<input type="hidden" name="delId" id="delId" >--%>
@@ -152,7 +154,9 @@
 		var currentNodeName = $("#currentNodeName").val();
 		var currentNodeParentId = $("#currentNodeParentId").val();
 		actionByConfirm1(itemName, "${path}/sys/admin/dictionary/item/delete/" + id,{} ,function(data,status){
-			if (status == "success") {
+
+			if (data.success == true) {
+				showTip("提示", "成功删除！",2000);
 				refreshTree();
 				var currentNodeId = $("#currentNodeId").val();
 				var currentNodeName = $("#currentNodeName").val();
@@ -177,19 +181,10 @@
 						alert('请求失败');
 					}
 				});
+			}else{
+				showTip("提示", data.msg,2000);
 			}
 		});
 	}
-	$(function(){
 
-		$("#delCancel #close").on("click",function(){
-			del.hide();
-			modal.hide();
-		});
-
-		$("#delCancel1").on("click",function(){
-			$("#del1").hide();
-			modal.hide();
-		});
-	});
 </script>
