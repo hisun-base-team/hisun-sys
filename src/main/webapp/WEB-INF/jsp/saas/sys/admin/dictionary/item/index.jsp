@@ -31,7 +31,10 @@
 			<div class="portlet box grey mainleft">
 				<div class="portlet-body leftbody">
 					<input type="hidden" id="currentNodeId"  name="currentNodeId" value="" />
+					<input type="hidden" id="currentNodeName"  name="currentNodeName" value="" />
 					<input type="hidden" id="currentNodeParentId"  name="currentNodeParentId" value="" />
+					<input type="hidden" id="typeId"  name="typeId" value="${typeId}" />
+
 					<Tree:tree id="leftTree" treeUrl="${path}/sys/admin/dictionary/item/tree/${typeId}" token="${sessionScope.OWASP_CSRFTOKEN}"
 							   onClick="onClickByTree" submitType="post" dataType="json" isSearch="false"/>
 				</div>
@@ -57,14 +60,21 @@
 
 	function onClickByTree (event, treeId, treeNode){
 		$("#currentNodeId").val(treeNode.id);//赋值
+		$("#currentNodeName").val(treeNode.name);//赋值
 		$("#currentNodeParentId").val(treeNode.pId);//赋值
 		$.ajax({
-			url : "${path}/sys/admin/dictionary/item/ajax/list?currentNodeId="+treeNode.id+"&currentNodeParentId="+treeNode.pId,
+			url : "${path}/sys/admin/dictionary/item/ajax/list",
 			type : "get",
 			data : null,
 			dataType : "html",
 			headers: {
 				"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
+			},
+			data:{
+				"currentNodeId":treeNode.id,
+				"currentNodeParentId":treeNode.name,
+				"currentNodeName":treeNode.pId,
+				"typeId":"${typeId}"
 			},
 			success : function(html){
 				$("#rightList").html(html);
@@ -80,15 +90,22 @@
 		var zTree = $.fn.zTree.getZTreeObj("leftTree");//取得树对象
 		var node = zTree.getNodes()[0];// 获取第一个点
 		$("#currentNodeId").val(node.id);//赋值
+		$("#currentNodeName").val(node.name);//赋值
 		$("#currentNodeParentId").val(node.pId);//赋值
 		$.ajax({
 			cache:false,
 			type: 'POST',
 			dataType : "html",
+			data:{
+				"currentNodeId":node.id,
+				"currentNodeParentId":node.name,
+				"currentNodeName":node.pId,
+				"typeId":"${typeId}"
+			},
 			headers: {
 				"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
 			},
-			url: "${path}/sys/admin/dictionary/item/type/ajax/list/${typeId}",// 请求的action路径
+			url: "${path}/sys/admin/dictionary/item/ajax/list",// 请求的action路径
 			error: function () {// 请求失败处理函数
 				alert('请求失败');
 			},
@@ -102,42 +119,18 @@
 
 	function refreshTree() {
 		$("#leftTree").empty();
-		refreshTreeTag("leftTree", setting_leftTree, "");
+		refreshTreeTag("leftTree",setting_leftTree,"");
 		selectNodeTree();
 	}
 	function selectNodeTree(){
-		var zTree = $.fn.zTree.getZTreeObj("leftTree");
-		var id = $("#resourceId").val();
-		var node = zTree.getNodeByParam('id',id);// 获取id为-1的点
-		zTree.selectNode(node);
-		zTree.expandNode(node, true, false , true);
+		var zTree1 = $.fn.zTree.getZTreeObj("leftTree");
+		var id = $("#currentNodeId").val();
+		var node = zTree1.getNodeByParam('id',id);// 获取id为-1的点
+		zTree1.selectNode(node);
+		zTree1.expandNode(node, true, false , true);
 	}
 
-	function pagehref (pageNum ,pageSize){
-		var currentNodeId = $("#currentNodeId").val();
-		var currentNodeParentId = $("#currentNodeParentId").val();
-		$.ajax({
-			cache:false,
-			type: 'POST',
-			dataType : "html",
-			headers: {
-				"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
-			},
-			data:{
-					"currentNodeId":currentNodeId,
-				    "currentNodeParentId":currentNodeParentId,
-					"pageNum":pageNum,
-					"pageSize":pageSize
-			    },
-			url: "${path}/sys/admin/dictionary/item/ajax/list",// 请求的action路径
-			error: function () {// 请求失败处理函数
-				alert('请求失败');
-			},
-			success:function(html){
-				$("#listResource").html(html);
-			}
-		});
-	}
+
 </script>
 </body>
 </html>

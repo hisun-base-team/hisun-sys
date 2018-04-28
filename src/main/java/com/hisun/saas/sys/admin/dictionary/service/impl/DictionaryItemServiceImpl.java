@@ -35,8 +35,13 @@ public class DictionaryItemServiceImpl extends BaseServiceImpl<DictionaryItem, S
 	@Override
 	public Integer getMaxSort(String pId) {
 		Map<String, Object> map=new HashMap<String, Object>();
-		String hql = "select max(t.sort)+1 as sort from SYS_DICT_ITEM t where t.p_id=:pId";
-		map.put("pId", pId);
+		String hql = "select max(t.sort)+1 as sort from SYS_DICT_ITEM t ";
+		if(pId!=null && !pId.equals("")) {
+			hql = hql+"where t.p_id =:pId";
+			map.put("pId", pId);
+		}else{
+			hql = hql+"where t.p_id is null";
+		}
 		List<Map> maxSorts = this.dictionaryItemDao.countReturnMapBySql(hql, map);
 		if(maxSorts.get(0).get("sort")==null){
 			return 1;
@@ -49,7 +54,11 @@ public class DictionaryItemServiceImpl extends BaseServiceImpl<DictionaryItem, S
 	@Override
 	public void saveDictionaryItem(DictionaryItem dictionaryItem)
 			throws Exception {
-		Integer oldSort = this.getMaxSort(dictionaryItem.getParentItem().getId());
+		String pId = "";
+		if(dictionaryItem.getParentItem()!=null){
+			pId = dictionaryItem.getParentItem().getId();
+		}
+		Integer oldSort = this.getMaxSort(pId);
 		Integer newSort = dictionaryItem.getSort();
 		int retval = newSort.compareTo(oldSort);
 		if(retval>0){
@@ -85,14 +94,22 @@ public class DictionaryItemServiceImpl extends BaseServiceImpl<DictionaryItem, S
 		}
 		
 		//String oldQueryCode = this.generateQueryCode(currentOrg.getParent().getQueryCode(), oldOrder, "0000");
-		
+		String pId = "";
+		if(dictionaryItem.getParentItem()!=null){
+			pId = dictionaryItem.getParentItem().getId();
+		}
 		String sql="UPDATE SYS_DICT_ITEM t SET ";
 		if(newSort>oldSort){
 			sql+="t.SORT=t.SORT-1";
 		}else{
 			sql+="t.SORT=t.SORT+1";
 		}
-		sql+=" where t.p_id='"+dictionaryItem.getParentItem().getId()+"'";
+		if(pId!=null && !pId.equals("")) {
+			sql+=" where t.p_id='"+dictionaryItem.getParentItem().getId()+"'";
+		}else{
+			sql = sql+" where t.p_id is null";
+		}
+
 		if(newSort>oldSort){
 			sql+=" and t.SORT<="+newSort+" and t.SORT >"+oldSort;
 		}else{
@@ -140,7 +157,11 @@ public class DictionaryItemServiceImpl extends BaseServiceImpl<DictionaryItem, S
 		DictionaryItem dictionaryItem2 = this.dictionaryItemDao.getByPK(dictionaryItem.getId());
 			
 		int newSort = dictionaryItem.getSort().intValue();
-		int maxSort = this.getMaxSort(dictionaryItem.getParentItem().getId());
+		String pId="";
+		if(dictionaryItem.getParentItem()!=null){
+			pId = dictionaryItem.getParentItem().getId();
+		}
+		int maxSort = this.getMaxSort(pId);
 		if(newSort>maxSort){
 			newSort = maxSort;
 		}
@@ -156,7 +177,7 @@ public class DictionaryItemServiceImpl extends BaseServiceImpl<DictionaryItem, S
 		dictionaryItem.setSort(newSort);
 		
 		this.refreshQueryCodeToTmp(dictionaryItem2.getQueryCode());
-		if(StringUtils.equals(dictionaryItem.getParentItem().getId(), oldPid)){
+		if(StringUtils.equals(pId, oldPid)){
 			this.updateSortAndQueryCode(dictionaryItem, dictionaryItem2.getSort());
 		}else{
 			this.updateSortAndQueryCode(dictionaryItem, maxSort);
