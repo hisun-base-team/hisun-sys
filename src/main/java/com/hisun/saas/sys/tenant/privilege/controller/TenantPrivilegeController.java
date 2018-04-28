@@ -23,7 +23,6 @@ import com.hisun.saas.sys.tenant.tenant.service.TenantService;
 import com.hisun.saas.sys.tenant.user.service.TenantUserService;
 import com.hisun.saas.sys.util.EntityWrapper;
 import com.hisun.util.ValidateUtil;
-import netscape.security.Privilege;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;

@@ -47,6 +47,8 @@ public class TreeNode {
     //父节点自定义折叠时图标的 URL 路径
 	private String iconClose;
 
+	private boolean checked;//是否默认选中
+
 	public String getId() {
 		return id;
 	}
@@ -110,5 +112,13 @@ public class TreeNode {
 
 	public void setIconClose(String iconClose) {
 		this.iconClose = iconClose;
+	}
+
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 }

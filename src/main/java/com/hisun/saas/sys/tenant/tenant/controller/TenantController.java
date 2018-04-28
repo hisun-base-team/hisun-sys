@@ -23,8 +23,10 @@ import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.sys.tenant.tenant.service.TenantService;
 import com.hisun.saas.sys.tenant.tenant.vo.TenantVo;
 import com.hisun.saas.sys.tenant.user.service.TenantUserService;
+//import com.hisun.saas.sys.util.PinyinUtil;
 import com.hisun.saas.sys.util.PinyinUtil;
 import com.hisun.util.BeanMapper;
+import com.hisun.util.Pinyin4jUtil;
 import com.hisun.util.ValidateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -251,14 +253,20 @@ public class TenantController extends BaseController {
     public @ResponseBody Map<String, Object> getTenantNameCode(
             @RequestParam("name") String name,@RequestParam(value="shortName",required=false)String shortName) throws GenericException {
         Map<String, Object> map = Maps.newHashMap();
-        String pinYinHead = "";
-        if(shortName.equals("") == false){
-            pinYinHead = PinyinUtil.getPinYinHeadChar(shortName);
-        }else{
-            pinYinHead = PinyinUtil.getPinYinHeadChar(name);
+        try {
+            String pinYinHead = "";
+            if(shortName.equals("") == false){
+                pinYinHead = PinyinUtil.getAllFirstLetter(shortName);
+            }else{
+                pinYinHead =PinyinUtil.getAllFirstLetter(name);
+            }
+            map.put("pinYinHead", pinYinHead);
+            map.put("success", true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            logger.error(e);
         }
-        map.put("pinYinHead", pinYinHead);
-        map.put("success", true);
         return map;
     }
 
