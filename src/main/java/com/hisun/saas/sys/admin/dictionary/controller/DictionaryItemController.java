@@ -199,7 +199,7 @@ public class DictionaryItemController extends BaseController {
 				Long total = dictionaryItemService.count(query);
 				if(total>0){
 					map.put("success", false);
-					map.put("msg", "该树节点还有子节点，不能删除!");
+					map.put("msg", "该字典项下还有子项，不能删除!！");
 				}else{
 					this.dictionaryItemService.deleteByPK(id);
 					map.put("success", true);
