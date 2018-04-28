@@ -24,7 +24,6 @@ import com.hisun.saas.sys.admin.dictionary.vo.DictionaryTypeVo;
 import com.hisun.saas.sys.taglib.treeTag.TreeNode;
 import com.hisun.util.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;

@@ -42,7 +42,7 @@ public class Tenant2ResourceServiceImpl extends BaseServiceImpl<Tenant2Resource,
         query.add(CommonRestrictions.and(" tenant.id = :tenantId ", "tenantId", tenantId));
         query.add(CommonRestrictions.and(" tenantResource.id = :resourceId ", "resourceId", resourceId));
         List<Tenant2Resource> list = this.tenant2ResourceDao.list(query,orderBy);
-        if(list!=null){
+        if(list!=null&&list.size()>0){
             return list.get(0);
         }else{
             return null;

@@ -143,6 +143,7 @@ public class TenantResourcePrivilegeController extends BaseController {
             map.put("success", true);
             map.put("data", treeNodeVos);
         } catch (Exception e) {
+            e.printStackTrace();
             map.put("success", false);
             logger.error(e);
         }
