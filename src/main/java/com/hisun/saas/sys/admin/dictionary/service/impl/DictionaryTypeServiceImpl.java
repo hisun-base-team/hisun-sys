@@ -37,7 +37,7 @@ public class DictionaryTypeServiceImpl extends BaseServiceImpl<DictionaryType, S
 
 	public boolean existCode(String code){
 		CommonConditionQuery query = new CommonConditionQuery();
-		query.add(CommonRestrictions.and(" code >= :code", "code",code));
+		query.add(CommonRestrictions.and(" code = :code", "code",code));
 		Long total = this.dictionaryTypeDao.count(query);
 		if(total>0){
 			return true;
