@@ -57,7 +57,7 @@
 								<div class="controls">
 									<input class="span6 m-wrap" type="text" name="selectUrl" id="selectUrl" required minlength="4" maxlength="200">
 								</div>
-								<div class="form-hint">
+								<div class="controls">
 									<i class="icon-exclamation-sign" style="padding-right: 5px;"></i>请填写数据源URL,例如:<em>/api/dictionary/tree?typeCode=GB/T16835-1997</em>
 								</div>
 							</div>
