@@ -3,50 +3,40 @@
  */
 package com.hisun.saas.sys.tenant.tenant.vo;
 
+import com.hisun.base.vo.BaseVo;
+import com.hisun.base.vo.TombstoneVo;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 
-/**
- * 
- *<p>类名称：OrganizationVo</p>
- *<p>类描述: </p>
- *<p>公司：湖南海数互联信息技术有限公司</p>
- *@创建人：qinjw
- *@创建时间：2015年3月27日 上午9:34:34
- *@创建人联系方式：qinjw@30wish.net
- *@version
- */
-public class TenantVo {
-	
-	private String id;//主键
 
+public class TenantVo extends TombstoneVo{
+
+	@Size(max=100)
+	private String id;//主键
 	@NotBlank
 	@Size(min=1,max=100)
 	private String name;//组织名
-
 	@NotBlank
 	@Size(min=1,max=60)
 	private String shortName;//组织简称
-
 	@NotBlank
 	@Size(min=1,max=15)
 	private String shortNamePy;//拼音简称
-
 	@NotBlank
-	@Size(min=4, max = 30)
-	private String username;
-
-//	@NotBlank
-	@Size(max = 50)
-	@Pattern(regexp = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")
-	private String email;
-
+	@Size(min=4, max = 32)
+	private String adminUserName;//默认管理账号
 	@NotBlank
 	@Size(min=6, max = 20)
-	private String password;
+	private String adminUserPassword;//默认管理员密码
+	@Size(max = 50)
+	@Pattern(regexp = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")
+	private String adminUserEmail;//默认管理邮箱
+
+	private int usersCount;//用户数
+
 
 	public String getId() {
 		return id;
@@ -64,30 +54,6 @@ public class TenantVo {
 		this.name = name;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getShortName() {
 		return shortName;
 	}
@@ -102,5 +68,37 @@ public class TenantVo {
 
 	public void setShortNamePy(String shortNamePy) {
 		this.shortNamePy = shortNamePy;
+	}
+
+	public String getAdminUserName() {
+		return adminUserName;
+	}
+
+	public void setAdminUserName(String adminUserName) {
+		this.adminUserName = adminUserName;
+	}
+
+	public String getAdminUserPassword() {
+		return adminUserPassword;
+	}
+
+	public void setAdminUserPassword(String adminUserPassword) {
+		this.adminUserPassword = adminUserPassword;
+	}
+
+	public String getAdminUserEmail() {
+		return adminUserEmail;
+	}
+
+	public void setAdminUserEmail(String adminUserEmail) {
+		this.adminUserEmail = adminUserEmail;
+	}
+
+	public int getUsersCount() {
+		return usersCount;
+	}
+
+	public void setUsersCount(int usersCount) {
+		this.usersCount = usersCount;
 	}
 }

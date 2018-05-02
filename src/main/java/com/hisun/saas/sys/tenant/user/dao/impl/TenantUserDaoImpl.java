@@ -41,7 +41,6 @@ public class TenantUserDaoImpl extends BaseDaoImpl<TenantUser,String> implements
 
     @Override
     public TenantUser saveRegister(TenantRegisterVo vo, Tenant tenant) {
-        //SELECT '111', '100' FROM DUAL WHERE NOT EXISTS(SELECT cardno FROM card WHERE cardno = '111');
         String sql = "insert into sys_tenant_user(id,email,user_name,real_name,password,tel,salt,locked,tenant_id,create_date,tombstone,status) "
                 + " SELECT ?,?,?,?,?,?,?,false,?,?,0,0 from DUAL "
                 + "WHERE NOT EXISTS(SELECT 1 FROM sys_tenant_user WHERE user_name = ? or email = ?)";
@@ -78,28 +77,20 @@ public class TenantUserDaoImpl extends BaseDaoImpl<TenantUser,String> implements
     }
 
     @Override
-    public List<TenantUser> listByTenantId(String tenantId) {
+    public void updateToFreezeByTenant(String tenantId) {
+        String hql = " update TenantUser  tenantUser set tenantUser.tombstone = :tombstone where tenantUser.tenant.id = :tenantId";
         CommonConditionQuery query = new CommonConditionQuery();
-        query.add(CommonRestrictions.and("tenant.id = :tenantId", "tenantId", tenantId));
-        return list(query,null);
+        query.add(CommonRestrictions.and("","tombstone",TombstoneEntity.TOMBSTONE_TRUE));
+        query.add(CommonRestrictions.and("","tenantId",tenantId));
+        this.executeBulk(hql,query);
     }
 
     @Override
-    public void deleteByTenantId(String tenantId) {
-        //用户全部也要注销
-        String sql = "update sys_tenant_user set tombstone = ? where tenant_id = ?";
-        List<Object> paramList = new ArrayList<Object>();
-        paramList.add(TombstoneEntity.TOMBSTONE_TRUE);
-        paramList.add(tenantId);
-        executeNativeBulk(sql, paramList);
-    }
-
-    @Override
-    public void activateByTenantId(String tenantId) {
-        String sql = "update sys_tenant_user set tombstone = ? where tenant_id = ?";
-        List<Object> paramList = new ArrayList<Object>();
-        paramList.add(TombstoneEntity.TOMBSTONE_FALSE);
-        paramList.add(tenantId);
-        executeNativeBulk(sql,paramList);
+    public void updateToActivateByTenant(String tenantId) {
+        String hql = " update TenantUser  tenantUser set tenantUser.tombstone = :tombstone where tenantUser.tenant.id = :tenantId";
+        CommonConditionQuery query = new CommonConditionQuery();
+        query.add(CommonRestrictions.and("","tombstone",TombstoneEntity.TOMBSTONE_FALSE));
+        query.add(CommonRestrictions.and("","tenantId",tenantId));
+        this.executeBulk(hql,query);
     }
 }

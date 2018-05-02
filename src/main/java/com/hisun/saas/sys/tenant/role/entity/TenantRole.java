@@ -15,6 +15,7 @@ import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,5 +56,14 @@ public class TenantRole extends AbstractRole implements TenantEntityInterface,Se
     }
     public void setTenantRoleResources(List<TenantRoleResource> tenantRoleResources) {
         this.tenantRoleResources = tenantRoleResources;
+    }
+
+
+    public void addTenantUserRole(TenantUserRole tenantUserRole){
+        if(tenantUserRoles!=null){
+            tenantUserRoles = new ArrayList<>();
+        }
+        tenantUserRole.setRole(this);
+        tenantUserRoles.add(tenantUserRole);
     }
 }

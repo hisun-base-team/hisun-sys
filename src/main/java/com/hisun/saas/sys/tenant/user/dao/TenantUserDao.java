@@ -19,17 +19,15 @@ public interface TenantUserDao extends BaseDao<TenantUser,String>{
      */
     TenantUser saveRegister(TenantRegisterVo vo, Tenant tenant);
 
-    List<TenantUser> listByTenantId(String tenantId);
-
     /**
      * 根据租户ID注销租户下用户
      * @param tenantId
      */
-    void deleteByTenantId(String tenantId);
+    void updateToFreezeByTenant(String tenantId);
 
     /**
      * 激活租户下全部用户
      * @param tenantId
      */
-    void activateByTenantId(String tenantId);
+    void updateToActivateByTenant(String tenantId);
 }

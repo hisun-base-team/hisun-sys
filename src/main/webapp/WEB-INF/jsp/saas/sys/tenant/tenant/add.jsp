@@ -10,87 +10,72 @@
 </head>
 <body>
 <!-- BEGIN PAGE CONTAINER-->
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span12">
-				<%-- BEGIN SAMPLE FORM PORTLET 表单主体--%>
-
-				<div class="portlet box grey">
-
-					<div class="portlet-title">
-
-						<div class="caption">
-
-							<span class="hidden-480">添加租户</span>
-
-						</div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<%-- BEGIN SAMPLE FORM PORTLET 表单主体--%>
+			<div class="portlet box grey">
+				<div class="portlet-title">
+					<div class="caption">
+						<span class="hidden-480">添加租户</span>
 					</div>
-
-					<div class="portlet-body form">
-						<form class="form-horizontal myform"
-						id="form1" method="post">
-							<div class="tab-pane active" id="tab1">
-								<div>
-									<div id="nameGroup" class="control-group">
-										<label class="control-label mylabel">租户全称<span
-												class="required">*</span>
-										</label>
-										<div class="controls">
-											<input class="span6 m-wrap" type="text" name="name" id="name" required maxlength="100" onblur="getSimpleName();">
-										</div>
-									</div>
-									<div id="shortNameGroup" class="control-group">
-										<label class="control-label mylabel">租户简称<span
-												class="required">*</span>
-										</label>
-										<div class="controls">
-											<input class="span6 m-wrap" type="text" name="shortName" id="shortName" required maxlength="60" onblur="getSimpleName();">
-										</div>
-									</div>
-									<div id="shortNamePyGroup" class="control-group">
-										<label class="control-label mylabel">拼音简称<span
-												class="required">*</span>
-										</label>
-										<div class="controls">
-											<input class="span6 m-wrap" type="text" name="shortNamePy" id="shortNamePy"  required maxlength="15">
-										</div>
-									</div>
-
-									<div id="usernameGroup" class="control-group">
-										<label class="control-label mylabel">租户管理员账号<span
-												class="required">*</span>
-										</label>
-										<div class="controls">
-											<input class="span6 m-wrap" type="text" name="username" id="username" value="" required minlength="4" maxlength="30" usernamePattern="true" tenantUsernameUnique="true" csrftoken="${sessionScope.OWASP_CSRFTOKEN}">
-										</div>
-									</div>
-									<div id="passwordGroup" class="control-group">
-										<label class="control-label mylabel">租户管理员密码<span
-												class="required">*</span>
-										</label>
-										<div class="controls">
-											<input class="span6 m-wrap" type="text" name="password" id="password"  value="" required="true" minlength="6" maxlength="20" >
-										</div>
-									</div>
-
-									<div  class="form-actions">
-										<button id="submitBtn" type="button" class="btn green mybutton" onclick="saveSubmit()"><i class='icon-ok'></i> 确定</button>
-										<a href="${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" class="btn btn-default"
-							               data-dismiss="modal"><i class='icon-remove-sign'></i> 取消
-							            </a>
-									</div>
-	
-								</div>
+				</div>
+				<div class="portlet-body form">
+					<form class="form-horizontal " id="form1" method="post">
+						<div id="nameGroup" class="control-group">
+							<label class="control-label mylabel">租户名称<span
+									class="required">*</span>
+							</label>
+							<div class="controls">
+								<input class="span6 m-wrap" type="text" name="name" id="name" required maxlength="100" onblur="getSimpleName();">
 							</div>
-						</form>
-					</div>
-					</div>
-			</div>
+						</div>
+						<div id="shortNameGroup" class="control-group">
+							<label class="control-label mylabel">租户简称<span
+									class="required">*</span>
+							</label>
+							<div class="controls">
+								<input class="span6 m-wrap" type="text" name="shortName" id="shortName" required maxlength="60" onblur="getSimpleName();">
+							</div>
+						</div>
+						<div id="shortNamePyGroup" class="control-group">
+							<label class="control-label mylabel">简称拼音<span
+									class="required">*</span>
+							</label>
+							<div class="controls">
+								<input class="span6 m-wrap" type="text" name="shortNamePy" id="shortNamePy"  required maxlength="15">
+							</div>
+						</div>
+
+						<div id="adminUserNameGroup" class="control-group">
+							<label class="control-label mylabel">默认管理员账号<span
+									class="required">*</span>
+							</label>
+							<div class="controls">
+								<input class="span6 m-wrap" type="text" name="adminUserName" id="adminUserName" value="" required minlength="4" maxlength="30" usernamePattern="true" tenantUsernameUnique="true" csrftoken="${sessionScope.OWASP_CSRFTOKEN}">
+							</div>
+						</div>
+						<div id="adminUserPasswordGroup" class="control-group">
+							<label class="control-label mylabel">默认账号密码<span class="required">*</span>
+							</label>
+							<div class="controls">
+								<input class="span6 m-wrap" type="text" name="adminUserPassword" id="adminUserPassword"  value="" required="true" minlength="6" maxlength="20" >
+							</div>
+						</div>
+
+						<div  class="form-actions">
+							<button id="submitBtn" type="button" class="btn green mybutton" onclick="saveSubmit()"><i class='icon-ok'></i> 确定</button>
+							<a href="${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" class="btn btn-default"
+							   data-dismiss="modal"><i class='icon-remove-sign'></i> 取消
+							</a>
+						</div>
+
+					</form>
+				</div>
+				</div>
 		</div>
 	</div>
-<script type="application/javascript">
-	window.PATH = "${path}";
-</script>
+</div>
 <script type="text/javascript" src="${path }/js/common/est-validate-init.js"></script>
 <script type="text/javascript" src="${path }/js/common/custom-validate.js"></script>
 <script type="text/javascript" src="${path }/js/common/validate-message.js"></script>
@@ -98,8 +83,8 @@
 <script type="text/javascript">
 	(function(){
 		App.init();
-		$("#username").val('');
-		$("#password").val('');
+		$("#adminUserName").val('');
+		$("#adminUserPassword").val('');
 	})();
 
 	var myVld = new EstValidate2("form1");
@@ -119,7 +104,7 @@
 				success : function(json){
 					myLoading.hide();
 					if(json.code == 1){
-						showTip("提示","操作成功",2000);
+						showTip("提示","操作成功!",2000);
 						setTimeout(function(){
 							window.location.href = "${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"
 						},2000) ;
@@ -129,7 +114,7 @@
 				},
 				error : function(arg1, arg2, arg3){
 					myLoading.hide();
-					showTip("提示","出错了请联系管理员",2000);
+					showTip("提示","出错了,请联系管理员!",2000);
 				}
 			});
 		}
@@ -152,8 +137,8 @@
 			dataType : "json",
 			success : function(data){
 				$("#shortNamePy").val(data.pinYinHead);
-				$("#username").val(data.pinYinHead+"_admin");
-				$("#password").val(data.pinYinHead+"_admin111111");
+				$("#adminUserName").val(data.pinYinHead+"_admin");
+				$("#adminUserPassword").val(data.pinYinHead+"_admin111111");
 			},
 			error : function(){
 				showTip("提示","出错了请联系管理员", 1500);

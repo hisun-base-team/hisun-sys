@@ -21,7 +21,7 @@ public class EntityWrapper {
         }
         entity.setCreateDate(new Date());
         entity.setCreateUserId(userLoginDetails.getUserid());
-        entity.setCreateUserName(userLoginDetails.getUsername());
+        entity.setCreateUserName(userLoginDetails.getRealname());
 
     }
 
@@ -31,7 +31,7 @@ public class EntityWrapper {
         }
         entity.setUpdateDate(new Date());
         entity.setUpdateUserId(userLoginDetails.getUserid());
-        entity.setUpdateUserName(userLoginDetails.getUsername());
+        entity.setUpdateUserName(userLoginDetails.getRealname());
     }
 
     public static void wrapperSaveBaseProperties(TenantEntity entity, UserLoginDetails userLoginDetails) {
@@ -41,7 +41,7 @@ public class EntityWrapper {
         entity.setTenant(userLoginDetails.getTenant());
         entity.setCreateDate(new Date());
         entity.setCreateUserId(userLoginDetails.getUserid());
-        entity.setCreateUserName(userLoginDetails.getUsername());
+        entity.setCreateUserName(userLoginDetails.getRealname());
 
     }
 
@@ -51,6 +51,6 @@ public class EntityWrapper {
         }
         entity.setUpdateDate(new Date());
         entity.setUpdateUserId(userLoginDetails.getUserid());
-        entity.setUpdateUserName(userLoginDetails.getUsername());
+        entity.setUpdateUserName(userLoginDetails.getRealname());
     }
 }

@@ -84,22 +84,22 @@ public class LicenseFilter extends OncePerRequestFilter {
                 String tenantName = encryptStr.substring(0, encryptStr.length()-10);
                 DateTime limitDate = new DateTime(dateStr);
                 TenantService tenantService = ApplicationContextUtil.getBean(TenantService.class);
-                PagerVo<Tenant> tenantPager = tenantService.listPager(null, TombstoneEntity.TOMBSTONE_FALSE, null,null,1 ,1);
-                if(tenantPager.getTotal()>0){
-                    Tenant tenant = tenantPager.getDatas().get(0);
-                    if(tenantName.equals(tenant.getName())){
-                        if(limitDate.isBeforeNow()){
-                            //少于现在时间，试用到期
-                            canNextFilter = false;
-                        }else {
-                            canNextFilter = true;
-                        }
-                    }else{
-                        canNextFilter = false;
-                    }
-                }else{
-                    canNextFilter = false;
-                }
+//                PagerVo<Tenant> tenantPager = tenantService.listPager(null, TombstoneEntity.TOMBSTONE_FALSE, null,null,1 ,1);
+//                if(tenantPager.getTotal()>0){
+//                    Tenant tenant = tenantPager.getDatas().get(0);
+//                    if(tenantName.equals(tenant.getName())){
+//                        if(limitDate.isBeforeNow()){
+//                            //少于现在时间，试用到期
+//                            canNextFilter = false;
+//                        }else {
+//                            canNextFilter = true;
+//                        }
+//                    }else{
+//                        canNextFilter = false;
+//                    }
+//                }else{
+//                    canNextFilter = false;
+//                }
             } catch (Exception e) {
                 logger.error("license报错",e);
                 //报错通常情况下，公钥等信息被修改了，或者设置为空了。这时候要也当作不可用。

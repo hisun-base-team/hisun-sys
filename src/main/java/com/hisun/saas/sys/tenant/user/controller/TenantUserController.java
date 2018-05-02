@@ -94,30 +94,16 @@ public class TenantUserController extends BaseController{
     private TenantUserRoleService tenantUserRoleService;
     @Resource
     private SerialService serialService;
-
     @Resource
     private TenantService tenantService;
-
     @Resource
     private TenantRegisterService tenantRegisterService;
-
     @Resource
     private PasswordResetService passwordResetService;
-
     @Resource
     private SessionHelper sessionHelper;
 
-
     private final static String DEFAULT_IMG_HEAD_PATH = "/WEB-INF/images/defaultHeadImage.png";
-    /**
-     * 获取用户列表
-     * @param modelMap
-     * @param pageNum
-     * @param pageSize
-     * @param searchContent
-     * @return
-     * @throws GenericException
-     */
 //    @RequiresPermissions("tenantUser:list")
     @RequestMapping(value = "/sys/list")
     public ModelAndView sysList(ModelMap modelMap,

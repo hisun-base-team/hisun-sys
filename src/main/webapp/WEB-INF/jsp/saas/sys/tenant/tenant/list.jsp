@@ -24,36 +24,37 @@
 			<div class="portlet box grey">
 				<div class="portlet-title" style="vertical-align: middle;">
 					<div class="caption">租户列表</div>
-					<%--<shiro:hasPermission name="tenant:tenantadd">--%>
+					<shiro:hasPermission name="sys-tenant:*">
 						<div class="btn-group fr">
-							<a id="sample_editable_1_new" class="btn green" href="${path }/sys/tenant/tenant/add?&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+							<a id="sample_editable_1_new" class="btn green" href="${path}/sys/tenant/tenant/add?&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
 								<i class="icon-plus"></i> 创 建
 							</a>
 						</div>
-					<%--</shiro:hasPermission>--%>
+					</shiro:hasPermission>
 				</div>
 
 				<div class="portlet-body">
 					<div class="row-fluid" style="font-size: 14px;">
 						<form action="${path }/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" method="post" id="searchForm" name="searchForm">
-							<input type="text" class="m-wrap" style="width: 100px;" name="name" id="name" value="${name}" placeholder="租户名">
-							创建日期：
+							租户名称:
 							<div class="input-append" id="fromDateDiv" style="margin-bottom: 0px;" >
-								<input size="16" type="text" readonly="" name="start" class="span12" id="start" value="${param.start }" onchange="startChange()" style="width: 90px;">
+								<input type="text"  style="width: 100px;" name="name" id="name" value="${name}" >
+							</div>
+								创建日期:
+							<div class="input-append" id="fromDateDiv" style="margin-bottom: 0px;" >
+								<input size="16" type="text" readonly=""  id="start"  name="start" class="span12" style="width: 100px;" value="${param.start }" onchange="startChange()" style="width: 90px;">
 							</div> -
 							<div class="input-append" id="toDateDiv" style="margin-bottom: 0px;">
-								<input size="16" type="text" readonly="" id="end" name="end" class="span12" value="${param.end }" onchange="endChange()" style="width: 90px;">
+								<input size="16" type="text" readonly="" id="end" name="end" class="span12"  style="width: 100px;" value="${param.end }" onchange="endChange()" style="width: 90px;">
 							</div>
-							状态：
-							<%--<SelectTag:SelectTag id="tombstone" token="${sessionScope.OWASP_CSRFTOKEN}" defaultkeys="${tombstone}" width="80"--%>
-													<%--radioOrCheckbox="radio" selectUrl="${path }/sys/tenant/tenant/ajax/getZtOptions"/>--%>
+							状态:
 							<select name="tombstone" id="tombstone" style="margin-bottom: 0px;width:80px;">
 									<option value="-1" ${tombstone == -1?'selected="selected"':''}>全部</option>
 									<option value="0" ${tombstone == 0?'selected="selected"':''}>正常</option>
 									<option value="1" ${tombstone ==1?'selected="selected"':''}>冻结</option>
 								</select>
-							<button type="submit" class="btn blue Short_but">查询</button>
-							<button type="button" class="btn blue Short_but" onclick="searchReset()">清空</button>
+							<button type="submit" class="btn Short_but">查询</button>
+							<button type="button" class="btn Short_but" onclick="searchReset()">清空</button>
 						</form>
 					</div>
 					<table class="table table-striped table-bordered table-hover dataTable table-set">
@@ -67,25 +68,23 @@
 						</tr>
 						</thead>
 						<tbody>
-						<c:forEach items="${requestScope.pager.datas}" var="entity" varStatus="varStatus">
+						<c:forEach items="${pager.datas}" var="entity">
 							<tr style="text-overflow:ellipsis;">
-								<td><c:out value="${entity.name }"></c:out></td>
+								<td><a href="${path}/sys/tenant/tenant/edit/${entity.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"><c:out value="${entity.name}"></c:out></a></td>
 								<td><fmt:formatDate value="${entity.createDate}" pattern="yyyy-MM-dd"></fmt:formatDate></td>
 								<td>
 									<c:choose>
-										<c:when test="${entity.tombstone == 0}">
-											激活
+										<c:when test="${entity.tombstone== 0}">
+											正常
 										</c:when>
 										<c:otherwise>
 											冻结
 										</c:otherwise>
 									</c:choose>
 								</td>
-								<td>${userCountList[varStatus.index]}</td>
+								<td><a href="${path }/sys/tenant/user/sysAdmin/list?tenantId=${entity.id}&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">${entity.usersCount}</a></td>
 								<td class="Left_alignment">
-									<a href="${path }/sys/tenant/tenant/privilegeManage/${entity.id}?tenantName=${entity.name }&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" >授权</a> |
-										<a href="${path }/sys/tenant/tenant/sysadmin/view/${entity.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" >查看信息</a> |
-									<a href="${path }/sys/tenant/user/sysAdmin/list?tenantId=${entity.id}&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">查看成员</a>
+									<a href="${path }/sys/tenant/tenant/privilegeManage/${entity.id}?tenantName=${entity.name }&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" >授权</a>
 									<c:if test="${entity.tombstone == 0}">
 										| <a href="javascript:void(0)" onclick="del('${entity.id }')">冻结</a>
 									</c:if>
