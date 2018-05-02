@@ -353,6 +353,20 @@ function onCheckByTreeCheckBox(e, treeId, treeNode) {
 		$('#'+treeValueObj.value).val(values);
 	}
 }
+//复选树复选事件
+function onCheckByCheckBox(e, treeId, treeNode) {
+	var zTree = $.fn.zTree.getZTreeObj(treeId);
+	var treeDefineAttObj = document.getElementById(treeId+ "_tagDefineAtt");
+	if (treeDefineAttObj == null) {
+		treeDefineAttObj = document.getElementById(treeId.substring(0, treeId.lastIndexOf("_tree")) + "_tagDefineAtt");
+	}
+	if (treeDefineAttObj != null) {
+		var onCheckFunc = treeDefineAttObj.getAttribute("onCheckFunc");
+		if(onCheckFunc!=null && onCheckFunc!=""){
+			return eval(onCheckFunc+"(event,treeId, treeNode)");
+		}
+	}
+}
 
 function beforeCheckByTreeTag(treeId, treeNode){
 	var zTree = $.fn.zTree.getZTreeObj(treeId);

@@ -407,18 +407,21 @@ public class TenantController extends BaseController {
         }
         return map;
     }
-    @RequestMapping(value="/save/tenant2Resource",method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> saveTenant2Resource(String tenantId,String resourceId) throws GenericException {
+    @RequestMapping(value="/save/tenant2Resource",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Object> saveTenant2Resource(String tenantId,String resourceIds) throws GenericException {
         Map<String,Object> returnMap = new HashMap<String,Object>();
         try{
-            Tenant2Resource tenant2Resource = this.tenant2ResourceService.findTenant2ResourceByTenantAndReource(tenantId,resourceId);
-            if(tenant2Resource==null){
-                tenant2Resource = new Tenant2Resource();
-                Tenant  tenant = this.tenantService.getByPK(tenantId);
-                TenantResource tenantResource =this.tenantResourceService.getByPK(resourceId);
-                tenant2Resource.setTenant(tenant);
-                tenant2Resource.setTenantResource(tenantResource);
-                this.tenant2ResourceService.save(tenant2Resource);
+            String[] resourceIdArr = resourceIds.split(",");
+            for(String resourceId :resourceIdArr) {
+                Tenant2Resource tenant2Resource = this.tenant2ResourceService.findTenant2ResourceByTenantAndReource(tenantId, resourceId);
+                if (tenant2Resource == null) {
+                    tenant2Resource = new Tenant2Resource();
+                    Tenant tenant = this.tenantService.getByPK(tenantId);
+                    TenantResource tenantResource = this.tenantResourceService.getByPK(resourceId);
+                    tenant2Resource.setTenant(tenant);
+                    tenant2Resource.setTenantResource(tenantResource);
+                    this.tenant2ResourceService.save(tenant2Resource);
+                }
             }
             returnMap.put("code",1);
         }catch (GenericException e){
@@ -431,13 +434,16 @@ public class TenantController extends BaseController {
         }
         return returnMap;
     }
-    @RequestMapping(value="/delete/tenant2Resource",method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> deleteTenant2Resource(String tenantId,String resourceId) throws GenericException {
+    @RequestMapping(value="/delete/tenant2Resource",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Object> deleteTenant2Resource(String tenantId,String resourceIds) throws GenericException {
         Map<String,Object> returnMap = new HashMap<String,Object>();
         try{
-            Tenant2Resource tenant2Resource = this.tenant2ResourceService.findTenant2ResourceByTenantAndReource(tenantId,resourceId);
-            if(tenant2Resource!=null){
-                this.tenant2ResourceService.deleteByPK(tenant2Resource.getId());
+            String[] resourceIdArr = resourceIds.split(",");
+            for(String resourceId :resourceIdArr) {
+                Tenant2Resource tenant2Resource = this.tenant2ResourceService.findTenant2ResourceByTenantAndReource(tenantId, resourceId);
+                if (tenant2Resource != null) {
+                    this.tenant2ResourceService.deleteByPK(tenant2Resource.getId());
+                }
             }
             returnMap.put("code",1);
         }catch (GenericException e){

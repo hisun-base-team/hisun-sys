@@ -91,6 +91,7 @@ public final class TreeTag extends BodyTagSupport {
 
 	private String beforeCheck;//用于捕获 勾选 或 取消勾选 之前的事件回调函数，并且根据返回值确定是否允许 勾选 或 取消勾选 如果返回 false，将不会改变勾选状态，并且无法触发 onCheck 事件回调函数
 
+	private String onCheck;//用于捕获 checkbox / radio 被勾选 或 取消勾选的事件回调函数
 	@Override
 	public int doStartTag() throws JspTagException {
 		return EVAL_BODY_BUFFERED;
@@ -160,7 +161,7 @@ public final class TreeTag extends BodyTagSupport {
 		}
 		nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" onClickFunc=\""+onClick+"\" radioOrCheckbox=\""+radioOrCheckbox+"\" " +
 				"dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\" beforeCheckFunc=\""+beforeCheck+"\"" +
-				" onclickFunc=\""+onClick+"\" token=\""+token+"\" userParameter=\""+userParameter+"\" checkedByTitle=\""+checkedByTitle+"\"" +
+				" onclickFunc=\""+onClick+"\" onCheckFunc=\""+onCheck+"\" token=\""+token+"\" userParameter=\""+userParameter+"\" checkedByTitle=\""+checkedByTitle+"\"" +
 				" checkedAndNoUnCheckedUnByTitle=\""+checkedAndNoUnCheckedUnByTitle+"\" valueMerge=\""+valueMerge+"\" initCheckboxValueType=\""+initCheckboxValueType+"\">");
 		nodesHtml.append("<script>");
 //		if(isSelectTree!=null && isSelectTree.equals("true")) {
@@ -213,6 +214,10 @@ public final class TreeTag extends BodyTagSupport {
 			nodesHtml.append("\n\t\t\tbeforeClick :beforeClickByTreeCheckBox,");
 			if(isSelectTree.equals("true")) {
 				nodesHtml.append("\n\t\t\tonCheck :onCheckByTreeCheckBox,");
+			}else{
+				if(onCheck!=null && !onCheck.equals("")) {
+					nodesHtml.append("\n\t\t\tonCheck :onCheckByCheckBox,");
+				}
 			}
 			if(StringUtils.isNotEmpty(beforeCheck)) {
 				nodesHtml.append("\n\t\t\tbeforeCheck :beforeCheckByTreeTag");
@@ -427,5 +432,13 @@ public final class TreeTag extends BodyTagSupport {
 
 	public void setBeforeCheck(String beforeCheck) {
 		this.beforeCheck = beforeCheck;
+	}
+
+	public String getOnCheck() {
+		return onCheck;
+	}
+
+	public void setOnCheck(String onCheck) {
+		this.onCheck = onCheck;
 	}
 }

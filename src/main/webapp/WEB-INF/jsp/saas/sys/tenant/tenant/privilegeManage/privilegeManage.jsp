@@ -35,8 +35,8 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 					<div  class="main_left" style="float:left; width:220px;  margin-right:10px;height: 0px">
 						<div class="portlet box grey mainleft">
 							<div class="portlet-body leftbody">
-								<Tree:tree id="treeDemo" treeUrl="${path}/sys/tenant/tenant/tree?tenantId=${tenantId}" token="${sessionScope.OWASP_CSRFTOKEN}" checkedAndNoUnCheckedUnByTitle="true" chkboxType=" 'Y' : '', 'N' : ''"
-										   onClick="onClickByTree" beforeCheck="beforeCheckByTree" radioOrCheckbox="checkbox" submitType="post" dataType="json" isSearch="false"/>
+								<Tree:tree id="treeDemo" treeUrl="${path}/sys/tenant/tenant/tree?tenantId=${tenantId}" token="${sessionScope.OWASP_CSRFTOKEN}" checkedAndNoUnCheckedUnByTitle="true" chkboxType=" 'Y' : 'ps', 'N' : 's'"
+										   onClick="onClickByTree" onCheck="checkByTree" radioOrCheckbox="checkbox" submitType="post" dataType="json" isSearch="false"/>
 								<%--<div class="zTreeDemoBackground" id="tree">--%>
 									<%--<ul id="treeDemo" class="ztree"></ul>--%>
 								<%--</div>--%>
@@ -66,17 +66,31 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 			$("#treeDemo_div").css('height',divHeight);
 		}
 
-		function beforeCheckByTree(treeId, treeNode){
-			if(treeNode.id=="1"){
-//				showTip("提示","不可对“资源树”节点进行配置",2000);
-				return;
+		function checkByTree(e,treeId, treeNode){
+			var zTree = $.fn.zTree.getZTreeObj(treeId);
+			var changeCheckedNodes = zTree.getChangeCheckedNodes();
+            var changeCheckedIds = "";
+			for(var i=0;i<changeCheckedNodes.length;i++)
+			{
+				if(changeCheckedNodes[i].id!="1"){
+					if(changeCheckedIds==""){
+						changeCheckedIds = changeCheckedNodes[i].id;
+					}else{
+						changeCheckedIds = changeCheckedIds+","+changeCheckedNodes[i].id;
+					}
+				}
+				changeCheckedNodes[i].checkedOld = changeCheckedNodes[i].checked;
 			}
-			var checked = treeNode.checked;
-			if(checked== false){
-				$.ajax({
-					url : "${path }/sys/tenant/tenant/save/tenant2Resource?tenantId=${tenantId}&resourceId="+treeNode.id,
-					type : "get",
 
+			var checked = treeNode.checked;
+			if(checked== true){
+				$.ajax({
+					url : "${path }/sys/tenant/tenant/save/tenant2Resource",
+					type : "post",
+					data:{
+						"tenantId":"${tenantId}",
+						"resourceIds":changeCheckedIds
+					},
 					dataType : "json",
 					headers: {
 						"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
@@ -100,9 +114,12 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 				});
 			}else{
 				$.ajax({
-					url : "${path }/sys/tenant/tenant/delete/tenant2Resource?tenantId=${tenantId}&resourceId="+treeNode.id,
-					type : "get",
-
+					url : "${path }/sys/tenant/tenant/delete/tenant2Resource",
+					type : "post",
+					data:{
+						"tenantId":"${tenantId}",
+						"resourceIds":changeCheckedIds
+					},
 					dataType : "json",
 					headers: {
 						"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
