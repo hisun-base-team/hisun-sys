@@ -19,8 +19,7 @@
 	<!-- END PAGE LEVEL STYLES -->
 	<title>${resourceName} 权限资源配置</title>
 	<style type="text/css">
-		#tree_class {width: 100%;
-		}
+		.tree_class {width: 280px;}
 	</style>
 </head>
 <body>
@@ -35,8 +34,7 @@
 					<%--<shiro:hasPermission name="tenant:tenantadd">--%>
 
 					<%--</shiro:hasPermission>--%>
-					<div class="clearfix fr" style="margin-right: 20px;">
-
+					<div class="clearfix fr">
 						<c:if test="${not empty vos}">
 							<a id="sample_editable_1_new" class="btn green" href="javascript:save();">
 								保存
@@ -62,13 +60,13 @@
 							<c:forEach items="${vos}" var="vo" varStatus="varStatus">
 								<tr style="text-overflow:ellipsis;">
 									<td><c:out value="${vo.privilegeName }"></c:out></td>
-									<td>
+									<td style="margin-bottom: 0px">
 										<c:if test="${vo.privilegeDisplayType==1}"><!-- 树形下拉 -->
 											<Tree:tree id="${vo.tenantPrivilegeId}"  treeUrl="${vo.selectUrl}" selectClass="tree_class"  token="${sessionScope.OWASP_CSRFTOKEN}"  chkboxType=" 'Y' : 'ps', 'N' : 'ps'"
 												   radioOrCheckbox="checkbox" checkedByTitle="true" isSelectTree="true" submitType="get" dataType="json" isSearch="false" defaultkeys="${vo.selectedValues}" defaultvalues="${vo.selectedNames}"/>
 										</c:if>
 										<c:if test="${vo.privilegeDisplayType==2}"><!-- 多选下拉 -->
-										<SelectTag:SelectTag id="${vo.tenantPrivilegeId}" moreSelectAll="true"
+											<SelectTag:SelectTag id="${vo.tenantPrivilegeId}" width="294px" moreSelectAll="true"
 															 radioOrCheckbox="checkbox" moreSelectSearch="no" selectUrl="${vo.selectUrl}" defaultkeys="${vo.selectedValues}"/>
 										</c:if>
 									</td>
