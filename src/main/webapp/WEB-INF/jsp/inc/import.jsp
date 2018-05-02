@@ -49,4 +49,6 @@
 <link href='<c:url value="/css/chosen.css" />' rel="stylesheet" type="text/css" />
 <script src='<c:url value="/js/select2.min.js" />' type="text/javascript" ></script>
 <script src='<c:url value="/js/chosen.jquery.min.js" />' type="text/javascript" ></script>
+<script src='<c:url value="/js/selectTag.js" />' type="text/javascript" ></script>
+
 <!-- END SELECT TAG -->

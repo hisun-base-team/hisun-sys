@@ -72,7 +72,7 @@ public class DictionaryRestApi {
     }
 
 
-    @RequestMapping(value = "/select",method = RequestMethod.GET)
+    @RequestMapping(value = "/select",method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> getSelectNodes(String typeCode) {
         Map<String, Object> map = new HashMap<String, Object>();
         List<DictionaryItem> dictionaryItems;

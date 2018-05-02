@@ -14,6 +14,8 @@ import com.hisun.saas.sys.tenant.resource.service.TenantResourcePrivilegeService
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Rocky {rockwithyou@126.com}
@@ -28,5 +30,13 @@ public class TenantResourcePrivilegeServiceImpl extends BaseServiceImpl<TenantRe
     public void setBaseDao(BaseDao<TenantResourcePrivilege, String> baseDao) {
         this.baseDao = baseDao;
         this.tenantResourcePrivilegeDao = (TenantResourcePrivilegeDao)baseDao;
+    }
+
+    @Override
+    public void deleteTenantResourcePrivilege(final String id) {
+        StringBuilder sb = new StringBuilder(" DELETE FROM sys_tenant_resource_privilege WHERE id=?");
+        List<Object> list = new ArrayList<Object>();
+        list.add(id);
+        tenantResourcePrivilegeDao.executeNativeBulk(sb.toString(),list);
     }
 }

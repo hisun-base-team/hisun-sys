@@ -89,6 +89,7 @@ public final class TreeTag extends BodyTagSupport {
 	//主要用于解决可能选中的数据太多 通过URL传过来可能会有问题  需要用户自己在数据源初始化选中数据 默认为客服端初始化选中数据 为0  为1时数据源初始化数据
 	private String initCheckboxValueType= "0" ;
 
+	private String beforeCheck;//用于捕获 勾选 或 取消勾选 之前的事件回调函数，并且根据返回值确定是否允许 勾选 或 取消勾选 如果返回 false，将不会改变勾选状态，并且无法触发 onCheck 事件回调函数
 
 	@Override
 	public int doStartTag() throws JspTagException {
@@ -158,7 +159,7 @@ public final class TreeTag extends BodyTagSupport {
 			nodesHtml.append("</div>");
 		}
 		nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" onClickFunc=\""+onClick+"\" radioOrCheckbox=\""+radioOrCheckbox+"\" " +
-				"dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\"" +
+				"dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\" beforeCheckFunc=\""+beforeCheck+"\"" +
 				" onclickFunc=\""+onClick+"\" token=\""+token+"\" userParameter=\""+userParameter+"\" checkedByTitle=\""+checkedByTitle+"\"" +
 				" checkedAndNoUnCheckedUnByTitle=\""+checkedAndNoUnCheckedUnByTitle+"\" valueMerge=\""+valueMerge+"\" initCheckboxValueType=\""+initCheckboxValueType+"\">");
 		nodesHtml.append("<script>");
@@ -211,7 +212,10 @@ public final class TreeTag extends BodyTagSupport {
 		if(radioOrCheckbox!=null && radioOrCheckbox.equals("checkbox")){
 			nodesHtml.append("\n\t\t\tbeforeClick :beforeClickByTreeCheckBox,");
 			if(isSelectTree.equals("true")) {
-				nodesHtml.append("\n\t\t\tonCheck :onCheckByTreeCheckBox");
+				nodesHtml.append("\n\t\t\tonCheck :onCheckByTreeCheckBox,");
+			}
+			if(StringUtils.isNotEmpty(beforeCheck)) {
+				nodesHtml.append("\n\t\t\tbeforeCheck :beforeCheckByTreeTag");
 			}
 		}
 		nodesHtml.append("\n\t\t}");
@@ -415,5 +419,13 @@ public final class TreeTag extends BodyTagSupport {
 
 	public void setInitCheckboxValueType(String initCheckboxValueType) {
 		this.initCheckboxValueType = initCheckboxValueType;
+	}
+
+	public String getBeforeCheck() {
+		return beforeCheck;
+	}
+
+	public void setBeforeCheck(String beforeCheck) {
+		this.beforeCheck = beforeCheck;
 	}
 }

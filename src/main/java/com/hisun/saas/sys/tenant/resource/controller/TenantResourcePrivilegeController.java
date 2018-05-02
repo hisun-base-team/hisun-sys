@@ -169,19 +169,44 @@ public class TenantResourcePrivilegeController extends BaseController {
             TenantResource tenantResource = this.tenantResourceService.getByPK(resourceId);
             TenantPrivilege tenantPrivilege = null;
             TenantResourcePrivilege tenantResourcePrivilege = null;
+            List<TenantResourcePrivilege> tenantResourcePrivileges = tenantResource.getTenantResourcePrivileges();
+
             for(int i=0;i<privilegeIdArr.length;i++){
                 tenantPrivilege = this.tenantPrivilegeService.getPK(privilegeIdArr[i]);
-                tenantResourcePrivilege = new TenantResourcePrivilege();
-                tenantResourcePrivilege.setTenantPrivilege(tenantPrivilege);
-                tenantResourcePrivilege.setTenantResource(tenantResource);
-                this.tenantResourcePrivilegeService.save(tenantResourcePrivilege);
+                boolean isAdd = true;
+                boo:for(TenantResourcePrivilege tenantResourcePrivilegeTmp : tenantResourcePrivileges){
+                    if(privilegeIdArr[i].equals(tenantResourcePrivilegeTmp.getTenantPrivilege().getId())){
+                        isAdd = false;
+                        break boo;
+                    }
+                }
+                if(isAdd == true) {
+                    tenantResourcePrivilege = new TenantResourcePrivilege();
+                    tenantResourcePrivilege.setTenantPrivilege(tenantPrivilege);
+                    tenantResourcePrivilege.setTenantResource(tenantResource);
+                    this.tenantResourcePrivilegeService.save(tenantResourcePrivilege);
+                }
             }
-
+            //执行删除
+            for(TenantResourcePrivilege tenantResourcePrivilegeTmp : tenantResourcePrivileges) {
+                boolean isDelete = true;
+                boo:for(int i=0;i<privilegeIdArr.length;i++){
+                    if (privilegeIdArr[i].equals(tenantResourcePrivilegeTmp.getTenantPrivilege().getId())) {
+                        isDelete = false;
+                        break boo;
+                    }
+                }
+                if(isDelete == true) {
+                    this.tenantResourcePrivilegeService.deleteTenantResourcePrivilege(tenantResourcePrivilegeTmp.getId());
+                }
+            }
             returnMap.put("code",1);
         }catch (GenericException e){
+            e.printStackTrace();
             returnMap.put("code",-1);
             returnMap.put("message", e.getMessage());
         }catch (Exception e){
+            e.printStackTrace();
             logger.error(e,e);
             returnMap.put("code",-1);
             returnMap.put("message", "系统错误，请联系管理员");

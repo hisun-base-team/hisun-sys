@@ -17,6 +17,7 @@ public class Tenant2ResourcePrivilegeVo {
     private String privilegeName;
     private String privilegeDescription;
     private String privilegeImpclass;
+    private Integer privilegeDisplayType;
     private String selectUrl;
     private String sqlFilterExpress;
     private String hqlFilterExpress;
@@ -110,5 +111,13 @@ public class Tenant2ResourcePrivilegeVo {
 
     public void setSelectedValues(String selectedValues) {
         this.selectedValues = selectedValues;
+    }
+
+    public Integer getPrivilegeDisplayType() {
+        return privilegeDisplayType;
+    }
+
+    public void setPrivilegeDisplayType(Integer privilegeDisplayType) {
+        this.privilegeDisplayType = privilegeDisplayType;
     }
 }

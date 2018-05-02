@@ -334,22 +334,39 @@ function onCheckByTreeCheckBox(e, treeId, treeNode) {
 		keyObj.value=checkedArr[0];
 		$('#'+treeValueObj.value).val(checkedArr[1]);
 	}else{
-		nodes = zTree.getCheckedNodes(true);
-		keys ="";
-		values = "";
+		var nodes = zTree.getCheckedNodes(true);
+		var keys ="";
+		var values = "";
 		for (var i=0, l=nodes.length; i<l; i++) {
-			keys+= nodes[i].id + ",";
-			values+= nodes[i].name + ",";
+			if(keys==""){
+				keys= nodes[i].id;
+				values= nodes[i].name;
+			}else{
+				keys= keys+","+nodes[i].id ;
+				values=values+","+ nodes[i].name;
+			}
+
 		}
-		if (values.length > 0 ) values = values.substring(0, values.length-1);
-		var keyObj =document.getElementById(treeId.substring(0,treeId.lastIndexOf("_tree")))
+		var keyObj =document.getElementById(treeId.substring(0,treeId.lastIndexOf("_tree")));
 		var treeValueObj = document.getElementById(treeId+"_valueName");
 		keyObj.value=keys;
 		$('#'+treeValueObj.value).val(values);
 	}
+}
 
-
-
+function beforeCheckByTreeTag(treeId, treeNode){
+	var zTree = $.fn.zTree.getZTreeObj(treeId);
+	var treeDefineAttObj = document.getElementById(treeId+ "_tagDefineAtt");
+	if (treeDefineAttObj == null) {
+		treeDefineAttObj = document.getElementById(treeId.substring(0, treeId.lastIndexOf("_tree")) + "_tagDefineAtt");
+	}
+	if (treeDefineAttObj != null) {
+		var beforeCheckFunc = treeDefineAttObj.getAttribute("beforeCheckFunc");
+		if(beforeCheckFunc!=null && beforeCheckFunc!=""){
+			return eval(beforeCheckFunc+"(treeId, treeNode)");
+		}
+	}
+	return true;
 }
 /**
  * 刷新树

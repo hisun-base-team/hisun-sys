@@ -14,4 +14,5 @@ import com.hisun.saas.sys.tenant.resource.entity.TenantResourcePrivilege;
  * @author Rocky {rockwithyou@126.com}
  */
 public interface TenantResourcePrivilegeService extends BaseService<TenantResourcePrivilege,String>{
+    void deleteTenantResourcePrivilege(final String id) ;
 }

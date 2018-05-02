@@ -214,7 +214,7 @@
 
             // add global select all options
             if( options.selectAll ) {
-                optionsList.before('<a href="#" class="ms-selectall global">Select all</a>');
+                optionsList.before('<a href="#" class="ms-selectall global">全选</a>');
 
                 var globalSelectAll = optionsWrap.find('.ms-selectall.global');
             }
@@ -372,8 +372,8 @@
                 });
 
                 // UPDATE PLACEHOLDER TEXT WITH OPTIONS SELECTED
-                placeholder.text( selOpts.join( ', ' ) );
-                selectedObj.value = selkeys.join( ', ' );
+                placeholder.text(selOpts.join( ',' ) );
+                selectedObj.value = selkeys.join( ',' );
                 //this.value = selkeys.join( ', ' )
                 var copy = placeholder.clone().css({
                     display   : 'inline',

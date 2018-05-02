@@ -31,20 +31,12 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 			<div class="container-fluid">
 
 				<div class="row-fluid">
-					<div class="portlet-title" style="vertical-align: middle;margin-top: 10px;">
-						<div class="caption">${tenantName} 权限管理</div>
-						<div class="clearfix fr" style="margin-right: 20px;">
-							<a id="sample_editable_1_new" class="btn green" href="javascript:;" onclick="addResource();">
-								保存
-							</a>
-							<a class="btn" href="${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"><i class="icon-undo"></i>返回</a>
-						</div>
-					</div>
+
 					<div  class="main_left" style="float:left; width:220px;  margin-right:10px;height: 0px">
 						<div class="portlet box grey mainleft">
 							<div class="portlet-body leftbody">
-								<Tree:tree id="treeDemo" treeUrl="${path}/sys/tenant/tenant/tree" token="${sessionScope.OWASP_CSRFTOKEN}"  chkboxType=" 'Y' : 'ps', 'N' : 'ps'"
-										   onClick="onClickByTree" radioOrCheckbox="checkbox" submitType="post" dataType="json" isSearch="false"/>
+								<Tree:tree id="treeDemo" treeUrl="${path}/sys/tenant/tenant/tree?tenantId=${tenantId}" token="${sessionScope.OWASP_CSRFTOKEN}" checkedAndNoUnCheckedUnByTitle="true" chkboxType=" 'Y' : '', 'N' : ''"
+										   onClick="onClickByTree" beforeCheck="beforeCheckByTree" radioOrCheckbox="checkbox" submitType="post" dataType="json" isSearch="false"/>
 								<%--<div class="zTreeDemoBackground" id="tree">--%>
 									<%--<ul id="treeDemo" class="ztree"></ul>--%>
 								<%--</div>--%>
@@ -59,7 +51,9 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 
 
 	<script type="text/javascript" src="<%=path%>/js/common/est-validate-init.js"></script>
+			<script type="text/javascript" src="${path }/js/common/loading.js"></script>
 	<script type="text/javascript">
+		var myLoading = new MyLoading("${path}",{zindex : 11111});
 		$(function(){
 			changeTreeDivHeight();
 			//当浏览器大小改变的时候,要重新计算
@@ -68,15 +62,75 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 			})
 		});
 		function changeTreeDivHeight(){
-			var divHeight = $(window).height()-130;
+			var divHeight = $(window).height()-80;
 			$("#treeDemo_div").css('height',divHeight);
 		}
 
+		function beforeCheckByTree(treeId, treeNode){
+			if(treeNode.id=="1"){
+//				showTip("提示","不可对“资源树”节点进行配置",2000);
+				return;
+			}
+			var checked = treeNode.checked;
+			if(checked== false){
+				$.ajax({
+					url : "${path }/sys/tenant/tenant/save/tenant2Resource?tenantId=${tenantId}&resourceId="+treeNode.id,
+					type : "get",
 
+					dataType : "json",
+					headers: {
+						"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
+					},
+					success : function(json){
+						myLoading.hide();
+						if(json.code == 1){
+							<%--showTip("提示","操作成功",2000);--%>
+							<%--setTimeout(function(){--%>
+								<%--window.location.href = "${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"--%>
+							<%--},2000) ;--%>
+						}else{
+							showTip("提示", json.message, 2000);
+						}
+					},
+					error : function(arg1, arg2, arg3){
+						myLoading.hide();
+						showTip("提示","资源权限保存出错，请联系管理员",2000);
+						return false;
+					}
+				});
+			}else{
+				$.ajax({
+					url : "${path }/sys/tenant/tenant/delete/tenant2Resource?tenantId=${tenantId}&resourceId="+treeNode.id,
+					type : "get",
+
+					dataType : "json",
+					headers: {
+						"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
+					},
+					success : function(json){
+						myLoading.hide();
+						if(json.code == 1){
+							<%--showTip("提示","操作成功",2000);--%>
+							<%--setTimeout(function(){--%>
+							<%--window.location.href = "${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"--%>
+							<%--},2000) ;--%>
+						}else{
+							showTip("提示", json.message, 2000);
+						}
+					},
+					error : function(arg1, arg2, arg3){
+						myLoading.hide();
+						showTip("提示","资源权限删除出错，请联系管理员",2000);
+						return false;
+					}
+				});
+			}
+			return true;
+		}
 
 		function onClickByTree (event, treeId, treeNode){
 			$.ajax({
-				url : "${path}/sys/tenant/tenant/ajax/privilegeSet?resourceId="+treeNode.id+"&resourceName="+treeNode.name,
+				url : "${path}/sys/tenant/tenant/ajax/privilegeSet?tenantId=${tenantId}&tenantName=${tenantName}&resourceId="+treeNode.id+"&resourceName="+treeNode.name,
 				type : "get",
 				data : null,
 				dataType : "html",
@@ -109,7 +163,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 				headers: {
 					"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
 				},
-				url: "${path}/sys/tenant/tenant//ajax/privilegeSet?resourceId="+node.id+"&resourceName="+node.name,// 请求的action路径
+				url: "${path}/sys/tenant/tenant//ajax/privilegeSet?tenantId=${tenantId}&tenantName=${tenantName}&resourceId="+node.id+"&resourceName="+node.name,// 请求的action路径
 				error: function () {// 请求失败处理函数
 					alert('请求失败');
 				},

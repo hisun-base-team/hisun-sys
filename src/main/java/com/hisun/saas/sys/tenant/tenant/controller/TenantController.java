@@ -14,11 +14,11 @@ import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
-import com.hisun.saas.sys.admin.user.entity.User;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.log.LogOperateType;
 import com.hisun.saas.sys.log.RequiresLog;
+import com.hisun.saas.sys.privilege.PrivilegeRowExpress;
 import com.hisun.saas.sys.taglib.treeTag.TreeNode;
 import com.hisun.saas.sys.tenant.privilege.service.TenantPrivilegeService;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
@@ -27,6 +27,8 @@ import com.hisun.saas.sys.tenant.resource.service.TenantResourcePrivilegeService
 import com.hisun.saas.sys.tenant.resource.service.TenantResourceService;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant2Resource;
+import com.hisun.saas.sys.tenant.tenant.entity.Tenant2ResourcePrivilege;
+import com.hisun.saas.sys.tenant.tenant.service.Tenant2ResourcePrivilegeService;
 import com.hisun.saas.sys.tenant.tenant.service.Tenant2ResourceService;
 import com.hisun.saas.sys.tenant.tenant.service.TenantService;
 import com.hisun.saas.sys.tenant.tenant.vo.Tenant2ResourcePrivilegeVo;
@@ -34,11 +36,12 @@ import com.hisun.saas.sys.tenant.tenant.vo.TenantVo;
 import com.hisun.saas.sys.tenant.user.service.TenantUserService;
 import com.hisun.saas.sys.util.EntityWrapper;
 import com.hisun.saas.sys.util.PinyinUtil;
+import com.hisun.util.ApplicationContextUtil;
 import com.hisun.util.BeanMapper;
+import com.hisun.util.StringUtils;
 import com.hisun.util.ValidateUtil;
 import com.sun.tools.javac.jvm.Gen;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.joda.time.DateTime;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +50,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,6 +78,10 @@ public class TenantController extends BaseController {
 
     @Resource
     private Tenant2ResourceService tenant2ResourceService;
+
+    @Resource
+    private Tenant2ResourcePrivilegeService tenant2ResourcePrivilegeService;
+
 
     @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/list")
@@ -291,54 +299,65 @@ public class TenantController extends BaseController {
         return  new ModelAndView("/saas/sys/tenant/tenant/privilegeManage/privilegeManage",model);
     }
 
-    @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/ajax/privilegeSet")
-    public ModelAndView privilegeSet(String tenantId,String resourceId,String resourceName) throws GenericException {
+    public ModelAndView privilegeSet(String tenantId,String resourceId,String resourceName,String tenantName) throws GenericException {
         Map<String,Object> model = new HashMap<String,Object>();
+        try {
+            CommonOrderBy orderBy = new CommonOrderBy();
+            orderBy.add(CommonOrder.asc("tenantPrivilege.sort"));
+            CommonConditionQuery query = new CommonConditionQuery();
+            query.add(CommonRestrictions.and(" tenantResource.id = :resourceId ", "resourceId", resourceId));
+            List<TenantResourcePrivilege> tenantResourcePrivileges = this.tenantResourcePrivilegeService.list(query, orderBy);
+            Tenant2Resource tenant2Resource = this.tenant2ResourceService.findTenant2ResourceByTenantAndReource(tenantId, resourceId);
+            List<Tenant2ResourcePrivilegeVo> vos = new ArrayList<>();
+            if (tenantResourcePrivileges != null) {
+                Tenant2ResourcePrivilegeVo vo = null;
+                for (TenantResourcePrivilege tenantResourcePrivilege : tenantResourcePrivileges) {
+                    vo = new Tenant2ResourcePrivilegeVo();
+                    vo.setId(tenantResourcePrivilege.getId());
+                    vo.setPrivilegeName(tenantResourcePrivilege.getTenantPrivilege().getName());
+                    vo.setPrivilegeDescription(tenantResourcePrivilege.getTenantPrivilege().getDescription());
+                    vo.setPrivilegeDisplayType(tenantResourcePrivilege.getTenantPrivilege().getDisplayType());
+                    vo.setPrivilegeImpclass(tenantResourcePrivilege.getTenantPrivilege().getImpclass());
+                    vo.setTenantPrivilegeId(tenantResourcePrivilege.getTenantPrivilege().getId());
+                    vo.setSelectUrl(tenantResourcePrivilege.getTenantPrivilege().getSelectUrl());
+                    if (tenant2Resource != null) {
+                        //如果tenant2Resource!=null,试图去找该资源下配置的数据权限进行页面显示
+                        if (tenant2Resource.getTenant2ResourcePrivileges() != null&& tenant2Resource.getTenant2ResourcePrivileges().size()>0) {
+                            for(Tenant2ResourcePrivilege tenant2ResourcePrivilege : tenant2Resource.getTenant2ResourcePrivileges()){
+                                if(tenant2ResourcePrivilege.getTenantPrivilege().getId().equals(tenantResourcePrivilege.getTenantPrivilege().getId())){
+                                    vo.setSelectedNames(tenant2ResourcePrivilege.getSelectedNames());
+                                    vo.setSelectedValues(tenant2ResourcePrivilege.getSelectedValues());
+                                }
+                            }
 
-        CommonOrderBy orderBy = new CommonOrderBy();
-        orderBy.add(CommonOrder.asc("tenantPrivilege.sort"));
-        CommonConditionQuery query =  new CommonConditionQuery();
-        query.add(CommonRestrictions.and(" tenantResource.id = :resourceId ", "resourceId", resourceId));
-        List<TenantResourcePrivilege> tenantResourcePrivileges = this.tenantResourcePrivilegeService.list(query,orderBy);
-        Tenant2Resource tenant2Resource = this.tenant2ResourceService.findTenant2ResourceByTenantAndReource(tenantId,resourceId);
-        List<Tenant2ResourcePrivilegeVo> vos = new ArrayList<>();
-        if(tenantResourcePrivileges!=null){
-            Tenant2ResourcePrivilegeVo vo = null;
-            for(TenantResourcePrivilege tenantResourcePrivilege : tenantResourcePrivileges){
-                vo = new Tenant2ResourcePrivilegeVo();
-                vo.setId(tenantResourcePrivilege.getId());
-                vo.setPrivilegeName(tenantResourcePrivilege.getTenantPrivilege().getName());
-                vo.setPrivilegeDescription(tenantResourcePrivilege.getTenantPrivilege().getDescription());
-                vo.setPrivilegeImpclass(tenantResourcePrivilege.getTenantPrivilege().getImpclass());
-                vo.setTenantPrivilegeId(tenantResourcePrivilege.getTenantPrivilege().getId());
-                vo.setSelectUrl(tenantResourcePrivilege.getTenantPrivilege().getSelectUrl());
-                if(tenant2Resource!=null){
-                    //如果tenant2Resource!=null,试图去找该资源下配置的数据权限进行页面显示
-                    if(tenant2Resource.getTenant2ResourcePrivileges()!=null){
-                        vo.setSelectedNames(tenant2Resource.getTenant2ResourcePrivileges().get(0).getSelectedNames());
-                        vo.setSelectedValues(tenant2Resource.getTenant2ResourcePrivileges().get(0).getSelectedValues());
-                    }else{
+                        } else {
+                            vo.setSelectedNames("");
+                            vo.setSelectedValues("");
+                        }
+                    } else {
+                        //如果tenant2Resource=null,则为新增
                         vo.setSelectedNames("");
                         vo.setSelectedValues("");
                     }
-                }else{
-                    //如果tenant2Resource=null,则为新增
-                    vo.setSelectedNames("");
-                    vo.setSelectedValues("");
+                    vos.add(vo);
                 }
-                vos.add(vo);
             }
+            model.put("vos", vos);
+            model.put("resourceId", resourceId);
+            model.put("resourceName", resourceName);
+            model.put("tenantId", tenantId);
+            model.put("tenantName", tenantName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.put("success", false);
+            logger.error(e);
         }
-        model.put("vos",vos);
-        model.put("resourceId",resourceId);
-        model.put("resourceName",resourceName);
         return new ModelAndView("/saas/sys/tenant/tenant/privilegeManage/setDataPrivilege",model);
     }
 
-    @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/tree")
-    public @ResponseBody Map<String, Object> tree(@RequestParam(value="status",required=false) Integer status,String dictionaryType)
+    public @ResponseBody Map<String, Object> tree(@RequestParam(value="status",required=false) Integer status,String tenantId)
             throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         List<TenantResource> resources;
@@ -357,11 +376,27 @@ public class TenantController extends BaseController {
             treeNodeVo.setOpen(true);
             treeNodeVo.setpId("-1");
             treeNodeVos.add(treeNodeVo);
+
+            query =  new CommonConditionQuery();
+            query.add(CommonRestrictions.and(" tenant.id = :tenantId ", "tenantId", tenantId));
+            List<Tenant2Resource> tenant2Resources = this.tenant2ResourceService.list(query,null);
+
             for (TenantResource resource : resources) {
                 treeNodeVo = new TreeNode();
                 BeanMapper.copy(resource, treeNodeVo);
                 treeNodeVo.setName(resource.getResourceName());
                 treeNodeVo.setUrl(resource.getUrl());
+                boolean isChecked = false;
+                boo:for(Tenant2Resource tenant2Resource : tenant2Resources){
+                    if(resource.getId().equals(tenant2Resource.getTenantResource().getId())){
+                        isChecked = true;
+                        break boo;
+                    }
+                }
+                if(isChecked == true){
+                    treeNodeVo.setChecked(true);
+                    treeNodeVo.setOpen(true);
+                }
                 treeNodeVos.add(treeNodeVo);
             }
             map.put("success", true);
@@ -371,5 +406,128 @@ public class TenantController extends BaseController {
             logger.error(e);
         }
         return map;
+    }
+    @RequestMapping(value="/save/tenant2Resource",method = RequestMethod.GET)
+    public @ResponseBody Map<String,Object> saveTenant2Resource(String tenantId,String resourceId) throws GenericException {
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+        try{
+            Tenant2Resource tenant2Resource = this.tenant2ResourceService.findTenant2ResourceByTenantAndReource(tenantId,resourceId);
+            if(tenant2Resource==null){
+                tenant2Resource = new Tenant2Resource();
+                Tenant  tenant = this.tenantService.getByPK(tenantId);
+                TenantResource tenantResource =this.tenantResourceService.getByPK(resourceId);
+                tenant2Resource.setTenant(tenant);
+                tenant2Resource.setTenantResource(tenantResource);
+                this.tenant2ResourceService.save(tenant2Resource);
+            }
+            returnMap.put("code",1);
+        }catch (GenericException e){
+            returnMap.put("code",-1);
+            returnMap.put("message", e.getMessage());
+        }catch (Exception e){
+            logger.error(e,e);
+            returnMap.put("code",-1);
+            returnMap.put("message", "系统错误，请联系管理员");
+        }
+        return returnMap;
+    }
+    @RequestMapping(value="/delete/tenant2Resource",method = RequestMethod.GET)
+    public @ResponseBody Map<String,Object> deleteTenant2Resource(String tenantId,String resourceId) throws GenericException {
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+        try{
+            Tenant2Resource tenant2Resource = this.tenant2ResourceService.findTenant2ResourceByTenantAndReource(tenantId,resourceId);
+            if(tenant2Resource!=null){
+                this.tenant2ResourceService.deleteByPK(tenant2Resource.getId());
+            }
+            returnMap.put("code",1);
+        }catch (GenericException e){
+            returnMap.put("code",-1);
+            returnMap.put("message", e.getMessage());
+        }catch (Exception e){
+            logger.error(e,e);
+            returnMap.put("code",-1);
+            returnMap.put("message", "系统错误，请联系管理员");
+        }
+        return returnMap;
+    }
+    @RequestMapping(value="/save/tenant2ResourcePrivilege",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Object> saveTenant2ResourcePrivilege(HttpServletRequest request) throws GenericException {
+        String tenantId = StringUtils.trimNull2Empty(request.getParameter("tenantId"));
+        String resourceId = StringUtils.trimNull2Empty(request.getParameter("resourceId"));
+
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+        try{
+            Tenant2Resource tenant2Resource = this.tenant2ResourceService.findTenant2ResourceByTenantAndReource(tenantId,resourceId);
+            List<Tenant2ResourcePrivilege> tenant2ResourcePrivileges = tenant2Resource.getTenant2ResourcePrivileges();
+
+            tenant2Resource.getTenant2ResourcePrivileges();
+            if(tenant2Resource==null) {
+                returnMap.put("code",-1);
+                returnMap.put("message", "该资源没有授权！");
+            }else{
+                CommonOrderBy orderBy = new CommonOrderBy();
+                orderBy.add(CommonOrder.asc("tenantPrivilege.sort"));
+                CommonConditionQuery query = new CommonConditionQuery();
+                query.add(CommonRestrictions.and(" tenantResource.id = :resourceId ", "resourceId", resourceId));
+                List<TenantResourcePrivilege> tenantResourcePrivileges = this.tenantResourcePrivilegeService.list(query, orderBy);
+                tenantResourcePrivileges.size();
+                Tenant  tenant = this.tenantService.getByPK(tenantId);
+                TenantResource tenantResource =this.tenantResourceService.getByPK(resourceId);
+
+                if (tenantResourcePrivileges != null) {
+                    for (TenantResourcePrivilege tenantResourcePrivilege : tenantResourcePrivileges) {
+                        int displayType = tenantResourcePrivilege.getTenantPrivilege().getDisplayType();
+
+                        String selectedValues = StringUtils.trimNull2Empty(request.getParameter(tenantResourcePrivilege.getTenantPrivilege().getId()));
+                        String selectedNames = StringUtils.trimNull2Empty(request.getParameter((tenantResourcePrivilege.getTenantPrivilege().getId())+"_value"));
+                        String sqlFilterExpress = "";
+                        String hqlFilterExpres = "";
+
+                        Tenant2ResourcePrivilege tenant2ResourcePrivilege = new Tenant2ResourcePrivilege();
+                        boolean isAdd = true;//是否为添加
+                        if(tenant2Resource.getTenant2ResourcePrivileges()!=null && tenant2Resource.getTenant2ResourcePrivileges().size()>0){
+                            boo:for(Tenant2ResourcePrivilege tenant2ResourcePrivilegeTmp : tenant2Resource.getTenant2ResourcePrivileges()){
+                                if(tenantResourcePrivilege.getTenantPrivilege().getId().equals(tenant2ResourcePrivilegeTmp.getTenantPrivilege().getId())){
+                                    tenant2ResourcePrivilege = tenant2ResourcePrivilegeTmp;
+                                    isAdd = false;
+                                    break boo;
+                                }
+                            }
+                        }
+                        if(StringUtils.isNotEmpty(selectedValues)){
+                            PrivilegeRowExpress privilegeRowExpressObj = ApplicationContextUtil.getBean(tenantResourcePrivilege.getTenantPrivilege().getImpclass());
+                            if(privilegeRowExpressObj!=null){
+                                sqlFilterExpress = privilegeRowExpressObj.getSqlFilterExpress(selectedValues);
+                                hqlFilterExpres = privilegeRowExpressObj.getHqlFilterExpress(selectedValues);
+                            }
+                        }
+                        tenant2ResourcePrivilege.setTenant(tenant);
+                        tenant2ResourcePrivilege.setTenantPrivilege(tenantResourcePrivilege.getTenantPrivilege());
+                        tenant2ResourcePrivilege.setTenant2Resource(tenant2Resource);
+                        tenant2ResourcePrivilege.setSelectedNames(selectedNames);
+                        tenant2ResourcePrivilege.setSelectedValues(selectedValues);
+                        tenant2ResourcePrivilege.setHqlFilterExpress(hqlFilterExpres);
+                        tenant2ResourcePrivilege.setSqlFilterExpress(sqlFilterExpress);
+                        if(isAdd==true) {
+                            tenant2ResourcePrivileges.add(tenant2ResourcePrivilege);
+                        }
+                    }
+                }
+
+                tenant2Resource.setTenant2ResourcePrivileges(tenant2ResourcePrivileges);
+                tenant2Resource.setTenant(tenant);
+                tenant2Resource.setTenantResource(tenantResource);
+                this.tenant2ResourceService.update(tenant2Resource);
+            }
+            returnMap.put("code",1);
+        }catch (GenericException e){
+            returnMap.put("code",-1);
+            returnMap.put("message", e.getMessage());
+        }catch (Exception e){
+            logger.error(e,e);
+            returnMap.put("code",-1);
+            returnMap.put("message", "系统错误，请联系管理员");
+        }
+        return returnMap;
     }
 }

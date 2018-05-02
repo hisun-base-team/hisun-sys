@@ -31,6 +31,8 @@ public class TenantResource extends AbstractResource
     private static final long serialVersionUID = -7479768004811251553L;
     private List<Tenant2Resource> tenant2Resources;
 
+    private List<TenantResourcePrivilege> tenantResourcePrivileges;
+
     @Override
     public int compareTo(TenantResource resource) {
         TenantResource r = resource;
@@ -52,5 +54,15 @@ public class TenantResource extends AbstractResource
 
     public void setPrivilegeSetting(Integer privilegeSetting) {
         this.privilegeSetting = privilegeSetting;
+    }
+
+    @OneToMany(mappedBy = "tenantResource")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    public List<TenantResourcePrivilege> getTenantResourcePrivileges() {
+        return tenantResourcePrivileges;
+    }
+
+    public void setTenantResourcePrivileges(List<TenantResourcePrivilege> tenantResourcePrivileges) {
+        this.tenantResourcePrivileges = tenantResourcePrivileges;
     }
 }

@@ -14,7 +14,6 @@ function selectLoadByTag(selectUrl,id,token){
     var moreSelectAll = selectDefineAttObj.getAttribute("moreSelectAll");
     var defaultkeyArr = defaultkeys.split(",")
 
-
     //var user = {
     //        //if(userParameter != null && userParameter != "") {
     //        //    var userParameterArr = userParameter.split(";");

@@ -18,6 +18,10 @@
 	<link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
 	<!-- END PAGE LEVEL STYLES -->
 	<title>${resourceName} 权限资源配置</title>
+	<style type="text/css">
+		#tree_class {width: 100%;
+		}
+	</style>
 </head>
 <body>
 
@@ -27,34 +31,60 @@
 			<%-- 表格开始 --%>
 			<div class="portlet box grey">
 				<div class="portlet-title" style="vertical-align: middle;">
-					<div class="caption">设置“${resourceName} ”的数据范围</div>
+					<div class="caption">${tenantName} 设置“${resourceName} ”的数据范围</div>
 					<%--<shiro:hasPermission name="tenant:tenantadd">--%>
 
 					<%--</shiro:hasPermission>--%>
+					<div class="clearfix fr" style="margin-right: 20px;">
+
+						<c:if test="${not empty vos}">
+							<a id="sample_editable_1_new" class="btn green" href="javascript:save();">
+								保存
+							</a>
+						</c:if>
+						<a class="btn" href="${path}/sys/tenant/tenant/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"><i class="icon-undo"></i>返回</a>
+					</div>
 				</div>
-				<table class="table table-striped table-bordered table-hover dataTable table-set">
-					<thead>
-					<tr>
-						<th style="width: 20px;"><input type="checkbox" id="allCheck" onchange="dataAllcheckChange()" ></th>
-						<th width="100px">数据资源名称</th>
-						<th width="300px">范围</th>
-						<th>描述</th>
-					</tr>
-					</thead>
-					<tbody>
-					<c:forEach items="${requestScope.vos}" var="vo" varStatus="varStatus">
-						<tr style="text-overflow:ellipsis;">
-							<td><input type="checkbox" value="${vo.id }" name="dataIds" <c:if test="${vo.isChecked eq 'true'}">checked</c:if>></td>
-							<td><c:out value="${vo.name }"></c:out></td>
-							<td></td>
-							<td><c:out value="${vo.description }"></c:out>
-							</td>
-
+				<form class="form-horizontal myform"
+					  id="form1" method="post">
+					<input type="hidden" name="resourceId" id="resourceId" value="${resourceId}">
+					<input type="hidden" name="tenantId" id="tenantId" value="${tenantId}">
+					<table class="table table-striped table-bordered table-hover dataTable table-set">
+						<thead>
+						<tr>
+							<th width="200px">数据资源名称</th>
+							<th width="300px">范围</th>
+							<th>描述</th>
 						</tr>
-					</c:forEach>
-					</tbody>
-				</table>
-
+						</thead>
+						<tbody>
+						<c:if test="${not empty vos}">
+							<c:forEach items="${vos}" var="vo" varStatus="varStatus">
+								<tr style="text-overflow:ellipsis;">
+									<td><c:out value="${vo.privilegeName }"></c:out></td>
+									<td>
+										<c:if test="${vo.privilegeDisplayType==1}"><!-- 树形下拉 -->
+											<Tree:tree id="${vo.tenantPrivilegeId}"  treeUrl="${vo.selectUrl}" selectClass="tree_class"  token="${sessionScope.OWASP_CSRFTOKEN}"  chkboxType=" 'Y' : 'ps', 'N' : 'ps'"
+												   radioOrCheckbox="checkbox" checkedByTitle="true" isSelectTree="true" submitType="get" dataType="json" isSearch="false" defaultkeys="${vo.selectedValues}" defaultvalues="${vo.selectedNames}"/>
+										</c:if>
+										<c:if test="${vo.privilegeDisplayType==2}"><!-- 多选下拉 -->
+										<SelectTag:SelectTag id="${vo.tenantPrivilegeId}" moreSelectAll="true"
+															 radioOrCheckbox="checkbox" moreSelectSearch="no" selectUrl="${vo.selectUrl}" defaultkeys="${vo.selectedValues}"/>
+										</c:if>
+									</td>
+									<td><c:out value="${vo.privilegeDescription }"></c:out>
+								</tr>
+							</c:forEach>
+						</c:if>
+						<c:if test="${empty vos}">
+							<tr style="text-overflow:ellipsis;">
+								<td colspan="3" style="text-align: center"><p style="font-size: 16px; "><b>${resourceName} 不需要设置数据权限</b></p>
+								</td>
+							</tr>
+						</c:if>
+						</tbody>
+					</table>
+				</form>
 			</div>
 		</div>
 		<%-- 表格结束 --%>
@@ -70,62 +100,21 @@
 		App.init();
 
 	})();
-	function dataAllcheckChange(){
-		var allCheck = document.getElementById("allCheck");
-		var checks = document.getElementsByName("dataIds");
-		if(checks){
-			for(var i=0;i<checks.length;i++) {
-				checks[i].checked = allCheck.checked;
-				if (allCheck.checked == true) {
-					checks[i].parentNode.className = "checked";
-				}else{
-					checks[i].parentNode.className = "";
-				}
-			}
-		}
-	}
-	function pagehref (pageNum ,pageSize){
-		window.location.href ="${path}/sys/tenant/privilege/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&pageNum="+pageNum+"&pageSize="+pageSize+"&name=" + encodeURI(encodeURI("${name}"))+"&tombstone="+$("#tombstone").val();
-		+"&start=${param.start}&end=${param.end}&status=${param.status}";
-	}
 
 
 	function save(){
-		var resourceId = "${resourceId}";
-		var resourceName = "${resourceName}";
-		if(resourceId=="1"){
-			showTip("提示","不可对“资源树”节点进行配置",2000);
-			return;
-		}
-		var checks = document.getElementsByName("dataIds");
-		var privilegeIds = "";
-		var checkedCount = 0;
-		for(var i=0;i<checks.length;i++){
-			if(checks[i].checked==true){
-				checkedCount ++;
-				if(privilegeIds==""){
-					privilegeIds = checks[i].value;
-				}else{
-					privilegeIds =privilegeIds+","+checks[i].value;
-				}
-			}
-		}
-		if(checkedCount == 0){
-			showTip("提示","请选择权限资源",2000);
-			return;
-		}
+
+
 		$.ajax({
-			url : "${path}/sys/tenant/resourcePrivilege/ajax/save",
+			url : "${path}/sys/tenant/tenant/save/tenant2ResourcePrivilege",
 			type : "post",
-			data: {"resourceId":resourceId,
-				"privilegeIds":privilegeIds
-			},
+			data : $('#form1').serialize(),
 			headers:{
 				OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
 			},
 			dataType : "html",
 			success : function(html){
-				showTip("提示","“"+resourceName+"”权限资源配置成功！",2000);
+				showTip("提示","数据资源保存成功！",2000);
 			},
 			error : function(){
 				showTip("提示","出错了请联系管理员", 1500);
