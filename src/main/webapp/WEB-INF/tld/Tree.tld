@@ -105,5 +105,25 @@
          <required>false</required>
          <rtexprvalue>true</rtexprvalue>
      </attribute>
+     <attribute>
+         <name>checkedByTitle</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+     <attribute>
+         <name>checkedAndNoUnCheckedUnByTitle</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+     <attribute>
+         <name>valueMerge</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+     <attribute>
+         <name>initCheckboxValueType</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
   </tag>
 </taglib>
