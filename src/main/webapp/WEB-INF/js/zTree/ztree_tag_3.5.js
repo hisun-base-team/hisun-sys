@@ -139,6 +139,9 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,
 		treeDefineAttObj = document.getElementById(id.substring(0,id.lastIndexOf("_tree"))+"_tagDefineAtt");
 	}
 	var userParameter = treeDefineAttObj.getAttribute("userParameter");
+	var valueMerge = treeDefineAttObj.getAttribute("valueMerge");
+	var initCheckboxValueType = treeDefineAttObj.getAttribute("initCheckboxValueType");
+
 	var dataValue = "";
 	if(userParameter!=null && userParameter!="") {
 		var userParameterArr = userParameter.split(";");
@@ -177,26 +180,48 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,
 					eval(loadAfterMethod);
 					//eval(loadAfterMethod+"(event,treeId, treeNode)");
 				}
-				//反选
-
-				var keyObj =document.getElementById(id.substring(0,id.lastIndexOf("_tree")))
-				//var treeValueObj = document.getElementById(id+"_valueName");
-				if(keyObj!=null && keyObj.value!=""){
-
-					var radioOrCheckbox = treeDefineAttObj.getAttribute("radioOrCheckbox");
-					var selectzTree = $.fn.zTree.getZTreeObj(id);
-					if(radioOrCheckbox=="radio") {
-						var node = selectzTree.getNodeByParam('id', keyObj.value);
-						selectzTree.selectNode(node);
-					}else if(radioOrCheckbox=="checkbox"){
-						var checkedNodeIds = keyObj.value.split(",");
-						for(var i=0;i<checkedNodeIds.length;i++){
-							var node = selectzTree.getNodeByParam('id', checkedNodeIds[i]);
-							selectzTree.checkNode(node, true, false);
+				if(initCheckboxValueType == "0"){//默认为客服端初始化选中数据 为0  为1时数据源初始化数据
+					//反选
+					var keyObj =document.getElementById(id.substring(0,id.lastIndexOf("_tree")))
+					//var treeValueObj = document.getElementById(id+"_valueName");
+					if(keyObj!=null && keyObj.value!=""){
+						var radioOrCheckbox = treeDefineAttObj.getAttribute("radioOrCheckbox");
+						var selectzTree = $.fn.zTree.getZTreeObj(id);
+						if(radioOrCheckbox=="radio") {
+							var node = selectzTree.getNodeByParam('id', keyObj.value);
+							selectzTree.selectNode(node);
+						}else if(radioOrCheckbox=="checkbox") {
+							if (valueMerge == "true") {//特殊处理的反选
+								var checkedNodeIds = keyObj.value.split(",");
+								for (var i = 0; i < checkedNodeIds.length; i++) {
+									var checkedNodeId = checkedNodeIds[i];
+									if(checkedNodeId.lastIndexOf(":0")>-1){//部分选中
+										var checkedNodeId = checkedNodeId.substring(0,checkedNodeId.lastIndexOf(":0"));
+										var node = selectzTree.getNodeByParam('id', checkedNodeId);
+										selectzTree.checkNode(node, true, false);
+									}else if(checkedNodeId.lastIndexOf(":1")>-1){//子节点全部选中
+										var checkedNodeId = checkedNodeId.substring(0,checkedNodeId.lastIndexOf(":1"));
+										var checkedNode = selectzTree.getNodeByParam('id', checkedNodeId);
+										var allhChildNodes = getAllChildrenNodes(checkedNode,new Array());//得到所有子节点选中
+										selectzTree.checkNode(checkedNode, true, false);
+										if(allhChildNodes!=null){
+											for(var j=0;j<allhChildNodes.length;j++){
+												//var childNode = selectzTree.getNodeByParam('id', allhChildNodes[j]);
+												selectzTree.checkNode(allhChildNodes[j], true, false);
+											}
+										}
+									}
+								}
+							} else {
+								var checkedNodeIds = keyObj.value.split(",");
+								for (var i = 0; i < checkedNodeIds.length; i++) {
+									var node = selectzTree.getNodeByParam('id', checkedNodeIds[i]);
+									selectzTree.checkNode(node, true, false);
+								}
+							}
 						}
 					}
 				}
-
 			}else{
 				alert('请求失败');
 			}
@@ -270,12 +295,21 @@ function setValuesByRadio(treeId,treeNode){
 //多选方法
 function beforeClickByTreeCheckBox(treeId, treeNode) {
 	var zTree = $.fn.zTree.getZTreeObj(treeId);
-	zTree.checkNode(treeNode, !treeNode.checked, null, true);
-
 	var treeDefineAttObj = document.getElementById(treeId+ "_tagDefineAtt");
 	if (treeDefineAttObj == null) {
 		treeDefineAttObj = document.getElementById(treeId.substring(0, treeId.lastIndexOf("_tree")) + "_tagDefineAtt");
 	}
+	var checkedByTitle = treeDefineAttObj.getAttribute("checkedByTitle");
+	var checkedAndNoUnCheckedUnByTitle = treeDefineAttObj.getAttribute("checkedAndNoUnCheckedUnByTitle");
+	if(checkedAndNoUnCheckedUnByTitle=="true"){
+		if(treeNode.checked == false){
+			zTree.checkNode(treeNode, !treeNode.checked, null, true);
+		}
+	}else if(checkedByTitle=="true"){
+		zTree.checkNode(treeNode, !treeNode.checked, null, true);
+	}
+
+
 	if (treeDefineAttObj != null) {
 		var onClickFunc = treeDefineAttObj.getAttribute("onclickfunc");
 		if(onClickFunc!=null && onClickFunc!=""){
@@ -286,20 +320,36 @@ function beforeClickByTreeCheckBox(treeId, treeNode) {
 }
 
 function onCheckByTreeCheckBox(e, treeId, treeNode) {
-	var zTree = $.fn.zTree.getZTreeObj(treeId),
-			nodes = zTree.getCheckedNodes(true),
-			keys ="";
-	values = "";
-	for (var i=0, l=nodes.length; i<l; i++) {
-		keys+= nodes[i].id + ",";
-		values+= nodes[i].name + ",";
+	var zTree = $.fn.zTree.getZTreeObj(treeId);
+	var treeDefineAttObj = document.getElementById(treeId+ "_tagDefineAtt");
+	if (treeDefineAttObj == null) {
+		treeDefineAttObj = document.getElementById(treeId.substring(0, treeId.lastIndexOf("_tree")) + "_tagDefineAtt");
 	}
-	if (values.length > 0 ) values = values.substring(0, values.length-1);
+	var valueMerge = treeDefineAttObj.getAttribute("valueMerge");
+	if(valueMerge == "true"){
+		var checkedArr = new Array();//所有部分选中的节点;
+		checkedArr = getValueByQuery(zTree);
+		var keyObj =document.getElementById(treeId.substring(0,treeId.lastIndexOf("_tree")))
+		var treeValueObj = document.getElementById(treeId+"_valueName");
+		keyObj.value=checkedArr[0];
+		$('#'+treeValueObj.value).val(checkedArr[1]);
+	}else{
+		nodes = zTree.getCheckedNodes(true);
+		keys ="";
+		values = "";
+		for (var i=0, l=nodes.length; i<l; i++) {
+			keys+= nodes[i].id + ",";
+			values+= nodes[i].name + ",";
+		}
+		if (values.length > 0 ) values = values.substring(0, values.length-1);
+		var keyObj =document.getElementById(treeId.substring(0,treeId.lastIndexOf("_tree")))
+		var treeValueObj = document.getElementById(treeId+"_valueName");
+		keyObj.value=keys;
+		$('#'+treeValueObj.value).val(values);
+	}
 
-	var keyObj =document.getElementById(treeId.substring(0,treeId.lastIndexOf("_tree")))
-	var treeValueObj = document.getElementById(treeId+"_valueName");
-	keyObj.value=keys;
-	$('#'+treeValueObj.value).val(values);
+
+
 }
 /**
  * 刷新树
@@ -332,4 +382,83 @@ function refreshSelectTreeTag(id,tagSetting,loadAfterMethod){
 	var token = treeDefineAttObj.getAttribute("token");
 
 	treeLoadByTag(dataType,submitType,url,id+"_tree",tagSetting,isSearch,token,loadAfterMethod);
+}
+
+//得到特殊查询的值
+function getValueByQuery(zTree){
+	var nodes = zTree.getCheckedNodes(true)
+	var someCheckedNodes = new Array();//所有部分选中的节点;
+	var allCheckedNodes = new Array();//所有子节点全部选中的节点
+	for (var i = nodes.length - 1; i >= 0; i--) {
+		var halfCheck = nodes[i].getCheckStatus();
+		if (halfCheck.half) {//部分选中
+			someCheckedNodes.push(nodes[i]);
+		}else{
+			allCheckedNodes.push(nodes[i]);
+		}
+	}
+	var allCheckedTopNodes = new Array();//所有子节点全部选中的节点顶级节点集合
+	getAllCheckedTopNodes(zTree,allCheckedNodes,allCheckedTopNodes);
+	var checkedArr = new Array();//所有部分选中的节点;
+	var checkedKeys = "";
+	var checkedValues = "";
+	for (var i = 0;i<someCheckedNodes.length;i++) {
+		if(checkedKeys==""){
+			checkedKeys = someCheckedNodes[i].id+":0";
+			checkedValues = someCheckedNodes[i].name+"(部分)";
+		}else{
+			checkedKeys = checkedKeys+","+someCheckedNodes[i].id+":0";
+			checkedValues = checkedValues+","+someCheckedNodes[i].name+"(部分)";
+		}
+	}
+	for (var i = 0;i<allCheckedTopNodes.length;i++) {
+		if(checkedKeys==""){
+			checkedKeys = allCheckedTopNodes[i].id+":1";
+			checkedValues = allCheckedTopNodes[i].name;
+		}else{
+			checkedKeys = checkedKeys+","+allCheckedTopNodes[i].id+":1";
+			checkedValues = checkedValues+","+allCheckedTopNodes[i].name;
+		}
+	}
+	checkedArr.push(checkedKeys);
+	checkedArr.push(checkedValues);
+	return checkedArr;
+}
+//得到所有子节点全部选中的节点顶级节点集合
+function getAllCheckedTopNodes(zTree,allCheckedNodes,allCheckedTopNodes){
+	for(var i=0;i<allCheckedNodes.length ;i++) {
+		var node = allCheckedNodes[i];
+		var pathArr = node.getPath();
+		boo1:for(var j=0;j<pathArr.length;j++){
+			var pathNode = pathArr[j];
+			var halfCheck = pathNode.getCheckStatus();
+			if (!halfCheck.half) {//取得节点的最顶级的全选节点
+				var isAdd = true;
+				boo:for(var k=0;k<allCheckedTopNodes.length ;k++) {
+					if(pathNode.id == allCheckedTopNodes[k].id){
+						isAdd = false
+						break boo;
+					}
+				}
+				if(isAdd == true){
+					allCheckedTopNodes.push(pathNode);//将顶级节点存入allCheckedTopNodes集合中
+				}
+				break boo1;
+			}
+		}
+	}
+}
+
+//得到节点的所有子节点
+function getAllChildrenNodes(treeNode,result){
+	if (treeNode.isParent) {
+		var childrenNodes = treeNode.children;
+		if (childrenNodes) {
+			for (var i = 0; i < childrenNodes.length; i++) {
+				result.push(childrenNodes[i]);
+				result = getAllChildrenNodes(childrenNodes[i], result);
+			}
+		}
+	}
+	return result;
 }

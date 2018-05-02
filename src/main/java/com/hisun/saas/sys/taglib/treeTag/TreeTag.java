@@ -34,7 +34,7 @@ public final class TreeTag extends BodyTagSupport {
 
 	private String radioOrCheckbox="radio";
 	/**勾选 checkbox 对于父子节点的关联关系。[setting.check.enable = true 且 setting.check.chkStyle = "checkbox" 时生效]
-	 默认值：{ "Y": "ps", "N": "ps" }
+	 默认值：{ 'Y': 'ps', 'N': 'ps' }
 	 JSON 格式说明
 	 Y 属性定义 checkbox 被勾选后的情况；
 	 N 属性定义 checkbox 取消勾选后的情况；
@@ -76,6 +76,19 @@ public final class TreeTag extends BodyTagSupport {
 	private String defaultvalues="";//默认的值 要有多个必须和key的内容对应  用,分开
 
 	private String defaultkeys="";//默认的知道的相应key值 要有多个必须和值的内容对应  用,分开
+
+	//单击标题是否会影响复选框
+	private String checkedByTitle="false";
+
+	//单击标题会选中复选框 但是不会取消选中（主要用于权限树）
+	private String checkedAndNoUnCheckedUnByTitle="false";
+
+	//在多选时，是否合并取值 如果当前节点选中且所有子节点选中，则只记录父节点ID 在后面加：1 如果子节点部分选中则在父节点后面加：0  默认人false 为true时合并选取的值
+	private String valueMerge = "false";
+
+	//主要用于解决可能选中的数据太多 通过URL传过来可能会有问题  需要用户自己在数据源初始化选中数据 默认为客服端初始化选中数据 为0  为1时数据源初始化数据
+	private String initCheckboxValueType= "0" ;
+
 
 	@Override
 	public int doStartTag() throws JspTagException {
@@ -145,7 +158,9 @@ public final class TreeTag extends BodyTagSupport {
 			nodesHtml.append("</div>");
 		}
 		nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" onClickFunc=\""+onClick+"\" radioOrCheckbox=\""+radioOrCheckbox+"\" " +
-				"dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\" onclickFunc=\""+onClick+"\" token=\""+token+"\" userParameter=\""+userParameter+"\">");
+				"dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\"" +
+				" onclickFunc=\""+onClick+"\" token=\""+token+"\" userParameter=\""+userParameter+"\" checkedByTitle=\""+checkedByTitle+"\"" +
+				" checkedAndNoUnCheckedUnByTitle=\""+checkedAndNoUnCheckedUnByTitle+"\" valueMerge=\""+valueMerge+"\" initCheckboxValueType=\""+initCheckboxValueType+"\">");
 		nodesHtml.append("<script>");
 //		if(isSelectTree!=null && isSelectTree.equals("true")) {
 //			nodesHtml.append("if(window.document.getElementById(\"" + valueName + "\").offsetWidth!=0){$(\"#" + id + "_treeSelDiv\").css(\"width\",window.document.getElementById(\"" + valueName + "\").offsetWidth-2);}");
@@ -368,5 +383,37 @@ public final class TreeTag extends BodyTagSupport {
 
 	public void setDefaultkeys(String defaultkeys) {
 		this.defaultkeys = defaultkeys;
+	}
+
+	public String getCheckedByTitle() {
+		return checkedByTitle;
+	}
+
+	public void setCheckedByTitle(String checkedByTitle) {
+		this.checkedByTitle = checkedByTitle;
+	}
+
+	public String getCheckedAndNoUnCheckedUnByTitle() {
+		return checkedAndNoUnCheckedUnByTitle;
+	}
+
+	public void setCheckedAndNoUnCheckedUnByTitle(String checkedAndNoUnCheckedUnByTitle) {
+		this.checkedAndNoUnCheckedUnByTitle = checkedAndNoUnCheckedUnByTitle;
+	}
+
+	public String getValueMerge() {
+		return valueMerge;
+	}
+
+	public void setValueMerge(String valueMerge) {
+		this.valueMerge = valueMerge;
+	}
+
+	public String getInitCheckboxValueType() {
+		return initCheckboxValueType;
+	}
+
+	public void setInitCheckboxValueType(String initCheckboxValueType) {
+		this.initCheckboxValueType = initCheckboxValueType;
 	}
 }
