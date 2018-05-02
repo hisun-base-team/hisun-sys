@@ -81,7 +81,9 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 				}
 				changeCheckedNodes[i].checkedOld = changeCheckedNodes[i].checked;
 			}
-
+			if(changeCheckedIds==""){
+				return;
+			}
 			var checked = treeNode.checked;
 			if(checked== true){
 				$.ajax({
