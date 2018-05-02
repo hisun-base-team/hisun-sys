@@ -13,4 +13,6 @@ public interface PrivilegeRowExpress {
 
     String getHqlFilterExpress(String selectedValues);
     String getSqlFilterExpress(String selectedValues);
+    String getHqlFilterExpressInRole(String selectedValues,String tenant2ResourcePrivilegeId);
+    String getSqlFilterExpressInRole(String selectedValues,String tenant2ResourcePrivilegeId);
 }

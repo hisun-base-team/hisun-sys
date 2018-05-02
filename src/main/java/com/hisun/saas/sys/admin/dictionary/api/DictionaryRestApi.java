@@ -10,14 +10,15 @@ import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
-import com.hisun.base.exception.GenericException;
 import com.hisun.saas.sys.admin.dictionary.entity.DictionaryItem;
-import com.hisun.saas.sys.admin.dictionary.entity.DictionaryType;
 import com.hisun.saas.sys.admin.dictionary.service.DictionaryItemService;
 import com.hisun.saas.sys.admin.dictionary.service.DictionaryTypeService;
 import com.hisun.saas.sys.taglib.selectTag.SelectNode;
 import com.hisun.saas.sys.taglib.treeTag.TreeNode;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -38,15 +39,15 @@ public class DictionaryRestApi {
     private DictionaryItemService dictionaryItemService;
 
 
-    @RequestMapping(value = "/tree/{typeId}",method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> getTreeNodes(@PathVariable("typeId") String typeId) {
+    @RequestMapping(value = "/tree",method = RequestMethod.GET)
+    public @ResponseBody Map<String,Object> getTreeNodes(String typeCode) {
         Map<String, Object> map = new HashMap<String, Object>();
         List<DictionaryItem> dictionaryItems;
         try {
             CommonConditionQuery query = new CommonConditionQuery();
-            query.add(CommonRestrictions.and(" dictionaryType.id=:typeId ", "typeId", typeId));
+            query.add(CommonRestrictions.and(" dictionaryType.code=:typeCode ", "typeCode", typeCode));
             CommonOrderBy orderBy = new CommonOrderBy();
-            orderBy.add(CommonOrder.asc("queryCode"));
+            orderBy.add(CommonOrder.asc("code"));
             dictionaryItems = dictionaryItemService.list(query, orderBy);
             List<TreeNode> nodes = new ArrayList<>();
             TreeNode node=null;
@@ -71,15 +72,15 @@ public class DictionaryRestApi {
     }
 
 
-    @RequestMapping(value = "/select/{typeId}",method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> getSelectNodes(@PathVariable("typeId") String typeId) {
+    @RequestMapping(value = "/select",method = RequestMethod.GET)
+    public @ResponseBody Map<String,Object> getSelectNodes(String typeCode) {
         Map<String, Object> map = new HashMap<String, Object>();
         List<DictionaryItem> dictionaryItems;
         try {
             CommonConditionQuery query = new CommonConditionQuery();
-            query.add(CommonRestrictions.and(" dictionaryType.id=:typeId ", "typeId", typeId));
+            query.add(CommonRestrictions.and(" dictionaryType.code=:typeCode ", "typeCode", typeCode));
             CommonOrderBy orderBy = new CommonOrderBy();
-            orderBy.add(CommonOrder.asc("queryCode"));
+            orderBy.add(CommonOrder.asc("code"));
             dictionaryItems = dictionaryItemService.list(query, orderBy);
             List<SelectNode> nodes = new ArrayList<>();
             SelectNode node=null;

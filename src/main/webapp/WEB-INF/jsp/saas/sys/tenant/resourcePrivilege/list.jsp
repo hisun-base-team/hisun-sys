@@ -50,11 +50,8 @@
 							<th style="width: 20px;"><input type="checkbox" id="allCheck" onchange="dataAllcheckChange()" ></th>
 							<th width="30px">排序</th>
 							<th width="100px">名称</th>
-							<th width="100px">code</th>
-							<th width="200px">实现类</th>
-
+							<th width="100px">代码</th>
 							<th>描述</th>
-
 						</tr>
 						</thead>
 						<tbody>
@@ -64,10 +61,8 @@
 								<td><c:out value="${vo.sort }"></c:out></td>
 								<td><c:out value="${vo.name }"></c:out></td>
 								<td><c:out value="${vo.code }"></c:out></td>
-								<td><c:out value="${vo.impclass }"></c:out>
 								<td><c:out value="${vo.description }"></c:out>
 								</td>
-
 							</tr>
 						</c:forEach>
 						</tbody>

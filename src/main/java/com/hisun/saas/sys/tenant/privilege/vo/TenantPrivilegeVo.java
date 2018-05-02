@@ -23,6 +23,7 @@ public class TenantPrivilegeVo extends TombstoneVo {
     private String description;
     private String impclass;//实现类
     private Integer type = 1;//1-行过滤,2-列过滤
+    private String selectUrl;
     private Integer displayType=1;//1-树形selectOption,2-多选selecteOption
     private Integer sort;
     private String isChecked;//在资源权限资源配置时用记录是否已选择该资源 true为选中
@@ -74,6 +75,10 @@ public class TenantPrivilegeVo extends TombstoneVo {
     public void setType(Integer type) {
         this.type = type;
     }
+
+    public String getSelectUrl() { return selectUrl;}
+
+    public void setSelectUrl(String selectUrl) { this.selectUrl = selectUrl;}
 
     public Integer getDisplayType() {
         return displayType;

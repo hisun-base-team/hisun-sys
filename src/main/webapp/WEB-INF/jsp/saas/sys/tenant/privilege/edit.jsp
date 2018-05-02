@@ -20,24 +20,15 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<%-- BEGIN SAMPLE FORM PORTLET 表单主体--%>
-
 				<div class="portlet box grey">
-
 					<div class="portlet-title">
-
 						<div class="caption">
-
 							<span class="hidden-480">修改租户权限资源</span>
-
 						</div>
 					</div>
-
 					<div class="portlet-body form">
-						<form class="form-horizontal myform"
-							  id="form1" method="post">
+						<form class="form-horizontal" id="form1" method="post">
 							<input type="hidden" name="id" value="${entity.id}">
-							<div class="tab-pane active" id="tab1">
-								<div>
 									<div id="nameGroup" class="control-group">
 										<label class="control-label mylabel">租户权限资源名称<span
 												class="required">*</span>
@@ -60,6 +51,17 @@
 										</label>
 										<div class="controls">
 											<input class="span6 m-wrap" type="text" name="impclass" id="impclass" required minlength="4" maxlength="200" value="${entity.impclass}">
+										</div>
+									</div>
+									<div id="selectUrlGroup" class="control-group">
+										<label class="control-label ">权限数据源URL<span
+												class="required">*</span>
+										</label>
+										<div class="controls">
+											<input class="span6 m-wrap" type="text" name="selectUrl" id="selectUrl" required minlength="4" maxlength="200" value="${entity.selectUrl}">
+										</div>
+										<div class="form-hint">
+											<i class="icon-exclamation-sign" style="padding-right: 5px;"></i>请填写数据源URL,例如:<em>/api/dictionary/tree?typeCode=GB/T16835-1997</em>
 										</div>
 									</div>
 									<div id="displayTypeGroup" class="control-group">
@@ -94,10 +96,6 @@
 										   data-dismiss="modal"><i class='icon-remove-sign'></i> 取消
 										</a>
 									</div>
-
-	
-								</div>
-							</div>
 						</form>
 					</div>
 					</div>

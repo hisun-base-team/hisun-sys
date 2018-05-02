@@ -23,7 +23,7 @@ public abstract class AbstractPrivilege extends TombstoneEntity {
     protected String description;
     protected String impclass;//实现类
     protected Integer type = 1;//1-行过滤,2-列过滤
-    protected String selectUrl;
+    protected String selectUrl;//权限资源生成数据源URL
     protected Integer displayType=1;//1-树形selectOption,2-多选selecteOption
     protected Integer sort;
 

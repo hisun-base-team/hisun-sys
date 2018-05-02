@@ -11,7 +11,7 @@ package com.hisun.saas.sys.log;
  */
 public enum LogOperateType {
 
-    ADD(1,"新增"),UPDATE(2,"修改"),DELETE(3,"删除"),QUERY(4,"查询"),LOGIN(5,"登录"),LOGOUT(6,"退出");
+    SAVE(1,"新增"),UPDATE(2,"修改"),DELETE(3,"删除"),QUERY(4,"查询"),LOGIN(5,"登录"),LOGOUT(6,"退出");
 
     private int type;
     private String description;

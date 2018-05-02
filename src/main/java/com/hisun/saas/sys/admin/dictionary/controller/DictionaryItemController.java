@@ -21,9 +21,12 @@ import com.hisun.saas.sys.admin.dictionary.service.DictionaryItemService;
 import com.hisun.saas.sys.admin.dictionary.service.DictionaryTypeService;
 import com.hisun.saas.sys.admin.dictionary.vo.DictionaryItemVo;
 import com.hisun.saas.sys.admin.dictionary.vo.DictionaryTypeVo;
+import com.hisun.saas.sys.log.LogOperateType;
+import com.hisun.saas.sys.log.RequiresLog;
 import com.hisun.saas.sys.taglib.treeTag.TreeNode;
 import com.hisun.util.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -45,7 +48,7 @@ public class DictionaryItemController extends BaseController {
 	@Resource
 	private DictionaryTypeService dictionaryTypeService;
 
-
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping("/index/{typeId}")
 	public ModelAndView index(@PathVariable("typeId") String typeId) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -53,6 +56,7 @@ public class DictionaryItemController extends BaseController {
 		return new ModelAndView("saas/sys/admin/dictionary/item/index");
 	}
 
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping("/tree/{typeId}")
 	public @ResponseBody Map<String, Object> tree(@PathVariable("typeId") String typeId) throws GenericException {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -61,7 +65,7 @@ public class DictionaryItemController extends BaseController {
 			CommonConditionQuery query = new CommonConditionQuery();
 			query.add(CommonRestrictions.and(" dictionaryType.id=:typeId ", "typeId", typeId));
 			CommonOrderBy orderBy = new CommonOrderBy();
-			orderBy.add(CommonOrder.asc("queryCode"));
+			orderBy.add(CommonOrder.asc("code"));
 			dictionaryItems = dictionaryItemService.list(query, orderBy);
 			DictionaryType dictionaryType = dictionaryTypeService.getByPK(typeId);
 			List<TreeNode> treeNodes = new ArrayList<TreeNode>();
@@ -94,6 +98,7 @@ public class DictionaryItemController extends BaseController {
 		return map;
 	}
 
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping("/ajax/list")
 	public ModelAndView listItem(HttpServletRequest request,
 								  @RequestParam(value="pageNum",defaultValue="1")int pageNum,
@@ -113,7 +118,7 @@ public class DictionaryItemController extends BaseController {
 
 			Long total = dictionaryItemService.count(query);
 			CommonOrderBy orderBy = new CommonOrderBy();
-			orderBy.add(CommonOrder.asc("queryCode"));
+			orderBy.add(CommonOrder.asc("code"));
 			List<DictionaryItem> entities = this.dictionaryItemService.list(query, orderBy, pageNum, pageSize);
 			List<DictionaryItemVo> vos = new ArrayList<>();
 			DictionaryItemVo vo = null;
@@ -136,10 +141,10 @@ public class DictionaryItemController extends BaseController {
 		}
 		return new ModelAndView("/saas/sys/admin/dictionary/item/listItem", map);
 	}
-	
 
 
 
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping("/ajax/add")
 	public ModelAndView add(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -161,7 +166,8 @@ public class DictionaryItemController extends BaseController {
 		return new ModelAndView("saas/sys/admin/dictionary/item/addItem",map);
 	}
 
-	
+	@RequiresLog(operateType = LogOperateType.SAVE,description = "增加字典项:${vo.name}")
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> save(DictionaryItemVo vo,HttpServletRequest request) throws GenericException {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -177,7 +183,6 @@ public class DictionaryItemController extends BaseController {
 			dictionaryItem.setDictionaryType(dictionaryType);
 			dictionaryItemService.saveDictionaryItem(dictionaryItem);
 			map.put("success", true);
-//			map.put("data", dictionaryItem);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(e);
@@ -186,7 +191,9 @@ public class DictionaryItemController extends BaseController {
 
 		return map;
 	}
-	
+
+	@RequiresLog(operateType = LogOperateType.DELETE,description = "删除字典项:${id}")
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping(value = "/delete/{id}")
 	public @ResponseBody Map<String, Object> delete(
 			@PathVariable("id") String id) throws GenericException {
@@ -212,6 +219,7 @@ public class DictionaryItemController extends BaseController {
 		return map;
 	}
 
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping("/ajax/edit/{id}")
 	public ModelAndView edit(@PathVariable("id") String id,HttpServletRequest request){
 		Map<String,Object> model = new HashMap<String,Object>();
@@ -236,6 +244,9 @@ public class DictionaryItemController extends BaseController {
 		model.put("vo", vo);
 		return new ModelAndView("saas/sys/admin/dictionary/item/editItem", model);
 	}
+
+	@RequiresLog(operateType = LogOperateType.UPDATE,description = "修改字典项:${id}")
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping(value = "/update")
 	public @ResponseBody Map<String, Object> update(DictionaryItemVo vo,HttpServletRequest request) throws GenericException {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -271,13 +282,7 @@ public class DictionaryItemController extends BaseController {
 		return map;
 	}
 
-	
-	/**
-	 * 读取用户信息的方法
-	 *
-	 * @return
-	 * @throws GenericException
-	 */
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping(value = "get/{id}", method = RequestMethod.GET)
 	public @ResponseBody Map<String, Object> get(
 			@PathVariable("id") String id) throws GenericException {
@@ -299,11 +304,9 @@ public class DictionaryItemController extends BaseController {
 		}
 		return map;
 	}
-	
 
-	
 
-	
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping("/max/sort")
 	public @ResponseBody Map<String, Object> getMaxSort(@RequestParam(value="pId")String pId) {
 		Map<String, Object> map = Maps.newHashMap();
@@ -312,6 +315,7 @@ public class DictionaryItemController extends BaseController {
 		return map;
 	}
 
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping(value = "/select", method = RequestMethod.GET)
 	public @ResponseBody Map<String, Object> getRoleSelection(
 			@RequestParam(value = "id",required=false) String id){
@@ -347,6 +351,8 @@ public class DictionaryItemController extends BaseController {
 		}
 		return map;
 	}
+
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping(value = "/code/check")
 	public @ResponseBody Map<String, Object> check(
 			@RequestParam("typeId") String typeId,@RequestParam("code") String code,@RequestParam(value="id",required=false)String id) throws GenericException {

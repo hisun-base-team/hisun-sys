@@ -188,7 +188,7 @@ public class AdminResourceController extends BaseController {
 		return map;
 	}
 
-	@RequiresLog(operateType = LogOperateType.ADD,description = "新增资源:${resource.resourceName}")
+	@RequiresLog(operateType = LogOperateType.SAVE,description = "新增资源:${resource.resourceName}")
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> add(Resource resource,HttpServletRequest request)  throws GenericException {
 		Map<String, Object> map = new HashMap<String, Object>();

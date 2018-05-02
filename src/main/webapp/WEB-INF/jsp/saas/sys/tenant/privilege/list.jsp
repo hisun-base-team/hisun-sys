@@ -17,7 +17,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
 	<!-- END PAGE LEVEL STYLES -->
-	<title>租户权限资源管理</title>
+	<title>租户权限管理</title>
 </head>
 <body>
 
@@ -27,7 +27,7 @@
 			<%-- 表格开始 --%>
 			<div class="portlet box grey">
 				<div class="portlet-title" style="vertical-align: middle;">
-					<div class="caption">租户权限资源列表</div>
+					<div class="caption">租户权限列表</div>
 					<%--<shiro:hasPermission name="tenant:tenantadd">--%>
 						<div class="btn-group fr">
 							<a id="sample_editable_1_new" class="btn green" href="${path }/sys/tenant/privilege/add?&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
@@ -42,9 +42,9 @@
 						<thead>
 						<tr>
 							<th width="100px">名称</th>
-							<th width="100px">code</th>
+							<th width="100px">代码</th>
 							<th width="200px">实现类</th>
-							<th>描述</th>
+							<th>权限数据源URL</th>
 							<th width="60px">排序</th>
 							<th width="150px;">操作</th>
 						</tr>
@@ -55,7 +55,7 @@
 								<td><a href="${path }/sys/tenant/privilege/edit/${entity.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" ><c:out value="${entity.name }"></c:out></a></td>
 								<td><c:out value="${entity.code }"></c:out></td>
 								<td><c:out value="${entity.impclass }"></c:out>
-								<td><c:out value="${entity.description }"></c:out></td>
+								<td><c:out value="${entity.selectUrl }"></c:out></td>
 								<td><c:out value="${entity.sort }"></c:out></td>
 								<td class="Left_alignment">
 									<a href="${path }/sys/tenant/privilege/edit/${entity.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" >编辑</a>

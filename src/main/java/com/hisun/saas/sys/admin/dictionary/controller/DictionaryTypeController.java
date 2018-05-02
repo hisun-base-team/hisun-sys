@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
@@ -21,7 +22,6 @@ import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.log.LogOperateType;
 import com.hisun.saas.sys.log.RequiresLog;
 import com.hisun.saas.sys.util.EntityWrapper;
-import com.sun.tools.javah.Gen;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -54,6 +54,7 @@ public class DictionaryTypeController extends BaseController {
 			CommonConditionQuery query = new CommonConditionQuery();
 			Long total = this.dictionaryTypeService.count(query);
 			CommonOrderBy orderBy = new CommonOrderBy();
+			orderBy.add(CommonOrder.asc("code"));
 			List<DictionaryType> queryList = this.dictionaryTypeService.list(query, orderBy, pageNum, pageSize);
 			List<DictionaryTypeVo> vos = Lists.newArrayList();
 			DictionaryTypeVo  vo = null;
@@ -96,7 +97,7 @@ public class DictionaryTypeController extends BaseController {
 		return new ModelAndView("saas/sys/admin/dictionary/type/addType");
 	}
 
-	@RequiresLog(operateType = LogOperateType.ADD,description = "增加字典:${vo.name}")
+	@RequiresLog(operateType = LogOperateType.SAVE,description = "增加字典:${vo.name}")
 	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> save(DictionaryTypeVo vo)throws GenericException{
@@ -120,24 +121,7 @@ public class DictionaryTypeController extends BaseController {
 		return map;
 	}
 
-
-//	@RequiresPermissions("adminDictionary:*")
-//	@RequestMapping(value = "/exist/{code}", method = RequestMethod.POST)
-//	public @ResponseBody Map<String, Object> existCode(@PathVariable("code") String code){
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		try {
-//			if(this.dictionaryTypeService.existCode(code)==false){
-//				map.put("exist", false);
-//			}else{
-//				map.put("exist", true);
-//				logger.error("字典代码已存在!");
-//			}
-//		} catch (Exception e) {
-//			logger.error(e);
-//		}
-//		return map;
-//	}
-
+	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping(value = "/code/check")
 	public @ResponseBody Map<String, Object> check(@RequestParam("code") String code,@RequestParam(value="id",required=false)String id) throws GenericException {
 		Map<String, Object> map = Maps.newHashMap();

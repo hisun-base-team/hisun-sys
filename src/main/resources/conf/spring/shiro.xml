@@ -162,7 +162,7 @@
 				/license/** = anon
 				/WEB-INF/jsp/error/** = anon <!-- 错误页那些不用登陆 -->
 				/ueditor/** = anon <!-- 富文本编辑框 -->
-				/api/** = anon
+				/api/open/** = anon
 				/js/** = anon
 				/css/** = anon
 				/images/** = anon
@@ -193,8 +193,6 @@
 				/sys/tenant/user/getActivateLink/** = anon
 				/sys/tenant/user/activate/** = anon
 				/sys/tenant/user/registerToNewTenant/** = anon
-
-				/outside/** = anon
 				/register/** = anon <!-- 注册页面 -->
 				/un/** = anon  <!-- 过滤所有不用权限验证过滤的URL -->
 				/sys/tenant/user/un/** = anon  <!-- 过滤所有不用权限验证过滤的URL -->
