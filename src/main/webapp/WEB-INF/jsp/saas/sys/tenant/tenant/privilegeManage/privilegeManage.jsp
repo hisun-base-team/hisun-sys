@@ -86,6 +86,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 			}
 			var checked = treeNode.checked;
 			if(checked== true){
+				myLoading.show();
 				$.ajax({
 					url : "${path }/sys/tenant/tenant/save/tenant2Resource",
 					type : "post",
@@ -115,6 +116,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 					}
 				});
 			}else{
+				myLoading.show();
 				$.ajax({
 					url : "${path }/sys/tenant/tenant/delete/tenant2Resource",
 					type : "post",
