@@ -68,37 +68,37 @@
                     </div>
                 </li>
             </c:if>
-            <shiro:hasPermission name="adminticekt:ticketservice ">
-                <li class="navli03 dropdown">
-                    <a href="#" data-toggle="dropdown">
-                        <span class="username">工单服务</span>
-                        <i class="icon-angle-down"></i>
-                    </a>
-                    <div class="dropdown-menu navigdrop_down03">
-                        <p class="mod_zt02"></p>
-                        <ul class="dropdown-navbell02">
-                            <shiro:hasPermission name="adminticket:ticket_createIndex">
-                                <li>
-                                    <a style="" href="${path}/sys/admin/ticket/createIndex?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
-                                        <i class="icon-pencil"></i> 提交工单
-                                    </a>
-                                </li>
-                                <li>
-                                    <a style="" href="${path}/sys/admin/ticket/mine?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
-                                        <i class="icon-folder-open"></i> 我的工单</a>
-                                </li>
-                            </shiro:hasPermission>
-                            <shiro:hasPermission name="adminticket:ticket_customadmin">
-                                <li>
-                                    <a style="" href="${path}/sys/admin/ticket/custom/admin/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
-                                        <i class="icon-pencil"></i> 工单列表
-                                    </a>
-                                </li>
-                            </shiro:hasPermission>
-                        </ul>
-                    </div>
-                </li>
-            </shiro:hasPermission>
+            <%--<shiro:hasPermission name="adminticekt:ticketservice ">--%>
+                <%--<li class="navli03 dropdown">--%>
+                    <%--<a href="#" data-toggle="dropdown">--%>
+                        <%--<span class="username">工单服务</span>--%>
+                        <%--<i class="icon-angle-down"></i>--%>
+                    <%--</a>--%>
+                    <%--<div class="dropdown-menu navigdrop_down03">--%>
+                        <%--<p class="mod_zt02"></p>--%>
+                        <%--<ul class="dropdown-navbell02">--%>
+                            <%--<shiro:hasPermission name="adminticket:ticket_createIndex">--%>
+                                <%--<li>--%>
+                                    <%--<a style="" href="${path}/sys/admin/ticket/createIndex?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">--%>
+                                        <%--<i class="icon-pencil"></i> 提交工单--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                                <%--<li>--%>
+                                    <%--<a style="" href="${path}/sys/admin/ticket/mine?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">--%>
+                                        <%--<i class="icon-folder-open"></i> 我的工单</a>--%>
+                                <%--</li>--%>
+                            <%--</shiro:hasPermission>--%>
+                            <%--<shiro:hasPermission name="adminticket:ticket_customadmin">--%>
+                                <%--<li>--%>
+                                    <%--<a style="" href="${path}/sys/admin/ticket/custom/admin/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">--%>
+                                        <%--<i class="icon-pencil"></i> 工单列表--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                            <%--</shiro:hasPermission>--%>
+                        <%--</ul>--%>
+                    <%--</div>--%>
+                <%--</li>--%>
+            <%--</shiro:hasPermission>--%>
             <c:if test="${!empty tenant.id}">
                 <li class="navli02 dropdown">
                     <a href="#" data-toggle="dropdown">

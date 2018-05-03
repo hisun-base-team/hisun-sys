@@ -58,7 +58,7 @@ public class TenantLog extends TenantEntity implements Serializable {
 	public String getUserName() { return userName;}
 	public void setUserName(String userName) { this.userName = userName;}
 
-	@Column(name="create_time",nullable=false)
+	@Column(name="operate_time",nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date getOperateTime() {
 		return operateTime;
@@ -85,7 +85,7 @@ public class TenantLog extends TenantEntity implements Serializable {
 	public void setType(int type) {
 		this.type = type;
 	}
-
+	@Column(name="invoke_method")
 	public String getInvokeMethod() {
 		return invokeMethod;
 	}
