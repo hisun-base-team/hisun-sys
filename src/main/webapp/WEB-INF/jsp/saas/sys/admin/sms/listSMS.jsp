@@ -79,10 +79,10 @@
 											</td>
 											<td class="Left_alignment">
 												<shiro:hasPermission name="admin-platform:sms_update">
-													<a href="<%=path%>/sys/admin/sms/update/${config.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" class="" >编辑</a>|
+													<a href="${path}/sys/admin/sms/update/${config.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" class="" >编辑</a>|
 												</shiro:hasPermission>
 												<shiro:hasPermission name="admin-platform:sms_test">
-													<a href="<%=path%>/sys/admin/sms/test/${config.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" class="" >测试</a>|
+													<a href="${path}/sys/admin/sms/test/${config.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" class="" >测试</a>|
 												</shiro:hasPermission>
 												<shiro:hasPermission name="admin-platform:sms_delete">
 													<a href="javascript:;" class="" id="${config.id}" itemname="<c:out value="${config.smsName }"></c:out>" onclick="del(this);">删除</a>

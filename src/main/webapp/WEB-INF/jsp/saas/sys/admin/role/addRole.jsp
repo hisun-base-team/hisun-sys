@@ -29,7 +29,7 @@
 					</div>
 
 					<div class="portlet-body form">
-						<form action="<%=path%>/sys/admin/role/save" class="form-horizontal myform"
+						<form action="${path}/sys/admin/role/save" class="form-horizontal myform"
 							  id="addForm" method="post">
 							<div class="tab-pane active" id="tab1">
 								<div>
@@ -114,7 +114,7 @@
 				var aa = $("#addForm").serialize();
 				if (bool) {
 					$.ajax({
-						url : "<%=path%>/sys/admin/role/save",
+						url : "${path}/sys/admin/role/save",
 						type : "post",
 						data : $("#addForm").serialize(),
 						headers: {

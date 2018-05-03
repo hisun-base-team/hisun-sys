@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>授权角色</title>
-<link href="<%=path%>/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
+<link href="${path}/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="container-fluid">
@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="portlet-body form">
-						<form action="<%=path%>/sys/admin/role/setAuth" class="form-horizontal myform"
+						<form action="${path}/sys/admin/role/setAuth" class="form-horizontal myform"
 						id="submit_form" method="post">
 							<div class="tab-pane active" id="tab1">
 								<div>
@@ -73,7 +73,7 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="<%=path%>/js/zTree/jquery.ztree.all-3.5.js"></script>
+	<script type="text/javascript" src="${path}/js/zTree/jquery.ztree.all-3.5.js"></script>
 	<script type="text/javascript">
 	var setting = {
 			data: {
@@ -89,12 +89,12 @@
 		};
 	var resTree;
 		$(function(){
-			localPost("<%=path%>/sys/admin/resource/select/tree",{"status":1}, function(data,status){
+			localPost("${path}/sys/admin/resource/select/tree",{"status":1}, function(data,status){
 				if (status == "success") {
 					//setting.data.key.url = "_url" ;
 					resTree = $.fn.zTree.init($("#treeDemo"), setting, data.data);
 
-					localPost("<%=path%>/sys/admin/role/resource/${vo.id}",null, function(data,status){
+					localPost("${path}/sys/admin/role/resource/${vo.id}",null, function(data,status){
 						if (status == "success") {
 							var resIdList = data.data;
 							if (resTree != null && resIdList != null) {

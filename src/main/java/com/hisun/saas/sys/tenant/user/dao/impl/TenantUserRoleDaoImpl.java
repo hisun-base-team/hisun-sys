@@ -6,17 +6,10 @@
 
 package com.hisun.saas.sys.tenant.user.dao.impl;
 
-import com.hisun.saas.sys.tenant.role.entity.TenantRole;
+import com.hisun.base.dao.impl.BaseDaoImpl;
 import com.hisun.saas.sys.tenant.user.dao.TenantUserRoleDao;
 import com.hisun.saas.sys.tenant.user.entity.TenantUserRole;
-import com.hisun.base.dao.impl.BaseDaoImpl;
-import com.hisun.base.dao.util.CommonConditionQuery;
-import com.hisun.base.dao.util.CommonRestrictions;
 import org.springframework.stereotype.Repository;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 /**
  * @author Rocky {rockwithyou@126.com}
  */

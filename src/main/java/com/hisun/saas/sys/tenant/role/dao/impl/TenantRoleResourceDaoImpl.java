@@ -6,6 +6,7 @@
 
 package com.hisun.saas.sys.tenant.role.dao.impl;
 
+import com.hisun.saas.sys.entity.AbstractResource;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
 import com.hisun.saas.sys.tenant.role.dao.TenantRoleResourceDao;
 import com.hisun.saas.sys.tenant.role.entity.TenantRoleResource;
@@ -30,8 +31,10 @@ public class TenantRoleResourceDaoImpl extends BaseDaoImpl<TenantRoleResource,St
         sql.append(" inner join sys_tenant_role_resource roleResource on role.id = roleResource.role_id ");
         sql.append(" inner join sys_tenant_2_resource tenant2Resource on roleResource.tenant_2_resource_id = tenant2Resource.id");
         sql.append(" inner join sys_tenant_resource tenantResource on tenant2Resource.resource_id = tenantResource.id");
-        sql.append(" where user.id = :userId");
-        Map<String,Object> paramMap = new HashMap<String,Object>();
+        sql.append(" where user.id = :userId ");
+        sql.append(" and tenantResource.status = ").append(AbstractResource.ENABLE);
+        sql.append(" order by tenantResource.query_code");
+        Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("userId", userId);
         return nativeList(TenantResource.class, sql.toString(), paramMap);
     }

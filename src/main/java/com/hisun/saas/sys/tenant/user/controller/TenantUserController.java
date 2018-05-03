@@ -699,13 +699,10 @@ public class TenantUserController extends BaseController{
         }
     }
 
-    /**
-     * 个人信息维护
-     * @return
-     */
+
     @RequestMapping(value = "/profile")
     public ModelAndView profile(){
-        UserLoginDetails userLoginDetails = (UserLoginDetails)SecurityUtils.getSubject().getSession().getAttribute(Constants.CURRENT_USER);
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, Object> map = Maps.newHashMap();
         TenantUser user = tenantUserService.findByUsername(userLoginDetails.getUsername());
         if (null == user.getHeadPhoto()) {

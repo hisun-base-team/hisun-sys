@@ -81,10 +81,10 @@ public class TenantLog extends TenantEntity implements Serializable {
 	public int getType() {
 		return type;
 	}
-
 	public void setType(int type) {
 		this.type = type;
 	}
+
 	@Column(name="invoke_method")
 	public String getInvokeMethod() {
 		return invokeMethod;

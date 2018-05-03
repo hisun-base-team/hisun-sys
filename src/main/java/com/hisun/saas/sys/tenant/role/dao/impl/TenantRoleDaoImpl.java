@@ -1,5 +1,6 @@
 package com.hisun.saas.sys.tenant.role.dao.impl;
 
+import com.hisun.saas.sys.tenant.base.dao.imp.TenantBaseDaoImpl;
 import com.hisun.saas.sys.tenant.role.dao.TenantRoleDao;
 import com.hisun.saas.sys.tenant.role.entity.TenantRole;
 import com.hisun.base.dao.impl.BaseDaoImpl;
@@ -16,17 +17,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * <p>类名称:TenantRoleDaoImpl</p>
- * <p>类描述:</p>
- * <p>公司:湖南海数互联信息技术有限公司</p>
- *
- * @创建者:init
- * @创建人:15/11/18上午11:52
- * @创建人联系方式:init@hn-hisun.com
- */
+
 @Repository
-public class TenantRoleDaoImpl extends BaseDaoImpl<TenantRole,String> implements TenantRoleDao {
+public class TenantRoleDaoImpl extends TenantBaseDaoImpl<TenantRole,String> implements TenantRoleDao {
 
     @Override
     public void batchSaveResource(final String roleId,final String[] resourceIds) {

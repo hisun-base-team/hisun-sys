@@ -154,19 +154,19 @@
 				</div>
 			</div>
 	
-	<script src="<%=path%>/js/app.js"></script>      
+	<script src="${path}/js/app.js"></script>
 	<script type="text/javascript" src="${path }/js/cropbox.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/jquery.validate.min.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/common/custom-validate.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/common/est-validate-init.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/common/validate-message.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.zh-CN.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/bootstrap-datetimepicker.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/bootstrap-datetimepicker.zh-CN.js"></script>
-	<script src="<%=path%>/js/jquery.blockui.min.js" type="text/javascript"></script> 
-	<script type="text/javascript" src="<%=path%>/js/jquery.toggle.buttons.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/select2.js"></script>
+	<script type="text/javascript" src="${path}/js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="${path}/js/common/custom-validate.js"></script>
+	<script type="text/javascript" src="${path}/js/common/est-validate-init.js"></script>
+	<script type="text/javascript" src="${path}/js/common/validate-message.js"></script>
+	<script type="text/javascript" src="${path}/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="${path}/js/bootstrap-datepicker.zh-CN.js"></script>
+	<script type="text/javascript" src="${path}/js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript" src="${path}/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="${path}/js/jquery.blockui.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="${path}/js/jquery.toggle.buttons.js"></script>
+	<script type="text/javascript" src="${path}/js/select2.js"></script>
 	<script>
 	jQuery.validator.addMethod("uniqueEmail", function(value, element) {
 		if(value==null || value==''){
@@ -209,7 +209,7 @@
 					rules : {
 						oldPwd : {
 							required : true,
-                            remote : "<%=path%>/sys/tenant/user/checkOldPwd"
+                            remote : "${path}/sys/tenant/user/checkOldPwd"
 						},
 						pwd : {
 							required : true

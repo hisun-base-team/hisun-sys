@@ -49,7 +49,7 @@ h4{
 					</div>
 
 					<div class="portlet-body form">
-						<form action="<%=path%>/sys/user/send/invite"
+						<form action="${path}/sys/user/send/invite"
 							class="form-horizontal myform" id="inviteMemberForm"
 							method="post">
 							<div class="tab-pane active">

@@ -84,34 +84,5 @@ public class UserLoginDetails extends AbstractUserLoginDetails {
         this.userType = userType;
     }
 
-    public List<ResourceMenuItem> getResourceMenuItems() {
-        List<ResourceMenuItem> items = new ArrayList<ResourceMenuItem>();
-        for (AbstractResource resource : resources) {
-            if (resource.getResourceType() == Constants.RESOURCE_APP) {//系统 顶层菜单
-                ResourceMenuItem item = new ResourceMenuItem();
-                BeanMapper.copy(resource, item);
-                item.setResId(resource.getId());
-                item.setTop(true);
-                item.setPermission(resource.getPermission());
-                setAllChildren(item);
-                items.add(item);
-            }
-        }
-        return items;
-    }
-
-    private void setAllChildren(ResourceMenuItem node) {
-        List<ResourceMenuItem> children = new ArrayList<ResourceMenuItem>();
-        for (AbstractResource resource : resources) {
-            if (resource.getpId().equals(node.getResId()) && resource.getResourceType() != 1) {
-                ResourceMenuItem child = new ResourceMenuItem();
-                BeanMapper.copy(resource, child);
-                child.setResId(resource.getId());
-                setAllChildren(child);
-                children.add(child);
-            }
-        }
-        node.setChildren(children);
-    }
 
 }

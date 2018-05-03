@@ -7,8 +7,8 @@
 <title>角色列表</title>
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" type="text/css"
-	href="<%=path%>/css/select2_metro.css" />
-<link rel="stylesheet" href="<%=path%>/css/DT_bootstrap.css" />
+	href="${path}/css/select2_metro.css" />
+<link rel="stylesheet" href="${path}/css/DT_bootstrap.css" />
 
 <!-- END PAGE LEVEL STYLES -->
 
@@ -30,7 +30,7 @@
 	
 					<div class="modal-body">
 	
-						<form action="<%=path%>/sys/admin/role/setAuth" class="form-horizontal myform"
+						<form action="${path}/sys/admin/role/setAuth" class="form-horizontal myform"
 							id="submit_form2" method="post">
 							<div class="tab-pane active" id="tab2">
 								<div>
@@ -231,12 +231,12 @@
 
 	<!-- END CONTAINER -->
 
-	<script type="text/javascript" src="<%=path%>/js/select2.min.js"></script>
+	<script type="text/javascript" src="${path}/js/select2.min.js"></script>
 
 	<script type="text/javascript"
-		src="<%=path%>/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/jquery.form.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/DT_bootstrap.js"></script>
+		src="${path}/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="${path}/js/jquery.form.js"></script>
+	<script type="text/javascript" src="${path}/js/DT_bootstrap.js"></script>
 
 	<script>
 		var searchReset =function (){
@@ -256,7 +256,7 @@
 			App.init();//必须，不然导航栏及其菜单无法折叠
 
 			$("#searchButton").on("click",function(){
-				window.location.href="<%=path%>/sys/admin/role/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&searchContent=" +$('#searchContent').val();
+				window.location.href="${path}/sys/admin/role/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&searchContent=" +$('#searchContent').val();
 			});
 
 			$('#addRoleBtn').click(function () {
@@ -269,7 +269,7 @@
 			$('.edit').click(function () {
 				var id = $(this).attr("value");
 				var property = $(this).attr("itemProperty");
-				$.get("<%=path%>/sys/admin/role/load", {"id" : id}, function(data,status){
+				$.get("${path}/sys/admin/role/load", {"id" : id}, function(data,status){
 					if (status == "success") {
 						$('#id').val(data.vo.id);
 						$('#roleName').val(data.vo.roleName);
@@ -289,7 +289,7 @@
 			$('.remove').click(function () {
 				var id = $(this).attr("value");
 				var itemName = $(this).attr("itemName");
-				actionByConfirm1(itemName, "<%=path%>/sys/admin/role/delete/" + id, function(data,status){
+				actionByConfirm1(itemName, "${path}/sys/admin/role/delete/" + id, function(data,status){
 					if (status == "success") {
 						location.reload();
 					}
@@ -301,7 +301,7 @@
 				var id = $(this).attr("value");
 				$('#roleId').val(id);
 				
-				$.get("<%=path%>/sys/admin/role/resource/" + id, function(data,status){
+				$.get("${path}/sys/admin/role/resource/" + id, function(data,status){
 					if (status == "success") {
 						//var authName = data.data.authName;
 						var resIdList = data.data;

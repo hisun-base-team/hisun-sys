@@ -11,12 +11,6 @@ package com.hisun.saas.sys.admin;
  */
 public class Constants {
 
-    //资源类型菜单
-    public static final Integer RESOURCE_APP=Integer.valueOf(2);//资源系统
-    public static final Integer RESOURCE_MENU=Integer.valueOf(0);//资源菜单
-    public static final Integer RESOURCE_ACTION=Integer.valueOf(1);//资源操作
-
-
     //状态定义
     public static final Integer AVAILABLE_STATUS = Integer.valueOf(0);//可用
     public static final Integer NOT_AVAILABLE_STATUS = Integer.valueOf(1);//不可用

@@ -33,7 +33,7 @@
 					</div>
 
 					<div class="portlet-body form">
-						<form action="<%=path%>/sys/tenant/user/saveByAdd" class="form-horizontal myform"
+						<form action="${path}/sys/tenant/user/saveByAdd" class="form-horizontal myform"
 							id="formbox" method="post">
 							<input type="hidden" name="fileName" id="fileName" />
 							<div class="tab-pane active" id="tab1">
@@ -203,10 +203,10 @@
 		<script type="application/javascript">
 			window.PATH = "${path}";
 		</script>
-		<script type="text/javascript" src="<%=path%>/js/jquery.validate.min.js"></script>
-		<script type="text/javascript" src="<%=path%>/js/common/custom-validate.js"></script>
-		<script type="text/javascript" src="<%=path%>/js/common/est-validate-init.js"></script>
-		<script type="text/javascript" src="<%=path%>/js/common/validate-message.js"></script>
+		<script type="text/javascript" src="${path}/js/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="${path}/js/common/custom-validate.js"></script>
+		<script type="text/javascript" src="${path}/js/common/est-validate-init.js"></script>
+		<script type="text/javascript" src="${path}/js/common/validate-message.js"></script>
 		<script type="text/javascript">
 		var FormValidation = function() {
 			

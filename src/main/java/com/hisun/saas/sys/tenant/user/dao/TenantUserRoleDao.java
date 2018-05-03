@@ -15,4 +15,5 @@ import java.util.List;
 
 public interface TenantUserRoleDao extends BaseDao<TenantUserRole,String> {
 
+
 }

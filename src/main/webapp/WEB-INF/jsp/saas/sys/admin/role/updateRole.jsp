@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="portlet-body form">
-						<form action="<%=path%>/sys/admin/role/update" class="form-horizontal myform"
+						<form action="${path}/sys/admin/role/update" class="form-horizontal myform"
 							  id="addForm" name="addForm" method="post">
 							<input name="id" type="hidden" value='<c:out value="${vo.id }"></c:out>'/>
 							<div class="tab-pane active" id="tab1">
@@ -113,7 +113,7 @@
 				var bool = addForm.form();
 				if (bool) {
 					$.ajax({
-						url : "<%=path%>/sys/admin/role/update",
+						url : "${path}/sys/admin/role/update",
 						type : "post",
 						data : $("#addForm").serialize(),
 						headers: {

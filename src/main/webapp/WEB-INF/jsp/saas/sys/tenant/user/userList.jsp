@@ -18,9 +18,9 @@
 
 <!-- BEGIN PAGE LEVEL STYLES -->
 
-<link rel="stylesheet" type="text/css" href="<%=path%>/css/select2_metro.css" />
+<link rel="stylesheet" type="text/css" href="${path}/css/select2_metro.css" />
 
-<link rel="stylesheet" href="<%=path%>/css/DT_bootstrap.css" />
+<link rel="stylesheet" href="${path}/css/DT_bootstrap.css" />
 
 
 <style type="text/css">
@@ -94,7 +94,7 @@ table {
 	
 					<div class="modal-body" style="padding: 10px;">
 	
-						<form action="<%=path%>/sys/tenant/user/update" class="form-horizontal myform"
+						<form action="${path}/sys/tenant/user/update" class="form-horizontal myform"
 							id="submit_form" method="post">
 							<div class="tab-pane active" id="tab1">
 								<div>
@@ -175,7 +175,7 @@ table {
 	
 					<div class="modal-body">
 	
-						<form action="<%=path%>/sys/tenant/user/saveRelation" class="form-horizontal myform"
+						<form action="${path}/sys/tenant/user/saveRelation" class="form-horizontal myform"
 							id="submit_form2" method="post">
 							<div class="tab-pane active" id="tab2">
 								<div>
@@ -331,12 +331,12 @@ table {
 
 	</div>
 
-	<script type="text/javascript" src="<%=path%>/js/select2.min.js"></script>
+	<script type="text/javascript" src="${path}/js/select2.min.js"></script>
 
 	<script type="text/javascript"
-		src="<%=path%>/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/jquery.form.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/DT_bootstrap.js"></script>
+		src="${path}/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="${path}/js/jquery.form.js"></script>
+	<script type="text/javascript" src="${path}/js/DT_bootstrap.js"></script>
 	
 	<!-- END PAGE LEVEL PLUGINS -->
 	<script>
@@ -471,7 +471,7 @@ table {
 		$('.remove').click(function () {
 			var id = $(this).attr("value");
 			var itemName = $(this).attr("itemName");
-			actionByConfirm1(itemName, "<%=path%>/sys/tenant/user/delete/" + id, null, deleteCallBack, "移除");
+			actionByConfirm1(itemName, "${path}/sys/tenant/user/delete/" + id, null, deleteCallBack, "移除");
 			
 		});
 		
@@ -486,7 +486,7 @@ table {
 		$(".locked").on("click",function(){
 			var userid = $(this).attr("userid");
 			var locked = $(this).attr("itemProperty");
-			localPost("<%=path%>/sys/tenant/user/locked",{"userid":userid,"locked":locked},function(data){
+			localPost("${path}/sys/tenant/user/locked",{"userid":userid,"locked":locked},function(data){
 				if (data.success) {
 					showTip("提示",data.msg, 1300);
 					setTimeout("window.location.href='"+"${path}/sys/tenant/user/list'",1300);
@@ -496,7 +496,7 @@ table {
 
 		$('.setRole').click(function () {
 			var userId = $(this).attr("itemProperty");
-            localPost("<%=path%>/sys/tenant/user/getRoleSelection/" + userId,null, function(data,status){
+            localPost("${path}/sys/tenant/user/getRoleSelection/" + userId,null, function(data,status){
                 if (status == "success") {
                     $('#userId').val(userId);
                     $('#relationId').val(data.relationId);
@@ -547,7 +547,7 @@ table {
 		$('.chooseTenant').click(function () {
 			var id = $(this).attr("value");
 			
-			localPost("<%=path%>/sys/user/getTenantSelection", {"userId" : id}, function(data,status){
+			localPost("${path}/sys/user/getTenantSelection", {"userId" : id}, function(data,status){
 				if (status == "success") {
 					$('#userIdInchooseTenant').val(id);
 					var selection = $('.Multiselect_show');

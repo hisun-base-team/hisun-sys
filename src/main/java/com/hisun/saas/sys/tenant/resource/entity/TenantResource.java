@@ -26,13 +26,13 @@ import java.util.List;
 @Table(name = "sys_tenant_resource")
 public class TenantResource extends AbstractResource
         implements Serializable, Comparable<TenantResource> {
-    protected Integer privilegeSetting = 0;//是否需要设置数据权限   0表示不设置  1表示需要设置
+
+
 
     private static final long serialVersionUID = -7479768004811251553L;
     private List<Tenant2Resource> tenant2Resources;
-
     private List<TenantResourcePrivilege> tenantResourcePrivileges;
-
+    private Integer privilegeSetting = 0;//是否需要设置数据权限   0表示不设置  1表示需要设置
 
     public TenantResource(){}
 

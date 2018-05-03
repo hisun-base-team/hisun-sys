@@ -116,7 +116,7 @@
 				modal.show();
 				add.show();
 			});
-			$.get("<%=path%>/sys/admin/dictionary/item/select", function(data,status){
+			$.get("${path}/sys/admin/dictionary/item/select", function(data,status){
 				if (status == "success") {
 					var selection = $('#type');
 					selection.empty();

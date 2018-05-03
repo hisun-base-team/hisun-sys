@@ -18,9 +18,9 @@
 <!-- BEGIN PAGE LEVEL STYLES -->
 
 <link rel="stylesheet" type="text/css"
-	href="<%=path%>/css/select2_metro.css" />
+	href="${path}/css/select2_metro.css" />
 
-<link rel="stylesheet" href="<%=path%>/css/DT_bootstrap.css" />
+<link rel="stylesheet" href="${path}/css/DT_bootstrap.css" />
 
 
 <style type="text/css">
@@ -214,12 +214,12 @@ table {
 
 	</div>
 
-	<script type="text/javascript" src="<%=path%>/js/select2.min.js"></script>
+	<script type="text/javascript" src="${path}/js/select2.min.js"></script>
 
 	<script type="text/javascript"
-		src="<%=path%>/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/jquery.form.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/DT_bootstrap.js"></script>
+		src="${path}/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="${path}/js/jquery.form.js"></script>
+	<script type="text/javascript" src="${path}/js/DT_bootstrap.js"></script>
 	
 	<!-- END PAGE LEVEL PLUGINS -->
 	<script>

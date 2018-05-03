@@ -9,7 +9,7 @@
 <html>
 <head>
 
-	<link href="<%=path%>/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
+	<link href="${path}/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
 
 	<script src="${contextPath}/js/zipjs/zip.js" charset=“utf-8”></script>
 	<script src="${contextPath}/js/zipjs/mime-types.js"  charset=“utf-8”></script>

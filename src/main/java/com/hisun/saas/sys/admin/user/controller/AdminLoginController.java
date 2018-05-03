@@ -98,7 +98,7 @@ public class AdminLoginController extends BaseController {
 			CsrfGuard csrfGuard = CsrfGuard.getInstance();
 			csrfGuard.updateToken(WrapWebUtils.getSession());
 			if(user.getAdmin()){
-				return "redirect:/sys/admin/user/list?OWASP_CSRFTOKEN="+ WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
+				return "redirect:/sys/tenant/tenant/list?OWASP_CSRFTOKEN="+ WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
 			}else{
 				return "redirect:/sys/admin/user/profile?OWASP_CSRFTOKEN="+ WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
 			}

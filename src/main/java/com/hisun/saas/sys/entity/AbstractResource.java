@@ -22,15 +22,19 @@ import java.math.BigDecimal;
 public abstract  class AbstractResource extends TombstoneEntity {
 
     public final static Integer ENABLE=0;
-    public final static Integer DISABLE=0;
+    public final static Integer DISABLE=1;
+
+    public final static Integer MENU=0;
+    public final static Integer ACTION=1;
+    public final static Integer APP=2;
 
     protected String id;
     protected String pId;
     protected String resourceName;
-    protected Integer resourceType = BigDecimal.ZERO.intValue();
-    protected Integer status = BigDecimal.ZERO.intValue();
+    protected Integer resourceType =MENU;//0-菜单,1-操作,2-系统
+    protected Integer status =ENABLE;
     protected String url;
-    protected Integer sort = BigDecimal.ZERO.intValue();
+    protected Integer sort = 1;
     protected String permission;
     protected String description;
     protected String queryCode;//查询编码 3位一层 001-999

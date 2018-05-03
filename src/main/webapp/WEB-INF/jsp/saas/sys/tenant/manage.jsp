@@ -10,10 +10,10 @@
 <!-- BEGIN PAGE LEVEL STYLES -->
 
 <link rel="stylesheet" type="text/css"
-	href="<%=path%>/css/select2_metro.css" />
+	href="${path}/css/select2_metro.css" />
 
-<link rel="stylesheet" href="<%=path%>/css/DT_bootstrap.css" />
-<link href="<%=path%>/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="${path}/css/DT_bootstrap.css" />
+<link href="${path}/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
 
 <style type="text/css">
 .mybodyfont{
@@ -113,7 +113,7 @@ table {
 			
 							<div class="modal-body">
 			
-								<form action="<%=path%>/sys/tenant/save" class="form-horizontal myform"
+								<form action="${path}/sys/tenant/save" class="form-horizontal myform"
 									id="submit_form" method="post">
 									<div class="tab-pane active" id="tab1">
 										<div>
@@ -453,7 +453,7 @@ table {
 														</c:choose>
 												</td>
 												<td title="">
-													<a href="<%=path%>/sys/tenant/assignment/<c:out value="${tenant.id}"></c:out>" class="" value="<c:out value="${tenant.id}"></c:out>" itemProperty="<c:out value="${tenant.property}"></c:out>" >
+													<a href="${path}/sys/tenant/assignment/<c:out value="${tenant.id}"></c:out>" class="" value="<c:out value="${tenant.id}"></c:out>" itemProperty="<c:out value="${tenant.property}"></c:out>" >
 														分派人员
 													</a>
 												</td>
@@ -508,17 +508,17 @@ table {
 
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
 
-	<script type="text/javascript" src="<%=path%>/js/select2.min.js"></script>
+	<script type="text/javascript" src="${path}/js/select2.min.js"></script>
 
 	<script type="text/javascript"
-		src="<%=path%>/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/jquery.form.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/DT_bootstrap.js"></script>
+		src="${path}/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="${path}/js/jquery.form.js"></script>
+	<script type="text/javascript" src="${path}/js/DT_bootstrap.js"></script>
 	<script type="text/javascript" src="${path }/js/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="${path }/js/common/custom-validate.js"></script>
 	<script type="text/javascript" src="${path }/js/common/est-validate-init.js"></script>
 	<script type="text/javascript" src="${path }/js/common/validate-message.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/zTree/jquery.ztree.all-3.5.js"></script>
+	<script type="text/javascript" src="${path}/js/zTree/jquery.ztree.all-3.5.js"></script>
 	<script type="text/javascript">
 	jQuery(document).ready(function() {
 		
@@ -600,7 +600,7 @@ table {
 			//var property = $(this).attr("itemProperty");
 			//var type = $(this).attr("itemType");
 			$("#tenantid").val(id);
-			$.post("<%=path%>/sys/tenant/load/assignment", {"tenantid" : id}, function(data,status){
+			$.post("${path}/sys/tenant/load/assignment", {"tenantid" : id}, function(data,status){
 				if (status == "success") {
 					$('#myModal2').modal('show');
 					if(data.assignment===null){
@@ -625,7 +625,7 @@ table {
 				}
 			};
 		
-		$.get("<%=path%>/sys/user/select", function(data,status){
+		$.get("${path}/sys/user/select", function(data,status){
 			if (status == "success") {
 				resTree1 = $.fn.zTree.init($("#treeDemo1"), setting, data.data);
 			}
@@ -635,7 +635,7 @@ table {
 			var id = $(this).attr("value");
 			var property = $(this).attr("itemProperty");
 			var type = $(this).attr("itemType");
-			$.get("<%=path%>/sys/tenant/load", {"id" : id, "property" : property, "type" : type}, function(data,status){
+			$.get("${path}/sys/tenant/load", {"id" : id, "property" : property, "type" : type}, function(data,status){
 				if (status == "success") {
 					if (data.vo != null) {
 						$('#id').val(data.vo.id);

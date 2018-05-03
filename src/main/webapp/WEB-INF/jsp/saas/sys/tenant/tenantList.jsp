@@ -18,9 +18,9 @@
 <!-- BEGIN PAGE LEVEL STYLES -->
 
 <link rel="stylesheet" type="text/css"
-	href="<%=path%>/css/select2_metro.css" />
+	href="${path}/css/select2_metro.css" />
 
-<link rel="stylesheet" href="<%=path%>/css/DT_bootstrap.css" />
+<link rel="stylesheet" href="${path}/css/DT_bootstrap.css" />
 
 
 <style type="text/css">
@@ -102,7 +102,7 @@ table {
 	
 					<div class="modal-body">
 	
-						<form action="<%=path%>/sys/org/setUser" class="form-horizontal myform"
+						<form action="${path}/sys/org/setUser" class="form-horizontal myform"
 							id="submit_form2" method="post">
 							<div class="tab-pane active" id="tab2">
 								<div>
@@ -266,12 +266,12 @@ table {
 
 	</div>
 
-	<script type="text/javascript" src="<%=path%>/js/select2.min.js"></script>
+	<script type="text/javascript" src="${path}/js/select2.min.js"></script>
 
 	<script type="text/javascript"
-		src="<%=path%>/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/jquery.form.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/DT_bootstrap.js"></script>
+		src="${path}/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="${path}/js/jquery.form.js"></script>
+	<script type="text/javascript" src="${path}/js/DT_bootstrap.js"></script>
 
 	<!-- END PAGE LEVEL PLUGINS -->
 
@@ -311,7 +311,7 @@ table {
 			});
 			
 			$("#searchButton").on("click",function(){
-				$.get("<%=path%>/sys/tenant/ajax/list?pId="+$('#pId').val()+"&tenantName=" +$('#tenant_Name').val(),function(data){
+				$.get("${path}/sys/tenant/ajax/list?pId="+$('#pId').val()+"&tenantName=" +$('#tenant_Name').val(),function(data){
 					$("#tenantList").html(data);
 				},"html");
 			});
@@ -320,7 +320,7 @@ table {
 				var id = $(this).attr("value");
 				var property = $(this).attr("itemProperty");
 				var type = $(this).attr("itemType");
-				$.get("<%=path%>/sys/tenant/load", {"id" : id, "property" : property, "type" : type}, function(data,status){
+				$.get("${path}/sys/tenant/load", {"id" : id, "property" : property, "type" : type}, function(data,status){
 					if (status == "success") {
 						if (data.vo != null) {
 							$('#id').val(data.vo.id);
@@ -351,7 +351,7 @@ table {
 			$('.remove').click(function () {
 				var id = $(this).attr("value");
 				var itemName = $(this).attr("itemName");
-				actionByConfirm1(itemName, "<%=path%>/sys/tenant/delete/" + id, function(data,status){
+				actionByConfirm1(itemName, "${path}/sys/tenant/delete/" + id, function(data,status){
 					if (status == "success") {
 						location.reload();
 					}
@@ -362,7 +362,7 @@ table {
 			$('.logoff').click(function () {
 				var id = $(this).attr("value");
 				var itemName = $(this).attr("itemName");
-				actionByConfirm1(itemName, "<%=path%>/sys/tenant/logoff/" + id,{}, function(data,status){
+				actionByConfirm1(itemName, "${path}/sys/tenant/logoff/" + id,{}, function(data,status){
 					if (status == "success") {
 						window.location.href='${path}/sys/tenant/list/tree?tenantId='+$('#pId').val();
 					}

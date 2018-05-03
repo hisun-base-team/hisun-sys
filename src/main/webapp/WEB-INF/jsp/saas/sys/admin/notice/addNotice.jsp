@@ -88,7 +88,7 @@
 									</div>
 									<div class="form-actions">
 										<button id="submitbut" type="button" class="btn green mybutton"><i class='icon-ok'></i> 确定</button>
-										<a href="<%=path%>/sys/admin/notice/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" class="btn btn-default"
+										<a href="${path}/sys/admin/notice/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" class="btn btn-default"
 							               data-dismiss="modal"><i class='icon-remove-sign'></i> 取消
 							            </a>
 									</div>

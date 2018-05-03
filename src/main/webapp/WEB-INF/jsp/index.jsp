@@ -165,14 +165,14 @@
 				<c:choose>
 					<c:when test="${username ne 'admin'}">
 						<a class="brand" href="${path}/dashboard" style="margin-left: 0px;">
-								<%-- <img src="<%=path%>/images/logo-mid.png" alt="logo" /> --%>
-							<img src="<%=path%>/images/${logo}" alt="logo"/>
+								<%-- <img src="${path}/images/logo-mid.png" alt="logo" /> --%>
+							<img src="${path}/images/${logo}" alt="logo"/>
 						</a>
 					</c:when>
 					<c:otherwise>
 						<a class="brand" href="javaScript:;" style="margin-left: 0px;">
-								<%-- <img src="<%=path%>/images/logo-mid.png" alt="logo" /> --%>
-							<img src="<%=path%>/images/${logo}" alt="logo"/>
+								<%-- <img src="${path}/images/logo-mid.png" alt="logo" /> --%>
+							<img src="${path}/images/${logo}" alt="logo"/>
 						</a>
 					</c:otherwise>
 				</c:choose>
@@ -225,10 +225,10 @@
                                 <i class="icon-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="<%=path%>/sys/tenant/user/profile?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+                                <li><a href="${path}/sys/tenant/user/profile?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
                                     <i class="icon-user"> 个人中心</i></a>
                                 </li>
-                                <li><a href="<%=path%>/logout">
+                                <li><a href="${path}/logout">
                                     <i class="icon-off"></i> 退出</a>
                                 </li>
 
@@ -245,10 +245,10 @@
                                 <i class="icon-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="<%=path%>/sys/admin/user/profile?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+                                <li><a href="${path}/sys/admin/user/profile?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
                                     <i class="icon-user"> 个人中心</i></a>
                                 </li>
-                                <li><a href="<%=path%>/admin/logout" id="logout">
+                                <li><a href="${path}/admin/logout" id="logout">
                                     <i class="icon-off"></i> 退出</a>
                                 </li>
 

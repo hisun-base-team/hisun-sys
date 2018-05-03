@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css"
-	href="<%=path%>/css/select2_metro.css" />
+	href="${path}/css/select2_metro.css" />
 <title>分派人员</title>
 </head>
 <body>
@@ -49,7 +49,7 @@
 									</div>
 									<div class="form-actions">
 										<button id="submitBtn" type="button" class="btn green mybutton"><i class='icon-ok'></i> 确定</button>
-										<a href="<%=path%>/sys/tenant/manage" class="btn btn-default"
+										<a href="${path}/sys/tenant/manage" class="btn btn-default"
 							               data-dismiss="modal"><i class='icon-remove-sign'></i> 取消
 							            </a>
 									</div>
@@ -61,7 +61,7 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="<%=path%>/js/select2.min.js"></script>
+	<script type="text/javascript" src="${path}/js/select2.min.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			$("#select2_sample6").select2({

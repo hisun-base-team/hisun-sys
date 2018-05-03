@@ -10,9 +10,9 @@
 <title>操作日志列表</title>
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" type="text/css"
-	href="<%=path%>/css/select2_metro.css" />
+	href="${path}/css/select2_metro.css" />
 <link href="${path}/css/common/common.css" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" href="<%=path%>/css/DT_bootstrap.css" />
+<link rel="stylesheet" href="${path}/css/DT_bootstrap.css" />
 <style type="text/css">
 </style>
 <!-- END PAGE LEVEL STYLES -->
@@ -113,15 +113,15 @@
 
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
 
-	<script type="text/javascript" src="<%=path%>/js/select2.min.js"></script>
+	<script type="text/javascript" src="${path}/js/select2.min.js"></script>
 	<script type="text/javascript"
-		src="<%=path%>/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/jquery.form.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/DT_bootstrap.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.zh-CN.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/bootstrap-datetimepicker.js"></script>
-	<script type="text/javascript" src="<%=path%>/js/bootstrap-datetimepicker.zh-CN.js"></script>
+		src="${path}/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="${path}/js/jquery.form.js"></script>
+	<script type="text/javascript" src="${path}/js/DT_bootstrap.js"></script>
+	<script type="text/javascript" src="${path}/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="${path}/js/bootstrap-datepicker.zh-CN.js"></script>
+	<script type="text/javascript" src="${path}/js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript" src="${path}/js/bootstrap-datetimepicker.zh-CN.js"></script>
 	<script type="text/javascript">
 	jQuery(document).ready(function() {
 		

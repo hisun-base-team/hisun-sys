@@ -9,15 +9,21 @@ package com.hisun.saas.sys.tenant.user.entity;
 import com.hisun.saas.sys.tenant.base.entity.TenantEntityInterface;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.sys.entity.AbstractUser;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Rocky {rockwithyou@126.com}
  */
+@FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "tenantFilterParam", type = "string"))
+@Filters({
+		@Filter(name = "tenantFilter", condition = " tenant_id=:tenantFilterParam ")
+})
 @Entity
 @Table(name="sys_tenant_user")
 public class TenantUser extends AbstractUser implements TenantEntityInterface, Serializable {

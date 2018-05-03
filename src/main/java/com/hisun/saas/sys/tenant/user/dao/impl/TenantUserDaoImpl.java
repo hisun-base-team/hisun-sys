@@ -1,5 +1,6 @@
 package com.hisun.saas.sys.tenant.user.dao.impl;
 
+import com.hisun.saas.sys.tenant.base.dao.imp.TenantBaseDaoImpl;
 import com.hisun.saas.sys.tenant.tenant.vo.TenantRegisterVo;
 import com.hisun.saas.sys.tenant.user.dao.TenantUserDao;
 import com.hisun.saas.sys.tenant.user.entity.TenantUser;
@@ -20,17 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * <p>类名称:TenantUserDaoImpl</p>
- * <p>类描述:</p>
- * <p>公司:湖南海数互联信息技术有限公司</p>
- *
- * @创建者:init
- * @创建人:15/11/18下午2:03
- * @创建人联系方式:init@hn-hisun.com
- */
 @Repository
-public class TenantUserDaoImpl extends BaseDaoImpl<TenantUser,String> implements TenantUserDao {
+public class TenantUserDaoImpl extends TenantBaseDaoImpl<TenantUser,String> implements TenantUserDao {
 
     private RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
 

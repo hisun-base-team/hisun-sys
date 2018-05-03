@@ -9,6 +9,7 @@ package com.hisun.saas.sys.tenant.user.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.hisun.saas.sys.auth.Constants;
 import com.hisun.saas.sys.auth.service.PasswordHelper;
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.dao.util.CommonConditionQuery;
@@ -111,6 +112,7 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
             userLoginDetails.setTenant(user.getTenant());
             userLoginDetails.setTenantId(user.getTenant().getId());
             userLoginDetails.setTenantName(user.getTenant().getName());
+            userLoginDetails.setUserType(Constants.USER_TYPE_TENANT);
             List<AbstractRole> roles = new ArrayList<AbstractRole>();
             List<TenantUserRole> tenantUserRoles = user.getUserRoles();
             for(TenantUserRole userRole : tenantUserRoles){
@@ -119,16 +121,7 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
             userLoginDetails.setRoles(roles);
             List<AbstractResource> resources = new ArrayList<AbstractResource>();
             List<TenantResource> tenantResources = this.tenantRoleResourceDao.findResourcesByUser(user.getId());
-            Set<TenantResource> set = Sets.newLinkedHashSet();
-            set.addAll(tenantResources);
-            List<TenantResource> resources2 = new ArrayList<TenantResource>();
-            for(TenantResource resource : set){
-                if(resource.getStatus()==0){
-                    resources2.add(resource);
-                }
-            }
-            Collections.sort(resources2);
-            for(TenantResource tenantResource : resources2){
+            for(TenantResource tenantResource : tenantResources){
                 resources.add(tenantResource);
             }
             userLoginDetails.setResources(resources);
@@ -220,7 +213,6 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
     public TenantUser findByUsername(String username) {
         CommonConditionQuery query = new CommonConditionQuery();
         query.add(CommonRestrictions.and(" username = :username", "username", username));
-        //query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", TombstoneEntity.TOMBSTONE_FALSE));
         List<TenantUser> userList = tenantUserDao.list(query, null);
         if (userList.size() == 0) {
             return null;

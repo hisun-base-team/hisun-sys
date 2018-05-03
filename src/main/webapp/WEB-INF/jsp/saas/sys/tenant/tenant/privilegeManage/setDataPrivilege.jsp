@@ -91,8 +91,8 @@
 
 <%-- END PAGE CONTENT--%>
 </div>
-<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.zh-CN.js"></script>
+<script type="text/javascript" src="${path}/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="${path}/js/bootstrap-datepicker.zh-CN.js"></script>
 <script type="text/javascript">
 	(function(){
 		App.init();

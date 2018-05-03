@@ -77,10 +77,10 @@
 													</td>
 													<td class="Left_alignment">
 														<shiro:hasPermission name="admin-platform:mail_update">
-															<a href="<%=path%>/sys/admin/mail/update/${config.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">编辑</a>|
+															<a href="${path}/sys/admin/mail/update/${config.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">编辑</a>|
 														</shiro:hasPermission>
 														<shiro:hasPermission name="admin-platform:mail_test">
-															<a href="<%=path%>/sys/admin/mail/test/${config.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" class="" >测试</a>|
+															<a href="${path}/sys/admin/mail/test/${config.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" class="" >测试</a>|
 														</shiro:hasPermission>
 														<shiro:hasPermission name="admin-platform:mail_delete">
 															<a href="javascript:;" class="" id="${config.id}" itemname="<c:out value="${config.name }"></c:out>" onclick="del(this);">删除</a>

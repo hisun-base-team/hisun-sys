@@ -13,7 +13,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="<%=path%>/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
+<link href="${path}/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
 .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
 .page-content{   padding: 0 !important; }
@@ -50,7 +50,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 
 
 
-	<script type="text/javascript" src="<%=path%>/js/common/est-validate-init.js"></script>
+	<script type="text/javascript" src="${path}/js/common/est-validate-init.js"></script>
 			<script type="text/javascript" src="${path }/js/common/loading.js"></script>
 	<script type="text/javascript">
 		var myLoading = new MyLoading("${path}",{zindex : 11111});

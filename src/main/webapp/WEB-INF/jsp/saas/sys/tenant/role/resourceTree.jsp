@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="<%=path%>/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
+<link href="${path}/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
 <title>角色授权</title>
 </head>
 <div class="container-fluid">
@@ -66,7 +66,7 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="<%=path%>/js/zTree/jquery.ztree.all-3.5.js"></script>
+<script type="text/javascript" src="${path}/js/zTree/jquery.ztree.all-3.5.js"></script>
 <script type="text/javascript" src="${path }/js/common/loading.js"></script>
 <script type="text/javascript">
 	var setting = {

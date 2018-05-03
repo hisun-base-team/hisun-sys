@@ -110,8 +110,8 @@
                     <div class="dropdown-menu navigdrop_down02">
                         <p class="mod_zt02"></p>
                         <ul class="dropdown-navbell02">
-                            <li><a href="<%=path%>/sys/tenant/user/profile?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"><i class="icon-user"></i> 个人中心</a></li>
-                            <li class="external"><a href="<%=path%>/logout"><i class="icon-off"></i> 退出</a></li>
+                            <li><a href="${path}/sys/tenant/user/profile?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"><i class="icon-user"></i> 个人中心</a></li>
+                            <li class="external"><a href="${path}/logout"><i class="icon-off"></i> 退出</a></li>
                         </ul>
                     </div>
                 </li>

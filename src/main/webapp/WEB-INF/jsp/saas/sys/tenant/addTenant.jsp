@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="portlet-body form">
-						<form action="<%=path%>/sys/tenant/save" class="form-horizontal myform"
+						<form action="${path}/sys/tenant/save" class="form-horizontal myform"
 						id="submit_form" method="post">
 							<div class="tab-pane active" id="tab1">
 								<div>
@@ -69,7 +69,7 @@
 									
 									<div class="form-actions">
 										<button id="submitBtn" type="submit" class="btn green mybutton"><i class='icon-ok'></i> 确定</button>
-										<a href="<%=path%>/sys/tenant/list" class="btn btn-default"
+										<a href="${path}/sys/tenant/list" class="btn btn-default"
 							               data-dismiss="modal"><i class='icon-remove-sign'></i> 取消
 							            </a>
 									</div>

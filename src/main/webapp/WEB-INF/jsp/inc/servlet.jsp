@@ -1,5 +1,5 @@
 <%@page import="com.hisun.saas.sys.auth.Constants"%>
-<%@page import="com.hisun.saas.sys.admin.resource.entity.Resource"%>
+<%@page import="com.hisun.saas.sys.entity.AbstractResource"%>
 <%@page import="com.hisun.saas.sys.auth.UserLoginDetails"%>
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
@@ -13,11 +13,11 @@ request.setAttribute("path", path);
 request.setAttribute("basePath", basePath);
 
 UserLoginDetails userLoginDetails = (UserLoginDetails)SecurityUtils.getSubject().getSession().getAttribute(Constants.CURRENT_USER);
-//List<Resource> resources = new ArrayList<Resource>();
+List<AbstractResource> resources = new ArrayList<AbstractResource>();
 String username = "";
 String headPhoto = "";
 if (userLoginDetails != null) {
-	//resources = userLoginDetails.getResources();
+	resources = userLoginDetails.getResources();
 	username = StringUtils.isNotBlank(userLoginDetails.getRealname())?userLoginDetails.getRealname():userLoginDetails.getUsername();
 	headPhoto = userLoginDetails.getHeadPhoto();
 	request.getSession().setAttribute("userId",userLoginDetails.getUserid());

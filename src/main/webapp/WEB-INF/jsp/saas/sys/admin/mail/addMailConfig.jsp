@@ -273,7 +273,7 @@
             var aa = $("#addForm").serialize();
             if (bool) {
                 $.ajax({
-                    url : "<%=path%>/sys/admin/mail/add",
+                    url : "${path}/sys/admin/mail/add",
                     type : "post",
                     data : $("#addForm").serialize(),
                     headers: {

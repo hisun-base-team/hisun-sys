@@ -169,13 +169,12 @@ li {
             <c:choose>
                 <c:when test="${username ne 'admin'}">
                     <a class="brand" href="${path}/dashboard" style="margin-left: 0px;">
-                            <%-- <img src="<%=path%>/images/logo-mid.png" alt="logo" /> --%>
-                        <img style="max-height: 32px;" src="<%=path%>/images/${mainLogo}" alt="logo"/>
+                        <img style="max-height: 32px;" src="${path}/images/${mainLogo}" alt="logo"/>
                     </a>
                 </c:when>
                 <c:otherwise>
-                    <a class="brand" href="javaScript:;" style="margin-left: 0px;">
-                        <img style="max-height: 32px;" src="<%=path%>/images/${mainLogo}" alt="logo"/>
+                    <a class="brand" href="#" style="margin-left: 0px;">
+                        <img style="max-height: 32px;" src="${path}/images/${mainLogo}" alt="logo"/>
                     </a>
                 </c:otherwise>
             </c:choose>
@@ -206,40 +205,39 @@ li {
                         <ul class="dropdown-menu extended notification" id="messages">
                         </ul>
                     </li>
-
                 </c:if>
-                <shiro:hasPermission name="adminticekt:ticketservice ">
-                    <li class="dropdown lired" id="header_notification_bar">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="username">工单服务</span>
-                            <i class="icon-angle-down"></i>
-                        </a>
-                        <ul class="dropdown-menu extended notification"
-                            style="width: 120px !important;min-width: 120px !important;">
-                            <shiro:hasPermission name="adminticket:ticket_createIndex">
-                                <li>
-                                    <a style="width: 100px;"
-                                       href="${path}/sys/admin/ticket/createIndex?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
-                                        <i class="icon-pencil"></i> 提交工单
-                                    </a>
-                                </li>
-                                <li>
-                                    <a style="width: 100px;"
-                                       href="${path}/sys/admin/ticket/mine?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
-                                        <i class="icon-folder-open"></i> 我的工单</a>
-                                </li>
-                            </shiro:hasPermission>
-                            <shiro:hasPermission name="adminticket:ticket_customadmin">
-                                <li>
-                                    <a style="width: 100px;"
-                                       href="${path}/sys/admin/ticket/custom/admin/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
-                                        <i class="icon-pencil"></i> 工单列表
-                                    </a>
-                                </li>
-                            </shiro:hasPermission>
-                        </ul>
-                    </li>
-                </shiro:hasPermission>
+                <%--<shiro:hasPermission name="adminticekt:ticketservice ">--%>
+                    <%--<li class="dropdown lired" id="header_notification_bar">--%>
+                        <%--<a href="#" class="dropdown-toggle" data-toggle="dropdown">--%>
+                            <%--<span class="username">工单服务</span>--%>
+                            <%--<i class="icon-angle-down"></i>--%>
+                        <%--</a>--%>
+                        <%--<ul class="dropdown-menu extended notification"--%>
+                            <%--style="width: 120px !important;min-width: 120px !important;">--%>
+                            <%--<shiro:hasPermission name="adminticket:ticket_createIndex">--%>
+                                <%--<li>--%>
+                                    <%--<a style="width: 100px;"--%>
+                                       <%--href="${path}/sys/admin/ticket/createIndex?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">--%>
+                                        <%--<i class="icon-pencil"></i> 提交工单--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                                <%--<li>--%>
+                                    <%--<a style="width: 100px;"--%>
+                                       <%--href="${path}/sys/admin/ticket/mine?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">--%>
+                                        <%--<i class="icon-folder-open"></i> 我的工单</a>--%>
+                                <%--</li>--%>
+                            <%--</shiro:hasPermission>--%>
+                            <%--<shiro:hasPermission name="adminticket:ticket_customadmin">--%>
+                                <%--<li>--%>
+                                    <%--<a style="width: 100px;"--%>
+                                       <%--href="${path}/sys/admin/ticket/custom/admin/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">--%>
+                                        <%--<i class="icon-pencil"></i> 工单列表--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                            <%--</shiro:hasPermission>--%>
+                        <%--</ul>--%>
+                    <%--</li>--%>
+                <%--</shiro:hasPermission>--%>
                 <c:if test="${!empty tenant.id}">
                     <li class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -290,8 +288,7 @@ li {
     <!-- BEGIN HORIZONTAL MENU PAGE  -->
     <div class="page-sidebar nav-collapse">
         <div class="scroller" data-height="100%" data-always-visible="1" data-rail-visible="1" style="padding-bottom:50px;">
-            <ul class="page-sidebar-menu hidden-phone hidden-tablet"
-                id="moduleUl">
+            <ul class="page-sidebar-menu hidden-phone hidden-tablet" id="moduleUl">
                 <li class="nudisplay" style="">
                     <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
                     <div class="sidebar-toggler hidden-phone"></div>
@@ -347,8 +344,6 @@ li {
             } else {
                 body.addClass("page-sidebar-closed");
             }
-
-            //runResponsiveHandlers();
         });
 
         // handle the search bar close
@@ -377,7 +372,7 @@ li {
      * 初始化菜单
      */
     function getMenus(reInit) {
-        localPost("${path}/sys/resource/getMenu", null,
+        localPost("${path}/sys/menu", null,
                 function (data, status) {
                     if (status == "success") {
                         var datas = data.data;
@@ -402,15 +397,7 @@ li {
                             }
 
                             if ($("#systemUl") != null) {
-                                //顶部横向菜单
-                                //按目前(20160510)的下面这个判断完全用不上，永远都会去到ELSE判断里面
-                                if (datas[key].permission === 'user:all' || datas[key].permission === 'tenant:usercenter' || datas[key].permission === 'adminticekt:ticketservice') {
-
-                                    $("#systemUl").append("<li queryCode='" + datas[key].queryCode + "' style='display: none' class='systemLi' id='" + datas[key].resId + "' resid='" + datas[key].resId + "' pid='" + datas[key].pId + "'><a taget='" + href + "' onclick=topMenus(\'" + datas[key].resId + "\',this,true);> " + datas[key].resourceName + " <span class='selected'></span> </a></li>")
-                                } else {
-
-                                    $("#systemUl").append("<li queryCode='" + datas[key].queryCode + "' class='systemLi' id='" + datas[key].resId + "' resid='" + datas[key].resId + "' pid='" + datas[key].pId + "'><a taget='" + href + "' onclick=topMenus(\'" + datas[key].resId + "\',this,true);> " + datas[key].resourceName + " <span class='selected'></span> </a></li>")
-                                }
+                                $("#systemUl").append("<li queryCode='" + datas[key].queryCode + "' class='systemLi' id='" + datas[key].resId + "' resid='" + datas[key].resId + "' pid='" + datas[key].pId + "'><a taget='" + href + "' onclick=topMenus(\'" + datas[key].resId + "\',this,true);> " + datas[key].resourceName + " <span class='selected'></span> </a></li>")
                             }
                             //左侧菜单
                             var levelOneResources = datas[key].children;
@@ -571,6 +558,7 @@ li {
                     }
                 }, "json", {"OWASP_CSRFTOKEN": "${sessionScope.OWASP_CSRFTOKEN}"});
     }
+
     function topMenus(topMenus, url, bool) {
 
         $(".systemLi").removeClass("active");
