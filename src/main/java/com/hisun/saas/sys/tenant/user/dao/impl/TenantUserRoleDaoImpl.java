@@ -22,13 +22,5 @@ import java.util.Map;
  */
 @Repository
 public class TenantUserRoleDaoImpl extends BaseDaoImpl<TenantUserRole,String> implements TenantUserRoleDao {
-    @Override
-    public List<TenantRole> findRolesByUser(String userId) {
-        String sql = "select r.* from sys_tenant_user_role ur ,sys_tenant_role r"
-                + " where ur.tenant_user_id = :userId and ur.tenant_role_id = r.id";
-        Map<String,Object> paramMap = new HashMap<String,Object>();
-        paramMap.put("userId", userId);
-        return nativeList(TenantRole.class, sql, paramMap);
-    }
 
 }

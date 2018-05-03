@@ -4,16 +4,15 @@
  * 注意:本内容知识产权属于湖南海数互联信息技术有限公司所有,除非取得商业授权,否则不得用于商业目的.
  */
 
-package com.hisun.saas.sys.tenant;
+package com.hisun.saas.sys.tenant.role.dao;
+
+import com.hisun.base.dao.BaseDao;
+import com.hisun.saas.sys.tenant.role.entity.TenantRoleTplt;
+import com.hisun.saas.sys.tenant.role.entity.TenantRoleTpltResource;
 
 /**
  * @author Rocky {rockwithyou@126.com}
  */
-public class Constants {
+public interface TenantRoleTpltResourceDao extends BaseDao<TenantRoleTpltResource,String> {
 
-    //管理员角色前缀
-    public static final String ROLE_ADMIN_PREFIX = "ROLE_ADMIN_";
-
-    public static final int DEFAULT_ROLE = 1;
-    public static final int NORMAL_ROLE = 0;
 }

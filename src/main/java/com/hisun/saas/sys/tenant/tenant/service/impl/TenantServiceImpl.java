@@ -8,6 +8,8 @@ package com.hisun.saas.sys.tenant.tenant.service.impl;
 
 import com.hisun.saas.sys.tenant.Constants;
 import com.hisun.saas.sys.tenant.role.dao.TenantRoleDao;
+import com.hisun.saas.sys.tenant.role.dao.TenantRoleTpltDao;
+import com.hisun.saas.sys.tenant.role.entity.TenantRoleTplt;
 import com.hisun.saas.sys.tenant.user.entity.TenantUserRole;
 import com.hisun.saas.sys.auth.service.PasswordHelper;
 import com.hisun.saas.sys.auth.service.SessionHelper;
@@ -59,6 +61,9 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant, String> implement
 
 	@Resource
 	private TenantUserRoleDao tenantUserRoleDao;
+
+	@Resource
+	private TenantRoleTpltDao tenantRoleTpltDao;
 	
     @Resource
 	public void setBaseDao(BaseDao<Tenant, String> tenantDao) {
@@ -88,6 +93,14 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant, String> implement
 		role.setRoleCode(Constants.ROLE_ADMIN_PREFIX+vo.getShortNamePy().toUpperCase());
 		role.setDescription("单位管理员角色");
 		role.setSort(1);
+		role.setIsDefault(Constants.DEFAULT_ROLE);
+		//设置缺省角色模板
+		CommonConditionQuery query = new CommonConditionQuery();
+		query.add(CommonRestrictions.and("roleCodePrefix = : codePrefix","codePrefix",Constants.ROLE_ADMIN_PREFIX));
+		List<TenantRoleTplt> tenantRoleTplts =  tenantRoleTpltDao.list(query,null);
+		if(tenantRoleTplts!=null&& tenantRoleTplts.size()>0){
+			role.setTenantRoleTplt(tenantRoleTplts.get(0));
+		}
 		tenantRoleDao.save(role);
 		//关联管理员角色
 		TenantUserRole tenantUserRole = new TenantUserRole();

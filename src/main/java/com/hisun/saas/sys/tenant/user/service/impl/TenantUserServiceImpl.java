@@ -112,9 +112,9 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
             userLoginDetails.setTenantId(user.getTenant().getId());
             userLoginDetails.setTenantName(user.getTenant().getName());
             List<AbstractRole> roles = new ArrayList<AbstractRole>();
-            List<TenantRole> tenantRoles = tenantUserRoleDao.findRolesByUser(user.getId());
-            for(TenantRole role : tenantRoles){
-                roles.add(role);
+            List<TenantUserRole> tenantUserRoles = user.getUserRoles();
+            for(TenantUserRole userRole : tenantUserRoles){
+                roles.add(userRole.getRole());
             }
             userLoginDetails.setRoles(roles);
             List<AbstractResource> resources = new ArrayList<AbstractResource>();
@@ -170,10 +170,11 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
         for (TenantUser user : tenantUserList) {
             vo = new TenantUserVo();
             BeanUtils.copyProperties(user, vo);
-            List<TenantRole> roles = tenantUserRoleDao.findRolesByUser(user.getId());
+
+            List<TenantUserRole> tenantUserRoles = user.getUserRoles();
             StringBuffer roleName = new StringBuffer();
-            for (TenantRole role : roles) {
-                roleName.append(role.getRoleName()).append("|");
+            for (TenantUserRole userRole : tenantUserRoles) {
+                roleName.append(userRole.getRole().getRoleName()).append("|");
             }
             if (StringUtils.isNotBlank(roleName)) {
                 vo.setRoleName(roleName.substring(0, roleName.length()-1));

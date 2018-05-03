@@ -14,6 +14,7 @@
 <link href='<c:url value="/css/select2_metro.css" />' rel="stylesheet" type="text/css" />
 <link href='<c:url value="/css/bootstrap-toggle-buttons.css" />' rel="stylesheet" type="text/css" />
 <link href='<c:url value="/css/selectCheckBox/jquery.multiselect.css" />' rel="stylesheet" type="text/css" />
+<link href='<c:url value="/css/zTreeStyle/zTreeStyle.css" />' rel="stylesheet" type="text/css"/>
 <link rel="shortcut icon" href="${path}/images/favicon.ico" />
 <!-- END GLOBAL MANDATORY STYLES -->
 

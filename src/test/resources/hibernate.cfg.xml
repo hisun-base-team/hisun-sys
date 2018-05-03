@@ -12,7 +12,7 @@
         <!-- hibernate.connection.username : 连接数据库的用户名 -->
         <!-- hibernate.connection.password : 连接数据库的密码 -->
         <!-- hibernate.connection.url : 连接数据库的地址,路径 -->
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/zzb</property>
         <!-- show_sql: 操作数据库时,会 向控制台打印sql语句 -->
         <property name="show_sql">true</property>
         <!-- format_sql: 打印sql语句前,会将sql语句先格式化  -->
@@ -43,5 +43,7 @@
         <mapping class="com.hisun.saas.zzb.app.console.zscx.entity.AppZscxZsA01"/>
         <mapping class="com.hisun.saas.sys.admin.privilege.entity.DataPrivilege"/>
         <mapping class="com.hisun.saas.sys.tenant.privilege.entity.TenantPrivilege"/>
+        <mapping class="com.hisun.saas.sys.tenant.role.entity.TenantRoleTpltResource"/>
+        <mapping class="com.hisun.saas.sys.tenant.role.entity.TenantRoleTplt"/>
     </session-factory>
 </hibernate-configuration>

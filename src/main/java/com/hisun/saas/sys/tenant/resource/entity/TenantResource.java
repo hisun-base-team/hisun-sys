@@ -33,6 +33,13 @@ public class TenantResource extends AbstractResource
 
     private List<TenantResourcePrivilege> tenantResourcePrivileges;
 
+
+    public TenantResource(){}
+
+    public TenantResource(String id){
+        this.id = id;
+    }
+
     @Override
     public int compareTo(TenantResource resource) {
         TenantResource r = resource;

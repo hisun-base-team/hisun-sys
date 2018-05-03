@@ -12,12 +12,18 @@ import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.service.impl.BaseServiceImpl;
+import com.hisun.saas.sys.tenant.Constants;
+import com.hisun.saas.sys.tenant.role.entity.TenantRole;
+import com.hisun.saas.sys.tenant.role.entity.TenantRoleResource;
+import com.hisun.saas.sys.tenant.role.entity.TenantRoleTpltResource;
+import com.hisun.saas.sys.tenant.role.service.TenantRoleResourceService;
 import com.hisun.saas.sys.tenant.tenant.dao.Tenant2ResourceDao;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant2Resource;
 import com.hisun.saas.sys.tenant.tenant.service.Tenant2ResourceService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +34,9 @@ public class Tenant2ResourceServiceImpl extends BaseServiceImpl<Tenant2Resource,
         implements Tenant2ResourceService {
 
     private Tenant2ResourceDao tenant2ResourceDao;
+
+    @Resource
+    private TenantRoleResourceService tenantRoleResourceService;
 
     @Resource
     public void setBaseDao(BaseDao<Tenant2Resource, String> baseDao) {
@@ -47,5 +56,34 @@ public class Tenant2ResourceServiceImpl extends BaseServiceImpl<Tenant2Resource,
         }else{
             return null;
         }
+    }
+
+    @Override
+    public String save(Tenant2Resource tenant2Resource){
+        String pk = this.tenant2ResourceDao.save(tenant2Resource);
+        //取得当前单位下的缺省Role
+        List<TenantRole> roles = tenant2Resource.getTenant().getRoles();
+        if(roles!=null && roles.size()>0){
+            List<TenantRole> defaultRoles = new ArrayList<>();
+            for(TenantRole role : roles){
+                if(role.getIsDefault()== Constants.DEFAULT_ROLE){
+                    defaultRoles.add(role);
+                }
+            }
+            //循环当前单位下的缺省Role,如果当前资源在确认Role的对应的RoleTplt下,则默认授予当前Role
+            for(TenantRole role : defaultRoles){
+                List<TenantRoleTpltResource> tenantRoleTpltResources = role.getTenantRoleTplt().getTenantRoleTpltResources();
+                for(TenantRoleTpltResource tenantRoleTpltResource : tenantRoleTpltResources){
+                    if (tenantRoleTpltResource.getTenantResource().getId().equals(tenant2Resource.getTenantResource().getId())) {
+                        TenantRoleResource  tenantRoleResource = new TenantRoleResource();
+                        tenantRoleResource.setRole(role);
+                        tenantRoleResource.setTenantResource(tenant2Resource.getTenantResource());
+                        tenantRoleResource.setTenant2Resource(tenant2Resource);
+                        tenantRoleResourceService.save(tenantRoleResource);
+                    }
+                }
+            }
+        }
+        return pk;
     }
 }

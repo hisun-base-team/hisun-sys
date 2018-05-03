@@ -7,6 +7,7 @@
 package com.hisun.saas.sys.tenant.role.entity;
 
 import com.hisun.saas.sys.entity.AbstractRole;
+import com.hisun.saas.sys.tenant.Constants;
 import com.hisun.saas.sys.tenant.base.entity.TenantEntityInterface;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.sys.tenant.user.entity.TenantUserRole;
@@ -27,9 +28,15 @@ public class TenantRole extends AbstractRole implements TenantEntityInterface,Se
 
     private static final long serialVersionUID = 2994446571781933243L;
 
+    private int isDefault = Constants.NORMAL_ROLE;
     private Tenant tenant;
     private List<TenantUserRole> tenantUserRoles;
     private List<TenantRoleResource> tenantRoleResources;
+    private TenantRoleTplt tenantRoleTplt;
+
+    @Column(name = "is_default")
+    public int getIsDefault() { return isDefault;}
+    public void setIsDefault(int isDefault) { this.isDefault = isDefault;}
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tenant_id")
@@ -58,6 +65,13 @@ public class TenantRole extends AbstractRole implements TenantEntityInterface,Se
         this.tenantRoleResources = tenantRoleResources;
     }
 
+    @ManyToOne(targetEntity = TenantRoleTplt.class,fetch = FetchType.LAZY)
+    @JoinColumn(name="role_tplt_id")
+    public TenantRoleTplt getTenantRoleTplt() { return tenantRoleTplt;}
+
+    public void setTenantRoleTplt(TenantRoleTplt tenantRoleTplt) {
+        this.tenantRoleTplt = tenantRoleTplt;
+    }
 
     public void addTenantUserRole(TenantUserRole tenantUserRole){
         if(tenantUserRoles!=null){
