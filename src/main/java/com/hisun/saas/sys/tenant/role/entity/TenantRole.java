@@ -11,10 +11,12 @@ import com.hisun.saas.sys.tenant.Constants;
 import com.hisun.saas.sys.tenant.base.entity.TenantEntityInterface;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.sys.tenant.user.entity.TenantUserRole;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +24,13 @@ import java.util.List;
 /**
  * @author Rocky {rockwithyou@126.com}
  */
+
 @Entity
 @Table(name = "sys_tenant_role")
+@FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "tenantFilterParam", type = "string"))
+@Filters({
+        @Filter(name = "tenantFilter", condition = " tenant_id=:tenantFilterParam ")
+})
 public class TenantRole extends AbstractRole implements TenantEntityInterface,Serializable {
 
     private static final long serialVersionUID = 2994446571781933243L;

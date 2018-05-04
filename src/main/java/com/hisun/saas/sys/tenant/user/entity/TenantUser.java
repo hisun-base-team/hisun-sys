@@ -20,12 +20,13 @@ import java.util.List;
 /**
  * @author Rocky {rockwithyou@126.com}
  */
+
+@Entity
+@Table(name="sys_tenant_user")
 @FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "tenantFilterParam", type = "string"))
 @Filters({
 		@Filter(name = "tenantFilter", condition = " tenant_id=:tenantFilterParam ")
 })
-@Entity
-@Table(name="sys_tenant_user")
 public class TenantUser extends AbstractUser implements TenantEntityInterface, Serializable {
 
 	public static int STATUS_NO_ACTIVATION = 0;//未激活
