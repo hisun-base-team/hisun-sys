@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/inc/taglib.jsp"%>
 <%@ include file="/WEB-INF/jsp/inc/servlet.jsp"%>
-<c:set var="path" value="${pageContext.request.contextPath}"></c:set>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -28,184 +27,176 @@
 </head>
 <body>
 <div class="container-fluid">
-				<!-- BEGIN PAGE CONTENT-->
-				<div class="row-fluid profile">
-					<div class="span12">
-						<!--BEGIN TABS-->
-						<div class="tabbable tabbable-custom tabbable-full-width">
+	<!-- BEGIN PAGE CONTENT-->
+	<div class="row-fluid profile">
+		<div class="span12">
+			<!--BEGIN TABS-->
+			<div class="tabbable tabbable-custom tabbable-full-width">
 
-							<ul class="nav nav-tabs">
+				<ul class="nav nav-tabs">
 
-							<!-- 	<li class="active"><a href="#tab_1_1" data-toggle="tab">Overview</a></li>-->
+				<!-- 	<li class="active"><a href="#tab_1_1" data-toggle="tab">Overview</a></li>-->
 
-								<li class="active"><a href="#tab_1_2" data-toggle="tab">个人中心</a></li> 
+					<li class="active"><a href="#tab_1_2" data-toggle="tab">个人中心</a></li>
 
-								<li><a href="#tab_1_3" data-toggle="tab">信息维护</a></li>
+					<li><a href="#tab_1_3" data-toggle="tab">信息维护</a></li>
 
-								<!-- <li><a href="#tab_1_4" data-toggle="tab" id="meaasgeTab">消息设置</a></li> -->
+					<!-- <li><a href="#tab_1_4" data-toggle="tab" id="meaasgeTab">消息设置</a></li> -->
 
-							<!-- 	<li><a href="#tab_1_6" data-toggle="tab">Help</a></li> -->
+				<!-- 	<li><a href="#tab_1_6" data-toggle="tab">Help</a></li> -->
 
-							</ul>
+				</ul>
 
-							<div class="tab-content">
- 
-								<div class="tab-pane profile-classic row-fluid active" id="tab_1_2">
+				<div class="tab-content">
 
-									<div class="span2"><img src="${path}/sys/tenant/user/photo/${headPhoto}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" alt=""  class="headPhoto" style="width: 238px;"/></div>
+					<div class="tab-pane profile-classic row-fluid active" id="tab_1_2">
 
-									<ul class="unstyled span10">
-										<li><span>真实姓名:</span> <c:out value="${user.realname }"></c:out></li>
-										<li><span>生日:</span> <c:out value="${user.birthday }"></c:out></li>
-										<li><span>职称:</span> <c:out value="${user.positional }"></c:out></li>
-										<li><span>邮箱:</span> <a href="#"><c:out value="${user.email }"></c:out></a></li>
-										<li><span>特长:</span> <c:out value="${user.specialty }"></c:out></li>
-										<li><span>个人主页:</span> <a href="<c:out value="${user.website }"></c:out>"><c:out value="${user.website }"></c:out></a></li>
-										<li><span>电话:</span> <c:out value="${user.tel }"></c:out></li>
-										<li><span>个人简介:</span> <c:out value="${user.about }"></c:out></li>
+						<div class="span2"><img src="${path}/sys/tenant/user/photo/${headPhoto}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" alt=""  class="headPhoto" style="width: 238px;"/></div>
+
+						<ul class="unstyled span10">
+							<li><span>真实姓名:</span> <c:out value="${user.realname }"></c:out></li>
+							<li><span>生日:</span> <c:out value="${user.birthday }"></c:out></li>
+							<li><span>职称:</span> <c:out value="${user.positional }"></c:out></li>
+							<li><span>邮箱:</span> <a href="#"><c:out value="${user.email }"></c:out></a></li>
+							<li><span>特长:</span> <c:out value="${user.specialty }"></c:out></li>
+							<li><span>个人主页:</span> <a href="<c:out value="${user.website }"></c:out>"><c:out value="${user.website }"></c:out></a></li>
+							<li><span>电话:</span> <c:out value="${user.tel }"></c:out></li>
+							<li><span>个人简介:</span> <c:out value="${user.about }"></c:out></li>
+						</ul>
+
+					</div>
+
+					<!--tab_1_2-->
+
+					<div class="tab-pane row-fluid profile-account" id="tab_1_3">
+						<div class="row-fluid">
+							<div class="span12">
+								<div class="span2">
+									<ul class="ver-inline-menu tabbable margin-bottom-10">
+										<li class="active">
+											<a data-toggle="tab" href="#tab_1-1">
+											<i class="icon-cog"></i>
+											基本信息
+											</a>
+											<span class="after"></span>
+										</li>
+
+										<li><a data-toggle="tab" href="#tab_2-2" ><i class="icon-picture"></i> 修改头像</a></li>
+
+										<li class=""><a data-toggle="tab" href="#tab_3-3"><i class="icon-lock"></i> 修改密码</a></li>
+
+										<!-- <li class=""><a data-toggle="tab" href="#tab_4-4"><i class="icon-eye-open"></i> Privacity Settings</a></li> -->
+
 									</ul>
 
 								</div>
 
-								<!--tab_1_2-->
+								<div class="span9">
 
-								<div class="tab-pane row-fluid profile-account" id="tab_1_3">
-									<div class="row-fluid">
-										<div class="span12">
-											<div class="span2">
-												<ul class="ver-inline-menu tabbable margin-bottom-10">
-													<li class="active">
-														<a data-toggle="tab" href="#tab_1-1">
-														<i class="icon-cog"></i>
-														基本信息
-														</a>
-														<span class="after"></span>
-													</li>
+									<div class="tab-content">
 
-													<li><a data-toggle="tab" href="#tab_2-2" ><i class="icon-picture"></i> 修改头像</a></li>
+										<div id="tab_1-1" class="tab-pane active">
 
-													<li class=""><a data-toggle="tab" href="#tab_3-3"><i class="icon-lock"></i> 修改密码</a></li>
-
-													<!-- <li class=""><a data-toggle="tab" href="#tab_4-4"><i class="icon-eye-open"></i> Privacity Settings</a></li> -->
-
-												</ul>
-
-											</div>
-
-											<div class="span9">
-
-												<div class="tab-content">
-													
-													<div id="tab_1-1" class="tab-pane active">
-
-														<div style="height: auto;" id="accordion1-1" class="accordion collapse">
-															<div class="modal-body form form-horizontal">
-															<form action="${path }/sys/tenant/user/update" id="infoform" name="infoform"  class="form-horizontal">
-																<input id="id" name="id" value="<c:out value="${user.id}"></c:out>" type="hidden">
-																<div id="realnameGroup" class="control-group">
-																	<label class="control-label">真实姓名<span class="required">*</span></label>
-																	<div class="controls">
-																	<input type="text" class="m-wrap span8" id="realname" name="realname" required value='<c:out value="${user.realname }"></c:out>'/>
-																	</div>
-																</div>
-																<div id="emailGroup" class="control-group">
-																	<input type="hidden" id="oldEmail" name="oldEmail" value="${user.email }">
-																	<label class="control-label">邮箱<span class="required">*</span></label>
-																	<div class="controls">
-																	<input type="text" class="m-wrap span8"  id="email" name="email" required customEmail="true" uniqueEmail="true" value='<c:out value="${user.email }"></c:out>'/>
-																	</div>
-																</div>
-																<div id="telGroup" class="control-group">
-																
-																	<label class="control-label">手机号码<span class="required">*</span></label>
-																	<div class="controls">
-																	<input type="text" class="m-wrap span8"  id="tel" name="tel" required value='<c:out value="${user.tel }"></c:out>'/>
-																	</div>
-																</div>
-																
-																<div id="positionalGroup" class="control-group">
-																	<label class="control-label">单位职务<span class="required">*</span></label>
-																	<div class="controls">
-																	<input type="text" class="m-wrap span8" id="positional" name="positional" required value='<c:out value="${user.positional }"></c:out>'/>
-																	</div>
-																</div>
-									<div class="form-actions">
-										<a href="javaScript:;" class="btn green" id="infoSubmit"><i class='icon-ok'></i> 确定</a>
-							            </a>
-									</div>
-															</form>
-															</div>
+											<div style="height: auto;" id="accordion1-1" class="accordion collapse">
+												<div class="modal-body form form-horizontal">
+												<form action="${path }/sys/tenant/user/update" id="infoform" name="infoform"  class="form-horizontal">
+													<input id="id" name="id" value="<c:out value="${user.id}"></c:out>" type="hidden">
+													<div id="realnameGroup" class="control-group">
+														<label class="control-label">真实姓名<span class="required">*</span></label>
+														<div class="controls">
+														<input type="text" class="m-wrap span8" id="realname" name="realname" required value='<c:out value="${user.realname }"></c:out>'/>
 														</div>
-
 													</div>
-													
-													<div id="tab_2-2" class="tab-pane">
-
-														<div style="height: auto;" id="accordion2-2" class="accordion collapse">
-
-															<form action="#">
-																<div class="controls">
-
-																	<div class="thumbnail" style="width: 150px; height: 150px;">
-
-																		<img src="${path }/sys/tenant/user/photo/${headPhoto}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" alt="" class="headPhoto">
-
-																	</div>
-
-																</div>
-
-																<div class="space10"></div>
-
-																<div class="submit-btn">
-
-																	<a href="javaScript:;" id="upload" class="btn green">上传头像</a>
-																	<!-- <a href="#" class="btn">Cancel</a> -->
-
-																</div>
-
-															</form>
-
+													<div id="emailGroup" class="control-group">
+														<input type="hidden" id="oldEmail" name="oldEmail" value="${user.email }">
+														<label class="control-label">邮箱<span class="required">*</span></label>
+														<div class="controls">
+														<input type="text" class="m-wrap span8"  id="email" name="email" required customEmail="true" uniqueEmail="true" value='<c:out value="${user.email }"></c:out>'/>
 														</div>
+													</div>
+													<div id="telGroup" class="control-group">
 
+														<label class="control-label">手机号码<span class="required">*</span></label>
+														<div class="controls">
+														<input type="text" class="m-wrap span8"  id="tel" name="tel" required value='<c:out value="${user.tel }"></c:out>'/>
+														</div>
 													</div>
 
-													<div id="tab_3-3" class="tab-pane">
-														<div style="height: auto;" id="accordion3-3" class="accordion collapse">
-															<div class="modal-body form form-horizontal">
-															<form action="${path}/sys/tenant/user/changePwd"  id="changePwdForm" name="changePwdForm" method="post" class="form-horizontal">
-															<div id="oldPwdGroup" class="control-group">
-																<label class="control-label">旧密码<span class="required">*</span></label>
-																<div class="controls">
-																	<input type="password" id="oldPwd" name="oldPwd" class="span6 m-wrap" required maxlength="16" minlength="6" placeholder="输入旧密码">
-																</div>
-														   </div>
-															<div id="passwordGroup" class="control-group">
-																<label class="control-label">新密码<span class="required">*</span></label>
-
-																<div class="controls">
-																	<input class="m-wrap span6" type="password" name="password" id="password" class="password" minlength="6" maxlength="16" pwdStrengh="true" placeholder="密码">
-																</div>
-															</div>
-															<div id="rePwdGroup" class="control-group">
-																<label class="control-label">确认新密码<span class="required">*</span></label>
-																<div class="controls">
-																	<input class="m-wrap span6" type="password" name="rePwd" id="rePwd" class="password" required equals="password" placeholder="确认密码">
-																</div>
-															</div>
-															<div class="submit-btn form-actions">
-																<button id="changePwdSubmitBtn" type="button" class="btn green mybutton"><i class='icon-ok'></i> 确定</button>
-															</div>
-															</form>
-															</div>
+													<div id="positionalGroup" class="control-group">
+														<label class="control-label">单位职务<span class="required">*</span></label>
+														<div class="controls">
+														<input type="text" class="m-wrap span8" id="positional" name="positional" required value='<c:out value="${user.positional }"></c:out>'/>
 														</div>
-
 													</div>
-
+						<div class="form-actions">
+							<a href="javaScript:;" class="btn green" id="infoSubmit"><i class='icon-ok'></i> 确定</a>
+							</a>
+						</div>
+												</form>
 												</div>
+											</div>
+
+										</div>
+
+										<div id="tab_2-2" class="tab-pane">
+
+											<div style="height: auto;" id="accordion2-2" class="accordion collapse">
+
+												<form action="#">
+													<div class="controls">
+
+														<div class="thumbnail" style="width: 150px; height: 150px;">
+
+															<img src="${path }/sys/tenant/user/photo/${headPhoto}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" alt="" class="headPhoto">
+
+														</div>
+
+													</div>
+
+													<div class="space10"></div>
+
+													<div class="submit-btn">
+
+														<a href="javaScript:;" id="upload" class="btn green">上传头像</a>
+														<!-- <a href="#" class="btn">Cancel</a> -->
+
+													</div>
+
+												</form>
 
 											</div>
 
-											<!--end span9-->                                   
+										</div>
+
+										<div id="tab_3-3" class="tab-pane">
+											<div style="height: auto;" id="accordion3-3" class="accordion collapse">
+												<div class="modal-body form form-horizontal">
+												<form action="${path}/sys/tenant/user/changePwd"  id="changePwdForm" name="changePwdForm" method="post" class="form-horizontal">
+												<div id="oldPwdGroup" class="control-group">
+													<label class="control-label">旧密码<span class="required">*</span></label>
+													<div class="controls">
+														<input type="password" id="oldPwd" name="oldPwd" class="span6 m-wrap" required maxlength="16" minlength="6" placeholder="输入旧密码">
+													</div>
+											   </div>
+												<div id="passwordGroup" class="control-group">
+													<label class="control-label">新密码<span class="required">*</span></label>
+
+													<div class="controls">
+														<input class="m-wrap span6" type="password" name="password" id="password" class="password" minlength="6" maxlength="16" pwdStrengh="true" placeholder="密码">
+													</div>
+												</div>
+												<div id="rePwdGroup" class="control-group">
+													<label class="control-label">确认新密码<span class="required">*</span></label>
+													<div class="controls">
+														<input class="m-wrap span6" type="password" name="rePwd" id="rePwd" class="password" required equals="password" placeholder="确认密码">
+													</div>
+												</div>
+												<div class="submit-btn form-actions">
+													<button id="changePwdSubmitBtn" type="button" class="btn green mybutton"><i class='icon-ok'></i> 确定</button>
+												</div>
+												</form>
+												</div>
+											</div>
 
 										</div>
 
@@ -213,62 +204,67 @@
 
 								</div>
 
+								<!--end span9-->
+
 							</div>
 
 						</div>
-
-						<!--END TABS-->
 
 					</div>
 
 				</div>
-				
-					
-					<div id="responsive" class="modal hide fade" data-width="650">
 
-							<div class="modal-header">
-								<h3 id="modalTitle">修改头像</h3>
-							</div>
-
-							<div class="modal-body form">
-
-								<!-- BEGIN FORM-->
-
-								<form action="${path }/sys/tenant/user/update/photo" class="form-horizontal" id="photoForm" name="photoForm" method="post">
-									<div class="container" style="width: 640px;">
-							                  <div class="imageBox">
-							                    <div class="thumbBox"></div>
-							                    <div class="spinner" style="display: none">Loading...</div>
-							                  </div>
-							                  <div class="action"> 
-							                    <!-- <input type="file" id="file" style=" width: 200px">-->
-							                    <div class="new-contentarea tc"> <a href="javascript:void(0)" class="upload-img">
-							                      <label for="upload-file">修改头像</label>
-							                      </a>
-							                      <input type="file" class="" name="upload-file" id="upload-file" />
-							                    </div>
-							                    <input type="button" id="btnCrop"  class="Btnsty_peyton" value="裁切">
-							                    <input type="button" id="btnZoomIn" class="Btnsty_peyton blue" value="+"  >
-							                    <input type="button" id="btnZoomOut" class="Btnsty_peyton blue" value="-" >
-							                  </div>
-							                  <div class="cropped"></div>
-							                  <input id="headPhotoImg" name="headPhotoImg" value="" type="hidden"/>
-							        </div>
-							        
-								</form>
-
-								<!-- END FORM-->       
-
-							</div>
-				        <div class="form-actions">
-							<button id="submitBtn" type="submit" class="btn green mybutton"><i class='icon-ok'></i> 保存</button>
-							<a href="javascript:;" class="btn btn-default"
-								data-dismiss="modal"><i class='icon-remove-sign'></i> 关闭
-				           	</a>
-						</div>
-
-				</div>
 			</div>
+
+			<!--END TABS-->
+
+		</div>
+
+	</div>
+	<div id="responsive" class="modal hide fade" data-width="650">
+
+			<div class="modal-header">
+				<h3 id="modalTitle">修改头像</h3>
+			</div>
+
+			<div class="modal-body form">
+
+				<!-- BEGIN FORM-->
+
+				<form action="${path }/sys/tenant/user/update/photo" class="form-horizontal" id="photoForm" name="photoForm" method="post">
+					<div class="container" style="width: 640px;">
+							  <div class="imageBox">
+								<div class="thumbBox"></div>
+								<div class="spinner" style="display: none">Loading...</div>
+							  </div>
+							  <div class="action">
+								<!-- <input type="file" id="file" style=" width: 200px">-->
+								<div class="new-contentarea tc"> <a href="javascript:void(0)" class="upload-img">
+								  <label for="upload-file">修改头像</label>
+								  </a>
+								  <input type="file" class="" name="upload-file" id="upload-file" />
+								</div>
+								<input type="button" id="btnCrop"  class="Btnsty_peyton" value="裁切">
+								<input type="button" id="btnZoomIn" class="Btnsty_peyton blue" value="+"  >
+								<input type="button" id="btnZoomOut" class="Btnsty_peyton blue" value="-" >
+							  </div>
+							  <div class="cropped"></div>
+							  <input id="headPhotoImg" name="headPhotoImg" value="" type="hidden"/>
+					</div>
+
+				</form>
+
+				<!-- END FORM-->
+
+			</div>
+		<div class="form-actions">
+			<button id="submitBtn" type="submit" class="btn green mybutton"><i class='icon-ok'></i> 保存</button>
+			<a href="javascript:;" class="btn btn-default"
+				data-dismiss="modal"><i class='icon-remove-sign'></i> 关闭
+			</a>
+		</div>
+
+</div>
 <script type="text/javascript" src="${path}/js/cropbox.js"></script>
 <script type="text/javascript" src="${path}/js/jquery.blockui.min.js" ></script>
 <script type="text/javascript" src="${path}/js/jquery.toggle.buttons.js"></script>

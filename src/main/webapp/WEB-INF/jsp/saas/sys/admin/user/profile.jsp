@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>个人中心</title>
-<link href='<c:url value="/css/cropbox.css" />' rel="stylesheet" type="text/css"/>
+	<link href="${path}/css/cropbox.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
 .sub-section {
 	margin-bottom: 40px;

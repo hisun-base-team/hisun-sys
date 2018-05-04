@@ -136,7 +136,6 @@ public class LoginController extends BaseController {
             log.setType(LogOperateType.LOGIN.getType());
             log.setStatus(LogOperateStatus.EXCEPTION.getStatus());
             this.tenantLogService.save(log);
-            model.addAttribute("username", loginUser.getUsername());
             return "redirect:/login";
         }
     }

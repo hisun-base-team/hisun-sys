@@ -1,9 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@include file="/WEB-INF/jsp/inc/servlet.jsp" %>
 <%@include file="/WEB-INF/jsp/inc/taglib.jsp" %>
-<c:set var="path" value="${pageContext.request.contextPath}"></c:set>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,11 +26,9 @@
     <link href="${path}/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
     <link href="${path}/css/uniform.default.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
-
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link href="${path}/css/glyphicons.css" rel="stylesheet"/>
     <link href="${path}/css/halflings.css" rel="stylesheet"/>
-    <%@include file="/WEB-INF/jsp/inc/servlet.jsp" %>
     <style>
         .dropdown-menu{ background-color:inherit; box-shadow: none; border:none;}
         .navigdrop_down{left:-116px;width: 200px;padding: 0;}
@@ -104,7 +99,7 @@
                     <a href="#" data-toggle="dropdown">
                         <img alt="" style=" height:29px; width:29px; border-radius:50%;"
                              src="${path}/sys/tenant/user/headimg/${userId}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"/>
-                        <span class="username"><%=username%></span>
+                        <span class="username">${userRealname}</span>
                         <i class="icon-angle-down"></i>
                     </a>
                     <div class="dropdown-menu navigdrop_down02">

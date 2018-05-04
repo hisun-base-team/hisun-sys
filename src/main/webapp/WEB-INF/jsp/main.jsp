@@ -188,10 +188,8 @@ li {
                 </div>
             </div>
             <!-- END HORIZANTAL MENU -->
-
-            <!-- BEGIN TOP NAVIGATION MENU -->
             <ul class="nav pull-right" style="margin:0;">
-                <!-- <li class="dropdown"><a href="mailto:30SCloud@30wish.net"
+                <!-- <li class="dropdown"><a href="mailto:"
                     class="dropdown-toggle"> <i class="icon-warning-sign"></i>
                         BUG报告
                 </a></li> -->
@@ -242,8 +240,8 @@ li {
                     <li class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img alt="" style=" height:29px; width:29px; border-radius:50%;padding: 0 6px 0 0;"
-                                 src="${path }/sys/tenant/user/headimg/${userId}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
-                            <span class="username"><%=username%></span>
+                                 src="${path}/sys/tenant/user/headimg/${userId}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+                            <span class="username">${userRealname}</span>
                             <i class="icon-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
@@ -263,8 +261,8 @@ li {
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img alt="" id="topheadPhoto"
                                  style=" height:29px; width:29px; border-radius:50%;padding: 0 6px 0 0;"
-                                 src="${path }/sys/admin/user/photo/<%=headPhoto%>?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
-                            <span class="username"><%=username%></span>
+                                 src="${path }/sys/admin/user/photo/${headPhoto}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+                            <span class="username">${userRealname}</span>
                             <i class="icon-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">

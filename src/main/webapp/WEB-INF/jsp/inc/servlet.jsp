@@ -13,14 +13,10 @@ request.setAttribute("path", path);
 request.setAttribute("basePath", basePath);
 
 UserLoginDetails userLoginDetails = (UserLoginDetails)SecurityUtils.getSubject().getSession().getAttribute(Constants.CURRENT_USER);
-List<AbstractResource> resources = new ArrayList<AbstractResource>();
-String username = "";
-String headPhoto = "";
 if (userLoginDetails != null) {
-	resources = userLoginDetails.getResources();
-	username = StringUtils.isNotBlank(userLoginDetails.getRealname())?userLoginDetails.getRealname():userLoginDetails.getUsername();
-	headPhoto = userLoginDetails.getHeadPhoto();
+	request.getSession().setAttribute("headPhoto",userLoginDetails.getHeadPhoto());
 	request.getSession().setAttribute("userId",userLoginDetails.getUserid());
+	request.getSession().setAttribute("userRealname",StringUtils.isNotBlank(userLoginDetails.getRealname())?userLoginDetails.getRealname():userLoginDetails.getUsername());
 	request.getSession().setAttribute("username", StringUtils.isNotBlank(userLoginDetails.getUsername())?userLoginDetails.getUsername():userLoginDetails.getRealname());
 	request.getSession().setAttribute("tenant",userLoginDetails.getTenant());
 }

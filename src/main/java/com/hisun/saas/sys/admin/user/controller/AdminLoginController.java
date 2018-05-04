@@ -131,7 +131,6 @@ public class AdminLoginController extends BaseController {
 			log.setType(LogOperateType.LOGIN.getType());
 			log.setStatus(LogOperateStatus.EXCEPTION.getStatus());
 			this.logService.save(log);
-			model.addAttribute("username", loginUser.getUsername());
 			return "redirect:/admin/login";
 		}
 	}
