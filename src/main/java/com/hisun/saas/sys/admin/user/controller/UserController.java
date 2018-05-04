@@ -662,7 +662,7 @@ public class UserController extends BaseController {
 		User user = userService.findByUsername(userLoginDetails.getUsername());
 		map.put("headPhoto", user.getHeadPhoto());
 		map.put("user", user);
-		return new ModelAndView("/saas/sys/admin/user/profile",map);
+		return new ModelAndView("saas/sys/admin/user/profile",map);
 	}
 	
 	@RequestMapping(value="/upload", method=RequestMethod.POST)

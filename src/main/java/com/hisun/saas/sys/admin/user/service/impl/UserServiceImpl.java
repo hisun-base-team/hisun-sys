@@ -112,12 +112,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 
             }
             userLoginDetails.setRoles(roles);
+
             Set<Resource> set = Sets.newLinkedHashSet();
             set.addAll(allResources);
             List<Resource> resources = new ArrayList<Resource>();
             for (Resource resource : set) {
                 if (resource.getStatus() == AbstractResource.ENABLE) {
-                    //可用资源
                     resources.add(resource);
                 }
             }

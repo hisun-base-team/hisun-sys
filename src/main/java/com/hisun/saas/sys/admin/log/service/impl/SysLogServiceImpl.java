@@ -79,7 +79,7 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLog, String> implement
 		}
 		sql.append(" and type = 4 and log.user_id = user.id order by create_time desc");
 
-		List<Map> list = logDao.countReturnMapBySql("select log.ip ip,log.create_time createTime, user.real_name realname " + sql.toString(),paramMap);
+		List<Map> list = logDao.nativeList("select log.ip ip,log.create_time createTime, user.real_name realname " + sql.toString(),paramMap);
 		int count = logDao.countBySql("select count(1) " + sql.toString(),paramMap);
 
 		List<SysLogVo> logVoList = Lists.newArrayList();
@@ -115,7 +115,7 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLog, String> implement
 		}
 		sql.append(" and type = 4 and log.user_id = user.id order by create_time desc");
 
-		List<Map> list = logDao.countReturnMapBySql("select log.ip ip,log.create_time createTime, user.real_name realname " + sql.toString(),paramMap);
+		List<Map> list = logDao.nativeList("select log.ip ip,log.create_time createTime, user.real_name realname " + sql.toString(),paramMap);
 		int count = logDao.countBySql("select count(1) " + sql.toString(),paramMap);
 
 		List<SysLogVo> logVoList = Lists.newArrayList();
@@ -155,7 +155,7 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLog, String> implement
 			paramMap.put("type",type);
 		}
 
-		List<Map> list = logDao.countReturnMapBySql("select log.ip ip,log.create_time createTime, log.content content, log.type type, user.real_name realname, user.user_name userName  " + sql.toString(),paramMap);
+		List<Map> list = logDao.nativeList("select log.ip ip,log.create_time createTime, log.content content, log.type type, user.real_name realname, user.user_name userName  " + sql.toString(),paramMap);
 		int count = logDao.countBySql("select count(1) " + sql.toString(),paramMap);
 
 		List<SysLogVo> logVoList = Lists.newArrayList();

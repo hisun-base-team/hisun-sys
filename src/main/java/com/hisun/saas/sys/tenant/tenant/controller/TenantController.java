@@ -40,11 +40,9 @@ import com.hisun.util.ApplicationContextUtil;
 import com.hisun.util.BeanMapper;
 import com.hisun.util.StringUtils;
 import com.hisun.util.ValidateUtil;
-import com.sun.tools.javac.jvm.Gen;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.joda.time.DateTime;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -56,7 +54,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import com.hisun.saas.sys.util.PinyinUtil;
 
 
 @Controller
@@ -296,9 +293,10 @@ public class TenantController extends BaseController {
         Map<String,Object> model = new HashMap<String,Object>();
         model.put("tenantId",tenantId);
         model.put("tenantName",tenantName);
-        return  new ModelAndView("/saas/sys/tenant/tenant/privilegeManage/privilegeManage",model);
+        return  new ModelAndView("saas/sys/tenant/tenant/privilegeManage/privilegeManage",model);
     }
 
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/ajax/privilegeSet")
     public ModelAndView privilegeSet(String tenantId,String resourceId,String resourceName,String tenantName) throws GenericException {
         Map<String,Object> model = new HashMap<String,Object>();
@@ -353,9 +351,10 @@ public class TenantController extends BaseController {
             model.put("success", false);
             logger.error(e);
         }
-        return new ModelAndView("/saas/sys/tenant/tenant/privilegeManage/setDataPrivilege",model);
+        return new ModelAndView("saas/sys/tenant/tenant/privilegeManage/setDataPrivilege",model);
     }
 
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping("/tree")
     public @ResponseBody Map<String, Object> tree(@RequestParam(value="status",required=false) Integer status,String tenantId)
             throws GenericException {
@@ -407,6 +406,8 @@ public class TenantController extends BaseController {
         }
         return map;
     }
+
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping(value="/save/tenant2Resource",method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> saveTenant2Resource(String tenantId,String resourceIds) throws GenericException {
         Map<String,Object> returnMap = new HashMap<String,Object>();
@@ -434,6 +435,8 @@ public class TenantController extends BaseController {
         }
         return returnMap;
     }
+
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping(value="/delete/tenant2Resource",method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> deleteTenant2Resource(String tenantId,String resourceIds) throws GenericException {
         Map<String,Object> returnMap = new HashMap<String,Object>();
@@ -456,6 +459,8 @@ public class TenantController extends BaseController {
         }
         return returnMap;
     }
+
+    @RequiresPermissions("sys-tenant:*")
     @RequestMapping(value="/save/tenant2ResourcePrivilege",method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> saveTenant2ResourcePrivilege(HttpServletRequest request) throws GenericException {
         String tenantId = StringUtils.trimNull2Empty(request.getParameter("tenantId"));
@@ -535,5 +540,13 @@ public class TenantController extends BaseController {
             returnMap.put("message", "系统错误，请联系管理员");
         }
         return returnMap;
+    }
+
+
+    @RequiresPermissions("tenant:*")
+    @RequestMapping(value = "/index")
+    public ModelAndView index() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        return new ModelAndView("saas/sys/tenant/tenant/department/index",map);
     }
 }

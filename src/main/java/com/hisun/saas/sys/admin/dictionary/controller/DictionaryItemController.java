@@ -139,7 +139,7 @@ public class DictionaryItemController extends BaseController {
 			logger.error(e);
 			throw new GenericException(e);
 		}
-		return new ModelAndView("/saas/sys/admin/dictionary/item/listItem", map);
+		return new ModelAndView("saas/sys/admin/dictionary/item/listItem", map);
 	}
 
 

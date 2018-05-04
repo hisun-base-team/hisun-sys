@@ -27,7 +27,7 @@ public class TenantResourceDaoImpl extends BaseDaoImpl<TenantResource,String>
         Map<String, Object> map = new HashMap<>();
         String hql = "select max(t.sort)+1 as sort from sys_tenant_resource t where t.p_id=:pId";
         map.put("pId", pId);
-        List<Map> maxSorts = this.countReturnMapBySql(hql, map);
+        List<Map> maxSorts = this.nativeList(hql, map);
         if(maxSorts.isEmpty()||maxSorts.get(0).get("sort")==null){
             return Integer.valueOf("1");
         }else{

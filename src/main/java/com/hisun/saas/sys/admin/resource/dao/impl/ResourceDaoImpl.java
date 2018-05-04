@@ -21,7 +21,7 @@ public class ResourceDaoImpl extends BaseDaoImpl<Resource, String> implements Re
 		String hql = "select max(t.sort)+1 as sort from sys_resource t where t.p_id=:pId and t.type=:type";
 		map.put("pId", pId);
 		map.put("type",type);
-		List<Map> maxSorts = this.countReturnMapBySql(hql, map);
+		List<Map> maxSorts = this.nativeList(hql, map);
 		if(maxSorts.isEmpty()||maxSorts.get(0).get("sort")==null){
 			return Integer.valueOf("1");
 		}else{

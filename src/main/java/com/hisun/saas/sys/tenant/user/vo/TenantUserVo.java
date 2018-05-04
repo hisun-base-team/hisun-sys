@@ -5,15 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * <p>类名称：TenantUserVo</p>
- * <p>类描述：</p>
- * <p>公司：湖南海数互联信息技术有限公司</p>
- *
- * @创建人：lihaiming
- * @创建时间：15/11/18 下午7:27
- * @创建人联系方式：lihm_gz@30wish.net
- */
+
 public class TenantUserVo implements Serializable {
     private static final long serialVersionUID = 5488580691891957241L;
 
@@ -39,7 +31,7 @@ public class TenantUserVo implements Serializable {
 
     private boolean isOnline = false;
 
-    private String specialty ;//特长
+    private String specialty;//特长
 
     private String positional;//职称
 
@@ -47,12 +39,14 @@ public class TenantUserVo implements Serializable {
 
     private String about;//个人简介
 
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date birthday = new Date();
 
     private String roleId;
 
     private String roleName;
+
+    private int sort;
 
     public String getRoleName() {
         return roleName;
@@ -194,11 +188,19 @@ public class TenantUserVo implements Serializable {
         return sex;
     }
 
-    public boolean getSex(){
+    public boolean getSex() {
         return sex;
     }
 
     public void setSex(boolean sex) {
         this.sex = sex;
+    }
+
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
     }
 }

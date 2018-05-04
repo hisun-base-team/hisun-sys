@@ -162,7 +162,7 @@ public class TenantLogServiceImpl extends BaseServiceImpl<TenantLog, String> imp
 		paramMap.put("startNum", (pageNum-1)*pageSize);
 		paramMap.put("pageSize",pageSize);
 		sql.append(" order by create_time desc limit :startNum,:pageSize");
-		List<Map> list = tenantLogDao.countReturnMapBySql("select log.ip ip,log.create_time createTime, user.real_name realname " + sql.toString(),paramMap);
+		List<Map> list = tenantLogDao.nativeList("select log.ip ip,log.create_time createTime, user.real_name realname " + sql.toString(),paramMap);
 
 		return new PagerVo<Map>(list, count , pageNum, pageSize);
 	}
@@ -201,7 +201,7 @@ public class TenantLogServiceImpl extends BaseServiceImpl<TenantLog, String> imp
 		sql.append(" order by create_time desc limit :startNum,:pageSize");
 		paramMap.put("startNum", (pageNum-1)*pageSize);
 		paramMap.put("pageSize",pageSize);
-		List<Map> list = tenantLogDao.countReturnMapBySql("select log.ip ip,log.create_time createTime, log.content content, log.type type, user.real_name realname, user.user_name userName " + sql.toString(),paramMap);
+		List<Map> list = tenantLogDao.nativeList("select log.ip ip,log.create_time createTime, log.content content, log.type type, user.real_name realname, user.user_name userName " + sql.toString(),paramMap);
         List<TenantLogVo> logVoList = Lists.newArrayList();
         TenantLogVo logVo;
         for (Map map : list) {

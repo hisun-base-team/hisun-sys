@@ -56,7 +56,7 @@ public class TenantResourceController extends BaseController {
 
     @RequestMapping("/list/tree")
     public ModelAndView treeResources() {
-        return  new ModelAndView("/saas/sys/tenant/resource/listTreeResource");
+        return  new ModelAndView("saas/sys/tenant/resource/listTreeResource");
     }
 
     @RequestMapping(value = "/link", method = RequestMethod.POST)
@@ -111,7 +111,7 @@ public class TenantResourceController extends BaseController {
             logger.error(e);
             throw new GenericException(e);
         }
-        return new ModelAndView("/saas/sys/tenant/resource/listResource", map);
+        return new ModelAndView("saas/sys/tenant/resource/listResource", map);
     }
 
     @RequestMapping("/tree")

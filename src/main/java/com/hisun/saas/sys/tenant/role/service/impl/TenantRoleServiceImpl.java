@@ -18,7 +18,6 @@ import com.hisun.saas.sys.tenant.role.vo.TenantRoleVo;
 import com.hisun.saas.sys.util.EntityWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -102,7 +101,7 @@ public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole,String> im
             + " right join sys_resource res2 on tmp.existResourceId = res2.id where res2.type = 1 and res2.status = 0 order by res2.sort";
         Map<String,Object> paramMap = new HashMap<String,Object>();
         paramMap.put("roleId", id);
-        List<Map> list = tenantRoleDao.countReturnMapBySql(sql, paramMap);
+        List<Map> list = tenantRoleDao.nativeList(sql, paramMap);
         List<TreeNodeVo> treeList = new ArrayList<TreeNodeVo>();
         TreeNodeVo root = new TreeNodeVo("1","资源树",null,true,false);
         treeList.add(root);

@@ -712,7 +712,7 @@ public class TenantUserController extends BaseController{
         }
 
         map.put("user", user);
-        return new ModelAndView("/saas/sys/tenant/user/profile",map);
+        return new ModelAndView("saas/sys/tenant/user/profile",map);
     }
 
     /**
@@ -996,7 +996,7 @@ public class TenantUserController extends BaseController{
             map.put("headPhoto", user.getHeadPhoto());
             map.put("user", user);
         }
-        return new ModelAndView("/saas/sys/tenant/user/userDetail",map);
+        return new ModelAndView("saas/sys/tenant/user/userDetail",map);
     }
 
     @RequestMapping(value="/forgot",method = RequestMethod.GET)

@@ -54,7 +54,7 @@ public class AdminResourceController extends BaseController {
 	@RequiresPermissions("adminResource:tree")
 	@RequestMapping("/list/tree")
 	public ModelAndView treeResources() {
-		return  new ModelAndView("/saas/sys/admin/resource/listTreeResource");
+		return  new ModelAndView("saas/sys/admin/resource/listTreeResource");
 	}
 	
 	@RequestMapping(value = "/link", method = RequestMethod.POST)
@@ -106,7 +106,7 @@ public class AdminResourceController extends BaseController {
 			logger.error(e);
 			throw new GenericException(e);
 		}
-		return new ModelAndView("/saas/sys/admin/resource/listResource", map);
+		return new ModelAndView("saas/sys/admin/resource/listResource", map);
 	}
 	
 	@RequestMapping("/tree")

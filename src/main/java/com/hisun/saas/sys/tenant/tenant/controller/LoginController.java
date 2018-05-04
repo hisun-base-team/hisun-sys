@@ -186,7 +186,7 @@ public class LoginController extends BaseController {
         ModelAndView modelAndView = null;
         Map<String, String> map = Maps.newConcurrentMap();
         map.put("logo", logo);
-        modelAndView = new ModelAndView("/saas/sys/tenant/dashboard", map);
+        modelAndView = new ModelAndView("saas/sys/tenant/dashboard", map);
         return modelAndView;
     }
 

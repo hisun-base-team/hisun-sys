@@ -276,6 +276,6 @@ public class TenantMessageController extends BaseController {
             logger.error(e);
             throw new GenericException(e);
         }
-        return new ModelAndView("/saas/sys/tenant/message/readMessage", map);
+        return new ModelAndView("saas/sys/tenant/message/readMessage", map);
     }
 }

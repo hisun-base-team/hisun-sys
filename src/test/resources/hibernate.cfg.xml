@@ -45,5 +45,6 @@
         <mapping class="com.hisun.saas.sys.tenant.privilege.entity.TenantPrivilege"/>
         <mapping class="com.hisun.saas.sys.tenant.role.entity.TenantRoleTpltResource"/>
         <mapping class="com.hisun.saas.sys.tenant.role.entity.TenantRoleTplt"/>
+        <mapping class="com.hisun.saas.sys.tenant.tenant.entity.TenantDepartment"/>
     </session-factory>
 </hibernate-configuration>

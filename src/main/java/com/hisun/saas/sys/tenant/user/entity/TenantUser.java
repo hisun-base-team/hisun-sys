@@ -9,6 +9,7 @@ package com.hisun.saas.sys.tenant.user.entity;
 import com.hisun.saas.sys.tenant.base.entity.TenantEntityInterface;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.sys.entity.AbstractUser;
+import com.hisun.saas.sys.tenant.tenant.entity.TenantDepartment;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
@@ -35,6 +36,8 @@ public class TenantUser extends AbstractUser implements TenantEntityInterface, S
 
 	private Tenant tenant;
 	private int status=STATUS_ACTIVATION;//状态
+	private int sort;//排序号
+	private TenantDepartment tenantDepartment;//所属部门,可以为空
 	private List<TenantUserRole> userRoles;
 
 	public TenantUser(){}
@@ -49,6 +52,25 @@ public class TenantUser extends AbstractUser implements TenantEntityInterface, S
 	}
 	public void setTenant(Tenant tenant) {
 		this.tenant = tenant;
+	}
+
+	@Column(name="sort")
+	public int getSort() {
+		return sort;
+	}
+
+	public void setSort(int sort) {
+		this.sort = sort;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="department_id")
+	public TenantDepartment getTenantDepartment() {
+		return tenantDepartment;
+	}
+
+	public void setTenantDepartment(TenantDepartment tenantDepartment) {
+		this.tenantDepartment = tenantDepartment;
 	}
 
 	@Column(name="status")

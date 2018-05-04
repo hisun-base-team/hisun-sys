@@ -8,14 +8,9 @@ package com.hisun.saas.sys.tenant.privilege.service.impl;
 
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.impl.BaseServiceImpl;
-import com.hisun.saas.sys.auth.UserLoginDetails;
-import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.tenant.privilege.dao.TenantPrivilegeDao;
 import com.hisun.saas.sys.tenant.privilege.entity.TenantPrivilege;
 import com.hisun.saas.sys.tenant.privilege.service.TenantPrivilegeService;
-import com.hisun.saas.sys.tenant.resource.dao.TenantResourceDao;
-import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
-import com.hisun.saas.sys.tenant.resource.service.TenantResourceService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -41,7 +36,7 @@ public class TenantPrivilegeServiceImpl extends BaseServiceImpl<TenantPrivilege,
         Map<String, Object> arg=new HashMap<String, Object>();
         String hql = "select max(t.sort) as sort from sys_tenant_privilege t where t.tombstone=(:tombstone) order by  t.sort asc";
         arg.put("tombstone", "0");
-        List<Map> maxSorts = this.tenantPrivilegeDao.countReturnMapBySql(hql, arg);
+        List<Map> maxSorts = this.tenantPrivilegeDao.nativeList(hql, arg);
 
         if(maxSorts.get(0).get("sort")==null){
             return 0;

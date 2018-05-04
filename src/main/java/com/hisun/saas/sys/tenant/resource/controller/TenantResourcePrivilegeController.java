@@ -52,7 +52,7 @@ public class TenantResourcePrivilegeController extends BaseController {
 
     @RequestMapping("/list")
     public ModelAndView treeResources() {
-        return  new ModelAndView("/saas/sys/tenant/resourcePrivilege/listTreeResource");
+        return  new ModelAndView("saas/sys/tenant/resourcePrivilege/listTreeResource");
     }
 
     @RequiresPermissions("sys-tenantResourcePrivilege:*")
@@ -97,7 +97,7 @@ public class TenantResourcePrivilegeController extends BaseController {
         }
         model.put("resourceId",resourceId);
         model.put("resourceName",resourceName);
-        return new ModelAndView("/saas/sys/tenant/resourcePrivilege/list",model);
+        return new ModelAndView("saas/sys/tenant/resourcePrivilege/list",model);
     }
 
     @RequestMapping("/tree")
