@@ -56,24 +56,15 @@ public class TenantDepartmentController extends BaseController {
 			orderBy.add(CommonOrder.asc("sort"));
 			List<TenantDepartment> tenantDepartments = tenantDepartmentService.list(query, orderBy);
 			List<TreeNode> treeNodes = new ArrayList<TreeNode>();
-			//--------字典类型节点
-			TreeNode treeNode = new TreeNode();
-			treeNode.setId(userLoginDetails.getTenant().getId());
-			treeNode.setName(userLoginDetails.getTenant().getName());
-			treeNode.setOpen(true);
-			treeNodes.add(treeNode);
-			//-------字典项节点
-			TreeNode childTreeNode=null;
+			TreeNode treeNode=null;
 			for (TenantDepartment tenantDepartment : tenantDepartments) {
-				childTreeNode = new TreeNode();
-				childTreeNode.setId(tenantDepartment.getId());
-				childTreeNode.setName(tenantDepartment.getName());
-				if(tenantDepartment.getParent()==null){
-					childTreeNode.setpId(userLoginDetails.getTenant().getId());
-				}else{
-					childTreeNode.setpId(tenantDepartment.getParent().getId());
+				treeNode = new TreeNode();
+				treeNode.setId(tenantDepartment.getId());
+				treeNode.setName(tenantDepartment.getName());
+				if(tenantDepartment.getParent()!=null){
+					treeNode.setpId(tenantDepartment.getParent().getId());
 				}
-				treeNodes.add(childTreeNode);
+				treeNodes.add(treeNode);
 			}
 			map.put("success", true);
 			map.put("data", treeNodes);
@@ -84,6 +75,7 @@ public class TenantDepartmentController extends BaseController {
 		}
 		return map;
 	}
+
 
 	@RequiresPermissions("tenant:*")
 	@RequestMapping("/ajax/list")

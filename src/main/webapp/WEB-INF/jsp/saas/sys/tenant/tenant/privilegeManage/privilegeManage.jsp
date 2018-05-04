@@ -35,7 +35,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 					<div  class="main_left" style="float:left; width:220px;  margin-right:10px;height: 0px">
 						<div class="portlet box grey mainleft">
 							<div class="portlet-body leftbody">
-								<Tree:tree id="treeDemo" treeUrl="${path}/sys/tenant/tenant/tree?tenantId=${tenantId}" token="${sessionScope.OWASP_CSRFTOKEN}" checkedAndNoUnCheckedUnByTitle="true" chkboxType=" 'Y' : 'ps', 'N' : 's'"
+								<Tree:tree id="treeDemo" treeUrl="${path}/sys/tenant/tenant/resource/tree?tenantId=${tenantId}" token="${sessionScope.OWASP_CSRFTOKEN}" checkedAndNoUnCheckedUnByTitle="true" chkboxType=" 'Y' : 'ps', 'N' : 's'"
 										   onClick="onClickByTree" onCheck="checkByTree" radioOrCheckbox="checkbox" submitType="post" dataType="json" isSearch="false"/>
 								<%--<div class="zTreeDemoBackground" id="tree">--%>
 									<%--<ul id="treeDemo" class="ztree"></ul>--%>

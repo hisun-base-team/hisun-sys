@@ -6,7 +6,7 @@
 		<div class="portlet-title" style="vertical-align: middle;">
 			<div class="caption">部门</div>
 			<div class="clearfix fr">
-				<a id="addItem" class="btn green" href="#">
+				<a id="add" class="btn green" href="#">
 					<i class="icon-plus"></i> 添加
 				</a>
 			</div>
@@ -25,20 +25,8 @@
 				<c:forEach items="${pager.datas}" var="vo">
 					<tr>
 						<td><c:out value="${vo.name }"></c:out></td>
-						<td><c:out value="${vo.code }"></c:out></td>
 						<td><c:out value="${vo.sort }"></c:out></td>
-						<td><c:out value="${vo.remark }"></c:out> </td>
-						<td>
-							<%--<a href="javascript:;" class="btn mini blue "  onclick="updateItem('${vos.id}');"><i class="icon-pencil"></i>&nbsp;修&nbsp;改</a>--%>
-							<%--&nbsp;&nbsp;&nbsp;--%>
-							<%--<a href="javascript:;" class="btn mini red" id="${vos.id}" voname="<c:out value="${vos.vo }"></c:out>" onclick="delItem(this);"><i class="icon-trash"></i>&nbsp;删&nbsp;除</a>--%>
-							<%--<input type="hidden" name="delId" id="delId" >--%>
-								<a href="javascript:updateItem('${vo.id}');" >编辑</a>
-								|<a id="${vo.id}" voname="<c:out value="${vo.name }"></c:out>" href="javascript:void(0)" onclick="delItem(this);">删除</a>
-							<%--<a href="javascript:;" class="btn mini blue "  onclick="updateItem('${vo.id}');"><i class="icon-pencil"></i>&nbsp;修&nbsp;改</a>--%>
-							<%--<a href="javascript:;" class="btn mini red" id="${vo.id}" voname="<c:out value="${vo.name }"></c:out>" onclick="delItem(this);"><i class="icon-trash"></i>&nbsp;删&nbsp;除</a>--%>
-							<%--<input type="hidden" name="delId" id="delId" >--%>
-
+						<td><a href="javascript:update('${vo.id}');" >编辑</a>|<a id="${vo.id}" voname="<c:out value="${vo.name }"></c:out>" href="javascript:void(0)" onclick="del(this);">删除</a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -73,13 +61,13 @@
 
 </div>
 <script type="text/javascript">
-	$("#addItem").click(function(){
+	$("#add").click(function(){
 		var currentNodeId = $("#currentNodeId").val();
 		var currentNodeName = $("#currentNodeName").val();
 		var currentNodeParentId = $("#currentNodeParentId").val();
 		var typeId = $("#typeId").val();
 		$.ajax({
-			url : "${path}/sys/admin/dictionary/item/ajax/add?typeId="+typeId+"&currentNodeId="+currentNodeId+"&currentNodeName="+currentNodeName+"&currentNodeParentId="+currentNodeParentId,
+			url : "${path}/sys/tenant/tenant/department/ajax/add?currentNodeId="+currentNodeId+"&currentNodeName="+currentNodeName+"&currentNodeParentId="+currentNodeParentId,
 			type : "get",
 			data : null,
 			dataType : "html",
@@ -94,13 +82,13 @@
 			}
 		});
 	});
-	function updateItem(id){
+	function update(id){
 		var currentNodeId = $("#currentNodeId").val();
 		var currentNodeName = $("#currentNodeName").val();
 		var currentNodeParentId = $("#currentNodeParentId").val();
 		var typeId = $("#typeId").val();
 		$.ajax({
-			url : "${path}/sys/admin/dictionary/item/ajax/edit/"+id+"?typeId="+typeId+"&currentNodeId="+currentNodeId+"&currentNodeName="+currentNodeName+"&currentNodeParentId="+currentNodeParentId,
+			url : "${path}/sys/tenant/tenant/department/ajax/edit/"+id+"?currentNodeId="+currentNodeId+"&currentNodeName="+currentNodeName+"&currentNodeParentId="+currentNodeParentId,
 			type : "get",
 			data : null,
 			dataType : "html",
@@ -134,7 +122,7 @@
 				"pageNum":pageNum,
 				"pageSize":pageSize
 			},
-			url: "${path}/sys/admin/dictionary/item/ajax/list",// 请求的action路径
+			url: "${path}/sys/tenant/tenant/department/ajax/list",// 请求的action路径
 			error: function () {// 请求失败处理函数
 				alert('请求失败');
 			},
@@ -144,13 +132,13 @@
 		});
 	}
 
-	function delItem(obj){
+	function del(obj){
 		var id = obj.id;
-		var itemName = $(obj).attr("itemname");
+		var voname = $(obj).attr("voname");
 		var currentNodeId = $("#currentNodeId").val();
 		var currentNodeName = $("#currentNodeName").val();
 		var currentNodeParentId = $("#currentNodeParentId").val();
-		actionByConfirm1(itemName, "${path}/sys/admin/dictionary/item/delete/" + id,{} ,function(data,status){
+		actionByConfirm1(voname, "${path}/sys/tenant/tenant/department/delete/" + id,{} ,function(data,status){
 
 			if (data.success == true) {
 				showTip("提示", "成功删除！",2000);
@@ -159,7 +147,7 @@
 				var currentNodeName = $("#currentNodeName").val();
 				var currentNodeParentId = $("#currentNodeParentId").val();
 				$.ajax({
-					url: "${path}/sys/admin/dictionary/item/ajax/list",// 请求的action路径
+					url: "${path}/sys/tenant/tenant/department/ajax/list",// 请求的action路径
 					type: 'POST',
 					dataType : "html",
 					data:{

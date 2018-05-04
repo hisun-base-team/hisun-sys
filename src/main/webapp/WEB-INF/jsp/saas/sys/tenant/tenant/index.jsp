@@ -33,7 +33,7 @@
 					<input type="hidden" id="currentNodeId"  name="currentNodeId" value="" />
 					<input type="hidden" id="currentNodeName"  name="currentNodeName" value="" />
 					<input type="hidden" id="currentNodeParentId"  name="currentNodeParentId" value="" />
-					<Tree:tree id="leftTree" treeUrl="${path}/sys/tenant/department/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
+					<Tree:tree id="leftTree" treeUrl="${path}/sys/tenant/tenant/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
 							   onClick="onClickByTree" submitType="post" dataType="json" isSearch="false"/>
 				</div>
 			</div>

@@ -28,8 +28,10 @@ import com.hisun.saas.sys.tenant.resource.service.TenantResourceService;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant2Resource;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant2ResourcePrivilege;
+import com.hisun.saas.sys.tenant.tenant.entity.TenantDepartment;
 import com.hisun.saas.sys.tenant.tenant.service.Tenant2ResourcePrivilegeService;
 import com.hisun.saas.sys.tenant.tenant.service.Tenant2ResourceService;
+import com.hisun.saas.sys.tenant.tenant.service.TenantDepartmentService;
 import com.hisun.saas.sys.tenant.tenant.service.TenantService;
 import com.hisun.saas.sys.tenant.tenant.vo.Tenant2ResourcePrivilegeVo;
 import com.hisun.saas.sys.tenant.tenant.vo.TenantVo;
@@ -78,6 +80,9 @@ public class TenantController extends BaseController {
 
     @Resource
     private Tenant2ResourcePrivilegeService tenant2ResourcePrivilegeService;
+
+    @Resource
+    private TenantDepartmentService tenantDepartmentService;
 
 
     @RequiresPermissions("sys-tenant:*")
@@ -355,7 +360,7 @@ public class TenantController extends BaseController {
     }
 
     @RequiresPermissions("sys-tenant:*")
-    @RequestMapping("/tree")
+    @RequestMapping("/resource/tree")
     public @ResponseBody Map<String, Object> tree(@RequestParam(value="status",required=false) Integer status,String tenantId)
             throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -547,6 +552,47 @@ public class TenantController extends BaseController {
     @RequestMapping(value = "/index")
     public ModelAndView index() {
         Map<String, Object> map = new HashMap<String, Object>();
-        return new ModelAndView("saas/sys/tenant/tenant/department/index",map);
+        return new ModelAndView("saas/sys/tenant/tenant/index",map);
+    }
+
+
+
+
+    @RequiresPermissions("tenant:*")
+    @RequestMapping("/tree")
+    public @ResponseBody Map<String, Object> tree() throws GenericException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+            CommonConditionQuery query = new CommonConditionQuery();
+            CommonOrderBy orderBy = new CommonOrderBy();
+            orderBy.add(CommonOrder.asc("sort"));
+            List<TenantDepartment> tenantDepartments = tenantDepartmentService.list(query, orderBy);
+            List<TreeNode> treeNodes = new ArrayList<TreeNode>();
+            TreeNode treeNode = new TreeNode();
+            treeNode.setId(userLoginDetails.getTenant().getId());
+            treeNode.setName(userLoginDetails.getTenant().getName());
+            treeNode.setOpen(true);
+            treeNodes.add(treeNode);
+            TreeNode childTreeNode=null;
+            for (TenantDepartment tenantDepartment : tenantDepartments) {
+                childTreeNode = new TreeNode();
+                childTreeNode.setId(tenantDepartment.getId());
+                childTreeNode.setName(tenantDepartment.getName());
+                if(tenantDepartment.getParent()==null){
+                    childTreeNode.setpId(userLoginDetails.getTenant().getId());
+                }else{
+                    childTreeNode.setpId(tenantDepartment.getParent().getId());
+                }
+                treeNodes.add(childTreeNode);
+            }
+            map.put("success", true);
+            map.put("data", treeNodes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e, e);
+            map.put("success", false);
+        }
+        return map;
     }
 }

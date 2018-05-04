@@ -13,35 +13,26 @@
 	<div class="portlet box grey">
 		<div class="portlet-title">
 			<div class="caption">
-				<span class="hidden-480">添加字典项</span>
+				<span class="hidden-480">添加部门</span>
 			</div>
 		</div>
 		<div class="portlet-body form">
 			<!-- BEGIN FORM-->
-			<form action="${path }/sys/admin/dictionary/save" class="form-horizontal" id="addForm" method="post">
+			<form action="${path }/sys/tenant/tenant/department/save" class="form-horizontal" id="addForm" method="post">
 				<input type="hidden" id="id" name="id" value=""/>
 				<input type="hidden" id="currentNodeId" name="currentNodeId" value="${currentNodeId}"/>
 				<input type="hidden" id="currentNodeName" name="currentNodeName" value="${currentNodeName}"/>
 				<input type="hidden" id="currentNodeParentId" name="currentNodeParentId" value="${currentNodeParentId}"/>
-				<input type="hidden" id="typeId" name="typeId" value="${typeId}"/>
 				<div id="nameGroup" class="control-group">
-					<label class="control-label">字典项名称<span class="required">*</span></label>
+					<label class="control-label">部门名称<span class="required">*</span></label>
 					<div class="controls">
 						<input type="text" id="name" name="name" class="span6 m-wrap" required maxlength="200">
-						<!-- <span class="help-inline">Some hint here</span> -->
 					</div>
-				</div>
-				<div id="codeGroup" class="control-group">
-					<label class="control-label">字典项代码<span class="required">*</span></label>
-					<div class="controls">
-						<input type="text" id="code" name="code" class="span6 m-wrap" required maxlength="100" placeholder="唯一标示">
-					</div>
-
 				</div>
 				<div id="pId_valueGroup" class="control-group" >
-					<label class="control-label">上级字典项<span class="required">*</span></label>
+					<label class="control-label">上级部门<span class="required">*</span></label>
 					<div class="controls">
-						<Tree:tree id="pId" treeUrl="${path}/sys/admin/dictionary/item/tree/${typeId}" token="${sessionScope.OWASP_CSRFTOKEN}"
+						<Tree:tree id="pId" treeUrl="${path}/sys/tenant/tenant/department/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
 								   submitType="post" dataType="json" isSearch="false" isSelectTree="true" defaultkeys="${currentNodeId}" defaultvalues="${currentNodeName}"/>
 					</div>
 
@@ -53,15 +44,9 @@
 					</div>
 
 				</div>
-				<div id="remarkGroup" class="control-group" >
-					<label class="control-label">备注</label>
-					<div class="controls">
-						<textarea id="remark" name="remark" class="span6 m-wrap" maxlength="255" rows="5"></textarea>
-					</div>
-				</div>
 				<div class="form-actions">
 					<button id="submitbut" type="button" class="btn green mybutton" ><i class='icon-ok'></i> 确定</button>
-					<a href="javascript:returnItemList();" class="btn btn-default"
+					<a href="javascript:returnList();" class="btn btn-default"
 					   data-dismiss="modal"><i class='icon-remove-sign'></i> 取消
 					</a>
 				</div>
@@ -83,84 +68,67 @@
 			var currentNodeId = $("#currentNodeId").val();
 			var currentNodeName = $("#currentNodeName").val();
 			var currentNodeParentId = $("#currentNodeParentId").val();
-			var typeId = "${typeId}";
-			localPost("${path}/sys/admin/dictionary/item/code/check",{
-				"typeId":"${typeId}",
-				"code":$("#code").val(),
-				"id":$("#id").val()
-			},function(data) {
-				if(!data.success){
-					showTip("提示", "字典项代码必须唯一！");
-				}else{
-					var bool = addForm.form();
-					if(bool){
-						$.ajax({
-							url : "${path}/sys/admin/dictionary/item/save",
-							type : "post",
-							data : $("#addForm").serialize(),
-							dataType : "json",
-							headers: {
+			var bool = addForm.form();
+			if(bool){
+				$.ajax({
+					url : "${path}/sys/tenant/tenant/department/save",
+					type : "post",
+					data : $("#addForm").serialize(),
+					dataType : "json",
+					headers: {
+						"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
+					},
+					success : function(json){
+						if(json.success){
+							refreshTree();
+							$.ajax({
+								url: "${path}/sys/tenant/tenant/department/ajax/list",// 请求的action路径
+								type: 'POST',
+								dataType : "html",
+								data:{
+								"currentNodeId":currentNodeId,
+								"currentNodeParentId":currentNodeName,
+								"currentNodeName":currentNodeParentId
+								},
+								headers: {
 								"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
-							},
-							success : function(json){
-								if(json.success){
-									refreshTree();
-									$.ajax({
-										url: "${path}/sys/admin/dictionary/item/ajax/list",// 请求的action路径
-										type: 'POST',
-										dataType : "html",
-										data:{
-										"currentNodeId":currentNodeId,
-										"currentNodeParentId":currentNodeName,
-										"currentNodeName":currentNodeParentId,
-										"typeId":"${typeId}"
-										},
-										headers: {
-										"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
-										},
-										success : function(html){
-										$("#rightList").html(html);
-										},
-										error : function(){
-										alert('请求失败');
-										}
-									});
-
-
-
-									<%--setTimeout("window.location.href='${path}/sys/admin/dictionary/item/ajax/list?typeId="+typeId+"&currentNodeId="+currentNodeId+"&currentNodeName="+currentNodeName+"&currentNodeParentId="+currentNodeParentId+"&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}'",1300);--%>
-								}else{
-									document.getElementById("addForm").reset();
-									$(".control-group").removeClass("error").removeClass("success");
-									$(".help-inline").remove();
-									showTip("警告","新增字典项失败!",2000);
+								},
+								success : function(html){
+								$("#rightList").html(html);
+								},
+								error : function(){
+								alert('请求失败');
 								}
-							},
-							error : function(){
-								document.getElementById("addForm").reset();
-								$(".control-group").removeClass("error").removeClass("success");
-								$(".help-inline").remove();
-							}
-						});
+							});
+						}else{
+							document.getElementById("addForm").reset();
+							$(".control-group").removeClass("error").removeClass("success");
+							$(".help-inline").remove();
+							showTip("警告","新增部门项失败!",2000);
+						}
+					},
+					error : function(){
+						document.getElementById("addForm").reset();
+						$(".control-group").removeClass("error").removeClass("success");
+						$(".help-inline").remove();
 					}
-				}
-			},"json", {"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"});
+				});
+			}
 		});
 	});
 
-	function returnItemList(){
+	function returnList(){
 		var currentNodeId = $("#currentNodeId").val();
 		var currentNodeName = $("#currentNodeName").val();
 		var currentNodeParentId = $("#currentNodeParentId").val();
 		$.ajax({
-			url: "${path}/sys/admin/dictionary/item/ajax/list",// 请求的action路径
+			url: "${path}/sys/tenant/tenant/department/ajax/list",// 请求的action路径
 			type: 'POST',
 			dataType : "html",
 			data:{
 				"currentNodeId":currentNodeId,
 				"currentNodeParentId":currentNodeName,
-				"currentNodeName":currentNodeParentId,
-				"typeId":"${typeId}"
+				"currentNodeName":currentNodeParentId
 			},
 			headers: {
 				"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
@@ -169,41 +137,8 @@
 				$("#rightList").html(html);
 			},
 			error : function(){
-				alert('请求失败');
+				alert('请求失败!');
 			}
 		});
 	}
-	<%--$(function(){--%>
-		<%--$("#submitbut").on("click",function(){--%>
-			<%--var bool = addForm.form();--%>
-			<%--if(bool){--%>
-				<%--$.ajax({--%>
-					<%--url : "${path}/sys/admin/dictionary/item/save",--%>
-					<%--type : "post",--%>
-					<%--data : $("#addForm").serialize(),--%>
-					<%--dataType : "json",--%>
-					<%--headers: {--%>
-						<%--"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"--%>
-					<%--},--%>
-					<%--success : function(json){--%>
-						<%--if(json.success){--%>
-							<%--showTip("提示","新增字典类型成功!",2000);--%>
-							<%--//setTimeout("window.location.href='${path}/sys/admin/dictionary/item/index/${typeId}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}'",1300);--%>
-						<%--}else{--%>
-							<%--document.getElementById("addForm").reset();--%>
-							<%--$(".control-group").removeClass("error").removeClass("success");--%>
-							<%--$(".help-inline").remove();--%>
-							<%--showTip("警告","新增字典类型失败!",2000);--%>
-						<%--}--%>
-					<%--},--%>
-					<%--error : function(){--%>
-						<%--alert("aaaaaaaaaaaa");--%>
-						<%--document.getElementById("addForm").reset();--%>
-						<%--$(".control-group").removeClass("error").removeClass("success");--%>
-						<%--$(".help-inline").remove();--%>
-					<%--}--%>
-				<%--});--%>
-			<%--}--%>
-		<%--});--%>
-	<%--});--%>
 </script>
