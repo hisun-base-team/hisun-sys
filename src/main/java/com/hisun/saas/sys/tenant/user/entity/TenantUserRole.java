@@ -45,7 +45,7 @@ public class TenantUserRole implements Serializable{
         this.user = user;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="tenant_role_id")
     public TenantRole getRole() {
         return role;
