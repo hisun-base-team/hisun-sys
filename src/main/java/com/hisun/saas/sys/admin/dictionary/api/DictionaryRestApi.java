@@ -15,6 +15,9 @@ import com.hisun.saas.sys.admin.dictionary.service.DictionaryItemService;
 import com.hisun.saas.sys.admin.dictionary.service.DictionaryTypeService;
 import com.hisun.saas.sys.taglib.selectTag.SelectNode;
 import com.hisun.saas.sys.taglib.treeTag.TreeNode;
+import com.hisun.saas.sys.tenant.tenant.entity.Tenant2ResourcePrivilege;
+import com.hisun.saas.sys.tenant.tenant.service.Tenant2ResourcePrivilegeService;
+import com.hisun.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,12 +41,19 @@ public class DictionaryRestApi {
     @Resource
     private DictionaryItemService dictionaryItemService;
 
+    @Resource
+    private Tenant2ResourcePrivilegeService tenant2ResourcePrivilegeService;
+
 
     @RequestMapping(value = "/tree",method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> getTreeNodes(String typeCode) {
+    public @ResponseBody Map<String,Object> getTreeNodes(String typeCode,String tenant2ResourceId,String privilegeId) {
         Map<String, Object> map = new HashMap<String, Object>();
         List<DictionaryItem> dictionaryItems;
         try {
+            Tenant2ResourcePrivilege tenant2ResourcePrivilege =  null;
+            if(StringUtils.isNotEmpty(tenant2ResourceId) && StringUtils.isNotEmpty(privilegeId)) {
+                tenant2ResourcePrivilege = this.tenant2ResourcePrivilegeService.findTenant2ResourcePrivilegeByResourceAndPrivilege(tenant2ResourceId, privilegeId);
+            }
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" dictionaryType.code=:typeCode ", "typeCode", typeCode));
             CommonOrderBy orderBy = new CommonOrderBy();
@@ -52,15 +62,29 @@ public class DictionaryRestApi {
             List<TreeNode> nodes = new ArrayList<>();
             TreeNode node=null;
             for (DictionaryItem dictionaryItem : dictionaryItems) {
-                node = new TreeNode();
-                node.setId(dictionaryItem.getId());
-                node.setName(dictionaryItem.getName());
-                if(dictionaryItem.getParentItem()==null){
-                    node.setpId("");
+                boolean isAdd = false;
+                if(tenant2ResourcePrivilege!=null){
+                    String[] selectValues = tenant2ResourcePrivilege.getSelectedValues().split(",");
+                    boo:for(int i=0;i<selectValues.length;i++){
+                        if(dictionaryItem.getId().equals(selectValues[i])){
+                            isAdd = true;
+                            break boo;
+                        }
+                    }
                 }else{
-                    node.setpId(dictionaryItem.getParentItem().getId());
+                    isAdd = true;
                 }
-                nodes.add(node);
+                if(isAdd == true) {
+                    node = new TreeNode();
+                    node.setId(dictionaryItem.getId());
+                    node.setName(dictionaryItem.getName());
+                    if (dictionaryItem.getParentItem() == null) {
+                        node.setpId("");
+                    } else {
+                        node.setpId(dictionaryItem.getParentItem().getId());
+                    }
+                    nodes.add(node);
+                }
             }
             map.put("success", true);
             map.put("data", nodes);
@@ -73,10 +97,14 @@ public class DictionaryRestApi {
 
 
     @RequestMapping(value = "/select",method = RequestMethod.POST)
-    public @ResponseBody Map<String,Object> getSelectNodes(String typeCode) {
+    public @ResponseBody Map<String,Object> getSelectNodes(String typeCode,String tenant2ResourceId,String privilegeId) {
         Map<String, Object> map = new HashMap<String, Object>();
         List<DictionaryItem> dictionaryItems;
         try {
+            Tenant2ResourcePrivilege tenant2ResourcePrivilege =  null;
+            if(StringUtils.isNotEmpty(tenant2ResourceId) && StringUtils.isNotEmpty(privilegeId)) {
+                tenant2ResourcePrivilege = this.tenant2ResourcePrivilegeService.findTenant2ResourcePrivilegeByResourceAndPrivilege(tenant2ResourceId, privilegeId);
+            }
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" dictionaryType.code=:typeCode ", "typeCode", typeCode));
             CommonOrderBy orderBy = new CommonOrderBy();
@@ -85,10 +113,24 @@ public class DictionaryRestApi {
             List<SelectNode> nodes = new ArrayList<>();
             SelectNode node=null;
             for (DictionaryItem dictionaryItem : dictionaryItems) {
-                node = new SelectNode();
-                node.setOptionKey(dictionaryItem.getCode());
-                node.setOptionValue(dictionaryItem.getName());
-                nodes.add(node);
+                boolean isAdd = false;
+                if(tenant2ResourcePrivilege!=null){
+                    String[] selectValues = tenant2ResourcePrivilege.getSelectedValues().split(",");
+                    boo:for(int i=0;i<selectValues.length;i++){
+                        if(dictionaryItem.getCode().equals(selectValues[i])){
+                            isAdd = true;
+                            break boo;
+                        }
+                    }
+                }else{
+                    isAdd = true;
+                }
+                if(isAdd == true) {
+                    node = new SelectNode();
+                    node.setOptionKey(dictionaryItem.getCode());
+                    node.setOptionValue(dictionaryItem.getName());
+                    nodes.add(node);
+                }
             }
             map.put("success", true);
             map.put("data", nodes);

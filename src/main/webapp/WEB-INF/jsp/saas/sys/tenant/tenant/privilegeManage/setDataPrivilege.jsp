@@ -66,7 +66,7 @@
 												   radioOrCheckbox="checkbox" checkedByTitle="true" isSelectTree="true" submitType="get" dataType="json" isSearch="false" defaultkeys="${vo.selectedValues}" defaultvalues="${vo.selectedNames}"/>
 										</c:if>
 										<c:if test="${vo.privilegeDisplayType==2}"><!-- 多选下拉 -->
-											<SelectTag:SelectTag id="${vo.tenantPrivilegeId}" width="294px" moreSelectAll="true"
+											<SelectTag:SelectTag id="${vo.tenantPrivilegeId}" width="294px" moreSelectAll="true" token="${sessionScope.OWASP_CSRFTOKEN}"
 															 radioOrCheckbox="checkbox" moreSelectSearch="no" selectUrl="${vo.selectUrl}" defaultkeys="${vo.selectedValues}"/>
 										</c:if>
 									</td>

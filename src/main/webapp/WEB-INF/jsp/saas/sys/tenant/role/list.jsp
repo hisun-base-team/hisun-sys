@@ -56,7 +56,7 @@
 								<td>${entity.sort}</td>
 								<td class="Left_alignment">
 									<a href="${path }/sys/tenant/role/edit/${entity.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" >修改</a> |
-									<a href="${path}/sys/tenant/role/setresource/${entity.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" >授权</a> |
+									<a href="${path }/sys/tenant/role/privilegeManage/${entity.id}?roleName=${entity.roleName }&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" >授权</a>
 									<a href="javascript:void(0)" onclick="del('${entity.id }')">删除</a>
 								</td>
 							</tr>

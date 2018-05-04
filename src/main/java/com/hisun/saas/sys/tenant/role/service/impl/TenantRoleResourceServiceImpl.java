@@ -6,6 +6,9 @@
 
 package com.hisun.saas.sys.tenant.role.service.impl;
 
+import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonOrderBy;
+import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.saas.sys.tenant.role.dao.TenantRoleResourceDao;
 import com.hisun.saas.sys.tenant.role.entity.TenantRoleResource;
 import com.hisun.saas.sys.tenant.role.service.TenantRoleResourceService;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Rocky {rockwithyou@126.com}
@@ -29,5 +33,18 @@ public class TenantRoleResourceServiceImpl extends BaseServiceImpl<TenantRoleRes
     public void setBaseDao(BaseDao<TenantRoleResource, String> baseDao) {
         this.baseDao = baseDao;
         this.tenantRoleResourceDao = (TenantRoleResourceDao)baseDao;
+    }
+
+    public TenantRoleResource findTenantRoleResourceByRoleAndReource(String roleId,String resourceId){
+        CommonOrderBy orderBy = new CommonOrderBy();
+        CommonConditionQuery query =  new CommonConditionQuery();
+        query.add(CommonRestrictions.and(" role.id = :roleId ", "roleId", roleId));
+        query.add(CommonRestrictions.and(" tenantResource.id = :resourceId ", "resourceId", resourceId));
+        List<TenantRoleResource> list = this.tenantRoleResourceDao.list(query,orderBy);
+        if(list!=null&&list.size()>0){
+            return list.get(0);
+        }else{
+            return null;
+        }
     }
 }

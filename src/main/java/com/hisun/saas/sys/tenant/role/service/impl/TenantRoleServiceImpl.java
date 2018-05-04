@@ -45,6 +45,7 @@ public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole,String> im
         TenantRole entity = new TenantRole();
         BeanUtils.copyProperties(vo, entity);
         entity.setId(null);
+        entity.setTenant(details.getTenant());
         EntityWrapper.wrapperSaveBaseProperties(entity,details);
         tenantRoleDao.save(entity);
         return entity;
@@ -68,6 +69,7 @@ public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole,String> im
         UserLoginDetails details = UserLoginDetailsUtil.getUserLoginDetails();
         TenantRole entity = tenantRoleDao.getByPK(vo.getId());
         BeanUtils.copyProperties(vo, entity);
+        entity.setTenant(details.getTenant());
         EntityWrapper.wrapperUpdateBaseProperties(entity,details);
         tenantRoleDao.update(entity);
         return entity;

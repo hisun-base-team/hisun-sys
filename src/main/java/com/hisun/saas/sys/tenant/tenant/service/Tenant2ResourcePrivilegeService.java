@@ -13,5 +13,5 @@ import com.hisun.saas.sys.tenant.tenant.entity.Tenant2ResourcePrivilege;
  * @author Rocky {rockwithyou@126.com}
  */
 public interface Tenant2ResourcePrivilegeService extends BaseService<Tenant2ResourcePrivilege,String> {
-
+    Tenant2ResourcePrivilege findTenant2ResourcePrivilegeByResourceAndPrivilege(String tenant2ResourceId,String privilegeId);
 }
