@@ -135,7 +135,11 @@ public final class TreeTag extends BodyTagSupport {
 			}
 			nodesHtml.append("<input type=\"hidden\" id=\""+id+"\" name=\""+id+"\" value=\""+ StringUtils.trimNullCharacter2Empty(this.defaultkeys)+"\"/>");
 			nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tree_valueName\" name=\""+id+"_tree_valueName\" value=\""+valueName+"\"/>");
-			nodesHtml.append("<input type=\"text\" id=\""+valueName+"\" name=\""+valueName+"\" value=\""+StringUtils.trimNullCharacter2Empty(this.defaultvalues)+"\" readonly=\"readonly\" required=\""+required+"\" style=\"cursor: pointer;\" onclick=\"showTagDivTree('"+id+"_treeSelDiv','"+id+"','"+valueName+"','"+isSearch+"')\"");
+			nodesHtml.append("<input type=\"text\" id=\""+valueName+"\" name=\""+valueName+"\" value=\""+StringUtils.trimNullCharacter2Empty(this.defaultvalues)+"\" readonly=\"readonly\"");
+			if(required.equals("true")) {
+				nodesHtml.append(" required ");
+			}
+			nodesHtml.append("style=\"cursor: pointer;\" onclick=\"showTagDivTree('"+id+"_treeSelDiv','"+id+"','"+valueName+"','"+isSearch+"')\"");
 			if(selectClass!=null && !selectClass.equals("")){
 				nodesHtml.append("class=\""+selectClass+"\"");
 			}else{
