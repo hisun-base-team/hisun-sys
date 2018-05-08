@@ -6,12 +6,10 @@
 
 package com.hisun.saas.sys.tenant.tenant.vo;
 
-import com.hisun.base.vo.TombstoneVo;
-
 /**
  * @author Rocky {rockwithyou@126.com}
  */
-public class TenantDepartmentVo extends TombstoneVo{
+public class TenantDepartmentVo{
 
     private String id;
     private String name;

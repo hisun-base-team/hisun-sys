@@ -1,5 +1,6 @@
 package com.hisun.saas.sys.tenant.user.vo;
 
+import com.hisun.util.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -10,33 +11,20 @@ public class TenantUserVo implements Serializable {
     private static final long serialVersionUID = 5488580691891957241L;
 
     private String id;
-
     private String email;
-
     private String username;
-
     private String realname;
-
     private String pwd;
-
     private String tel;
-
     private String salt;
-
     private boolean locked = Boolean.FALSE;
-
     private boolean sex;
-
+    private String sexStr="1";
     private String tenantId;
-
     private boolean isOnline = false;
-
     private String specialty;//特长
-
     private String positional;//职称
-
     private String website;//个人主页
-
     private String about;//个人简介
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -202,5 +190,27 @@ public class TenantUserVo implements Serializable {
 
     public void setSort(int sort) {
         this.sort = sort;
+    }
+
+    public String getSexStr() {
+        if(sex){
+            sexStr="1";
+        }else{
+            sexStr="0";
+        }
+        return sexStr;
+    }
+
+    public void setSexStr(String sexStr) {
+        if(StringUtils.isNotBlank(sexStr)){
+            if(sexStr.equals("0")){
+                this.sex = false;
+            }else{
+                this.sex = true;
+            }
+        }else{
+            this.sex =true;
+        }
+        this.sexStr = sexStr;
     }
 }

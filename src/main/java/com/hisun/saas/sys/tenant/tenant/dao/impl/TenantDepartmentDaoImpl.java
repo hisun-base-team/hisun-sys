@@ -6,7 +6,7 @@
 
 package com.hisun.saas.sys.tenant.tenant.dao.impl;
 
-import com.hisun.base.dao.impl.BaseDaoImpl;
+import com.hisun.saas.sys.tenant.base.dao.imp.TenantBaseDaoImpl;
 import com.hisun.saas.sys.tenant.tenant.dao.TenantDepartmentDao;
 import com.hisun.saas.sys.tenant.tenant.entity.TenantDepartment;
 import org.springframework.stereotype.Repository;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
  * @author Rocky {rockwithyou@126.com}
  */
 @Repository
-public class TenantDepartmentDaoImpl extends BaseDaoImpl<TenantDepartment, String>
+public class TenantDepartmentDaoImpl extends TenantBaseDaoImpl<TenantDepartment, String>
         implements TenantDepartmentDao {
 }

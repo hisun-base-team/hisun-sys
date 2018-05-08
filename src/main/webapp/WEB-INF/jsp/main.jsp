@@ -1003,7 +1003,10 @@ li {
                     },
                     contentType: "application/json; charset=utf-8",
                     dataType : "json",
-                    success:fuc
+                    success:fuc,
+                    error: function(){
+                        showTip("警告","系统错误!",1300);
+                    }
                 });
 
                 $("#PromptName").val("");

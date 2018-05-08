@@ -20,55 +20,17 @@ import java.util.List;
 
 public interface TenantUserService extends BaseService<TenantUser,String> {
 
-    /**
-     * 根据条件分页查询用户列表
-     * @param pageSize
-     * @param pageNum
-     * @param userVo
-     * @return
-     */
-    PagerVo<TenantUserVo> pagerList(int pageSize, int pageNum, TenantUserVo userVo);
 
-    public UserLoginDetails findUserLoginDetails(String username);
-
-    /**
-     * 更改密码
-     * @param entity
-     * @param changePassword
-     */
-    void update(TenantUser entity, boolean changePassword);
-
+    UserLoginDetails findUserLoginDetails(String username);
+    void update(TenantUser tenantUser, boolean changePassword);
+    void resetPwd(TenantUser tenantUser,String newPwd);
+    boolean checkUsername(String username);
     TenantUser findByUsername(String username);
-
-    public void saveInviteRegister(TenantRegisterVo vo, String activationId, String roleId, String tenantId);
-
+    void saveInviteRegister(TenantRegisterVo vo, String activationId, String roleId, String tenantId);
     TenantUser findByEmail(String email);
-
-    /**
-     * 确认输入的密码是否正确
-     * @param user
-     * @param inputPassword
-     * @return
-     */
     boolean credentialsPassword(TenantUser user, String inputPassword);
-
     void saveUserAndRole(TenantUser tenantUser, String roleId);
-
-    public int countMember(String tenantId);
-
-    /**
-     * 注册到新租户,并修改角色
-     * @param tenantUser
-     * @param activation
-     * @param tenant
-     */
+    int countMember(String tenantId);
     void saveRegisterToNewTenant(TenantUser tenantUser, Activation activation, Tenant tenant) throws Exception;
-
-    /**
-     * 覆盖LIST，默认加上TENANT
-     * @return
-     */
-    public List<TenantUser> list();
-
     String saveNoPassword(TenantUser user);
 }

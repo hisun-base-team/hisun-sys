@@ -3,13 +3,12 @@
  */
 package com.hisun.saas.sys.tenant.tenant.vo;
 
-import com.hisun.base.vo.BaseVo;
 import com.hisun.base.vo.TombstoneVo;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
+import java.util.Date;
 
 
 public class TenantVo extends TombstoneVo{
@@ -37,6 +36,8 @@ public class TenantVo extends TombstoneVo{
 
 	private int usersCount;//用户数
 
+	private int tombstone=0;
+	private Date createDate;
 
 	public String getId() {
 		return id;
@@ -101,4 +102,7 @@ public class TenantVo extends TombstoneVo{
 	public void setUsersCount(int usersCount) {
 		this.usersCount = usersCount;
 	}
+
+
+
 }

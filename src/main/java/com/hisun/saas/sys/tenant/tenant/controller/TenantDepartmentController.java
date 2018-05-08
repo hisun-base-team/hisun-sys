@@ -22,6 +22,7 @@ import com.hisun.saas.sys.taglib.treeTag.TreeNode;
 import com.hisun.saas.sys.tenant.tenant.entity.TenantDepartment;
 import com.hisun.saas.sys.tenant.tenant.service.TenantDepartmentService;
 import com.hisun.saas.sys.tenant.tenant.vo.TenantDepartmentVo;
+import com.hisun.saas.sys.util.EntityWrapper;
 import com.hisun.util.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -56,13 +57,18 @@ public class TenantDepartmentController extends BaseController {
 			orderBy.add(CommonOrder.asc("sort"));
 			List<TenantDepartment> tenantDepartments = tenantDepartmentService.list(query, orderBy);
 			List<TreeNode> treeNodes = new ArrayList<TreeNode>();
-			TreeNode treeNode=null;
+			TreeNode treeNode = new TreeNode();
+			treeNode.setName(userLoginDetails.getTenantName());
+			treeNode.setId(userLoginDetails.getTenantId());
+			treeNodes.add(treeNode);
 			for (TenantDepartment tenantDepartment : tenantDepartments) {
 				treeNode = new TreeNode();
 				treeNode.setId(tenantDepartment.getId());
 				treeNode.setName(tenantDepartment.getName());
 				if(tenantDepartment.getParent()!=null){
 					treeNode.setpId(tenantDepartment.getParent().getId());
+				}else{
+					treeNode.setpId(userLoginDetails.getTenantId());
 				}
 				treeNodes.add(treeNode);
 			}
@@ -88,13 +94,10 @@ public class TenantDepartmentController extends BaseController {
 		String currentNodeParentId =StringUtils.trimNull2Empty( request.getParameter("currentNodeParentId"));//取得当前树节点的父ID属性
 		try{
 			CommonConditionQuery query = new CommonConditionQuery();
-			if(StringUtils.isEmpty(currentNodeId)){//如果未选择左侧的单位,则默认列出所有部门
+			if(StringUtils.isEmpty(currentNodeParentId)){//如果选择最顶层节点,则列出当前单位下一级部门
+				query.add(CommonRestrictions.and(" parent.id is null ",null,null));
 			}else{
-				if(StringUtils.isEmpty(currentNodeParentId)){//如果选择最顶层节点,则列出当前单位下一级部门
-					query.add(CommonRestrictions.and(" parent.id = :id ", "id",null));
-				}else{
-					query.add(CommonRestrictions.and(" parent.id = :id ", "id", currentNodeId));
-				}
+				query.add(CommonRestrictions.and(" parent.id = :id ", "id", currentNodeId));
 			}
 
 			Long total = tenantDepartmentService.count(query);
@@ -123,24 +126,32 @@ public class TenantDepartmentController extends BaseController {
 	}
 
 
-
 	@RequiresPermissions("tenant:*")
 	@RequestMapping("/ajax/add")
 	public ModelAndView add(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
 		String currentNodeId =StringUtils.trimNull2Empty(request.getParameter("currentNodeId"));
 		String currentNodeName =StringUtils.trimNull2Empty(request.getParameter("currentNodeName"));
 		String currentNodeParentId = StringUtils.trimNull2Empty(request.getParameter("currentNodeParentId"));
+		TenantDepartmentVo vo = new TenantDepartmentVo();
 		String parentId = "";
 		if(StringUtils.isNotBlank(currentNodeId) && StringUtils.isNotBlank(currentNodeParentId)){
 			parentId = currentNodeId;
+			TenantDepartment parentDepartment = this.tenantDepartmentService.getByPK(parentId);
+			vo.setParentId(parentId);
+			vo.setParentName(parentDepartment.getName());
+		}else{
+			vo.setParentId(userLoginDetails.getTenantId());
+			vo.setParentName(userLoginDetails.getTenantName());
 		}
 		int sort = this.tenantDepartmentService.getMaxSort(parentId);
-		TenantDepartmentVo vo = new TenantDepartmentVo();
+
+		vo.setSort(sort);
 		map.put("currentNodeId",currentNodeId);
 		map.put("currentNodeName",currentNodeName);
 		map.put("currentNodeParentId",currentNodeParentId);
-		map.put("sort",sort);
+		map.put("vo",vo);
 		return new ModelAndView("saas/sys/tenant/tenant/department/addDepartment",map);
 	}
 
@@ -154,16 +165,17 @@ public class TenantDepartmentController extends BaseController {
 			UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
 			TenantDepartment tenantDepartment = new TenantDepartment();
 			BeanUtils.copyProperties(tenantDepartment, vo);
-			if(StringUtils.isNotBlank(parentId)){
+			if(StringUtils.isNotBlank(parentId)&& !parentId.equals(userLoginDetails.getTenantId())){
 				tenantDepartment.setParent(this.tenantDepartmentService.getByPK(parentId));
 			}
 			tenantDepartment.setTenant(userLoginDetails.getTenant());
+			EntityWrapper.wrapperSaveBaseProperties(tenantDepartment,userLoginDetails);
 			tenantDepartmentService.saveTenantDepartment(tenantDepartment);
 			map.put("success", true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(e);
-			map.put("success", false);
+			throw new GenericException(e);
 		}
 
 		return map;
@@ -182,7 +194,7 @@ public class TenantDepartmentController extends BaseController {
 				Long total = tenantDepartmentService.count(query);
 				if(total>0){
 					map.put("success", false);
-					map.put("msg", "该部门下还有子部门，不能删除!！");
+					map.put("msg", "该部门下还有子部门，不能删除!");
 				}else{
 					this.tenantDepartmentService.deleteByPK(id);
 					map.put("success", true);
@@ -190,8 +202,7 @@ public class TenantDepartmentController extends BaseController {
 			}
 		} catch (Exception e) {
 			logger.error(e);
-			map.put("success", false);
-
+			throw new GenericException(e);
 		}
 		return map;
 	}
@@ -206,10 +217,7 @@ public class TenantDepartmentController extends BaseController {
 		String currentNodeName =StringUtils.trimNull2Empty(request.getParameter("currentNodeName"));
 		String currentNodeParentId = StringUtils.trimNull2Empty(request.getParameter("currentNodeParentId"));
 		org.springframework.beans.BeanUtils.copyProperties(tenantDepartment,vo);
-		if(tenantDepartment.getParent()==null){
-			//vo.setParentId(tenantDepartment.getTenant().getId());
-			//vo.setParentName(tenantDepartment.getTenant().getName());
-		}else {
+		if(tenantDepartment.getParent()!=null){
 			vo.setParentId(tenantDepartment.getParent().getId());
 			vo.setParentName(tenantDepartment.getParent().getName());
 		}
@@ -230,19 +238,28 @@ public class TenantDepartmentController extends BaseController {
 
 			UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
 			TenantDepartment tenantDepartment = this.tenantDepartmentService.getByPK(vo.getId());
-			String oldPid = "";
-			if(tenantDepartment.getParent()!=null){
-				oldPid = tenantDepartment.getParent().getId();
+			if(StringUtils.trimNull2Empty(pId).equals(tenantDepartment.getId())){
+				map.put("success", false);
+				map.put("msg", "上级部门不能是自身!");
+			}else{
+				String oldPid = "";
+				int oldSort = tenantDepartment.getSort();
+				if(tenantDepartment.getParent()!=null){
+					oldPid = tenantDepartment.getParent().getId();
+				}
+				BeanUtils.copyProperties(tenantDepartment, vo);
+				if(StringUtils.isNotBlank(pId) && !pId.equals(userLoginDetails.getTenantId())){
+					tenantDepartment.setParent(this.tenantDepartmentService.getByPK(pId));
+				}
+				tenantDepartment.setTenant(userLoginDetails.getTenant());
+				EntityWrapper.wrapperUpdateBaseProperties(tenantDepartment,userLoginDetails);
+				this.tenantDepartmentService.updateTenantDepartment(tenantDepartment, oldPid, oldSort);
+				map.put("success", true);
 			}
-			BeanUtils.copyProperties(tenantDepartment, vo);
-			tenantDepartment.setParent(this.tenantDepartmentService.getByPK(pId));
-			tenantDepartment.setTenant(userLoginDetails.getTenant());
-			this.tenantDepartmentService.updateTenantDepartment(tenantDepartment, oldPid, Integer.valueOf(0));
-			map.put("success", true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(e);
-			map.put("success", false);
+			throw new GenericException(e.getMessage());
 		}
 		return map;
 	}
@@ -256,8 +273,10 @@ public class TenantDepartmentController extends BaseController {
 				TenantDepartment entity = this.tenantDepartmentService.getByPK(id);
 				TenantDepartmentVo vo = new TenantDepartmentVo();
 				BeanUtils.copyProperties(vo, entity);
-				vo.setParentId(entity.getParent().getId());
-				vo.setParentName(entity.getParent().getName());
+				if(entity.getParent()!=null){
+					vo.setParentId(entity.getParent().getId());
+					vo.setParentName(entity.getParent().getName());
+				}
 				map.put("data", vo);
 				map.put("success", true);
 			} else {
@@ -268,35 +287,5 @@ public class TenantDepartmentController extends BaseController {
 		}
 		return map;
 	}
-
-
-	@RequiresPermissions("tenant:*")
-	@RequestMapping("/max/sort")
-	public @ResponseBody Map<String, Object> getMaxSort(@RequestParam(value="pId")String pId) {
-		Map<String, Object> map = Maps.newHashMap();
-		Integer maxSort = this.tenantDepartmentService.getMaxSort(pId);
-		map.put("maxSort", maxSort);
-		return map;
-	}
-
-	@RequiresPermissions("tenant:*")
-	@RequestMapping(value = "/select", method = RequestMethod.GET)
-	public @ResponseBody Map<String, Object> getRoleSelection(
-			@RequestParam(value = "id",required=false) String id){
-		Map<String, Object> map = Maps.newConcurrentMap();
-		//CommonConditionQuery query = new CommonConditionQuery();
-		try {
-
-			map.put("success", true);
-			map.put("data", null);
-		} catch (Exception e) {
-			logger.error(e,e);
-			map.put("success", false);
-		}
-		return map;
-	}
-
-
-
 
 }

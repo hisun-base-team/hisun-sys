@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/jsp/inc/taglib.jsp" %>
-<c:set var="path" value="${pageContext.request.contextPath}"></c:set>
 <!DOCTYPE html>
 <html>
 <head>
@@ -165,15 +164,12 @@
 	<div class="row-fluid">
 		<div class="row-fluid mb10" style="">
 			<div class="caption_title">用户列表</div>
-				<shiro:hasPermission name="admin-platform:user_add">
+				<%--<shiro:hasPermission name="admin-platform:user_add">--%>
 					<a href="javascript:;" onclick="add();" class="btn fr" style="margin-right: 5px;"><i class="icon-plus"></i> 添加</a>
-				</shiro:hasPermission>
+				<%--</shiro:hasPermission>--%>
 		</div>
 		<div class="clearfix">
-
 			<div class="control-group">
-
-
 				<div id="query" style="float: left;">
 					<form action="${path}/sys/admin/user/list" id="getUserForm" style="margin: 0 0 10px;" method="post">
 						<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}">
@@ -183,16 +179,10 @@
 					</form>
 				</div>
 			</div>
-
 		</div>
-		<table
-			class="table table-striped table-bordered table-hover table-full-width"
-			id="sample_2">
-
+		<table class="table table-striped table-bordered table-hover table-full-width" id="sample_2">
 			<thead>
-
 				<tr>
-
 					<th>用户名</th>
 					<th>真实姓名</th>
 <%--

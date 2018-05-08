@@ -14,6 +14,7 @@ import com.hisun.saas.sys.auth.service.PasswordHelper;
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonRestrictions;
+import com.hisun.saas.sys.auth.vo.PasswordSecurity;
 import com.hisun.saas.sys.entity.AbstractResource;
 import com.hisun.saas.sys.entity.AbstractRole;
 import com.hisun.base.entity.TombstoneEntity;
@@ -38,6 +39,7 @@ import com.hisun.saas.sys.tenant.user.entity.TenantUser;
 import com.hisun.saas.sys.tenant.user.entity.TenantUserRole;
 import com.hisun.saas.sys.tenant.user.service.TenantUserService;
 import com.hisun.saas.sys.tenant.user.vo.TenantUserVo;
+import com.hisun.saas.sys.util.EntityWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
@@ -131,54 +133,6 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
     }
 
     @Override
-    public PagerVo<TenantUserVo> pagerList(int pageSize, int pageNum, TenantUserVo userVo) {
-        // 拼接查询条件
-        StringBuffer countHql = new StringBuffer(" select count(1) from TenantUser user ");
-        StringBuffer hql = new StringBuffer(" from TenantUser user ");
-        Map<String, Object> paramMap = Maps.newHashMap();
-        if (null != userVo.getTenantId()) {
-            hql.append(" where user.tenant.id = :tenantId");
-            countHql.append(" where user.tenant.id = :tenantId");
-            paramMap.put("tenantId", userVo.getTenantId());
-        } else {
-            hql.append(" where 1=1 ");
-        }
-        if (userVo.getUsername() != null) {
-            hql.append(" and (user.username like :name");
-            hql.append(" or user.realname like :name");
-            hql.append(" or user.tel like :name");
-            hql.append(" or user.email like :name )");
-
-            countHql.append(" and (user.username like :name");
-            countHql.append(" or user.realname like :name");
-            countHql.append(" or user.tel like :name");
-            countHql.append(" or user.email like :name )");
-            paramMap.put("name", "%" + userVo.getUsername() + "%");
-        }
-
-        int count = tenantUserDao.count(countHql.toString(), paramMap);
-        List<TenantUser> tenantUserList = tenantUserDao.list(hql.toString(), paramMap, pageNum, pageSize);
-        List<TenantUserVo> voList = Lists.newArrayList();
-        TenantUserVo vo;
-        for (TenantUser user : tenantUserList) {
-            vo = new TenantUserVo();
-            BeanUtils.copyProperties(user, vo);
-
-            List<TenantUserRole> tenantUserRoles = user.getUserRoles();
-            StringBuffer roleName = new StringBuffer();
-            for (TenantUserRole userRole : tenantUserRoles) {
-                roleName.append(userRole.getRole().getRoleName()).append("|");
-            }
-            if (StringUtils.isNotBlank(roleName)) {
-                vo.setRoleName(roleName.substring(0, roleName.length()-1));
-            }
-            voList.add(vo);
-        }
-        PagerVo<TenantUserVo> pagerVo = new PagerVo<>(voList, count, pageNum, pageSize);
-        return pagerVo;
-    }
-
-    @Override
     public void saveInviteRegister(TenantRegisterVo vo, String activationId, String roleId, String tenantId) {
         Tenant tenant = tenantDao.getByPK(tenantId);
         TenantUser tenantUser = tenantUserDao.saveRegister(vo, tenant);
@@ -207,6 +161,18 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
         Activation activation = activationDao.getByPK(activationId);
         activation.setStatus("1");
         activationDao.update(activation);
+    }
+
+
+    public boolean checkUsername(String username){
+        CommonConditionQuery query = new CommonConditionQuery();
+        query.add(CommonRestrictions.and(" username = :username", "username", username));
+        Long count = tenantUserDao.count(query);
+        if(count>0){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
@@ -313,5 +279,14 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
 //            tenantUserRoleDao.save(userRole);
 //        }
         return pk;
+    }
+
+
+
+    public void resetPwd(TenantUser tenantUser,String newPwd){
+        PasswordSecurity  passwordSecurity = passwordHelper.encryptPassword(newPwd);
+        tenantUser.setSalt(passwordSecurity.getSalt());
+        tenantUser.setPassword(passwordSecurity.getPassword());
+        this.tenantUserDao.update(tenantUser);
     }
 }

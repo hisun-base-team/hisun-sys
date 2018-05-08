@@ -18,6 +18,5 @@ public interface TenantDepartmentService extends BaseService<TenantDepartment,St
 
     Integer getMaxSort(String pId);
     void saveTenantDepartment(TenantDepartment tenantDepartment);
-    void updateSort(TenantDepartment tenantDepartment,Integer oldSort);
-    void updateTenantDepartment(TenantDepartment tenantDepartment,String oldPid,Integer oldSort)throws Exception;
+    void updateTenantDepartment(TenantDepartment tenantDepartment,String oldPid,Integer oldSort);
 }

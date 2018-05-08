@@ -57,13 +57,7 @@ public class PasswordHelper {
 
         user.setPassword(newPassword);
     }
-    
-    /**
-     * 校验输入的原密码是否正确
-     * @param user
-     * @param confirmPassword
-     * @return
-     */
+
     public boolean credentialsPassword(AbstractUser user,String confirmPassword){
 		String newCredentials = new SimpleHash(algorithmName, confirmPassword, ByteSource.Util.bytes(user.getSalt()), hashIterations).toHex();
     	return Arrays.equals(user.getPassword().getBytes(),newCredentials.getBytes());

@@ -1,17 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 		 pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/jsp/inc/taglib.jsp"%>
-<div class="span6" style="width: 100%; margin: 0px;">
-	<div class="portlet box grey">
+<div class="container-fluid">
+	<div class="row-fluid">
 		<div class="portlet-title" style="vertical-align: middle;">
-			<div class="caption">部门</div>
+			<div class="caption">部门列表</div>
 			<div class="clearfix fr">
-				<a id="add" class="btn green" href="#">
-					<i class="icon-plus"></i> 添加
-				</a>
+				<a id="add" class="btn green" href="#"><i class="icon-plus"></i> 添加</a>
 			</div>
 		</div>
-		<div class="portlet-body fuelux">
+		<div class="clearfix">
 			<table class="table table-striped table-bordered table-hover dataTable table-set">
 				<thead>
 				<tr>
@@ -26,7 +24,7 @@
 					<tr>
 						<td><c:out value="${vo.name }"></c:out></td>
 						<td><c:out value="${vo.sort }"></c:out></td>
-						<td><a href="javascript:update('${vo.id}');" >编辑</a>|<a id="${vo.id}" voname="<c:out value="${vo.name }"></c:out>" href="javascript:void(0)" onclick="del(this);">删除</a>
+						<td><a href="javascript:update('${vo.id}');" >编辑</a>|<a id="${vo.id}" voname="${vo.name}" href="javascript:void(0)" onclick="del(this);">删除</a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -44,17 +42,12 @@
 	<div class="modal-scrollable" style="z-index: 10050;display: none;" id="del1">
 		<div id="static" class="modal hide fade in" tabindex="-1"
 			 data-backdrop="static" data-keyboard="false" style="display: block;">
-
 			<div class="modal-body">
-
 				<p>该树节点还有子节点，不能删除!</p>
-
 			</div>
-
 			<div class="modal-footer">
 				<button type="button" data-dismiss="modal" class="btn" id="delCancel1">关闭</button>
 			</div>
-
 		</div>
 
 	</div>
@@ -65,9 +58,8 @@
 		var currentNodeId = $("#currentNodeId").val();
 		var currentNodeName = $("#currentNodeName").val();
 		var currentNodeParentId = $("#currentNodeParentId").val();
-		var typeId = $("#typeId").val();
 		$.ajax({
-			url : "${path}/sys/tenant/tenant/department/ajax/add?currentNodeId="+currentNodeId+"&currentNodeName="+currentNodeName+"&currentNodeParentId="+currentNodeParentId,
+			url : "${path}/sys/tenant/department/ajax/add?currentNodeId="+currentNodeId+"&currentNodeName="+currentNodeName+"&currentNodeParentId="+currentNodeParentId,
 			type : "get",
 			data : null,
 			dataType : "html",
@@ -86,9 +78,8 @@
 		var currentNodeId = $("#currentNodeId").val();
 		var currentNodeName = $("#currentNodeName").val();
 		var currentNodeParentId = $("#currentNodeParentId").val();
-		var typeId = $("#typeId").val();
 		$.ajax({
-			url : "${path}/sys/tenant/tenant/department/ajax/edit/"+id+"?currentNodeId="+currentNodeId+"&currentNodeName="+currentNodeName+"&currentNodeParentId="+currentNodeParentId,
+			url : "${path}/sys/tenant/department/ajax/edit/"+id+"?currentNodeId="+currentNodeId+"&currentNodeName="+currentNodeName+"&currentNodeParentId="+currentNodeParentId,
 			type : "get",
 			data : null,
 			dataType : "html",
@@ -118,11 +109,10 @@
 				"currentNodeId":currentNodeId,
 				"currentNodeParentId":currentNodeParentId,
 				"currentNodeName":currentNodeName,
-				"typeId":"${typeId}",
 				"pageNum":pageNum,
 				"pageSize":pageSize
 			},
-			url: "${path}/sys/tenant/tenant/department/ajax/list",// 请求的action路径
+			url: "${path}/sys/tenant/department/ajax/list",// 请求的action路径
 			error: function () {// 请求失败处理函数
 				alert('请求失败');
 			},
@@ -138,8 +128,7 @@
 		var currentNodeId = $("#currentNodeId").val();
 		var currentNodeName = $("#currentNodeName").val();
 		var currentNodeParentId = $("#currentNodeParentId").val();
-		actionByConfirm1(voname, "${path}/sys/tenant/tenant/department/delete/" + id,{} ,function(data,status){
-
+		actionByConfirm1(voname, "${path}/sys/tenant/department/delete/" + id,{} ,function(data,status){
 			if (data.success == true) {
 				showTip("提示", "成功删除！",2000);
 				refreshTree();
@@ -147,14 +136,13 @@
 				var currentNodeName = $("#currentNodeName").val();
 				var currentNodeParentId = $("#currentNodeParentId").val();
 				$.ajax({
-					url: "${path}/sys/tenant/tenant/department/ajax/list",// 请求的action路径
+					url: "${path}/sys/tenant/department/ajax/list",
 					type: 'POST',
 					dataType : "html",
 					data:{
 						"currentNodeId":currentNodeId,
-						"currentNodeParentId":currentNodeName,
-						"currentNodeName":currentNodeParentId,
-						"typeId":"${typeId}"
+						"currentNodeParentId":currentNodeParentId,
+						"currentNodeName":currentNodeName
 					},
 					headers: {
 						"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
@@ -163,7 +151,7 @@
 						$("#rightList").html(html);
 					},
 					error : function(){
-						alert('请求失败');
+						showTip("提示", "删除失败!",2000);
 					}
 				});
 			}else{

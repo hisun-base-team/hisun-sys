@@ -555,10 +555,6 @@ public class TenantController extends BaseController {
         return new ModelAndView("saas/sys/tenant/tenant/index",map);
     }
 
-
-
-
-    @RequiresPermissions("tenant:*")
     @RequestMapping("/tree")
     public @ResponseBody Map<String, Object> tree() throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();

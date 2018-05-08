@@ -81,7 +81,7 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant, String> implement
 		TenantUser tenantUser = new TenantUser();
 		tenantUser.setTenant(tenant);
 		tenantUser.setUsername(vo.getAdminUserName());
-		tenantUser.setRealname(vo.getAdminUserName());
+		tenantUser.setRealname("管理员");
 		tenantUser.setStatus(TenantUser.STATUS_ACTIVATION);
 		tenantUser.setSort(1);
 		PasswordSecurity passwordSecurity = passwordHelper.encryptPassword(vo.getAdminUserPassword());

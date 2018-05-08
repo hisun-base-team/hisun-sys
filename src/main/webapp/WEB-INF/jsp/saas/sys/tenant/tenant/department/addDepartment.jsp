@@ -29,25 +29,24 @@
 						<input type="text" id="name" name="name" class="span6 m-wrap" required maxlength="200">
 					</div>
 				</div>
-				<div id="pId_valueGroup" class="control-group" >
-					<label class="control-label">上级部门<span class="required">*</span></label>
+				<div id="parentNameGroup" class="control-group" >
+					<label class="control-label">上级部门</label>
 					<div class="controls">
-						<Tree:tree id="pId" treeUrl="${path}/sys/tenant/tenant/department/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
-								   submitType="post" dataType="json" isSearch="false" isSelectTree="true" defaultkeys="${currentNodeId}" defaultvalues="${currentNodeName}"/>
+						<Tree:tree id="parentId" valueName="parentName" treeUrl="${path}/sys/tenant/department/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
+								   submitType="post" dataType="json" isSearch="false" isSelectTree="true" required="false"
+								   defaultkeys="${vo.parentId}" defaultvalues="${vo.parentName}" />
 					</div>
-
 				</div>
 				<div id="sortGroup" class="control-group" >
 					<label class="control-label">排序<span class="required">*</span></label>
 					<div class="controls">
-						<input type="text" id="sort" name="sort" number="true" class="span6 m-wrap" required max="999" value="${sort}" >
+						<input type="text" id="sort" name="sort" number="true" class="span6 m-wrap" required max="999" value="${vo.sort}" >
 					</div>
 
 				</div>
 				<div class="form-actions">
 					<button id="submitbut" type="button" class="btn green mybutton" ><i class='icon-ok'></i> 确定</button>
-					<a href="javascript:returnList();" class="btn btn-default"
-					   data-dismiss="modal"><i class='icon-remove-sign'></i> 取消
+					<a href="javascript:returnList();" class="btn btn-default" data-dismiss="modal"><i class='icon-remove-sign'></i> 取消
 					</a>
 				</div>
 			</form>
@@ -71,7 +70,7 @@
 			var bool = addForm.form();
 			if(bool){
 				$.ajax({
-					url : "${path}/sys/tenant/tenant/department/save",
+					url : "${path}/sys/tenant/department/save",
 					type : "post",
 					data : $("#addForm").serialize(),
 					dataType : "json",
@@ -82,13 +81,13 @@
 						if(json.success){
 							refreshTree();
 							$.ajax({
-								url: "${path}/sys/tenant/tenant/department/ajax/list",// 请求的action路径
+								url: "${path}/sys/tenant/department/ajax/list",// 请求的action路径
 								type: 'POST',
 								dataType : "html",
 								data:{
 								"currentNodeId":currentNodeId,
-								"currentNodeParentId":currentNodeName,
-								"currentNodeName":currentNodeParentId
+								"currentNodeParentId":currentNodeParentId,
+								"currentNodeName":currentNodeName
 								},
 								headers: {
 								"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
@@ -122,13 +121,13 @@
 		var currentNodeName = $("#currentNodeName").val();
 		var currentNodeParentId = $("#currentNodeParentId").val();
 		$.ajax({
-			url: "${path}/sys/tenant/tenant/department/ajax/list",// 请求的action路径
+			url: "${path}/sys/tenant/department/ajax/list",// 请求的action路径
 			type: 'POST',
 			dataType : "html",
 			data:{
 				"currentNodeId":currentNodeId,
-				"currentNodeParentId":currentNodeName,
-				"currentNodeName":currentNodeParentId
+				"currentNodeParentId":currentNodeParentId,
+				"currentNodeName":currentNodeName
 			},
 			headers: {
 				"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"

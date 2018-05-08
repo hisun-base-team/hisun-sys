@@ -9,6 +9,8 @@ package com.hisun.saas.sys.tenant.tenant.service.impl;
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.service.impl.BaseServiceImpl;
+import com.hisun.saas.sys.auth.UserLoginDetails;
+import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.tenant.tenant.dao.TenantDepartmentDao;
 import com.hisun.saas.sys.tenant.tenant.entity.TenantDepartment;
 import com.hisun.saas.sys.tenant.tenant.service.TenantDepartmentService;
@@ -76,23 +78,24 @@ public class TenantDepartmentServiceImpl extends BaseServiceImpl<TenantDepartmen
 
     }
 
-    public void updateSort(TenantDepartment tenantDepartment, Integer oldSort)  {
+    private void updateSort(TenantDepartment tenantDepartment, Integer oldSort)  {
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         CommonConditionQuery query = new CommonConditionQuery();
         Integer newSort = tenantDepartment.getSort();
         String pId = "";
         if(tenantDepartment.getParent()!=null){
             pId = tenantDepartment.getParent().getId();
         }
-        String sql="UPDATE TenantDepartment t SET ";
+        String sql="update sys_tenant_department t set ";
         if(newSort>oldSort){
             sql+="t.sort=t.sort-1";
         }else{
             sql+="t.sort=t.sort+1";
         }
         if(pId!=null && !pId.equals("")) {
-            sql+=" where t.parent.id='"+tenantDepartment.getParent().getId()+"'";
+            sql +=" where t.tenant_id='"+userLoginDetails.getTenant().getId()+"' and  t.parent_id='"+tenantDepartment.getParent().getId()+"'";
         }else{
-            sql = sql+" where t.parent is null";
+            sql +=" where t.tenant_id='"+userLoginDetails.getTenant().getId()+"' and t.parent_id is null";
         }
 
         if(newSort>oldSort){
@@ -104,33 +107,32 @@ public class TenantDepartmentServiceImpl extends BaseServiceImpl<TenantDepartmen
                 sql+=" and t.sort<"+oldSort+" and t.sort>="+newSort;
             }
         }
-        this.tenantDepartmentDao.executeBulk(sql,query);
+        this.tenantDepartmentDao.executeNativeBulk(sql,query);
     }
 
-
-
-
-    public void updateTenantDepartment(TenantDepartment tenantDepartment, String oldPid, Integer oldSort) throws Exception {
-        TenantDepartment tenantDepartment2 = this.tenantDepartmentDao.getByPK(tenantDepartment.getId());
-        int newSort = tenantDepartment.getSort();
-        String pId = "";
-        if (tenantDepartment.getParent() != null) {
-            pId = tenantDepartment.getParent().getId();
+    public void updateTenantDepartment(TenantDepartment tenantDepartment, String oldPid, Integer oldSort){
+        String newParentId = "";
+        if(tenantDepartment.getParent()!=null){
+            newParentId = tenantDepartment.getParent().getId();
         }
-        int maxSort = this.getMaxSort(pId);
-        if (newSort > maxSort) {
-            newSort = maxSort;
-        }
-        tenantDepartment.setSort(newSort);
-        if (StringUtils.equals(pId, oldPid)) {
-            this.updateSort(tenantDepartment, tenantDepartment2.getSort());
-        } else {
+        if(com.hisun.util.StringUtils.trimNull2Empty(oldPid).equals(newParentId)){
+            //父部门没有改变的情况下
+            this.updateSort(tenantDepartment, oldSort);
+        }else{
+            //父部门改变的情况下
+            String pId = "";
+            if (tenantDepartment.getParent() != null) {
+                pId = tenantDepartment.getParent().getId();
+            }
+            int newSort = tenantDepartment.getSort();
+            int maxSort = this.getMaxSort(pId);
+            if (newSort > maxSort) {
+                newSort = maxSort;
+            }
+            tenantDepartment.setSort(newSort);
             this.updateSort(tenantDepartment, maxSort);
         }
-
-        BeanUtils.copyProperties(tenantDepartment2, tenantDepartment);
-        this.tenantDepartmentDao.update(tenantDepartment2);
-
+        this.tenantDepartmentDao.update(tenantDepartment);
     }
 
 }

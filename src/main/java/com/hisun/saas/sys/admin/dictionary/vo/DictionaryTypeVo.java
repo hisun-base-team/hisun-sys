@@ -6,9 +6,7 @@
 
 package com.hisun.saas.sys.admin.dictionary.vo;
 
-import com.hisun.base.vo.BaseVo;
-
-public class DictionaryTypeVo  extends BaseVo{
+public class DictionaryTypeVo{
 
 	private String id;//逻辑主键
 	private String name;//字典类型名称

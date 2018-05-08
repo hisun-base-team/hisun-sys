@@ -63,7 +63,7 @@ public class TenantUser extends AbstractUser implements TenantEntityInterface, S
 		this.sort = sort;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,optional = true)
 	@JoinColumn(name="department_id")
 	public TenantDepartment getTenantDepartment() {
 		return tenantDepartment;

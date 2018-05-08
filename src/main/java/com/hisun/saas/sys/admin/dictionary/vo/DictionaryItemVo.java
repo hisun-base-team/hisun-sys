@@ -7,9 +7,7 @@
 package com.hisun.saas.sys.admin.dictionary.vo;
 
 
-import com.hisun.base.vo.BaseVo;
-
-public class DictionaryItemVo extends BaseVo {
+public class DictionaryItemVo {
 
 	private String id;
 	private String pId;

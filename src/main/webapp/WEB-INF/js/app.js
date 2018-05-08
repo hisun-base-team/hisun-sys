@@ -940,6 +940,9 @@ function localPost( url, data, callback, dataType , headers) {
         data: data,
         headers:headers,
         success: callback,
+        error: function(){
+            showTip("警告","系统错误!",1300);
+        },
         dataType: dataType
     });
 }
