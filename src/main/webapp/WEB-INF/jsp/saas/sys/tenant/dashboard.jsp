@@ -134,6 +134,15 @@
                 </dd>
             </dl>
         </a>
+        <a class="nav_a" href="/zzb/dzda/dashboard?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+            <dl class="dlnavigcont">
+                <dt><img src="${path}/images/templateImage/navIco05.png"></dt>
+                <dd>
+                    <h4>电子档案</h4>
+                    <p class="navp01">电子档案管理系统要实现了档案管理工作信息化，档案资料图片化，档案查阅无纸化和查阅远程化</p>
+                </dd>
+            </dl>
+        </a>
         <a class="nav_a" href="javascript:openGzzzb('gbrm')">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco03.png"></dt>
