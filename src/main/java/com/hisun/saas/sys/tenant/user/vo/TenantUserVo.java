@@ -29,12 +29,11 @@ public class TenantUserVo implements Serializable {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date birthday = new Date();
-
     private String roleId;
-
     private String roleName;
-
     private int sort;
+    private String departmentId;
+    private String departmentName;
 
     public String getRoleName() {
         return roleName;
@@ -189,6 +188,7 @@ public class TenantUserVo implements Serializable {
     }
 
     public void setSort(int sort) {
+
         this.sort = sort;
     }
 
@@ -212,5 +212,21 @@ public class TenantUserVo implements Serializable {
             this.sex =true;
         }
         this.sexStr = sexStr;
+    }
+
+    public String getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 }

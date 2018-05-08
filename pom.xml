@@ -191,10 +191,10 @@
 				<hibernate.show_sql>true</hibernate.show_sql>
 				<db.connection.driver_class>com.mysql.jdbc.Driver</db.connection.driver_class>
 				<db.connection.url>
-					<![CDATA[ jdbc:mysql://localhost:3306/zzb?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true  ]]>
+					<![CDATA[ jdbc:mysql://192.168.3.200:3306/zzb?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true  ]]>
 				</db.connection.url>
 				<db.connection.username>root</db.connection.username>
-				<db.connection.password></db.connection.password>
+				<db.connection.password>root</db.connection.password>
 				<db.connection.properties>config.decrypt=false</db.connection.properties>
 				<es.cluster.name>elasticsearch</es.cluster.name>
 				<es.ip>localhost</es.ip>

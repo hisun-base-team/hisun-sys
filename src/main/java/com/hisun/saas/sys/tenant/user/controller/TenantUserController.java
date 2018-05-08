@@ -34,6 +34,7 @@ import com.hisun.saas.sys.tenant.role.service.TenantRoleService;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.sys.tenant.tenant.entity.TenantDepartment;
 import com.hisun.saas.sys.tenant.tenant.entity.TenantRegister;
+import com.hisun.saas.sys.tenant.tenant.service.TenantDepartmentService;
 import com.hisun.saas.sys.tenant.tenant.service.TenantRegisterService;
 import com.hisun.saas.sys.tenant.tenant.service.TenantService;
 import com.hisun.saas.sys.tenant.tenant.vo.TenantDepartmentVo;
@@ -108,14 +109,18 @@ public class TenantUserController extends BaseController {
     private PasswordResetService passwordResetService;
     @Resource
     private SessionHelper sessionHelper;
+    @Resource
+    private TenantDepartmentService tenantDepartmentService;
 
     private final static String DEFAULT_IMG_HEAD_PATH = "/WEB-INF/images/defaultHeadImage.png";
 
 
     @RequiresPermissions("tenantUser:*")
     @RequestMapping(value = "/index")
-    public ModelAndView index() {
+    public ModelAndView index(HttpServletRequest request) {
         Map<String, Object> map = Maps.newHashMap();
+        String currentNodeId = com.hisun.util.StringUtils.trimNull2Empty(request.getParameter("currentNodeId"));
+        map.put("currentNodeId",currentNodeId);
         return new ModelAndView("saas/sys/tenant/user/index", map);
     }
 
@@ -174,10 +179,26 @@ public class TenantUserController extends BaseController {
     public ModelAndView add(HttpServletRequest request) {
         Map<String, Object> map = Maps.newHashMap();
         String currentNodeId = com.hisun.util.StringUtils.trimNull2Empty(request.getParameter("currentNodeId"));
-        //CommonConditionQuery query = new CommonConditionQuery();
-        //List<TenantRole> roles = this.tenantRoleService.list(query, null);
-        //map.put("roles", roles);
-        map.put("currentNodeId", currentNodeId);
+        String currentNodeName = com.hisun.util.StringUtils.trimNull2Empty(request.getParameter("currentNodeName"));
+        String currentNodeParentId = com.hisun.util.StringUtils.trimNull2Empty(request.getParameter("currentNodeParentId"));
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        TenantUserVo vo = new TenantUserVo();
+        String departmentId = "";
+        if(com.hisun.util.StringUtils.isNotBlank(currentNodeId) && com.hisun.util.StringUtils.isNotBlank(currentNodeParentId)){
+            departmentId = currentNodeId;
+            TenantDepartment parentDepartment = this.tenantDepartmentService.getByPK(departmentId);
+            vo.setDepartmentId(departmentId);
+            vo.setDepartmentName(parentDepartment.getName());
+        }else{
+            vo.setDepartmentId(userLoginDetails.getTenantId());
+            vo.setDepartmentName(userLoginDetails.getTenantName());
+        }
+        int sort = this.tenantUserService.getMaxSort(departmentId);
+        vo.setSort(sort);
+        map.put("currentNodeId",currentNodeId);
+        map.put("currentNodeName",currentNodeName);
+        map.put("currentNodeParentId",currentNodeParentId);
+        map.put("vo",vo);
         return new ModelAndView("saas/sys/tenant/user/addUser", map);
     }
 
@@ -236,9 +257,14 @@ public class TenantUserController extends BaseController {
                 user.setHeadPhoto(photoFile);
                 user.setTenant(userLoginDetails.getTenant());
                 user.setPassword(userVo.getPwd());
+                if(com.hisun.util.StringUtils.isNotBlank(userVo.getDepartmentId())){
+                    TenantDepartment tenantDepartment = this.tenantDepartmentService.getByPK(userVo.getDepartmentId());
+                    user.setTenantDepartment(tenantDepartment);
+                }
                 this.tenantUserService.save(user);
                 map.put("success", true);
                 map.put("message", "保存成功!");
+
             } else {
                 map.put("success", false);
                 map.put("message", "该账号已存在!");
@@ -340,10 +366,18 @@ public class TenantUserController extends BaseController {
     public ModelAndView edit(@PathVariable("id") String id,HttpServletRequest request) {
         Map<String, Object> map = Maps.newHashMap();
         String currentNodeId = com.hisun.util.StringUtils.trimNull2Empty(request.getParameter("currentNodeId"));
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         try {
             TenantUser entity = this.tenantUserService.getByPK(id);
             TenantUserVo vo = new TenantUserVo();
             BeanUtils.copyProperties(vo, entity);
+            if(entity.getTenantDepartment()!=null){
+                vo.setDepartmentId(entity.getTenantDepartment().getId());
+                vo.setDepartmentName(entity.getTenantDepartment().getName());
+            }else{
+                vo.setDepartmentId(userLoginDetails.getTenantId());
+                vo.setDepartmentName(userLoginDetails.getTenantName());
+            }
             map.put("vo", vo);
             map.put("currentNodeId", currentNodeId);
         } catch (Exception e) {
@@ -410,6 +444,8 @@ public class TenantUserController extends BaseController {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         try {
             TenantUser entity = tenantUserService.getByPK(userVo.getId());
+            String oldDepartmentId = entity.getTenantDepartment()==null?"":entity.getTenantDepartment().getId();
+            int oldSort = entity.getSort();
             if (entity.getTenant().getId().equals(userLoginDetails.getTenantId())) {
                 EntityWrapper.wrapperUpdateBaseProperties(entity, userLoginDetails);
                 entity.setRealname(userVo.getRealname());
@@ -419,7 +455,13 @@ public class TenantUserController extends BaseController {
                 entity.setWebsite(userVo.getWebsite());
                 entity.setTel(userVo.getTel());
                 entity.setEmail(userVo.getEmail());
-                this.tenantUserService.update(entity);
+                entity.setSort(userVo.getSort());
+                entity.setSex(userVo.getSex());
+                if(!com.hisun.util.StringUtils.trimNull2Empty(userVo.getDepartmentId()).equals(userLoginDetails.getTenantId())){
+                    TenantDepartment tenantDepartment = this.tenantDepartmentService.getByPK(userVo.getDepartmentId());
+                    entity.setTenantDepartment(tenantDepartment);
+                }
+                this.tenantUserService.updateUser(entity,oldDepartmentId,oldSort);
                 map.put("success", true);
                 map.put("msg", "修改成功!");
             } else {

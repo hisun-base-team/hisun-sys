@@ -30,7 +30,7 @@
 		<div class="main_left">
 			<div class="portlet box grey mainleft">
 				<div class="portlet-body leftbody">
-					<input type="hidden" id="currentNodeId"  name="currentNodeId" value="" />
+					<input type="hidden" id="currentNodeId"  name="currentNodeId" value="${currentNodeId}" />
 					<input type="hidden" id="currentNodeName"  name="currentNodeName" value="" />
 					<input type="hidden" id="currentNodeParentId"  name="currentNodeParentId" value="" />
 					<Tree:tree id="leftTree" treeUrl="${path}/sys/tenant/tenant/tree" token="${sessionScope.OWASP_CSRFTOKEN}"
@@ -85,7 +85,14 @@
 	$(document).ready(function(){
 		App.init();//必须，不然导航栏及其菜单无法折叠
 		var zTree = $.fn.zTree.getZTreeObj("leftTree");//取得树对象
-		var node = zTree.getNodes()[0];// 获取第一个点
+		var cureentNodeId = $("#currentNodeId").val();
+		var node;
+		if(cureentNodeId!=""){
+			 node = zTree.getNodeByParam("id",cureentNodeId, null);
+		}else{
+			 node = zTree.getNodes()[0];// 获取第一个点
+		}
+
 		$("#currentNodeId").val(node.id);//赋值
 		$("#currentNodeName").val(node.name);//赋值
 		$("#currentNodeParentId").val(node.pId);//赋值

@@ -41,6 +41,7 @@
 						<th>职务</th>
 						<th>手机号码</th>
 						<th>状态</th>
+						<th>排序</th>
 						<th style="text-align:center;width:200px;">操作</th>
 					</tr>
 				</thead>
@@ -70,6 +71,7 @@
 									正常
 								</c:if>
 							</td>
+							<td ><c:out value="${user.sort}"></c:out></td>
 							<td style="text-align: center;" class="Left_alignment" title="">
 								<a href="javascript:void(0);"  class="setRoles" userId="<c:out value="${user.id}"></c:out>" userRealName="<c:out value="${user.realname}"></c:out>">
 									赋予角色
@@ -177,7 +179,7 @@ $("#add").click(function(){
 	var currentNodeId = $("#currentNodeId").val();
 	var currentNodeName = $("#currentNodeName").val();
 	var currentNodeParentId = $("#currentNodeParentId").val();
-	window.location.href="${path}/sys/tenant/user/add?currentNodeId="+currentNodeId+"&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}";
+	window.location.href="${path}/sys/tenant/user/add?currentNodeId="+currentNodeId+"&currentNodeParentId="+currentNodeParentId+"&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}";
 });
 
 
@@ -186,7 +188,7 @@ $(".editUser").click(function(){
 	var currentNodeId = $("#currentNodeId").val();
 	var currentNodeName = $("#currentNodeName").val();
 	var currentNodeParentId = $("#currentNodeParentId").val();
-	window.location.href="${path}/sys/tenant/user/edit/"+userId+"?currentNodeId="+currentNodeId+"&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}";
+	window.location.href="${path}/sys/tenant/user/edit/"+userId+"?currentNodeId="+currentNodeId+"&currentNodeParentId="+currentNodeParentId+"&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}";
 
 });
 
