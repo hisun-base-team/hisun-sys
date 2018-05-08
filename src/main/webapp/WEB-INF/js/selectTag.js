@@ -12,27 +12,8 @@ function selectLoadByTag(selectUrl,id,token){
     var radioOrCheckbox = selectDefineAttObj.getAttribute("radioOrCheckbox");
     var moreSelectSearch = selectDefineAttObj.getAttribute("moreSelectSearch");
     var moreSelectAll = selectDefineAttObj.getAttribute("moreSelectAll");
+    var buttonHeight = selectDefineAttObj.getAttribute("buttonHeight");//文本的高度
     var defaultkeyArr = defaultkeys.split(",")
-
-    //var user = {
-    //        //if(userParameter != null && userParameter != "") {
-    //        //    var userParameterArr = userParameter.split(";");
-    //        //    for (var i = 0; i < userParameterArr.length; i++) {
-    //        //        var nv = userParameterArr[i].split(":");
-    //        //        var name = nv[0];
-    //        //        var value = "";
-    //        //        if (nv.length >= 2) {
-    //        //            value = nv[1];
-    //        //        }
-    //        //        list[i] = "'" + name + "':'" + value + "'";
-    //        //    }
-    //        //}
-    //    dictionaryType:"AAA",
-    //    dictionaryTypeaa:"bbb",
-    //    dictionaryTypebb:"ccc"
-    //};
-
-
 
     $.ajax({
         async : false,
@@ -40,9 +21,6 @@ function selectLoadByTag(selectUrl,id,token){
         type:"POST",
         dataType : "json",
         url: selectUrl,// 请求的action路径
-        //data:user,
-        //traditional: true,
-        //data:{'dictionaryType':'aaa','bbbbb':'bbb'},
         headers: {
             "OWASP_CSRFTOKEN":token
         },
@@ -80,19 +58,25 @@ function selectLoadByTag(selectUrl,id,token){
                 if (radioOrCheckbox == "checkbox") {
                     var search = false;
                     var selectAll = false;
-                    if (moreSelectSearch == "true"){
+                    if (moreSelectSearch == "true") {
                         search = true;
                     }
-                    if (moreSelectAll == "true"){
+                    if (moreSelectAll == "true") {
                         selectAll = true;
                     }
-                    $("#"+id).multiselect({
+                    $("#" + id).multiselect({
                         columns: 1,
                         placeholder: '请选择...',
                         search: search,
                         selectGroup: true,
                         selectAll: selectAll
                     });
+                }
+                if (buttonHeight != "") {
+                    var obj = $("#" + id);
+                    var buttonObj = obj.siblings().children()[0]
+                    buttonObj.style.height = buttonHeight;
+                    //buttonObj.height(buttonHeight);
                 }
                 //$("#"+id).innerHTML=data.options;
             }else{

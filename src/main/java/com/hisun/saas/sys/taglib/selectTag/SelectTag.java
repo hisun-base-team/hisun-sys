@@ -23,6 +23,7 @@ public final class SelectTag extends BodyTagSupport {
     private String id;//显示层的id  (必填项)
     private String selectUrl;//调用下拉菜单的url
     private String width;//文本框的宽度
+    private String height="33";//文本的高度
     private String radioOrCheckbox; //单选还是复选 radio单选 checkbox复选
     private String onchange;//改变事件
     private String textClass;//文本框样式
@@ -173,7 +174,7 @@ public final class SelectTag extends BodyTagSupport {
 
             noTreeresults.append("</select>");
             noTreeresults.append("</div>");
-            noTreeresults.append("<input type=\"hidden\" id=\""+id+"_Select_tagDefineAtt\" radioOrCheckbox=\""+radioOrCheckbox+"\" url=\""+selectUrl+"\"" +
+            noTreeresults.append("<input type=\"hidden\" id=\""+id+"_Select_tagDefineAtt\" radioOrCheckbox=\""+radioOrCheckbox+"\" url=\""+selectUrl+"\" buttonHeight=\""+height+"\"" +
                     " token=\""+token+"\" userParameter=\""+userParameter+"\" defaultkeys=\""+defaultkeys+"\" moreSelectSearch=\""+moreSelectSearch+"\" moreSelectAll=\""+moreSelectAll+"\">");
             noTreeresults.append("<script type=\"text/javascript\">");
             noTreeresults.append("selectLoadByTag(\""+selectUrl+"\",\""+id+"_Select\",\""+token+"\");");
@@ -297,5 +298,13 @@ public final class SelectTag extends BodyTagSupport {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
     }
 }

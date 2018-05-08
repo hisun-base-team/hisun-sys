@@ -28,7 +28,7 @@
             },
             selectAll     : false, // add select all option
             selectGroup   : false, // select entire optgroup
-            minHeight     : 200,   // minimum height of option overlay
+            minHeight     : 100,   // minimum height of option overlay
             maxHeight     : null,  // maximum height of option overlay
             showCheckbox  : true,  // display the checkbox to the user
             jqActualOpts  : {},    // options for jquery.actual
@@ -90,7 +90,7 @@
             //alert(this.offsetWidth );
             // add option container
             var inputId =  $(this).attr("inputId");
-            $(this).after(' <div class="ms-options-wrap"><button class="Multiselect" style="width: '+multmiselectWidth+'px;">None Selected</button><span class="help-inline" style="display: none;">请输入正确内容</span><div class="ms-options" style="width: '+multmiselectWidth+'px"><ul></ul></div></div>');
+            $(this).after(' <div class="ms-options-wrap"><button class="Multiselect" style="width:'+multmiselectWidth+'px;">None Selected</button><span class="help-inline" style="display: none;">请输入正确内容</span><div class="ms-options" style="width: '+multmiselectWidth+'px;min-width:100px;"><ul></ul></div></button>');
             var placeholder = $(this).next('.ms-options-wrap').find('> button:first-child');
             var optionsWrap = $(this).next('.ms-options-wrap').find('> .ms-options');
             var optionsList = optionsWrap.find('> ul');
@@ -183,7 +183,7 @@
 
             // add search box
             if( options.search ) {
-                optionsList.before('<div class="ms-search" style="width: '+showWidth+'px"><input type="text" value="" style="height: 30px;" placeholder="'+ options.searchOptions['default'] +'" /></div>');
+                optionsList.before('<div class="ms-search" style="width: '+showWidth+'px;min-width:100px;"><input type="text" value="" style="height: 30px;" placeholder="'+ options.searchOptions['default'] +'" /></div>');
 
                 var search = optionsWrap.find('.ms-search input');
                 search.on('keyup', function(){
@@ -387,7 +387,7 @@
 
                 // if copy is larger than button width use "# selected"
                 if( copyWidth > placeWidth ) {
-                    placeholder.text( selOpts.length +' selected' );
+                    placeholder.text( '已选择 '+selOpts.length +' 个选项' );
                 }
                 // if options selected then use those
                 else if( selOpts.length ) {
