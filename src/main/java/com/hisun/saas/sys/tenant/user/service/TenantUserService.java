@@ -8,6 +8,7 @@ package com.hisun.saas.sys.tenant.user.service;
 
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
+import com.hisun.saas.sys.tenant.tenant.entity.TenantDepartment;
 import com.hisun.saas.sys.tenant.tenant.vo.TenantRegisterVo;
 import com.hisun.saas.sys.tenant.user.entity.Activation;
 import com.hisun.saas.sys.tenant.user.entity.TenantUser;
@@ -33,4 +34,7 @@ public interface TenantUserService extends BaseService<TenantUser,String> {
     int countMember(String tenantId);
     void saveRegisterToNewTenant(TenantUser tenantUser, Activation activation, Tenant tenant) throws Exception;
     String saveNoPassword(TenantUser user);
+    Integer getMaxSort(String departmentId);
+    void updateUser(TenantUser tenantUser,String oldDepartmentId,Integer oldSort);
+
 }

@@ -30,6 +30,7 @@ import com.hisun.saas.sys.tenant.role.dao.TenantRoleResourceDao;
 import com.hisun.saas.sys.tenant.role.entity.TenantRole;
 import com.hisun.saas.sys.tenant.tenant.dao.TenantDao;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
+import com.hisun.saas.sys.tenant.tenant.entity.TenantDepartment;
 import com.hisun.saas.sys.tenant.tenant.vo.TenantRegisterVo;
 import com.hisun.saas.sys.tenant.user.dao.ActivationDao;
 import com.hisun.saas.sys.tenant.user.dao.TenantUserDao;
@@ -81,12 +82,23 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
 
     @Override
     public String save(TenantUser entity) {
-        //加密密码
         passwordHelper.encryptPassword(entity);
-        entity.setCreateDate(new Date());
+        String departmentId = "";
+        if (entity.getTenantDepartment() != null) {
+            departmentId = entity.getTenantDepartment().getId();
+        }
+        Integer oldSort = this.getMaxSort(departmentId);
+        Integer newSort = entity.getSort();
+        int retval = newSort.compareTo(oldSort);
+        if (retval > 0) {
+            newSort = oldSort;
+        }
+        entity.setSort(newSort);
+        this.updateSort(entity, oldSort);
         String pk = super.save(entity);
         return pk;
     }
+
 
     @Override
     public void update(TenantUser entity,boolean changePassword) {
@@ -97,6 +109,66 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
         entity.setUpdateDate(new Date());
         super.update(entity);
     }
+
+    private void updateSort(TenantUser tenantUser, Integer oldSort) {
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        CommonConditionQuery query = new CommonConditionQuery();
+        Integer newSort = tenantUser.getSort();
+        String departmentId = "";
+        if (tenantUser.getTenantDepartment() != null) {
+            departmentId = tenantUser.getTenantDepartment().getId();
+        }
+        String sql = "update sys_tenant_user t set ";
+        if (newSort > oldSort) {
+            sql += "t.sort=t.sort-1";
+        } else {
+            sql += "t.sort=t.sort+1";
+        }
+        if (departmentId != null && !departmentId.equals("")) {
+            sql += " where t.tenant_id='" + userLoginDetails.getTenant().getId() + "' and  t.department_id='" + tenantUser.getTenantDepartment().getId() + "'";
+        } else {
+            sql += " where t.tenant_id='" + userLoginDetails.getTenant().getId() + "' and t.department_id is null";
+        }
+
+        if (newSort > oldSort) {
+            sql += " and t.sort<=" + newSort + " and t.sort >" + oldSort;
+        } else {
+            if (newSort == oldSort) {
+                sql += " and t.sort = -100";
+            } else {
+                sql += " and t.sort<" + oldSort + " and t.sort>=" + newSort;
+            }
+        }
+        this.tenantUserDao.executeNativeBulk(sql, query);
+    }
+
+
+
+    public void updateUser(TenantUser tenantUser, String oldDepartmentId, Integer oldSort) {
+        String newDepartmentId = "";
+        if (tenantUser.getTenantDepartment() != null) {
+            newDepartmentId = tenantUser.getTenantDepartment().getId();
+        }
+        if (com.hisun.util.StringUtils.trimNull2Empty(oldDepartmentId).equals(newDepartmentId)) {
+            //父部门没有改变的情况下
+            this.updateSort(tenantUser, oldSort);
+        } else {
+            //父部门改变的情况下
+            String departmentId = "";
+            if (tenantUser.getTenantDepartment() != null) {
+                departmentId = tenantUser.getTenantDepartment().getId();
+            }
+            int newSort = tenantUser.getSort();
+            int maxSort = this.getMaxSort(departmentId);
+            if (newSort > maxSort) {
+                newSort = maxSort;
+            }
+            tenantUser.setSort(newSort);
+            this.updateSort(tenantUser, maxSort);
+        }
+        this.tenantUserDao.update(tenantUser);
+    }
+
 
     @Override
     public UserLoginDetails findUserLoginDetails(String username) {
@@ -288,5 +360,24 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
         tenantUser.setSalt(passwordSecurity.getSalt());
         tenantUser.setPassword(passwordSecurity.getPassword());
         this.tenantUserDao.update(tenantUser);
+    }
+
+
+    public Integer getMaxSort(String departmentId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        String hql = "select max(t.sort)+1 as sort from TenantUser t ";
+        if (departmentId != null && !departmentId.equals("")) {
+            hql = hql + "where t.tenantDepartment.id =:departmentId";
+            map.put("departmentId", departmentId);
+        } else {
+            hql = hql + "where t.tenantDepartment.id is null";
+        }
+        List<Map> maxSorts = this.tenantUserDao.list(hql, map);
+        if (maxSorts.get(0).get("sort") == null) {
+            return 1;
+        } else {
+            Integer maxSort = ((Number) maxSorts.get(0).get("sort")).intValue();
+            return maxSort;
+        }
     }
 }
