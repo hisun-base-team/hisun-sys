@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
+import com.hisun.saas.sys.admin.dictionary.entity.DictionaryItem;
 import com.hisun.saas.sys.admin.user.entity.User;
 import com.hisun.saas.sys.auth.Constants;
 import com.hisun.saas.sys.auth.service.SessionHelper;
@@ -29,6 +30,7 @@ import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.log.LogOperateType;
 import com.hisun.saas.sys.log.RequiresLog;
+import com.hisun.saas.sys.taglib.selectTag.SelectNode;
 import com.hisun.saas.sys.tenant.role.entity.TenantRole;
 import com.hisun.saas.sys.tenant.role.service.TenantRoleService;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
@@ -173,6 +175,52 @@ public class TenantUserController extends BaseController {
         }
         return new ModelAndView("saas/sys/tenant/user/userList", map);
     }
+
+
+    @RequiresPermissions("tenantUser:*")
+    @RequestMapping(value = "/ajax/setRolesForm/{userId}")
+    public ModelAndView list(@PathVariable(value = "userId") String userId) throws GenericException {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("userId",userId);
+        return new ModelAndView("saas/sys/tenant/user/setRolesForm", map);
+    }
+
+
+    @RequestMapping(value = "/{userId}/roles", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Map<String, Object> getSelectNodes(@PathVariable(value = "userId") String userId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            CommonConditionQuery query = new CommonConditionQuery();
+            CommonOrderBy orderBy = new CommonOrderBy();
+            orderBy.add(CommonOrder.asc("roleName"));
+            TenantUser tenantUser = this.tenantUserService.getByPK(userId);
+            List<TenantUserRole> tenantUserRoles = tenantUser.getUserRoles();
+            List<TenantRole> roles = this.tenantRoleService.list(query, orderBy);
+            List<SelectNode> nodes = new ArrayList<>();
+            SelectNode node = null;
+            for (TenantRole role : roles) {
+                node = new SelectNode();
+                node.setOptionKey(role.getId());
+                node.setOptionValue(role.getRoleName());
+                for(TenantUserRole userRole : tenantUserRoles){
+                    if(role.getId().equals(userRole.getRole().getId())){
+                        node.setSelected("true");
+                    }
+                }
+                nodes.add(node);
+            }
+            map.put("success", true);
+            map.put("data", nodes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+        }
+        return map;
+    }
+
+
 
     @RequiresPermissions("tenantUser:*")
     @RequestMapping(value = "/add")

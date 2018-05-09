@@ -130,23 +130,8 @@
                         <button class="close" id="setRolesModalClose" type="button"></button>
                         <h3 id="modalTitle">授予角色</h3>
                     </div>
-                    <div class="modal-body form">
-                        <form action="${path }/sys/resource/add" class="form-horizontal" id="addForm" method="post">
-                            <input type="hidden" id="pId" name="pId" value=""/>
-                            <input type="hidden" id="id" name="id" value=""/>
-                            <div id="resourceNameGroup" class="control-group">
-                                <label class="control-label">选择角色<span class="required">*</span></label>
+                    <div class="modal-body form" id="setRolesModalForm">
 
-                            </div>
-                            <div class="control-group mybutton-group">
-                                <button id="setRolesModalCancel" type="button" data-dismiss="modal" class="btn"
-                                        style="float: right;margin-left: 5px;"><i class="icon-remove-sign"></i> 关闭
-                                </button>
-                                <button id="setRolesModalSubmit" type="button" class="btn green" style="float: right;">
-                                    <i class="icon-ok"></i> 确定
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
 
@@ -215,8 +200,25 @@
         var currentNodeId = $("#currentNodeId").val();
         var currentNodeName = $("#currentNodeName").val();
         var currentNodeParentId = $("#currentNodeParentId").val();
-        var modal = $("#setRolesModal");
-        modal.show();
+        var userId = $(this).attr("userId");
+        $.ajax({
+            url: "${path}/sys/tenant/user/ajax/setRolesForm/" + userId,
+            type: "post",
+            data: {},
+            headers: {
+                OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
+            },
+            dataType: "html",
+            success: function (html) {
+                $('#setRolesModalForm').html(html);
+                $('#setRolesModal').modal({
+                    keyboard: true
+                });
+            },
+            error: function () {
+                showTip("提示", "出错了请联系管理员", 1500);
+            }
+        });
     });
     $("#setRolesModalCancel").click(function () {
         var modal = $("#setRolesModal");
@@ -356,4 +358,6 @@
         });
 
     }
+
+
 </script>
