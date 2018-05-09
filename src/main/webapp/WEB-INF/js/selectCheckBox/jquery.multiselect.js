@@ -86,11 +86,15 @@
             $(this).addClass('jqmsLoaded');
             var showWidth = this.offsetWidth-19;
             var multmiselectWidth = this.offsetWidth;
-            //alert(this.clientWidth );
+            if(multmiselectWidth=="0"){
+                multmiselectWidth = this.style.width;
+            }else{
+                multmiselectWidth = multmiselectWidth+"px";
+            }
             //alert(this.offsetWidth );
             // add option container
             var inputId =  $(this).attr("inputId");
-            $(this).after(' <div class="ms-options-wrap"><button class="Multiselect" style="width:'+multmiselectWidth+'px;">None Selected</button><span class="help-inline" style="display: none;">请输入正确内容</span><div class="ms-options" style="width: '+multmiselectWidth+'px;min-width:100px;"><ul></ul></div></button>');
+            $(this).after(' <div class="ms-options-wrap"><button class="Multiselect" style="width:'+multmiselectWidth+';">None Selected</button><span class="help-inline" style="display: none;">请输入正确内容</span><div class="ms-options" style="width: '+multmiselectWidth+';min-width:100px;"><ul></ul></div></button>');
             var placeholder = $(this).next('.ms-options-wrap').find('> button:first-child');
             var optionsWrap = $(this).next('.ms-options-wrap').find('> .ms-options');
             var optionsList = optionsWrap.find('> ul');

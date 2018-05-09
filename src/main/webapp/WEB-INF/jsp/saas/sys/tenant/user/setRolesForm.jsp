@@ -9,12 +9,12 @@
   --%>
 <form action="" class="form-horizontal" id="addForm" method="post">
     <div id="roleIdsGroup" class="control-group">
-        <label class="control-label">选择角色<span class="required">*</span></label>
-        <SelectTag:SelectTag id="roleIds" width="150px" moreSelectAll="false"
+        <div style=" float:left;margin-top:4px"><label class="control-label" style="width: 80px">选择角色<span class="required">*</span></label></div>
+        <div style=" float:left;margin-top:4px"><SelectTag:SelectTag id="roleIds" width="250px" moreSelectAll="false"
                              token="${sessionScope.OWASP_CSRFTOKEN}"
                              radioOrCheckbox="checkbox" moreSelectSearch="no"
                              selectUrl="${path}/sys/tenant/user/${userId}/roles"
-                             />
+                             /></div>
     </div>
     <div class="control-group mybutton-group">
         <button id="setRolesModalCancel" type="button" data-dismiss="modal" class="btn"
