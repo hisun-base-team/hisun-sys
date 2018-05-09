@@ -30,8 +30,8 @@
             <form action="${path }/sys/tenant/role/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"
                   method="post" id="searchForm" name="searchForm" style="margin: 0 0 0px;" >
                 <input type="text" class="m-wrap" name="searchName" id="searchName" value="${searchName}" placeholder="角色名称/代码">
-                <button type="submit" class="btn blue Short_but">查询</button>
-                <button type="button" class="btn blue Short_but" onclick="searchReset()">清空</button>
+                <button type="submit" class="btn  Short_but">查询</button>
+                <button type="button" class="btn  Short_but" id ="resetButton">清空</button>
             </form>
         </div>
         <div class="portlet-body">
@@ -57,7 +57,10 @@
                             <a href="${path }/sys/tenant/role/edit/${entity.id}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">修改</a>
                             |
                             <a href="${path }/sys/tenant/role/privilegeManage/${entity.id}?roleName=${entity.roleName }&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">授权</a>
-                            <a href="javascript:void(0)" onclick="del('${entity.id }')">删除</a>
+                            <c:if test="${entity.isDefault ne 1}">
+                            |
+                            <a href="javascript:void(0)" class="delRole" roleId="${entity.id}">删除</a>
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>
@@ -77,26 +80,27 @@
         App.init();
     });
     function pagehref(pageNum, pageSize) {
-        window.location.href = "${path}/sys/tenant/role/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&pageNum=" + pageNum + "&pageSize=" + pageSize + "&name=" + encodeURI(encodeURI("${name}"));
+        window.location.href = "${path}/sys/tenant/role/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&pageNum=" + pageNum + "&pageSize=" + pageSize + "&searchName=" + encodeURI(encodeURI("${searchName}"));
     }
 
-    function del(id) {
-        actionByConfirm1('', "${path}/sys/tenant/role/delete/" + id, null, function (json) {
-            if (json.code == 1) {
+    $(".delRole").click(function(){
+        var roleId = $(this).attr("roleId");
+        actionByConfirm1('', "${path}/sys/tenant/role/delete/" + roleId, null, function (data) {
+            if (data.success == true) {
                 showTip("提示", "操作成功");
                 setTimeout(function () {
-                    window.location.href = "${path}/sys/tenant/role/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&name=" + encodeURI(encodeURI("${name}"));
+                    window.location.href = "${path}/sys/tenant/role/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&searchName=" + encodeURI(encodeURI("${searchName}"));
                 }, 1500);
 
             } else {
-                showTip("提示", json.message, 2000);
+                showTip("提示", data.message, 2000);
             }
-        }, "删除")
-    }
-
-    function searchReset() {
+        }, "删除");
+    });
+    $("#resetButton").click(function () {
         $("#searchName").removeAttrs("value");
-    }
+    });
+
 </script>
 </body>
 </html>

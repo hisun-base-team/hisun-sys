@@ -19,7 +19,7 @@
                 <a id="add" name="add" class="btn green" href="#"><i class="icon-plus"></i> 添加</a>
             </div>
         </div>
-        <div class="clearfix" >
+        <div class="clearfix">
             <div class="control-group">
                 <div id="query" style="float: left;">
                     <form action="${path}/sys/tenant/user/ajax/list" id="getUserForm" style="margin: 0 0 10px;"
@@ -136,8 +136,7 @@
                             <input type="hidden" id="id" name="id" value=""/>
                             <div id="resourceNameGroup" class="control-group">
                                 <label class="control-label">选择角色<span class="required">*</span></label>
-                                <div class="controls">
-                                </div>
+
                             </div>
                             <div class="control-group mybutton-group">
                                 <button id="setRolesModalCancel" type="button" data-dismiss="modal" class="btn"

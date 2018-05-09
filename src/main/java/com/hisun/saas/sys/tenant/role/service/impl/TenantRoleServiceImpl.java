@@ -53,7 +53,7 @@ public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole,String> im
         } else {
             sql += "t.sort=t.sort+1";
         }
-        sql += " where t.tenant_id='" + userLoginDetails.getTenant().getId();
+        sql += " where t.tenant_id='" + userLoginDetails.getTenant().getId()+"'";
 
         if (newSort > oldSort) {
             sql += " and t.sort<=" + newSort + " and t.sort >" + oldSort;

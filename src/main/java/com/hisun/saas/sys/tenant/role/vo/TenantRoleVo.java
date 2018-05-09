@@ -1,5 +1,6 @@
 package com.hisun.saas.sys.tenant.role.vo;
 
+import com.hisun.saas.sys.tenant.Constants;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Pattern;
@@ -12,7 +13,8 @@ public class TenantRoleVo {
     @Size(min=1,max=64)
     private String roleName;
 
-    @Pattern(regexp = "^ROLE_[A-Z]{1,27}$")
+    @Pattern(regexp = "^ROLE_[A-Z,_]{1,27}$")
+    @Size(max = 32)
     private String roleCode;//角色字符串
 
     @Size(max=255)
@@ -20,6 +22,7 @@ public class TenantRoleVo {
 
     @Range(min = 0L,max=99L)
     private int sort;
+    private int isDefault = Constants.NORMAL_ROLE;
 
     public String getId() {
         return id;
@@ -59,5 +62,13 @@ public class TenantRoleVo {
 
     public void setSort(int sort) {
         this.sort = sort;
+    }
+
+    public int getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(int isDefault) {
+        this.isDefault = isDefault;
     }
 }

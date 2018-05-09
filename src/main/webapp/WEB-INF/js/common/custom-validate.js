@@ -158,20 +158,20 @@ jQuery.validator.addMethod("treeSelRequired", function(value, element, attrValue
 }, "不能为空，请选择数据");
 
 /**
- * 验证ZTREE选则不能为空
+ * 验证角色代码
  */
 jQuery.validator.addMethod("rolePattern", function(value, element, attrValue) {
 	if($.trim(value) == ""){
 		return false;
 	}
-	var reg = /^ROLE_[A-Z]{1,27}$/;
+	var reg = /^ROLE_[A-Z,_]{1,27}$/;
 	var r = value.match(reg);
 	if(r == null){
 		return false;
 	}else{
 		return true;
 	}
-}, "以ROLE_开头，并且只允许大写字母,如：ROLE_ADMINTRATOR");
+}, "角色代码必须以ROLE_开头，且只允许使用大写字母,如：ROLE_ADMIN_DW");
 
 /**
  * 注册用户名验证

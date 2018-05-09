@@ -10,12 +10,15 @@ import com.hisun.base.entity.TombstoneEntity;
 import com.hisun.base.exception.ErrorMsgShowException;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
+import com.hisun.saas.sys.admin.dictionary.entity.DictionaryItem;
 import com.hisun.saas.sys.admin.resource.service.ResourceService;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.log.RequiresLog;
 import com.hisun.saas.sys.privilege.PrivilegeRowExpress;
+import com.hisun.saas.sys.taglib.selectTag.SelectNode;
 import com.hisun.saas.sys.taglib.treeTag.TreeNode;
+import com.hisun.saas.sys.tenant.Constants;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResource;
 import com.hisun.saas.sys.tenant.resource.entity.TenantResourcePrivilege;
 import com.hisun.saas.sys.tenant.resource.service.TenantResourcePrivilegeService;
@@ -93,7 +96,7 @@ public class TenantRoleController extends BaseController {
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" tombstone =:tombstone", "tombstone", TombstoneEntity.TOMBSTONE_FALSE));
             if (StringUtils.isNotBlank(searchName)) {
-                query.add(CommonRestrictions.and("(roleName like :name or roleCode like :name)", "name", "%" + searchName + "%"));
+                query.add(CommonRestrictions.and("(roleName like :searchName or roleCode like :searchName)", "searchName", "%" + searchName + "%"));
             }
             CommonOrderBy orderBy = new CommonOrderBy();
             orderBy.add(CommonOrder.asc("sort"));
@@ -110,12 +113,41 @@ public class TenantRoleController extends BaseController {
             }
             PagerVo<TenantRoleVo> pager = new PagerVo<TenantRoleVo>(vos, total.intValue(), pageNum, pageSize);
             model.put("pager", pager);
-            model.put("name", searchName);
+            model.put("searchName", searchName);
         } catch (Exception e) {
             logger.error(e);
             throw new GenericException(e);
         }
         return new ModelAndView("saas/sys/tenant/role/list", model);
+    }
+
+
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Map<String, Object> getSelectNodes() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<DictionaryItem> dictionaryItems;
+        try {
+            CommonConditionQuery query = new CommonConditionQuery();
+            CommonOrderBy orderBy = new CommonOrderBy();
+            orderBy.add(CommonOrder.asc("roleName"));
+            List<TenantRole> roles = this.tenantRoleService.list(query, orderBy);
+            List<SelectNode> nodes = new ArrayList<>();
+            SelectNode node = null;
+            for (TenantRole role : roles) {
+                node = new SelectNode();
+                node.setOptionKey(role.getId());
+                node.setOptionValue(role.getRoleName());
+                nodes.add(node);
+            }
+            map.put("success", true);
+            map.put("data", nodes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+        }
+        return map;
     }
 
     @RequiresPermissions("tenantRole:*")
@@ -165,17 +197,20 @@ public class TenantRoleController extends BaseController {
     @ResponseBody
     Map<String, Object> save(TenantRoleVo vo) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         try {
             Map<String, String> vMap = ValidateUtil.validAll(vo);
             if (vMap.size() > 0) {
                 map.put("message", "数据验证不通过");
-                map.put("code", -1);
+                map.put("success", false);
                 return map;
             }
             TenantRole role = new TenantRole();
-            BeanUtils.copyProperties(role,vo);
+            BeanUtils.copyProperties(role, vo);
+            role.setTenant(userLoginDetails.getTenant());
+            EntityWrapper.wrapperSaveBaseProperties(role, userLoginDetails);
             tenantRoleService.save(role);
-            map.put("success", false);
+            map.put("success", true);
             map.put("message", "保存成功!");
         } catch (Exception e) {
             logger.error(e);
@@ -193,9 +228,18 @@ public class TenantRoleController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             if (StringUtils.isNotBlank(roleId)) {
-                this.tenantRoleService.deleteByPK(roleId);
-                map.put("success", true);
-                map.put("message", "删除成功!");
+                TenantRole role = this.tenantRoleService.getByPK(roleId);
+                if (role.getIsDefault() == Constants.NORMAL_ROLE) {
+                    this.tenantRoleService.delete(role);
+                    map.put("success", true);
+                    map.put("message", "删除成功!");
+                } else {
+                    map.put("success", false);
+                    map.put("message", "系统分配角色不能删除!");
+                }
+            } else {
+                map.put("success", false);
+                map.put("message", "删除失败!");
             }
         } catch (Exception e) {
             logger.error(e);
@@ -206,18 +250,18 @@ public class TenantRoleController extends BaseController {
 
     @RequiresPermissions("tenantRole:*")
     @RequestMapping(value = "/edit/{roleId}", method = RequestMethod.GET)
-    public ModelAndView update(@PathVariable("roleId") String roleId) {
-        Map<String,Object> map = new HashMap<String,Object>();
+    public ModelAndView edit(@PathVariable("roleId") String roleId) {
+        Map<String, Object> map = new HashMap<String, Object>();
         TenantRoleVo vo = new TenantRoleVo();
         try {
             TenantRole entity = this.tenantRoleService.getByPK(roleId);
-            BeanUtils.copyProperties(vo,entity);
+            BeanUtils.copyProperties(vo, entity);
         } catch (Exception e) {
             logger.error(e);
             throw new GenericException(e.getMessage());
         }
         map.put("vo", vo);
-        return new ModelAndView("saas/sys/tenant/role/edit",map);
+        return new ModelAndView("saas/sys/tenant/role/edit", map);
     }
 
     @RequiresPermissions("tenantRole:*")
@@ -235,12 +279,13 @@ public class TenantRoleController extends BaseController {
                 return map;
             }
             TenantRole tenantRole = this.tenantRoleService.getByPK(vo.getId());
-            BeanUtils.copyProperties(vo,tenantRole);
-            EntityWrapper.wrapperUpdateBaseProperties(tenantRole,userLoginDetails);
-            tenantRoleService.update(tenantRole);
+            int oldSort = tenantRole.getSort();
+            BeanUtils.copyProperties(tenantRole, vo);
+            EntityWrapper.wrapperUpdateBaseProperties(tenantRole, userLoginDetails);
+            tenantRoleService.updateTenantRole(tenantRole, oldSort);
             map.put("success", true);
             map.put("message", "保存成功!");
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
             throw new GenericException(e.getMessage());
         }
