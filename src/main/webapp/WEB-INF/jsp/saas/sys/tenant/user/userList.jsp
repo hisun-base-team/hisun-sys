@@ -123,18 +123,20 @@
                 </jsp:include>
             </c:if>
         </div>
-        <div class="modal-scrollable" style="z-index: 10050;display: none;" id="setRolesModal">
-            <div id="responsive" class="modal hide fade in" tabindex="-1" style="display: block; width:760px;top:25%;">
-                <div class="span12">
-                    <div class="modal-header">
-                        <button class="close" id="setRolesModalClose" type="button"></button>
-                        <h3 id="modalTitle">授予角色</h3>
-                    </div>
-                    <div class="modal-body form" id="setRolesModalForm">
 
-                    </div>
-                </div>
+    </div>
+</div>
 
+<div id="setRolesModal" class="modal container hide fade" tabindex="-1" data-width="400">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close"  type="button"></button>
+                <h3 class="modal-title" id="title" >
+                    授予角色
+                </h3>
+            </div>
+            <div class="modal-body" id="setRolesModalForm">
             </div>
         </div>
     </div>
