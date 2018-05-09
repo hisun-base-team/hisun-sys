@@ -62,12 +62,10 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -122,7 +120,7 @@ public class TenantUserController extends BaseController {
     public ModelAndView index(HttpServletRequest request) {
         Map<String, Object> map = Maps.newHashMap();
         String currentNodeId = com.hisun.util.StringUtils.trimNull2Empty(request.getParameter("currentNodeId"));
-        map.put("currentNodeId",currentNodeId);
+        map.put("currentNodeId", currentNodeId);
         return new ModelAndView("saas/sys/tenant/user/index", map);
     }
 
@@ -139,19 +137,19 @@ public class TenantUserController extends BaseController {
         Map<String, Object> map = Maps.newHashMap();
         try {
             CommonConditionQuery query = new CommonConditionQuery();
-            query.add(CommonRestrictions.and(" tombstone =:tombstone", "tombstone", 0));
+            query.add(CommonRestrictions.and(" TenantUser.tombstone =:tombstone", "tombstone", 0));
             if (com.hisun.util.StringUtils.isNotBlank(searchContent)) {
-                query.add(CommonRestrictions.and(" (username like :username or realname like :username) ", "username", "%" + searchContent + "%"));
+                query.add(CommonRestrictions.and(" (TenantUser.username like :username or TenantUser.realname like :username) ", "username", "%" + searchContent + "%"));
             }
 
             if (com.hisun.util.StringUtils.isEmpty(currentNodeParentId)) {
                 //query.add(CommonRestrictions.and(" tenantDepartment.id is null ",null,null));
             } else {
-                query.add(CommonRestrictions.and(" tenantDepartment.id = :id ", "id", currentNodeId));
+                query.add(CommonRestrictions.and(" TenantUser.tenantDepartment.id = :id ", "id", currentNodeId));
             }
             CommonOrderBy orderBy = new CommonOrderBy();
-            //orderBy.add(CommonOrder.asc("tenantDepartment.sort"));
-            orderBy.add(CommonOrder.asc("sort"));
+            orderBy.add(CommonOrder.asc("TenantUser.tenantDepartment.sort"));
+            orderBy.add(CommonOrder.asc("TenantUser.sort"));
             Long total = tenantUserService.count(query);
             List<TenantUser> entities = this.tenantUserService.list(query, orderBy, pageNum, pageSize);
             List<TenantUserVo> vos = new ArrayList<>();
@@ -179,9 +177,9 @@ public class TenantUserController extends BaseController {
 
     @RequiresPermissions("tenantUser:*")
     @RequestMapping(value = "/ajax/setRolesForm/{userId}")
-    public ModelAndView list(@PathVariable(value = "userId") String userId) throws GenericException {
+    public ModelAndView setRolesForm(@PathVariable(value = "userId") String userId) throws GenericException {
         Map<String, Object> map = Maps.newHashMap();
-        map.put("userId",userId);
+        map.put("userId", userId);
         return new ModelAndView("saas/sys/tenant/user/setRolesForm", map);
     }
 
@@ -189,12 +187,12 @@ public class TenantUserController extends BaseController {
     @RequestMapping(value = "/{userId}/roles", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map<String, Object> getSelectNodes(@PathVariable(value = "userId") String userId) {
+    Map<String, Object> getUserRoles(@PathVariable(value = "userId") String userId) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             CommonConditionQuery query = new CommonConditionQuery();
             CommonOrderBy orderBy = new CommonOrderBy();
-            orderBy.add(CommonOrder.asc("roleName"));
+            orderBy.add(CommonOrder.asc("sort"));
             TenantUser tenantUser = this.tenantUserService.getByPK(userId);
             List<TenantUserRole> tenantUserRoles = tenantUser.getUserRoles();
             List<TenantRole> roles = this.tenantRoleService.list(query, orderBy);
@@ -204,9 +202,11 @@ public class TenantUserController extends BaseController {
                 node = new SelectNode();
                 node.setOptionKey(role.getId());
                 node.setOptionValue(role.getRoleName());
-                for(TenantUserRole userRole : tenantUserRoles){
-                    if(role.getId().equals(userRole.getRole().getId())){
-                        node.setSelected("true");
+                if (tenantUserRoles != null) {
+                    for (TenantUserRole userRole : tenantUserRoles) {
+                        if (role.getId().equals(userRole.getRole().getId())) {
+                            node.setSelected("true");
+                        }
                     }
                 }
                 nodes.add(node);
@@ -220,6 +220,28 @@ public class TenantUserController extends BaseController {
         return map;
     }
 
+
+    @RequestMapping(value = "/{userId}/roles/save", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Map<String, Object> saveUserRoles(@PathVariable(value = "userId") String userId, HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        String roleIds = com.hisun.util.StringUtils.trimNull2Empty(request.getParameter("roleIds"));
+        try {
+            TenantUser tenantUser = this.tenantUserService.getByPK(userId);
+            String[] roleIdArrays = roleIds.split(",");
+            this.tenantUserService.saveOrUpdateUserRoles(tenantUser, Arrays.asList(roleIdArrays));
+            map.put("success", true);
+            map.put("message", "赋予角色成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new GenericException(e.getMessage());
+        }
+        return map;
+    }
+
+
     @RequiresPermissions("tenantUser:*")
     @RequestMapping(value = "/add")
     public ModelAndView add(HttpServletRequest request) {
@@ -230,21 +252,21 @@ public class TenantUserController extends BaseController {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         TenantUserVo vo = new TenantUserVo();
         String departmentId = "";
-        if(com.hisun.util.StringUtils.isNotBlank(currentNodeId) && com.hisun.util.StringUtils.isNotBlank(currentNodeParentId)){
+        if (com.hisun.util.StringUtils.isNotBlank(currentNodeId) && com.hisun.util.StringUtils.isNotBlank(currentNodeParentId)) {
             departmentId = currentNodeId;
             TenantDepartment parentDepartment = this.tenantDepartmentService.getByPK(departmentId);
             vo.setDepartmentId(departmentId);
             vo.setDepartmentName(parentDepartment.getName());
-        }else{
+        } else {
             vo.setDepartmentId(userLoginDetails.getTenantId());
             vo.setDepartmentName(userLoginDetails.getTenantName());
         }
         int sort = this.tenantUserService.getMaxSort(departmentId);
         vo.setSort(sort);
-        map.put("currentNodeId",currentNodeId);
-        map.put("currentNodeName",currentNodeName);
-        map.put("currentNodeParentId",currentNodeParentId);
-        map.put("vo",vo);
+        map.put("currentNodeId", currentNodeId);
+        map.put("currentNodeName", currentNodeName);
+        map.put("currentNodeParentId", currentNodeParentId);
+        map.put("vo", vo);
         return new ModelAndView("saas/sys/tenant/user/addUser", map);
     }
 
@@ -287,13 +309,13 @@ public class TenantUserController extends BaseController {
                     headPhotoImg = headPhotoImg.replace("data:image/jpeg;base64,", "");
                     byte[] img = Base64.decodeBase64(headPhotoImg);
                     String photoStoreRealPath = uploadBasePath + File.separator + "tenant"
-                            + File.separator + userLoginDetails.getTenantId() + File.separator + "user";
+                            + File.separator + userLoginDetails.getTenantId() + File.separator + "user" + File.separator;
                     File photoStoreRealPathFile = new File(photoStoreRealPath);
                     if (!photoStoreRealPathFile.exists()) {
                         photoStoreRealPathFile.mkdirs();
                     }
                     photoFile = userVo.getUsername() + "_" + UUIDUtil.getUUID() + ".JPEG";
-                    File destFile = new File(photoStoreRealPath + File.separator + photoFile);
+                    File destFile = new File(photoStoreRealPath + photoFile);
                     if (!destFile.exists()) {
                         destFile.createNewFile();
                     }
@@ -303,7 +325,7 @@ public class TenantUserController extends BaseController {
                 user.setHeadPhoto(photoFile);
                 user.setTenant(userLoginDetails.getTenant());
                 user.setPassword(userVo.getPwd());
-                if(com.hisun.util.StringUtils.isNotBlank(userVo.getDepartmentId())){
+                if (com.hisun.util.StringUtils.isNotBlank(userVo.getDepartmentId())) {
                     TenantDepartment tenantDepartment = this.tenantDepartmentService.getByPK(userVo.getDepartmentId());
                     user.setTenantDepartment(tenantDepartment);
                 }
@@ -409,7 +431,7 @@ public class TenantUserController extends BaseController {
 
     @RequiresPermissions("tenantUser:*")
     @RequestMapping(value = "/edit/{id}")
-    public ModelAndView edit(@PathVariable("id") String id,HttpServletRequest request) {
+    public ModelAndView edit(@PathVariable("id") String id, HttpServletRequest request) {
         Map<String, Object> map = Maps.newHashMap();
         String currentNodeId = com.hisun.util.StringUtils.trimNull2Empty(request.getParameter("currentNodeId"));
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
@@ -417,10 +439,10 @@ public class TenantUserController extends BaseController {
             TenantUser entity = this.tenantUserService.getByPK(id);
             TenantUserVo vo = new TenantUserVo();
             BeanUtils.copyProperties(vo, entity);
-            if(entity.getTenantDepartment()!=null){
+            if (entity.getTenantDepartment() != null) {
                 vo.setDepartmentId(entity.getTenantDepartment().getId());
                 vo.setDepartmentName(entity.getTenantDepartment().getName());
-            }else{
+            } else {
                 vo.setDepartmentId(userLoginDetails.getTenantId());
                 vo.setDepartmentName(userLoginDetails.getTenantName());
             }
@@ -462,8 +484,8 @@ public class TenantUserController extends BaseController {
         Map<String, Object> map = Maps.newHashMap();
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         try {
-            String newPwd = userId + "111111";
             TenantUser user = this.tenantUserService.getByPK(userId);
+            String newPwd = user.getUsername() + "111111";
             if (user.getTenant().getId().equals(userLoginDetails.getTenantId())) {
                 EntityWrapper.wrapperUpdateBaseProperties(user, userLoginDetails);
                 this.tenantUserService.resetPwd(user, newPwd);
@@ -490,7 +512,7 @@ public class TenantUserController extends BaseController {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         try {
             TenantUser entity = tenantUserService.getByPK(userVo.getId());
-            String oldDepartmentId = entity.getTenantDepartment()==null?"":entity.getTenantDepartment().getId();
+            String oldDepartmentId = entity.getTenantDepartment() == null ? "" : entity.getTenantDepartment().getId();
             int oldSort = entity.getSort();
             if (entity.getTenant().getId().equals(userLoginDetails.getTenantId())) {
                 EntityWrapper.wrapperUpdateBaseProperties(entity, userLoginDetails);
@@ -503,11 +525,11 @@ public class TenantUserController extends BaseController {
                 entity.setEmail(userVo.getEmail());
                 entity.setSort(userVo.getSort());
                 entity.setSex(userVo.getSex());
-                if(!com.hisun.util.StringUtils.trimNull2Empty(userVo.getDepartmentId()).equals(userLoginDetails.getTenantId())){
+                if (!com.hisun.util.StringUtils.trimNull2Empty(userVo.getDepartmentId()).equals(userLoginDetails.getTenantId())) {
                     TenantDepartment tenantDepartment = this.tenantDepartmentService.getByPK(userVo.getDepartmentId());
                     entity.setTenantDepartment(tenantDepartment);
                 }
-                this.tenantUserService.updateUser(entity,oldDepartmentId,oldSort);
+                this.tenantUserService.updateUser(entity, oldDepartmentId, oldSort);
                 map.put("success", true);
                 map.put("msg", "修改成功!");
             } else {
@@ -588,6 +610,7 @@ public class TenantUserController extends BaseController {
         return ret;
     }
 
+    @RequiresPermissions("tenantUser:*")
     @RequestMapping(value = "/activate", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -607,127 +630,54 @@ public class TenantUserController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/getRoleSelection/{userId}")
-    public
-    @ResponseBody
-    Map<String, Object> getRoleSelection(
-            @PathVariable("userId") String userId)
-            throws GenericException {
-        Map<String, Object> map = Maps.newHashMap();
-        try {
-            CommonConditionQuery query = new CommonConditionQuery();
-            List<TenantRole> roles = this.tenantRoleService.list(query, null);
-            List<TenantRoleSelection> roleSelections = Lists.newArrayList();
-            //查找当前用户的角色
-            List<TenantUserRole> userRoles = this.tenantUserRoleService.getUserRoleByUserId(userId);
-            List<String> selectedIds = Lists.newArrayList();
-            for (TenantUserRole userRole : userRoles) {
-                selectedIds.add(userRole.getRole().getId());
-            }
-            for (TenantRole role : roles) {
-                TenantRoleSelection roleSelection = new TenantRoleSelection();
-                BeanUtils.copyProperties(roleSelection, role);
-                if (selectedIds.contains(roleSelection.getId())) {
-                    roleSelection.setSelected("checked");
-                }
-                roleSelections.add(roleSelection);
-            }
-            map.put("roleSelections", roleSelections);
-            map.put("success", true);
-        } catch (Exception e) {
-            logger.error(e, e);
-            map.put("success", false);
-        }
-        return map;
-    }
-
-    @RequiresPermissions("tenant:userlist")
-    @RequestMapping(value = "/saveRelation", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    Map<String, Object> saveRelation(
-            @RequestParam(value = "userId") String userId,
-            @RequestParam(value = "chooseRoles", required = false) String[] chooseRoles)
-            throws GenericException {
-        Map<String, Object> map = Maps.newHashMap();
-        try {
-
-            this.tenantUserRoleService.saveOrUpdate(userId, chooseRoles);
-            map.put("success", true);
-        } catch (Exception e) {
-            map.put("success", false);
-        }
-        return map;
-    }
-
-
     @RequestMapping(value = "/profile")
     public ModelAndView profile() {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, Object> map = Maps.newHashMap();
-        TenantUser user = tenantUserService.findByUsername(userLoginDetails.getUsername());
-        if (null == user.getHeadPhoto()) {
-            map.put("headPhoto", "noPhoto");
-        } else {
-            map.put("headPhoto", user.getHeadPhoto());
+        try {
+            TenantUser user = tenantUserService.getByPK(userLoginDetails.getUserid());
+            TenantUserVo userVo = new TenantUserVo();
+            BeanUtils.copyProperties(userVo,user);
+            if(user.getTenantDepartment()!=null){
+                userVo.setDepartmentId(user.getTenantDepartment().getId());
+                userVo.setDepartmentName(user.getTenantDepartment().getName());
+            }else{
+                userVo.setDepartmentId(userLoginDetails.getTenantId());
+                userVo.setDepartmentName(userLoginDetails.getTenantName());
+            }
+            map.put("user", userVo);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw new GenericException(e.getMessage());
         }
-
-        map.put("user", user);
         return new ModelAndView("saas/sys/tenant/user/profile", map);
     }
 
-    @RequestMapping("/photo/{photoName}")
-    public ResponseEntity<byte[]> photoToStream(@PathVariable("photoName") String photoName, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpHeaders headers = new HttpHeaders();
-        File file = new File(uploadBasePath + "/tenant/user/" + photoName + ".JPEG");
+    @RequestMapping("/photo")
+    public HttpEntity<byte[]> headPhoto(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+
+        TenantUser tenantUser = this.tenantUserService.getByPK(userLoginDetails.getUserid());
+        String photoStoreRealPath = uploadBasePath + File.separator + "tenant"
+                + File.separator + userLoginDetails.getTenantId() + File.separator + "user" + File.separator;
+        File file = new File(photoStoreRealPath + tenantUser.getHeadPhoto());
         if (file.exists()) {
-            headers.setContentType(MediaType.IMAGE_JPEG);
-            return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
-                    headers, HttpStatus.OK);
+            FileInputStream fis = new FileInputStream(file);
+            StreamUtils.copy(fis, response.getOutputStream());
+            response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+            return new HttpEntity(HttpStatus.OK);
         } else {
             //为空或者没有返回默认图片
-            headers.setContentType(MediaType.IMAGE_PNG);
-            file = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
-            return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
-                    headers, HttpStatus.OK);
+            File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
+            FileInputStream fis = new FileInputStream(defaultfile);
+            StreamUtils.copy(fis, response.getOutputStream());
+            response.setContentType(MediaType.IMAGE_PNG_VALUE);
+            return new HttpEntity(HttpStatus.OK);
         }
     }
 
-    @RequestMapping("/headimg/{id}")
-    public void headImgToStream(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpHeaders headers = new HttpHeaders();
-        TenantUser tenantUser = tenantUserService.getByPK(id);
-        File file = null;
-        if (tenantUser == null || StringUtils.isBlank(tenantUser.getHeadPhoto())) {
-            //为空或者没有返回默认图片
-            headers.setContentType(MediaType.IMAGE_PNG);
-            file = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
-        } else {
-            file = new File(uploadBasePath + "/tenant/user/" + tenantUser.getHeadPhoto());
-            if (file.exists()) {
-                headers.setContentType(MediaType.IMAGE_JPEG);
-            } else {
-                headers.setContentType(MediaType.IMAGE_PNG);
-                file = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
-            }
-        }
-        try {
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(new File(file.toString())));
-            byte[] b = new byte[1024];
-            OutputStream os = response.getOutputStream();
-            while (bis.read(b) != -1) {
-                os.write(b);
-            }
-            bis.close();
-            os.flush();
-        } catch (FileNotFoundException e) {
-            logger.error("头像文件不存在:" + id, e);
-        } catch (IOException e) {
-            logger.error("头像IO异常:" + id, e);
-        }
-    }
 
-    @RequestMapping(value = "/checkOldPwd", method = RequestMethod.GET)
+    @RequestMapping(value = "/pwd/check", method = RequestMethod.GET)
     public
     @ResponseBody
     Map<String, Object> checkOldPwd(@RequestParam(value = "oldPwd") String oldPwd,
@@ -751,67 +701,25 @@ public class TenantUserController extends BaseController {
         return map;
     }
 
-    @RequestMapping("/profile/password")
-    public ModelAndView resetPassword(@RequestParam("key") String key, HttpServletRequest request) {
-        Serial serial = this.serialService.findByKey(key);
-        Map<String, Object> maps = Maps.newHashMap();
-        if (serial == null || new DateTime(serial.getEndDate()).isBeforeNow()) {//key值无效
-            maps.put("invalidKey", false);
-        } else {
-            maps.put("invalidKey", true);
-        }
-        return new ModelAndView("saas/sys/tenant/user/resetPassword", maps);
-    }
+//    @RequestMapping("/profile/password")
+//    public ModelAndView resetPassword(@RequestParam("key") String key, HttpServletRequest request) {
+//        Serial serial = this.serialService.findByKey(key);
+//        Map<String, Object> maps = Maps.newHashMap();
+//        if (serial == null || new DateTime(serial.getEndDate()).isBeforeNow()) {//key值无效
+//            maps.put("invalidKey", false);
+//        } else {
+//            maps.put("invalidKey", true);
+//        }
+//        return new ModelAndView("saas/sys/tenant/user/resetPassword", maps);
+//    }
 
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @RequiresLog(operateType = LogOperateType.UPDATE, description = "修改了密码")
+    @RequestMapping(value = "/pwd/update", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map<String, Object> handleFileUpload(@RequestParam("filename") String filename, @RequestParam("Filedata") MultipartFile file, HttpServletRequest request) {
-        Map<String, Object> datas = Maps.newHashMap();
-        UserLoginDetails userLoginDetails = (UserLoginDetails) SecurityUtils.getSubject().getSession().getAttribute(Constants.CURRENT_USER);
-        // 拿到上下文路径
-        String filePath = uploadBasePath + "/tenant/user";
-        File fileTemp = new File(filePath);
-        if (!fileTemp.exists()) {
-            // 建立文件夹
-            fileTemp.mkdirs();
-        }
-        // 写入到硬盘
-        try {
-            String newFileName = userLoginDetails.getUserid() + "_" + System.currentTimeMillis() + ".JPEG";
-            File destFile = new File(filePath + "/" + newFileName);
-            if (!destFile.exists()) {
-                // 建立文件
-                destFile.createNewFile();
-            }
-            FileUtils.copyInputStreamToFile(file.getInputStream(), destFile);
-            String str = request.getParameter("uploadtype");
-            if (StringUtils.isBlank(str)) {
-                userLoginDetails.setHeadPhoto(newFileName);
-                Subject currentUser = SecurityUtils.getSubject();
-                currentUser.getSession().setAttribute(Constants.CURRENT_USER, userLoginDetails);
-
-                TenantUser user = new TenantUser();
-                user.setId(userLoginDetails.getUserid());
-                user.setHeadPhoto(newFileName);
-                tenantUserService.update(user, new String[]{"headPhoto"});
-            }
-            datas.put("success", true);
-            datas.put("photoName", newFileName);
-        } catch (IOException e) {
-            logger.error("写入硬盘失败", e);
-            datas.put("success", false);
-        }
-        return datas;
-    }
-
-    @RequestMapping(value = "/changePwd", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    Map<String, Object> changePwd(
+    Map<String, Object> updatePwd(
             @RequestParam(value = "password") String password, @RequestParam(value = "key", required = false) String key)
             throws GenericException {
-
         Map<String, Object> map = Maps.newHashMap();
         try {
             TenantUser user;
@@ -825,7 +733,6 @@ public class TenantUserController extends BaseController {
             } else {
                 Serial serial = this.serialService.findByKey(key);
                 if (serial == null || new DateTime(serial.getEndDate()).isBeforeNow()) {
-                    //key值无效
                     map.put("success", false);
                     map.put("message", "无效的重设密码链接!");
                 } else {
@@ -843,6 +750,7 @@ public class TenantUserController extends BaseController {
         return map;
     }
 
+    @RequiresLog(operateType = LogOperateType.UPDATE, description = "修改了头像")
     @RequestMapping(value = "/update/photo", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -856,27 +764,27 @@ public class TenantUserController extends BaseController {
             if (StringUtils.isNotBlank(headPhotoImg)) {
                 headPhotoImg = headPhotoImg.replace("data:image/jpeg;base64,", "");
                 byte[] img = Base64.decodeBase64(headPhotoImg);
-                String filePath = uploadBasePath + "/tenant/user";
-                File fileTemp = new File(filePath);
+
+                String photoStoreRealPath = uploadBasePath + File.separator + "tenant"
+                        + File.separator + userLoginDetails.getTenantId() + File.separator + "user" + File.separator;
+                File fileTemp = new File(photoStoreRealPath);
                 if (!fileTemp.exists()) {
-                    // 建立文件夹
                     fileTemp.mkdirs();
                 }
-                newFileName = userLoginDetails.getUserid() + "_" + System.currentTimeMillis() + ".JPEG";
-                File destFile = new File(filePath + "/" + newFileName);
+                newFileName = userLoginDetails.getUserid() + "_" + UUIDUtil.getUUID() + ".JPEG";
+                File destFile = new File(photoStoreRealPath + newFileName);
                 if (!destFile.exists()) {
-                    // 建立文件
                     destFile.createNewFile();
                 }
                 FileUtils.writeByteArrayToFile(destFile, img);
             }
             entity.setHeadPhoto(newFileName);
+            EntityWrapper.wrapperUpdateBaseProperties(entity,userLoginDetails);
             this.tenantUserService.update(entity);
             userLoginDetails.setHeadPhoto(newFileName);
             Subject currentUser = SecurityUtils.getSubject();
             currentUser.getSession().setAttribute(Constants.CURRENT_USER, userLoginDetails);
             map.put("success", true);
-            map.put("photoName", newFileName);
         } catch (IOException e) {
             logger.error(e);
             map.put("success", false);
@@ -886,67 +794,6 @@ public class TenantUserController extends BaseController {
             map.put("success", false);
             map.put("message", "系统错误，请联系管理员");
         }
-        return map;
-    }
-
-
-    @RequestMapping(value = "/detail/{userId}")
-    public ModelAndView detail(@PathVariable(value = "userId") String userId) {
-        UserLoginDetails userLoginDetails = (UserLoginDetails) SecurityUtils.getSubject().getSession().getAttribute(Constants.CURRENT_USER);
-        Map<String, Object> map = Maps.newHashMap();
-        TenantUser user = tenantUserService.getByPK(userId);
-        if (userLoginDetails.getTenant() != null && StringUtils.isNotBlank(userLoginDetails.getTenantId()) && !userLoginDetails.getTenant().getId().equals(user.getTenant().getId())) {
-            map.put("error", "您所在的租户下不存在相关用户，请重新查询");
-            map.put("headPhoto", "error");
-            map.put("user", new TenantUser());
-        } else {
-            map.put("headPhoto", user.getHeadPhoto());
-            map.put("user", user);
-        }
-        return new ModelAndView("saas/sys/tenant/user/userDetail", map);
-    }
-
-    @RequestMapping(value = "/forgot", method = RequestMethod.GET)
-    public ModelAndView forgot() {
-        return new ModelAndView("saas/sys/tenant/user/forgot");
-    }
-
-    @RequestMapping(value = "/forgot", method = RequestMethod.POST)
-    public ModelAndView forgotSend(String email) throws GenericException {
-        Map<String, Object> map = new HashMap<String, Object>();
-        try {
-            passwordResetService.addForgot(email);
-            map.put("success", true);
-        } catch (Exception e) {
-            map.put("success", false);
-            map.put("message", e.getMessage());
-        }
-        return new ModelAndView("saas/sys/tenant/user/forgotApplySuc", map);
-    }
-
-    @RequestMapping(value = "/pwdreset/{id}", method = RequestMethod.GET)
-    public ModelAndView pwdReset(@PathVariable(value = "id") String passwordResetId) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        PasswordReset entity = passwordResetService.getByPK(passwordResetId);
-        if (entity == null) {
-            return new ModelAndView("saas/sys/tenant/user/resetPasswordNotValidate", map);
-        }
-        map.put("entity", entity);
-        return new ModelAndView("saas/sys/tenant/user/resetPassword", map);
-    }
-
-    @RequestMapping(value = "/pwdreset/{id}", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    Map<String, Object> pwdResetSave(@PathVariable(value = "id") String passwordResetId, String password) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        PasswordReset entity = passwordResetService.getByPK(passwordResetId);
-        if (entity == null) {
-            map.put("code", -1);
-            map.put("message", "链接已失效，请重新申请重置密码");
-        }
-        passwordResetService.addReset(passwordResetId, password);
-        map.put("code", 1);
         return map;
     }
 

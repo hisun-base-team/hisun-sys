@@ -15,6 +15,8 @@ import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
+import com.hisun.saas.sys.auth.UserLoginDetails;
+import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.log.LogOperateType;
 import com.hisun.saas.sys.tenant.log.entity.TenantLog;
 import com.hisun.saas.sys.tenant.log.service.TenantLogService;
@@ -84,6 +86,53 @@ public class TenantLogController extends BaseController {
 		}
 		map.put("bool",true);
 		return  new ModelAndView("saas/sys/tenant/log/securityList",map);
+	}
+
+
+	@RequiresPermissions(value = {"meLog:*"})
+	@RequestMapping(value = "/me", method = RequestMethod.GET)
+	public ModelAndView me(HttpServletRequest request,
+									@RequestParam(value="pageNum",defaultValue="1")int pageNum,
+									@RequestParam(value="pageSize",defaultValue="20") int pageSize) throws GenericException {
+		Map<String, Object> map = Maps.newHashMap();
+		UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+		try{
+			String searchContent = com.hisun.util.StringUtils.trimNull2Empty(request.getParameter("searchContent"));
+			String start = com.hisun.util.StringUtils.trimNull2Empty(request.getParameter("start"));
+			String end = com.hisun.util.StringUtils.trimNull2Empty(request.getParameter("end"));
+			CommonConditionQuery query = new CommonConditionQuery();
+			query.add(CommonRestrictions.and(" userId =:userId ","userId",userLoginDetails.getUserid()));
+			List types = Lists.newArrayList();
+			types.add(LogOperateType.LOGIN.getType());
+			types.add(LogOperateType.LOGOUT.getType());
+			query.add(CommonRestrictions.and(" type in (:type)", "type",types));
+			if(start.length()>0){
+				query.add(CommonRestrictions.and(" operateTime >= :start", "start",new DateTime(start).toDate()));
+			}
+			if(end.length()>0){
+				query.add(CommonRestrictions.and(" operateTime <= :end", "end",new DateTime(end).toDate()));
+			}
+			if(searchContent.length()>0){
+				query.add(CommonRestrictions.and(" content like :searchContent ", "searchContent","%"+searchContent+"%"));
+			}
+			Long total = this.logService.count(query);
+			CommonOrderBy orderBy = new CommonOrderBy();
+			orderBy.add(CommonOrder.desc("operateTime"));
+			List<TenantLog> queryList = this.logService.list(query, orderBy, pageNum, pageSize);
+			List<TenantLogVo> logvos = Lists.newArrayList();
+			TenantLogVo logvo;
+			for(TenantLog log : queryList){
+				logvo = new TenantLogVo();
+				BeanUtils.copyProperties(log, logvo);
+				logvos.add(logvo);
+			}
+			PagerVo<TenantLogVo> pager = new PagerVo<TenantLogVo>(logvos, total.intValue(), pageNum, pageSize);
+			map.put("pager", pager);
+		}catch(Exception e){
+			throw new GenericException(e);
+		}
+		map.put("bool",true);
+		return  new ModelAndView("saas/sys/tenant/log/melog",map);
 	}
 
 	@RequiresPermissions(value = {"tenantLog-operate:view"},logical = Logical.OR)

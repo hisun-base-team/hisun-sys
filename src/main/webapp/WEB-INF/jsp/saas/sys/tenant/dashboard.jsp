@@ -98,7 +98,7 @@
                 <li class="navli02 dropdown">
                     <a href="#" data-toggle="dropdown">
                         <img alt="" style=" height:29px; width:29px; border-radius:50%;"
-                             src="${path}/sys/tenant/user/headimg/${userId}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"/>
+                             src="${path}/sys/tenant/user/photo?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}"/>
                         <span class="username">${userRealname}</span>
                         <i class="icon-angle-down"></i>
                     </a>

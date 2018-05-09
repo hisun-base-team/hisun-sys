@@ -70,20 +70,24 @@ public class LoginController extends BaseController {
     private NoticeService noticeService;
     @Resource
     private TenantRegisterService tenantRegisterService;
+    @Value("${elasticsearch.ip}")
+    private String elasticsearchUrl;
+    @Value("${elasticsearch.rest.port}")
+    private String elasticsearchPort;
     @Value("${sys.name}")
-    private String loginTitle;
+    private String sysName;
     @Value("${sys.login.logo}")
-    private String loginLogo;
+    private String sysLoginLogo;
     @Value("${sys.main.logo}")
-    private String logo;
+    private String mainLogo;
+    @Value("${sys.copyright}")
+    private String sysCopyright;
     @Value(value= "${kaptcha.activated}")
     private boolean captchaActivated;
-    @Value(value= "${sys.domain}")
-    public String domain;
-    @Value(value = "${sys.deploy.internet}")
-    private boolean outernet;
     @Value(value = "${communication.sms.on}")
     private boolean smsOn;
+    @Value(value = "${sys.deploy.internet}")
+    private boolean outernet;
 
     @RequestMapping(value = "/signin")
     public String signin(TenantUser loginUser, Model model, boolean remember, String kaptcha, HttpServletRequest req) {
@@ -165,9 +169,11 @@ public class LoginController extends BaseController {
             return new ModelAndView("redirect:/dashboard");
         }
         Map<String, Object> map = Maps.newHashMap();
+        map.put("sysName", sysName);
+        map.put("sysLoginLogo", sysLoginLogo);
         map.put("captchaActivated", captchaActivated);
-        map.put("loginLogo", loginLogo);
-        map.put("loginTitle", loginTitle);
+        map.put("smsOn", smsOn);
+        map.put("sysCopyright",sysCopyright);
         return new ModelAndView("login",map);
     }
 
@@ -196,7 +202,7 @@ public class LoginController extends BaseController {
     public ModelAndView dashboard() {
         ModelAndView modelAndView = null;
         Map<String, String> map = Maps.newConcurrentMap();
-        map.put("logo", logo);
+        map.put("logo", mainLogo);
         modelAndView = new ModelAndView("saas/sys/tenant/dashboard", map);
         return modelAndView;
     }
