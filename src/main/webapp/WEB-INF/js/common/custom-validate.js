@@ -141,7 +141,7 @@ jQuery.validator.addMethod("isDate", function(value, element) {
 		if(bool) break;
 	}
 	return this.optional(element) || bool;
-}, "日期格式错误!");
+}, "格式错误!");
 
 
 
