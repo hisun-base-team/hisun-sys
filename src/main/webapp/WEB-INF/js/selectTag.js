@@ -72,7 +72,7 @@ function selectLoadByTag(selectUrl,id,token){
                         selectAll: selectAll
                     });
                 }
-                if (buttonHeight != "") {
+                if (radioOrCheckbox=="checkbox" && buttonHeight != "") {
                     var obj = $("#" + id);
                     var buttonObj = obj.siblings().children()[0]
                     buttonObj.style.height = buttonHeight;
@@ -84,4 +84,25 @@ function selectLoadByTag(selectUrl,id,token){
             }
         }
     });
+}
+
+function selectTagChangeFunc(id,valueName){
+    var selectDefineAttObj = document.getElementById(id+"_tagDefineAtt");
+    var changeFunc = selectDefineAttObj.getAttribute("changeFunc");
+    var radioOrCheckbox = selectDefineAttObj.getAttribute("radioOrCheckbox");
+
+
+    if(radioOrCheckbox=="radio"){
+        var value = $('#'+id+' option:selected').text();//选中的文本
+        $('#'+valueName).val(value);
+    }else{
+        var selOpts = [];
+        $('#'+id).find('option:selected').each(function(){
+            selOpts.push( $(this).text() );
+        });
+        $('#'+valueName).val(selOpts.join( ',' ) );
+    }
+    if(changeFunc!=null && changeFunc!=""){
+        eval(changeFunc);
+    }
 }

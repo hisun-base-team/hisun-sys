@@ -21,11 +21,12 @@ public final class SelectTag extends BodyTagSupport {
         //用于存储自定义属性 dictionaryType:bo1_type
     private String userParameter="";
     private String id;//显示层的id  (必填项)
+    private String valueName;//存储选择的内容
     private String selectUrl;//调用下拉菜单的url
     private String width;//文本框的宽度
     private String height="33";//文本的高度
     private String radioOrCheckbox; //单选还是复选 radio单选 checkbox复选
-    private String onchange;//改变事件
+    private String onchange="";//改变事件
     private String textClass;//文本框样式
     private Style style = new Style();//内部使用的样式
     private String moreSelectSearch; // true为显示多选的search栏
@@ -63,9 +64,12 @@ public final class SelectTag extends BodyTagSupport {
 
     public String toSlelctHtml(){
         StringBuffer noTreeresults = new StringBuffer("");
-        if(radioOrCheckbox.equals("radio")){
+        if(valueName==null || valueName.equals("")){
+            valueName = id+"_value";
+        }
+         if(radioOrCheckbox.equals("radio")){
             //单选的输出
-            noTreeresults.append("<select type=\"text\" name=\""+id+"\" id=\""+id+"\" ");
+            noTreeresults.append("<select type=\"text\" name=\""+id+"\" id=\""+id+"\" onchange=\"selectTagChangeFunc('"+id+"','"+valueName+"')\"");
             if(this.textClass!=null && !this.textClass.equals("")){
                 noTreeresults.append(" class=\""+this.textClass+"\"");
             }
@@ -79,8 +83,6 @@ public final class SelectTag extends BodyTagSupport {
                     }catch(Exception e){
                     }
                 }
-
-
                 noTreeresults.append(" "+this.getStyle().toHtml());
             }else {
 
@@ -93,37 +95,18 @@ public final class SelectTag extends BodyTagSupport {
                 }
             }
             noTreeresults.append(" >");
-//            try {
-//                SelectDataSource obj = ApplicationContextUtil.getBean(this.dataSource, AbstractSelectObject.class);
-//                if(obj.getDataOptions()!=null && obj.getDataOptions().size()>0){
-//                    List<SelectNode> selectNodes = obj.getDataOptions();
-//                    for(SelectNode node : selectNodes){
-//                        noTreeresults.append("<option value=\""+ StringUtils.trimNull2Empty(node.getOptionKey())+"\"");
-//                        if(defaultkeys!=null && defaultkeys!="") {
-//                            String[] defaultkey = defaultkeys.split(",");
-//                            for(int i=0;i<defaultkey.length;i++) {
-//                                if (defaultkey[i] != null && defaultkey[i].equals(node.getOptionKey())) {
-//                                    noTreeresults.append("selected");
-//                                }
-//                            }
-//                        }
-//                        noTreeresults.append(">"+StringUtils.trimNull2Empty(node.getOptionValue())+"</option>");
-//                    }
-//                }
-//            }catch (Exception e){
-//                e.printStackTrace();;
-//            }
-
             noTreeresults.append("</select>");
-            noTreeresults.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" radioOrCheckbox=\""+radioOrCheckbox+"\" url=\""+selectUrl+"\" defaultkeys=\""+defaultkeys+"\" token=\""+token+"\" userParameter=\""+userParameter+"\">");
+            noTreeresults.append("<input type=\"hidden\" id=\""+valueName+"\" name=\""+valueName+"\" value=\""+StringUtils.trimNullCharacter2Empty(this.defaultvalues)+"\">");
+            noTreeresults.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" radioOrCheckbox=\""+radioOrCheckbox+"\" url=\""+selectUrl+"\" " +
+                    "defaultkeys=\""+defaultkeys+"\" token=\""+token+"\" userParameter=\""+userParameter+"\" changeFunc=\""+onchange+"\">");
             noTreeresults.append("<script type=\"text/javascript\">");
             noTreeresults.append("selectLoadByTag(\""+selectUrl+"\",\""+id+"\",\""+token+"\");");
             noTreeresults.append("</script>");
         }else{
             //复选的输出
             noTreeresults.append("<div>");
-            noTreeresults.append("<input type=\"hidden\" name='"+id+"' id='"+id+"' value=\"\"/>");
-            noTreeresults.append("<select type=\"text\" name=\""+id+"_Select\" id=\""+id+"_Select\" inputId='"+id+"' multiple=\"multiple\" value=\"\"");
+             noTreeresults.append("<input type=\"hidden\" name='"+id+"' id='"+id+"' value=\"\"/>");
+            noTreeresults.append("<select type=\"text\" name=\""+id+"_Select\" id=\""+id+"_Select\" inputId='"+id+"' valueName='"+valueName+"'  onchange=\"selectTagChangeFunc('"+id+"_Select','"+valueName+"')\" multiple=\"multiple\" value=\"\"");
             if(this.textClass!=null && !this.textClass.equals("")){
                 noTreeresults.append(" class=\""+this.textClass+"\"");
             }
@@ -151,44 +134,16 @@ public final class SelectTag extends BodyTagSupport {
                 }
             }
             noTreeresults.append(" >");
-//            try {
-//                SelectDataSource obj = ApplicationContextUtil.getBean(this.dataSource, AbstractSelectObject.class);
-//                if(obj.getDataOptions()!=null && obj.getDataOptions().size()>0){
-//                    List<SelectNode> selectNodes = obj.getDataOptions();
-//                    for(SelectNode node : selectNodes){
-//                        noTreeresults.append("<option value=\""+StringUtils.trimNull2Empty(node.getOptionKey())+"\"");
-//                        if(defaultkeys!=null&& defaultkeys!="") {
-//                            String[] defaultkey = defaultkeys.split(",");
-//                            for(int i=0;i<defaultkey.length;i++) {
-//                                if (defaultkey[i] != null && defaultkey[i].equals(node.getOptionKey())) {
-//                                    noTreeresults.append(" selected");
-//                                }
-//                            }
-//                        }
-//                        noTreeresults.append(">"+StringUtils.trimNull2Empty(node.getOptionValue())+"</option>");
-//                    }
-//                }
-//            }catch (Exception e){
-//                e.printStackTrace();;
-//            }
 
             noTreeresults.append("</select>");
             noTreeresults.append("</div>");
             noTreeresults.append("<input type=\"hidden\" id=\""+id+"_Select_tagDefineAtt\" radioOrCheckbox=\""+radioOrCheckbox+"\" url=\""+selectUrl+"\" buttonHeight=\""+height+"\"" +
-                    " token=\""+token+"\" userParameter=\""+userParameter+"\" defaultkeys=\""+defaultkeys+"\" moreSelectSearch=\""+moreSelectSearch+"\" moreSelectAll=\""+moreSelectAll+"\">");
+                    " token=\""+token+"\" userParameter=\""+userParameter+"\" defaultkeys=\""+defaultkeys+"\" moreSelectSearch=\""+moreSelectSearch+"\" moreSelectAll=\""+moreSelectAll+"\"" +
+                    " changeFunc=\""+onchange+"\">");
+            noTreeresults.append("<input type=\"hidden\" id=\""+valueName+"\" name=\""+valueName+"\" value=\""+StringUtils.trimNullCharacter2Empty(this.defaultvalues)+"\">");
             noTreeresults.append("<script type=\"text/javascript\">");
             noTreeresults.append("selectLoadByTag(\""+selectUrl+"\",\""+id+"_Select\",\""+token+"\");");
-//            noTreeresults.append("$('#"+id+"_Select').multiselect({");
-//            noTreeresults.append("columns:1,");
-//            noTreeresults.append("placeholder: '请选择...',");
-//            if(moreSelectSearch!=null && moreSelectSearch.equals("yes")) {
-//                noTreeresults.append("search: true,");
-//            }
-//            noTreeresults.append("selectGroup: true,");
-//            if(moreSelectAll!=null && moreSelectAll.equals("yes")) {
-//                noTreeresults.append("selectAll: true");
-//            }
-//            noTreeresults.append("});");
+
             noTreeresults.append("</script>");
         }
         return noTreeresults.toString();
@@ -306,5 +261,13 @@ public final class SelectTag extends BodyTagSupport {
 
     public void setHeight(String height) {
         this.height = height;
+    }
+
+    public String getValueName() {
+        return valueName;
+    }
+
+    public void setValueName(String valueName) {
+        this.valueName = valueName;
     }
 }
