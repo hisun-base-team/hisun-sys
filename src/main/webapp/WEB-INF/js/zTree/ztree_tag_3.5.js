@@ -130,7 +130,8 @@
  */
 function clearTreeQuery(queryName,dataType,submitType,url,id,setting,isSearch,token){
 	$("#"+queryName+"").val('');
-	treeLoadByTag(dataType,submitType,url,id,setting,isSearch,token);
+	$("#"+queryName).trigger("input");
+	//treeLoadByTag(dataType,submitType,url,id,setting,isSearch,token);
 }
 //执行树加载
 function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,loadAfterMethod){
