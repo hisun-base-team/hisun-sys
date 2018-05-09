@@ -220,8 +220,6 @@ public class TenantUserController extends BaseController {
         return map;
     }
 
-
-
     @RequiresPermissions("tenantUser:*")
     @RequestMapping(value = "/add")
     public ModelAndView add(HttpServletRequest request) {
@@ -272,7 +270,7 @@ public class TenantUserController extends BaseController {
         return map;
     }
 
-    @RequiresLog(operateType = LogOperateType.SAVE, description = "新增用户:${userVo.userRealName}")
+    @RequiresLog(operateType = LogOperateType.SAVE, description = "新增用户:${userVo.realname}")
     @RequiresPermissions("tenantUser:*")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public
@@ -383,7 +381,7 @@ public class TenantUserController extends BaseController {
     }
 
 
-    @RequiresLog(operateType = LogOperateType.DELETE, description = "删除用户:${userId}")
+    @RequiresLog(operateType = LogOperateType.DELETE, description = "注销用户:${userId}")
     @RequiresPermissions("tenantUser:*")
     @RequestMapping(value = "/delete/{userId}")
     public
@@ -482,7 +480,7 @@ public class TenantUserController extends BaseController {
         return map;
     }
 
-    @RequiresLog(operateType = LogOperateType.UPDATE, description = "修改用户信息:${userVo.userRealName}")
+    @RequiresLog(operateType = LogOperateType.UPDATE, description = "修改用户信息:${userVo.realname}")
     @RequiresPermissions("tenantUser:*")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public

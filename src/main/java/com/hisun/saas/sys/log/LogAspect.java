@@ -126,6 +126,7 @@ public class LogAspect {
                     tenantLog.setContent(description);
                     tenantLog.setType(type);
                     tenantLog.setStatus(status);
+                    tenantLog.setTenant(userLoginDetails.getTenant());
                     this.tenantlogService.save(tenantLog);
                 }
             } else {

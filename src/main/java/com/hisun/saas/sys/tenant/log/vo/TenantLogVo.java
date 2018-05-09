@@ -6,6 +6,9 @@
 
 package com.hisun.saas.sys.tenant.log.vo;
 
+import com.hisun.saas.sys.log.LogOperateStatus;
+import com.hisun.saas.sys.log.LogOperateType;
+
 import java.util.Date;
 
 
@@ -19,7 +22,9 @@ public class TenantLogVo {
 	private String invokeMethod;
 	private String content;
 	private int type;
+	private String typeStr;
 	private int status;
+	private String statusStr;
 
 	public String getId() {
 		return id;
@@ -91,5 +96,21 @@ public class TenantLogVo {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getStatusStr() {
+		return LogOperateStatus.getEnum(this.status).getDescription();
+	}
+
+	public void setStatusStr(String statusStr) {
+		this.statusStr = statusStr;
+	}
+
+	public String getTypeStr() {
+		return LogOperateType.getEnum(this.type).getDescription();
+	}
+
+	public void setTypeStr(String typeStr) {
+		this.typeStr = typeStr;
 	}
 }

@@ -98,6 +98,7 @@ public class LoginController extends BaseController {
             TenantLog log = new TenantLog();
             log.setUserId(userLoginDetails.getUserid());
             log.setUserName(userLoginDetails.getRealname());
+            log.setTenant(userLoginDetails.getTenant());
             log.setOperateTime(new Date());
             log.setIp(ip);
             log.setContent("");
@@ -170,13 +171,23 @@ public class LoginController extends BaseController {
         return new ModelAndView("login",map);
     }
 
+
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Subject currentUser = SecurityUtils.getSubject();
-        UserLoginDetails userLoginDetails = (UserLoginDetails) currentUser.getSession().getAttribute(Constants.CURRENT_USER);
-        User user = new User();
-        user.setId(userLoginDetails.getUserid());
         currentUser.logout();
+        String ip = this.getIp();
+        TenantLog log = new TenantLog();
+        log.setUserId(userLoginDetails.getUserid());
+        log.setUserName(userLoginDetails.getRealname());
+        log.setTenant(userLoginDetails.getTenant());
+        log.setOperateTime(new Date());
+        log.setIp(ip);
+        log.setContent("");
+        log.setType(LogOperateType.LOGOUT.getType());
+        log.setStatus(LogOperateStatus.NORMAL.getStatus());
+        this.tenantLogService.save(log);
         return "redirect:/login";
     }
 

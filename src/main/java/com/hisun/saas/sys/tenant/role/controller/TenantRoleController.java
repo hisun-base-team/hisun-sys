@@ -14,6 +14,7 @@ import com.hisun.saas.sys.admin.dictionary.entity.DictionaryItem;
 import com.hisun.saas.sys.admin.resource.service.ResourceService;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.sys.log.LogOperateType;
 import com.hisun.saas.sys.log.RequiresLog;
 import com.hisun.saas.sys.privilege.PrivilegeRowExpress;
 import com.hisun.saas.sys.taglib.selectTag.SelectNode;
@@ -191,6 +192,7 @@ public class TenantRoleController extends BaseController {
     }
 
 
+    @RequiresLog(operateType = LogOperateType.SAVE,description = "增加角色:${vo.roleName}")
     @RequiresPermissions("tenantRole:*")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public
@@ -219,7 +221,7 @@ public class TenantRoleController extends BaseController {
         return map;
     }
 
-
+    @RequiresLog(operateType = LogOperateType.DELETE,description = "增加角色:${roleId}")
     @RequiresPermissions("tenantRole:*")
     @RequestMapping(value = "/delete/{roleId}")
     public
@@ -264,6 +266,7 @@ public class TenantRoleController extends BaseController {
         return new ModelAndView("saas/sys/tenant/role/edit", map);
     }
 
+    @RequiresLog(operateType = LogOperateType.UPDATE,description = "增加角色:${vo.roleName}")
     @RequiresPermissions("tenantRole:*")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public
@@ -430,6 +433,7 @@ public class TenantRoleController extends BaseController {
         return map;
     }
 
+    @RequiresLog(operateType = LogOperateType.SAVE,description = "增加角色权限:${roleId}")
     @RequiresPermissions("tenantRole:*")
     @RequestMapping(value = "/save/tenantRoleResource", method = RequestMethod.POST)
     public
@@ -463,6 +467,7 @@ public class TenantRoleController extends BaseController {
         return returnMap;
     }
 
+    @RequiresLog(operateType = LogOperateType.DELETE,description = "删除角色权限:${roleId}")
     @RequiresPermissions("tenantRole:*")
     @RequestMapping(value = "/delete/tenantRoleResource", method = RequestMethod.POST)
     public
@@ -489,6 +494,7 @@ public class TenantRoleController extends BaseController {
         return returnMap;
     }
 
+    @RequiresLog(operateType = LogOperateType.UPDATE,description = "维护角色数据权限")
     @RequiresPermissions("tenantRole:*")
     @RequestMapping(value = "/save/tenantRoleResourcePrivilege", method = RequestMethod.POST)
     public
