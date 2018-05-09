@@ -15,6 +15,7 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.saas.sys.admin.user.entity.User;
 import com.hisun.saas.sys.admin.user.service.UserService;
 import com.hisun.saas.sys.auth.UserLoginDetails;
+import com.hisun.saas.sys.entity.AbstractUser;
 import com.hisun.saas.sys.tenant.user.entity.TenantUser;
 import com.hisun.saas.sys.tenant.user.service.TenantUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -111,7 +112,7 @@ public class UserRealm extends BaseRealm {
             if (user == null) {
                 throw new UnknownAccountException();//没找到帐号
             }
-            if(Boolean.TRUE.equals(user.getLocked())) {
+            if(Boolean.TRUE.equals(user.getLocked())||(user.getTombstone()== AbstractUser.TOMBSTONE_TRUE)) {
                 throw new LockedAccountException(); //帐号锁定
             }
             //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，
@@ -127,7 +128,7 @@ public class UserRealm extends BaseRealm {
             if (user == null) {
                 throw new UnknownAccountException();//没找到帐号
             }
-            if(Boolean.TRUE.equals(user.getLocked())) {
+            if(Boolean.TRUE.equals(user.getLocked())||(user.getTombstone()== AbstractUser.TOMBSTONE_TRUE)) {
                 throw new LockedAccountException(); //帐号锁定
             }
             //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，

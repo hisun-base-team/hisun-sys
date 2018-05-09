@@ -45,7 +45,7 @@
                     <th>职务</th>
                     <th>手机号码</th>
                     <th>状态</th>
-                    <th>排序</th>
+                    <%--<th>排序</th>--%>
                     <th style="text-align:center;width:200px;">操作</th>
                 </tr>
                 </thead>
@@ -78,7 +78,7 @@
                                 正常
                             </c:if>
                         </td>
-                        <td><c:out value="${user.sort}"></c:out></td>
+                        <%--<td><c:out value="${user.sort}"></c:out></td>--%>
                         <td style="text-align: center;" class="Left_alignment" title="">
                             <a href="javascript:void(0);" class="setRoles" userId="<c:out value="${user.id}"></c:out>"
                                userRealName="<c:out value="${user.realname}"></c:out>">
@@ -127,7 +127,7 @@
     </div>
 </div>
 
-<div id="setRolesModal" class="modal container hide fade" tabindex="-1" data-width="400">
+<div id="setRolesModal" class="modal container hide fade" tabindex="-1" data-width="520">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -147,8 +147,6 @@
 <script type="text/javascript" src="${path}/js/jquery.form.js"></script>
 <script type="text/javascript" src="${path}/js/DT_bootstrap.js"></script>
 <script>
-
-
     $("#resetButton").click(function () {
         $("#searchContent").removeAttrs("value");
     });
@@ -221,14 +219,6 @@
                 showTip("提示", "出错了请联系管理员", 1500);
             }
         });
-    });
-    $("#setRolesModalCancel").click(function () {
-        var modal = $("#setRolesModal");
-        modal.hide();
-    });
-    $("#setRolesModalClose").on("click", function () {
-        var modal = $("#setRolesModal");
-        modal.hide();
     });
 
     $(".resetPwd").on("click", function () {

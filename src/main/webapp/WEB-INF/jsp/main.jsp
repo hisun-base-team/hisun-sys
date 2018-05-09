@@ -240,7 +240,7 @@ li {
                     <li class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img alt="" style=" height:29px; width:29px; border-radius:50%;padding: 0 6px 0 0;"
-                                 src="${path}/sys/tenant/user/headimg/${userId}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+                                 src="${path}/sys/tenant/user/photo?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
                             <span class="username">${userRealname}</span>
                             <i class="icon-angle-down"></i>
                         </a>

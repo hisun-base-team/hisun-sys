@@ -32,5 +32,5 @@ public interface TenantUserService extends BaseService<TenantUser,String> {
     boolean credentialsPassword(TenantUser user, String inputPassword);
     Integer getMaxSort(String departmentId);
     void updateUser(TenantUser tenantUser,String oldDepartmentId,Integer oldSort);
-
+    void saveOrUpdateUserRoles(TenantUser tenantUser,List<String> roleIds);
 }

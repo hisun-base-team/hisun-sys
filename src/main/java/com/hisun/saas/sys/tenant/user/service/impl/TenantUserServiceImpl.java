@@ -9,6 +9,7 @@ package com.hisun.saas.sys.tenant.user.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.saas.sys.auth.Constants;
 import com.hisun.saas.sys.auth.service.PasswordHelper;
 import com.hisun.base.dao.BaseDao;
@@ -295,5 +296,25 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
             Integer maxSort = ((Number) maxSorts.get(0).get("sort")).intValue();
             return maxSort;
         }
+    }
+
+    public void saveOrUpdateUserRoles(TenantUser tenantUser,List<String> roleIds){
+        CommonConditionQuery query = new CommonConditionQuery();
+        query.add(CommonRestrictions.and(" user.id = :user ","user",tenantUser.getId()));
+        this.tenantUserRoleDao.deleteBatch(query);
+        TenantUserRole tenantUserRole = null;
+        for(String roleId : roleIds){
+            tenantUserRole = new TenantUserRole();
+            TenantRole role = this.tenantRoleDao.getByPK(roleId);
+            tenantUserRole.setRole(role);
+            tenantUserRole.setUser(tenantUser);
+            this.tenantUserRoleDao.save(tenantUserRole);
+        }
+    }
+
+    @Override
+    public List<TenantUser> list(CommonConditionQuery query, CommonOrderBy orderBy, int pageNum, int pageSize){
+        String hql = " select TenantUser from TenantUser TenantUser left join TenantUser.tenantDepartment ";
+        return this.tenantUserDao.list(hql,query,orderBy,pageNum,pageSize);
     }
 }
