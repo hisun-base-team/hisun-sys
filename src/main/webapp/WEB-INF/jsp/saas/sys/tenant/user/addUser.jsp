@@ -131,6 +131,9 @@
 <script type="text/javascript" src="${path}/js/common/est-validate-init.js"></script>
 <script type="text/javascript" src="${path}/js/common/validate-message.js"></script>
 <script type="text/javascript">
+	$(document).ready(function(){
+		App.init();//必须，不然导航栏及其菜单无法折叠
+	});
 	var addForm = new EstValidate("addForm");
 	$(function(){
 		$("#submitBtn").on("click",function(){

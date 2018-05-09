@@ -23,15 +23,13 @@
 				<div class="portlet-title" style="vertical-align: middle;">
 					<div class="caption">角色模板管理</div>
 					<div class="clearfix fr">
-						<a id="addDicType" class="btn green" href="${path}/sys/tenant/role/tplt/add?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+						<a id="addRoleTplt" class="btn green" href="${path}/sys/tenant/role/tplt/add?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
 							<i class="icon-plus"></i> 添加
 						</a>
 					</div>
 				</div>
 				<div class="portlet-body">
-					<%-- 按钮操作结束 --%>
 					<div class="dataTables_wrapper form-inline">
-						<%-- 查找框 --%>
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
 								<tr>

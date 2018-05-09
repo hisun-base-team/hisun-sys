@@ -43,8 +43,8 @@ public class TenantRoleTpltServiceImpl extends BaseServiceImpl<TenantRoleTplt,St
     public boolean existRoleCode(String roleCode){
         CommonConditionQuery query = new CommonConditionQuery();
         query.add(CommonRestrictions.and(" roleCodePrefix = :code","code",roleCode));
-        List<TenantRoleTplt> roleTpltList = this.list(query,null);
-        if(roleTpltList!=null && roleTpltList.size()>0){
+        Long count = this.count(query);
+        if(count>0){
             return true;
         }else {
             return false;

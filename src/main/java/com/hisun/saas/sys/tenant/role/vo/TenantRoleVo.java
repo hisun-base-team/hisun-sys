@@ -5,15 +5,6 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-/**
- * <p>类名称:TenantRoleVo</p>
- * <p>类描述:</p>
- * <p>公司:湖南海数互联信息技术有限公司</p>
- *
- * @创建者:init
- * @创建人:15/11/18下午2:37
- * @创建人联系方式:init@hn-hisun.com
- */
 public class TenantRoleVo {
 
     private String id;

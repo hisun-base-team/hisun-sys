@@ -247,7 +247,6 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
         }
     }
 
-    @Override
     public TenantUser findByUsername(String username) {
         CommonConditionQuery query = new CommonConditionQuery();
         query.add(CommonRestrictions.and(" username = :username", "username", username));
@@ -258,7 +257,6 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
         return userList.get(0);
     }
 
-    @Override
     public TenantUser findByEmail(String email) {
         CommonConditionQuery query = new CommonConditionQuery();
         query.add(CommonRestrictions.and(" User.email = :email", "email", email));
@@ -269,91 +267,9 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
         return userList.get(0);
     }
 
-    @Override
     public boolean credentialsPassword(TenantUser user, String inputPassword) {
         return passwordHelper.credentialsPassword(user, inputPassword);
     }
-
-    @Override
-    public void saveUserAndRole(TenantUser tenantUser, String roleId) {
-        //加密密码
-        passwordHelper.encryptPassword(tenantUser);
-        tenantUser.setCreateDate(new Date());
-        String pk = super.save(tenantUser);
-        TenantRole role = tenantRoleDao.getByPK(roleId);
-        // 判断角色，没有则默认添加普通用户角色
-        if (role == null) {
-            role = tenantRoleDao.getByCode("ROLE_TENANT");
-        }
-
-        TenantUserRole userRole = new TenantUserRole();
-        userRole.setUser(tenantUser);
-        userRole.setRole(role);
-        tenantUserRoleDao.save(userRole);
-    }
-
-    @Override
-    public void update(TenantUser tenantUser) {
-        tenantUserDao.update(tenantUser);
-    }
-
-    @Override
-    public int countMember(String tenantId) {
-        CommonConditionQuery query = new CommonConditionQuery();
-        query.add(CommonRestrictions.and("tenant.id = :tenantId", "tenantId", tenantId));
-        Long total = tenantUserDao.count(query);
-        return total.intValue();
-    }
-
-    @Override
-    public void saveRegisterToNewTenant(TenantUser tenantUser, Activation activation, Tenant tenant) throws Exception{
-
-        // 注册到新租户
-        tenantUser.setTenant(tenant);
-        tenantUserDao.update(tenantUser);
-        // 更新激活状态
-        activationDao.update(activation, new String[]{"status"});
-
-        // 保存新角色
-        CommonConditionQuery query = new CommonConditionQuery();
-        query.add(CommonRestrictions.and(" user = :user ", "user", tenantUser));
-        tenantUserRoleDao.deleteBatch(query);
-
-        TenantRole tenantRole = tenantRoleDao.getByPK(activation.getRoleId());
-        TenantUserRole tenantUserRole = new TenantUserRole();
-        tenantUserRole.setRole(tenantRole);
-        tenantUserRole.setUser(tenantUser);
-
-        tenantUserRoleDao.save(tenantUserRole);
-    }
-
-    @Override
-    public List<TenantUser> list() {
-        CommonConditionQuery query = new CommonConditionQuery();
-        UserLoginDetails details = UserLoginDetailsUtil.getUserLoginDetails();
-        if(details!=null && details.getTenantId()!=null){
-            query.add(CommonRestrictions.and("tenant.id = :tenantId", "tenantId", details.getTenantId()));
-        }
-        return tenantUserDao.list(query,null);
-    }
-
-    @Override
-    public String saveNoPassword(TenantUser user) {
-        user.setCreateDate(new Date());
-        String pk = super.save(user);
-//        List<TenantUserRole> roles =  tenantUserRoleDao.getUserRoleByUserId(pk);
-//        // 判断角色，没有则默认添加普通用户角色
-//        if (roles == null || roles.size() < 1) {
-//            TenantRole role = tenantRoleDao.getByCode("ROLE_TENANTADMIN");
-//            TenantUserRole userRole = new TenantUserRole();
-//            userRole.setUser(user);
-//            userRole.setRole(role);
-//            tenantUserRoleDao.save(userRole);
-//        }
-        return pk;
-    }
-
-
 
     public void resetPwd(TenantUser tenantUser,String newPwd){
         PasswordSecurity  passwordSecurity = passwordHelper.encryptPassword(newPwd);
