@@ -30,10 +30,6 @@ public interface TenantUserService extends BaseService<TenantUser,String> {
     void saveInviteRegister(TenantRegisterVo vo, String activationId, String roleId, String tenantId);
     TenantUser findByEmail(String email);
     boolean credentialsPassword(TenantUser user, String inputPassword);
-    void saveUserAndRole(TenantUser tenantUser, String roleId);
-    int countMember(String tenantId);
-    void saveRegisterToNewTenant(TenantUser tenantUser, Activation activation, Tenant tenant) throws Exception;
-    String saveNoPassword(TenantUser user);
     Integer getMaxSort(String departmentId);
     void updateUser(TenantUser tenantUser,String oldDepartmentId,Integer oldSort);
 

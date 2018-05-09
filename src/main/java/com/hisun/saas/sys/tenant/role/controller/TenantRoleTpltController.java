@@ -185,7 +185,7 @@ public class TenantRoleTpltController extends BaseController {
 			BeanUtils.copyProperties(vo,entity);
 		} catch (Exception e) {
 			logger.error(e);
-
+			throw new GenericException(e.getMessage());
 		}
 		map.put("vo", vo);
 		return new ModelAndView("saas/sys/tenant/role/tplt/updateRoleTplt",map);
