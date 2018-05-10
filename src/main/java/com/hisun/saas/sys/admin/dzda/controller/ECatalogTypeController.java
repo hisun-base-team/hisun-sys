@@ -158,15 +158,13 @@ public class ECatalogTypeController extends BaseController {
                 query.add(CommonRestrictions.and(" parent.id = :id ", "id", currentNodeId));
             }
 
-            int total = 0;
-//            Liong total = this.eCatalogTypeService.count(query);
+            Long total = this.eCatalogTypeService.count(query);
             CommonOrderBy orderBy = new CommonOrderBy();
             orderBy.add(CommonOrder.asc("sort"));
             List<ECatalogTypeInfo> entities = this.eCatalogTypeService.list(query, orderBy, pageNum, pageSize);
             List<ECatalogTypeInfoVo> vos = new ArrayList<>();
             ECatalogTypeInfoVo vo = null;
             if(entities!=null){
-                total=entities.size();
                 for(ECatalogTypeInfo entity : entities){
                     vo = new ECatalogTypeInfoVo();
                     BeanUtils.copyProperties(vo,entity);
@@ -174,7 +172,7 @@ public class ECatalogTypeController extends BaseController {
                     vos.add(vo);
                 }
             }
-            PagerVo<ECatalogTypeInfoVo> pager = new PagerVo<ECatalogTypeInfoVo>(vos, total, pageNum, pageSize);
+            PagerVo<ECatalogTypeInfoVo> pager = new PagerVo<ECatalogTypeInfoVo>(vos, total.intValue(), pageNum, pageSize);
             map.put("pager", pager);
             map.put("currentNodeId",currentNodeId);
             map.put("currentNodeName",currentNodeName);
