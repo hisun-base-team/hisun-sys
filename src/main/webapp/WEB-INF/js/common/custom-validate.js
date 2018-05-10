@@ -114,6 +114,38 @@ jQuery.validator.addMethod("ipAddress", function(value, element) {
 }, "IP格式错误");
 
 /**
+ *
+ */
+
+jQuery.validator.addMethod("isDate", function(value, element) {
+	if(value==null || value==''){
+		return this.optional(element) || true;//空不验证
+	}
+	var dateFormat = $(element).attr("dateFormat").toLowerCase();
+	if(dateFormat==null || dateFormat==''){
+		dateFormat = "yyyy";
+	}
+	var formats = dateFormat.split(",");
+	var bool = false;
+	var yyyyReg = /^(\d{4})$/;
+	var yyyymmReg= /^(\d{4})(0\d{1}|1[0-2])$/;
+	var yyyymmddReg = /^(\d{4})(0\d{1}|1[0-2])(0\d{1}|[12]\d{1}|3[01])$/;
+	for(var i=0; i<formats.length; i++) {
+		if(formats[i]=="yyyy"){
+			 bool = yyyyReg.test(value);
+		}else if(formats[i]=="yyyymm"){
+			bool =  yyyymmReg.test(value);
+		}else if(formats[i]=="yyyymmdd"){
+			bool =  yyyymmddReg.test(value);
+		}
+		if(bool) break;
+	}
+	return this.optional(element) || bool;
+}, "格式错误!");
+
+
+
+/**
  * 定时器书写格式的校验
  */
 jQuery.validator.addMethod("timingCron", function(value, element, attrValue) {
@@ -172,6 +204,10 @@ jQuery.validator.addMethod("rolePattern", function(value, element, attrValue) {
 		return true;
 	}
 }, "角色代码必须以ROLE_开头，且只允许使用大写字母,如：ROLE_ADMIN_DW");
+
+
+
+
 
 /**
  * 注册用户名验证
