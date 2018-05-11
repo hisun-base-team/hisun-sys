@@ -119,7 +119,7 @@
     <aop:aspectj-autoproxy proxy-target-class="true" />
 	<!-- 文件上传解析器 -->
 	 <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="${sys.upload.max.size}"/>
+        <property name="maxUploadSize" value="2147483648" />
     </bean>
     
     <!-- 验证工厂BEAN -->

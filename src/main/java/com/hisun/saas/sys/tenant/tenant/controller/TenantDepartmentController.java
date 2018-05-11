@@ -125,7 +125,6 @@ public class TenantDepartmentController extends BaseController {
 		return new ModelAndView("saas/sys/tenant/tenant/department/listDepartment", map);
 	}
 
-
 	@RequiresPermissions("tenant:*")
 	@RequestMapping("/ajax/add")
 	public ModelAndView add(HttpServletRequest request) {
