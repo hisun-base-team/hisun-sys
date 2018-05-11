@@ -47,24 +47,24 @@ public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole,String> im
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         CommonConditionQuery query = new CommonConditionQuery();
         Integer newSort = tenantRole.getSort();
-        String sql = "update sys_tenant_role t set ";
+        String sql = "update TenantRole t set ";
         if (newSort > oldSort) {
             sql += "t.sort=t.sort-1";
         } else {
             sql += "t.sort=t.sort+1";
         }
-        sql += " where t.tenant_id='" + userLoginDetails.getTenant().getId()+"'";
-
+        sql +=" where ";
         if (newSort > oldSort) {
-            sql += " and t.sort<=" + newSort + " and t.sort >" + oldSort;
+            sql += "  t.sort<=" + newSort + " and t.sort >" + oldSort;
         } else {
             if (newSort == oldSort) {
-                sql += " and t.sort = -100";
+                sql += "  t.sort = -100";
             } else {
-                sql += " and t.sort<" + oldSort + " and t.sort>=" + newSort;
+                sql += "  t.sort<" + oldSort + " and t.sort>=" + newSort;
             }
         }
-        this.tenantRoleDao.executeNativeBulk(sql, query);
+        this.tenantRoleDao.executeBulk(sql, query);
+        this.tenantRoleDao.getSession().evict(tenantRole);
     }
 
     public void updateTenantRole(TenantRole tenantRole, Integer oldSort) {
