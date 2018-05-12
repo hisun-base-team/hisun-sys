@@ -81,6 +81,7 @@ public class DictionaryRestApi {
                     node = new TreeNode();
                     node.setId(dictionaryItem.getId());
                     node.setName(dictionaryItem.getName());
+                    node.setKey(dictionaryItem.getCode());
                     if (dictionaryItem.getParentItem() == null) {
                         node.setpId("");
                     } else {

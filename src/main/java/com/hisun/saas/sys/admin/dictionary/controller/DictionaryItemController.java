@@ -75,6 +75,7 @@ public class DictionaryItemController extends BaseController {
 			TreeNode treeNode = new TreeNode();
 			treeNode.setId(dictionaryType.getId());
 			treeNode.setName(dictionaryType.getName());
+			treeNode.setKey(dictionaryType.getCode());
 			treeNode.setOpen(true);
 			treeNodes.add(treeNode);
 			//-------字典项节点
@@ -83,6 +84,7 @@ public class DictionaryItemController extends BaseController {
 				childTreeNode = new TreeNode();
 				childTreeNode.setId(dictionaryItem.getId());
 				childTreeNode.setName(dictionaryItem.getName());
+				childTreeNode.setKey(dictionaryItem.getCode());
 				if(dictionaryItem.getParentItem()==null){
 					childTreeNode.setpId(dictionaryType.getId());
 				}else{

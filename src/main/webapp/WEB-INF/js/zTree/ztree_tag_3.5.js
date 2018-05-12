@@ -189,7 +189,7 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,
 						var radioOrCheckbox = treeDefineAttObj.getAttribute("radioOrCheckbox");
 						var selectzTree = $.fn.zTree.getZTreeObj(id);
 						if(radioOrCheckbox=="radio") {
-							var node = selectzTree.getNodeByParam('id', keyObj.value);
+							var node = selectzTree.getNodeByParam('key', keyObj.value);
 							selectzTree.selectNode(node);
 						}else if(radioOrCheckbox=="checkbox") {
 							if (valueMerge == "true") {//特殊处理的反选
@@ -198,16 +198,16 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,
 									var checkedNodeId = checkedNodeIds[i];
 									if(checkedNodeId.lastIndexOf(":0")>-1){//部分选中
 										var checkedNodeId = checkedNodeId.substring(0,checkedNodeId.lastIndexOf(":0"));
-										var node = selectzTree.getNodeByParam('id', checkedNodeId);
+										var node = selectzTree.getNodeByParam('key', checkedNodeId);
 										selectzTree.checkNode(node, true, false);
 									}else if(checkedNodeId.lastIndexOf(":1")>-1){//子节点全部选中
 										var checkedNodeId = checkedNodeId.substring(0,checkedNodeId.lastIndexOf(":1"));
-										var checkedNode = selectzTree.getNodeByParam('id', checkedNodeId);
+										var checkedNode = selectzTree.getNodeByParam('key', checkedNodeId);
 										var allhChildNodes = getAllChildrenNodes(checkedNode,new Array());//得到所有子节点选中
 										selectzTree.checkNode(checkedNode, true, false);
 										if(allhChildNodes!=null){
 											for(var j=0;j<allhChildNodes.length;j++){
-												//var childNode = selectzTree.getNodeByParam('id', allhChildNodes[j]);
+												//var childNode = selectzTree.getNodeByParam('key', allhChildNodes[j]);
 												selectzTree.checkNode(allhChildNodes[j], true, false);
 											}
 										}
@@ -216,7 +216,7 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,
 							} else {
 								var checkedNodeIds = keyObj.value.split(",");
 								for (var i = 0; i < checkedNodeIds.length; i++) {
-									var node = selectzTree.getNodeByParam('id', checkedNodeIds[i]);
+									var node = selectzTree.getNodeByParam('key', checkedNodeIds[i]);
 									if(node!=null){
 										selectzTree.checkNode(node, true, false);
 									}
@@ -289,7 +289,7 @@ function setValuesByRadio(treeId,treeNode){
 		var keyObj =document.getElementById(treeId.substring(0,treeId.lastIndexOf("_tree")))
 		var treeValueObj = document.getElementById(treeId+"_valueName");
 		var text = treeNode.name;
-		keyObj.value=treeNode.id;
+		keyObj.value=treeNode.key;
 		$('#'+treeValueObj.value).val(text);
 	}catch(e){
 	}
@@ -342,10 +342,10 @@ function onCheckByTreeCheckBox(e, treeId, treeNode) {
 		var values = "";
 		for (var i=0, l=nodes.length; i<l; i++) {
 			if(keys==""){
-				keys= nodes[i].id;
+				keys= nodes[i].key;
 				values= nodes[i].name;
 			}else{
-				keys= keys+","+nodes[i].id ;
+				keys= keys+","+nodes[i].key ;
 				values=values+","+ nodes[i].name;
 			}
 
@@ -438,19 +438,19 @@ function getValueByQuery(zTree){
 	var checkedValues = "";
 	for (var i = 0;i<someCheckedNodes.length;i++) {
 		if(checkedKeys==""){
-			checkedKeys = someCheckedNodes[i].id+":0";
+			checkedKeys = someCheckedNodes[i].key+":0";
 			checkedValues = someCheckedNodes[i].name+"(部分)";
 		}else{
-			checkedKeys = checkedKeys+","+someCheckedNodes[i].id+":0";
+			checkedKeys = checkedKeys+","+someCheckedNodes[i].key+":0";
 			checkedValues = checkedValues+","+someCheckedNodes[i].name+"(部分)";
 		}
 	}
 	for (var i = 0;i<allCheckedTopNodes.length;i++) {
 		if(checkedKeys==""){
-			checkedKeys = allCheckedTopNodes[i].id+":1";
+			checkedKeys = allCheckedTopNodes[i].key+":1";
 			checkedValues = allCheckedTopNodes[i].name;
 		}else{
-			checkedKeys = checkedKeys+","+allCheckedTopNodes[i].id+":1";
+			checkedKeys = checkedKeys+","+allCheckedTopNodes[i].key+":1";
 			checkedValues = checkedValues+","+allCheckedTopNodes[i].name;
 		}
 	}
@@ -469,7 +469,7 @@ function getAllCheckedTopNodes(zTree,allCheckedNodes,allCheckedTopNodes){
 			if (!halfCheck.half) {//取得节点的最顶级的全选节点
 				var isAdd = true;
 				boo:for(var k=0;k<allCheckedTopNodes.length ;k++) {
-					if(pathNode.id == allCheckedTopNodes[k].id){
+					if(pathNode.key == allCheckedTopNodes[k].key){
 						isAdd = false
 						break boo;
 					}

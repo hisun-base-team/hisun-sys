@@ -5,6 +5,9 @@
  */
 
 package com.hisun.saas.sys.taglib.treeTag;
+
+import com.hisun.util.StringUtils;
+
 /**
  * @author liuzj {279421824@qq.com}
  */
@@ -53,6 +56,7 @@ public class TreeNode {
 
 	private boolean chkDisabled;//设置节点的 checkbox / radio 是否禁用true 表示此节点的 checkbox / radio 被禁用。false 表示此节点的 checkbox / radio 可以使用。
 
+	private String key;//存储返回值 如果和id一样则可以不传 例如字典树则需要在此传入字典code
 
 	public String getId() {
 		return id;
@@ -141,5 +145,17 @@ public class TreeNode {
 
 	public void setChkDisabled(boolean chkDisabled) {
 		this.chkDisabled = chkDisabled;
+	}
+
+	public String getKey() {
+		if(key == null){
+			return id;
+		}else{
+			return key;
+		}
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 }
