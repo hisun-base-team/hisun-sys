@@ -92,6 +92,8 @@ public final class TreeTag extends BodyTagSupport {
 	private String beforeCheck;//用于捕获 勾选 或 取消勾选 之前的事件回调函数，并且根据返回值确定是否允许 勾选 或 取消勾选 如果返回 false，将不会改变勾选状态，并且无法触发 onCheck 事件回调函数
 
 	private String onCheck;//用于捕获 checkbox / radio 被勾选 或 取消勾选的事件回调函数
+
+	private String height;//设置高度 如果没设置则表示为默认高度
 	@Override
 	public int doStartTag() throws JspTagException {
 		return EVAL_BODY_BUFFERED;
@@ -139,12 +141,17 @@ public final class TreeTag extends BodyTagSupport {
 			if(required.equals("true")) {
 				nodesHtml.append(" required ");
 			}
-			nodesHtml.append("style=\"cursor: pointer;\" onclick=\"showTagDivTree('"+id+"_treeSelDiv','"+id+"','"+valueName+"','"+isSearch+"')\"");
 			if(selectClass!=null && !selectClass.equals("")){
 				nodesHtml.append("class=\""+selectClass+"\"");
 			}else{
 				nodesHtml.append("class=\"m-wrap span6\"");
 			}
+			nodesHtml.append(" style=\"cursor: pointer;");
+			if(height!=null && !height.equals("")){
+				nodesHtml.append("height:"+height+" !important;");
+			}
+
+			nodesHtml.append("\" onclick=\"showTagDivTree('"+id+"_treeSelDiv','"+id+"','"+valueName+"','"+isSearch+"')\"");
 			nodesHtml.append(">");
 			nodesHtml.append("<div tabindex=\"0\" style=\"border: 1px solid #aaa;position: absolute;z-index: 9999999;display: none;float: left;" +
 					"list-style: none;text-shadow: none;\" id=\""+id+"_treeSelDiv\">");//margin-top: -10px;
@@ -444,5 +451,13 @@ public final class TreeTag extends BodyTagSupport {
 
 	public void setOnCheck(String onCheck) {
 		this.onCheck = onCheck;
+	}
+
+	public String getHeight() {
+		return height;
+	}
+
+	public void setHeight(String height) {
+		this.height = height;
 	}
 }

@@ -49,6 +49,11 @@ public class TreeNode {
 
 	private boolean checked;//是否默认选中
 
+	private boolean nocheck;//true 表示此节点不显示 checkbox / radio，不影响勾选的关联关系，不影响父节点的半选状态。false 表示节点具有正常的勾选功能
+
+	private boolean chkDisabled;//设置节点的 checkbox / radio 是否禁用true 表示此节点的 checkbox / radio 被禁用。false 表示此节点的 checkbox / radio 可以使用。
+
+
 	public String getId() {
 		return id;
 	}
@@ -120,5 +125,21 @@ public class TreeNode {
 
 	public void setChecked(boolean checked) {
 		this.checked = checked;
+	}
+
+	public boolean isNocheck() {
+		return nocheck;
+	}
+
+	public void setNocheck(boolean nocheck) {
+		this.nocheck = nocheck;
+	}
+
+	public boolean isChkDisabled() {
+		return chkDisabled;
+	}
+
+	public void setChkDisabled(boolean chkDisabled) {
+		this.chkDisabled = chkDisabled;
 	}
 }

@@ -217,7 +217,9 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,
 								var checkedNodeIds = keyObj.value.split(",");
 								for (var i = 0; i < checkedNodeIds.length; i++) {
 									var node = selectzTree.getNodeByParam('id', checkedNodeIds[i]);
-									selectzTree.checkNode(node, true, false);
+									if(node!=null){
+										selectzTree.checkNode(node, true, false);
+									}
 								}
 							}
 						}
