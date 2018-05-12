@@ -57,6 +57,8 @@ public class DictionaryRestApi {
             }
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" dictionaryType.code=:typeCode ", "typeCode", typeCode));
+            query.add(CommonRestrictions.and(" tombstone=:tombstone ", "tombstone", TombstoneEntity.TOMBSTONE_FALSE));
+            query.add(CommonRestrictions.and(" display=:display ", "display", DictionaryItem.DISPLAY));
             CommonOrderBy orderBy = new CommonOrderBy();
             orderBy.add(CommonOrder.asc("code"));
             dictionaryItems = dictionaryItemService.list(query, orderBy);
