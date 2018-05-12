@@ -10,6 +10,7 @@ import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
+import com.hisun.base.entity.TombstoneEntity;
 import com.hisun.saas.sys.admin.dictionary.entity.DictionaryItem;
 import com.hisun.saas.sys.admin.dictionary.service.DictionaryItemService;
 import com.hisun.saas.sys.admin.dictionary.service.DictionaryTypeService;
@@ -45,7 +46,7 @@ public class DictionaryRestApi {
     private Tenant2ResourcePrivilegeService tenant2ResourcePrivilegeService;
 
 
-    @RequestMapping(value = "/tree",method = RequestMethod.GET)
+    @RequestMapping(value = "/tree")
     public @ResponseBody Map<String,Object> getTreeNodes(String typeCode,String tenant2ResourceId,String privilegeId) {
         Map<String, Object> map = new HashMap<String, Object>();
         List<DictionaryItem> dictionaryItems;
@@ -96,7 +97,7 @@ public class DictionaryRestApi {
     }
 
 
-    @RequestMapping(value = "/select",method = RequestMethod.POST)
+    @RequestMapping(value = "/select")
     public @ResponseBody Map<String,Object> getSelectNodes(String typeCode,String tenant2ResourceId,String privilegeId) {
         Map<String, Object> map = new HashMap<String, Object>();
         List<DictionaryItem> dictionaryItems;
@@ -107,8 +108,10 @@ public class DictionaryRestApi {
             }
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" dictionaryType.code=:typeCode ", "typeCode", typeCode));
+            query.add(CommonRestrictions.and(" tombstone=:tombstone ", "tombstone", TombstoneEntity.TOMBSTONE_FALSE));
+            query.add(CommonRestrictions.and(" display=:display ", "display", DictionaryItem.DISPLAY));
             CommonOrderBy orderBy = new CommonOrderBy();
-            orderBy.add(CommonOrder.asc("code"));
+            orderBy.add(CommonOrder.asc("sort"));
             dictionaryItems = dictionaryItemService.list(query, orderBy);
             List<SelectNode> nodes = new ArrayList<>();
             SelectNode node=null;

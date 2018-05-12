@@ -13,6 +13,7 @@ import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
+import com.hisun.base.entity.TombstoneEntity;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.admin.dictionary.entity.DictionaryType;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,13 +47,20 @@ public class DictionaryTypeController extends BaseController {
 
 	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping(value = "/list")
-	public ModelAndView list(HttpServletRequest request,
+	public ModelAndView list(String searchName,
 			@RequestParam(value="pageNum",defaultValue="1")int pageNum,
 			@RequestParam(value="pageSize",defaultValue="10") int pageSize) throws GenericException {
 		Map<String, Object> map = Maps.newHashMap();
 		
 		try{
 			CommonConditionQuery query = new CommonConditionQuery();
+			if (StringUtils.isNotBlank(searchName)) {
+				searchName = URLDecoder.decode(searchName, "UTF-8");
+			}
+			query.add(CommonRestrictions.and(" tombstone =:tombstone", "tombstone", TombstoneEntity.TOMBSTONE_FALSE));
+			if (StringUtils.isNotBlank(searchName)) {
+				query.add(CommonRestrictions.and("(name like :searchName or code like :searchName)", "searchName", "%" + searchName + "%"));
+			}
 			Long total = this.dictionaryTypeService.count(query);
 			CommonOrderBy orderBy = new CommonOrderBy();
 			orderBy.add(CommonOrder.asc("code"));
@@ -64,7 +73,8 @@ public class DictionaryTypeController extends BaseController {
 				vos.add(vo);
 			}
 			PagerVo<DictionaryTypeVo> pager = new PagerVo<DictionaryTypeVo>(vos, total.intValue(), pageNum, pageSize);
-			request.setAttribute("pager", pager);
+			map.put("pager", pager);
+			map.put("searchName", searchName);
 		}catch(Exception e){
 			logger.error(e);
 			throw new GenericException(e);

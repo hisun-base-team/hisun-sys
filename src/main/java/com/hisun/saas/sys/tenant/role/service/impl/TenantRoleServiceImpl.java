@@ -18,7 +18,7 @@ import java.util.Map;
 
 
 @Service
-public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole,String> implements TenantRoleService {
+public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole, String> implements TenantRoleService {
 
     private TenantRoleDao tenantRoleDao;
 
@@ -26,9 +26,20 @@ public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole,String> im
     @Override
     public void setBaseDao(BaseDao<TenantRole, String> baseDao) {
         this.baseDao = baseDao;
-        this.tenantRoleDao = (TenantRoleDao)baseDao;
+        this.tenantRoleDao = (TenantRoleDao) baseDao;
     }
 
+    @Override
+    public String save(TenantRole tenantRole) {
+        Integer oldSort = this.getMaxSort();
+        Integer newSort = tenantRole.getSort();
+        if (newSort > oldSort) {
+            newSort = oldSort;
+            tenantRole.setSort(newSort);
+        }
+        this.updateSort(tenantRole,oldSort);
+        return this.tenantRoleDao.save(tenantRole);
+    }
 
     public Integer getMaxSort() {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -53,7 +64,7 @@ public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole,String> im
         } else {
             sql += "t.sort=t.sort+1";
         }
-        sql +=" where ";
+        sql += " where ";
         if (newSort > oldSort) {
             sql += "  t.sort<=" + newSort + " and t.sort >" + oldSort;
         } else {
@@ -73,13 +84,13 @@ public class TenantRoleServiceImpl extends BaseServiceImpl<TenantRole,String> im
     }
 
 
-    public boolean existRoleCode(String roleCode){
+    public boolean existRoleCode(String roleCode) {
         CommonConditionQuery query = new CommonConditionQuery();
-        query.add(CommonRestrictions.and(" roleCode = :roleCode","roleCode",roleCode));
+        query.add(CommonRestrictions.and(" roleCode = :roleCode", "roleCode", roleCode));
         Long count = this.count(query);
-        if(count>0){
+        if (count > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

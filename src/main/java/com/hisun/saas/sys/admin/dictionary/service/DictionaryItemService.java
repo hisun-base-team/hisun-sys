@@ -12,19 +12,7 @@ import com.hisun.base.service.BaseService;
 
 public interface DictionaryItemService extends BaseService<DictionaryItem, String> {
 
-	public Integer getMaxSort(String pId);
-	
-	public void saveDictionaryItem(DictionaryItem dictionaryItem);
-	
-	public void updateSortAndQueryCode(DictionaryItem dictionaryItem,Integer oldSort);
-	
-	public void refreshQueryCodeForUp(String startCode, String endCode);
-	
-	public void refreshQueryCodeForDown(String startCode, String endCode) ;
-	
-	public void updateDictionaryItem(DictionaryItem dictionaryItem,String oldPid,Integer oldSort)throws Exception;
-	
-	public void refreshQueryCodeToTmp(String oldQueryCode);
-	
-	public void refreshQueryCodeToFormal(String oldQueryCode,String newQueryCode);
+	 Integer getMaxSort(String typeId,String pId);
+	 void saveDictionaryItem(DictionaryItem dictionaryItem);
+	 void updateDictionaryItem(DictionaryItem dictionaryItem,String oldPid,Integer oldSort)throws Exception;
 }

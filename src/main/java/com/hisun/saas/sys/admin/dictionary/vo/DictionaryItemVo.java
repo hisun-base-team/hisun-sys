@@ -20,9 +20,10 @@ public class DictionaryItemVo {
 	private String url;
 	private Integer sort;
 	private String remark;
-	private String queryCode;
 	private String typeName;
 	private String typeId;
+	private int display=0;
+	private String displayStr = "是";
 
 
 	
@@ -49,8 +50,6 @@ public class DictionaryItemVo {
 	public void setId(String id) {
 		this.id = id;
 	}
-
-
 
 	public String getName() {
 		return name;
@@ -100,14 +99,6 @@ public class DictionaryItemVo {
 		this.remark = remark;
 	}
 
-	public String getQueryCode() {
-		return queryCode;
-	}
-
-	public void setQueryCode(String queryCode) {
-		this.queryCode = queryCode;
-	}
-
 	public String getCode() {
 		return code;
 	}
@@ -130,5 +121,26 @@ public class DictionaryItemVo {
 
 	public void setpId_value(String pId_value) {
 		this.pId_value = pId_value;
+	}
+
+	public int getDisplay() {
+		return display;
+	}
+	public void setDisplay(int display) {
+		this.display = display;
+	}
+
+	public String getDisplayStr() {
+		if(display==0){
+			displayStr="是";
+		}else{
+			displayStr="否";
+		}
+		return displayStr;
+	}
+
+	public void setDisplayStr(String displayStr) {
+
+		this.displayStr = displayStr;
 	}
 }

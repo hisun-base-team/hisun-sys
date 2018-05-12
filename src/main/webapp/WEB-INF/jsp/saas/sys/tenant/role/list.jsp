@@ -83,6 +83,7 @@
         window.location.href = "${path}/sys/tenant/role/list?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&pageNum=" + pageNum + "&pageSize=" + pageSize + "&searchName=" + encodeURI(encodeURI("${searchName}"));
     }
 
+
     $(".delRole").click(function(){
         var roleId = $(this).attr("roleId");
         actionByConfirm1('', "${path}/sys/tenant/role/delete/" + roleId, null, function (data) {

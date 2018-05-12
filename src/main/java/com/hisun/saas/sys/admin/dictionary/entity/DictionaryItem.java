@@ -22,14 +22,16 @@ import java.util.List;
 public class DictionaryItem  extends TombstoneEntity implements Serializable {
 
     private static final long serialVersionUID = -6174662855194278964L;
+    public static final int DISPLAY=0;
+    public static final int HIDDEN=1;
 
     private String id;//逻辑主键
     private DictionaryItem parentItem;//上级字典项
     private String name;//字典项名称
     private String code;//字典项值
+    private int display=DISPLAY;//是否隐藏,0=否,1-隐藏
     private String remark;//备注说明
     private Integer sort = 1;//排序
-    private String queryCode;//查询code(树形结构查询定位专用,最多9层)
 
     private DictionaryType dictionaryType;
     private List<DictionaryItem> childrenItems;
@@ -94,6 +96,14 @@ public class DictionaryItem  extends TombstoneEntity implements Serializable {
         this.childrenItems = childrenItems;
     }
 
+    public int getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(int display) {
+        this.display = display;
+    }
+
     @Column(name = "remark")
     public String getRemark() {
         return remark;
@@ -113,12 +123,7 @@ public class DictionaryItem  extends TombstoneEntity implements Serializable {
         this.sort = sort;
     }
 
-    @Column(name = "query_code", unique = true, length = 27, nullable = false)
-    public String getQueryCode() {
-        return queryCode;
-    }
 
-    public void setQueryCode(String queryCode) {
-        this.queryCode = queryCode;
-    }
+
+
 }

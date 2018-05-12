@@ -13,6 +13,7 @@ import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
+import com.hisun.base.entity.TombstoneEntity;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.admin.dictionary.entity.DictionaryItem;
@@ -33,6 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -108,12 +110,21 @@ public class DictionaryItemController extends BaseController {
 		String currentNodeName = StringUtils.trimNull2Empty(request.getParameter("currentNodeName"));
 		String currentNodeParentId =StringUtils.trimNull2Empty( request.getParameter("currentNodeParentId"));//取得当前树节点的父ID属性
 		String typeId = StringUtils.trimNull2Empty(request.getParameter("typeId"));
+		String searchName = StringUtils.trimNull2Empty(request.getParameter("searchName"));
 		try{
 			CommonConditionQuery query = new CommonConditionQuery();
 			if(StringUtils.equals(typeId,currentNodeId)){//如果为最高层节点,则为字典
 				query.add(CommonRestrictions.and(" dictionaryType.id=:typeId ", "typeId", typeId));
 			}else{//其他为字典项
 				query.add(CommonRestrictions.and(" parentItem.id = :id ", "id", currentNodeId));
+			}
+
+			if (org.apache.commons.lang3.StringUtils.isNotBlank(searchName)) {
+				searchName = URLDecoder.decode(searchName, "UTF-8");
+			}
+			query.add(CommonRestrictions.and(" tombstone =:tombstone", "tombstone", TombstoneEntity.TOMBSTONE_FALSE));
+			if (org.apache.commons.lang3.StringUtils.isNotBlank(searchName)) {
+				query.add(CommonRestrictions.and("(name like :searchName or code like :searchName)", "searchName", "%" + searchName + "%"));
 			}
 
 			Long total = dictionaryItemService.count(query);
@@ -135,6 +146,7 @@ public class DictionaryItemController extends BaseController {
 			map.put("currentNodeName",currentNodeName);
 			map.put("currentNodeParentId",currentNodeParentId);
 			map.put("typeId",typeId);
+			map.put("searchName", searchName);
 		}catch(Exception e){
 			logger.error(e);
 			throw new GenericException(e);
@@ -156,7 +168,7 @@ public class DictionaryItemController extends BaseController {
 		if(StringUtils.equals(pId,typeId)){
 			pId ="";
 		}
-		int sort = this.dictionaryItemService.getMaxSort(pId);
+		int sort = this.dictionaryItemService.getMaxSort(typeId,pId);
 		DictionaryItemVo vo = new DictionaryItemVo();
 		map.put("currentNodeId",currentNodeId);
 		map.put("currentNodeName",currentNodeName);
@@ -254,6 +266,7 @@ public class DictionaryItemController extends BaseController {
 		String typeId = vo.getTypeId();
 		try {
 			DictionaryItem dictionaryItem = this.dictionaryItemService.getByPK(vo.getId());
+			int oldSort = dictionaryItem.getSort();
 			String oldPid = "";
 			if(dictionaryItem.getParentItem()!=null){
 				oldPid = dictionaryItem.getParentItem().getId();
@@ -264,7 +277,7 @@ public class DictionaryItemController extends BaseController {
 			}
 			DictionaryType dictionaryType = this.dictionaryTypeService.getByPK(typeId);
 			dictionaryItem.setDictionaryType(dictionaryType);
-			this.dictionaryItemService.updateDictionaryItem(dictionaryItem, oldPid, Integer.valueOf(0));
+			this.dictionaryItemService.updateDictionaryItem(dictionaryItem, oldPid, oldSort);
 //		String newpId = request.getParameter("newpId");
 //		String type = request.getParameter("type");
 //		try {
@@ -308,9 +321,9 @@ public class DictionaryItemController extends BaseController {
 
 	@RequiresPermissions("adminDictionary:*")
 	@RequestMapping("/max/sort")
-	public @ResponseBody Map<String, Object> getMaxSort(@RequestParam(value="pId")String pId) {
+	public @ResponseBody Map<String, Object> getMaxSort(@RequestParam(value="typeId")String typeId,@RequestParam(value="pId")String pId) {
 		Map<String, Object> map = Maps.newHashMap();
-		Integer maxSort = this.dictionaryItemService.getMaxSort(pId);
+		Integer maxSort = this.dictionaryItemService.getMaxSort(typeId,pId);
 		map.put("maxSort", maxSort);
 		return map;
 	}

@@ -46,6 +46,15 @@
 					</div>
 
 				</div>
+				<div class="control-group" id="displayGroup">
+					<label class="control-label">是否显示<span class="required">*</span></label>
+					<div class="controls" >
+						<select name="display" id="display" class="span6 m-wrap" >
+							<option value="0" <c:if test="${vo.display eq 0}">selected </c:if> >是</option>
+							<option value="1" <c:if test="${vo.display eq 1}">selected </c:if> >否</option>
+						</select>
+					</div>
+				</div>
 				<div id="sortGroup" class="control-group" >
 					<label class="control-label">排序<span class="required">*</span></label>
 					<div class="controls">

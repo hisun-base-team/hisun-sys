@@ -27,16 +27,16 @@ public class SimpleWebSessionManager extends DefaultWebSessionManager {
 
 	private CacheManager cacheManager;
 
-	private final static Logger logger = Logger
-			.getLogger(SimpleWebSessionManager.class);
+	private final static Logger logger = Logger.getLogger(SimpleWebSessionManager.class);
 
 	public SimpleWebSessionManager() {
 		super();
 	}
 
 	public void validateSessions() {
-		if (logger.isInfoEnabled())
+		if (logger.isInfoEnabled()) {
 			logger.info("Validating all active sessions...");
+		}
 		int invalidCount = 0;
 		Collection<?> activeSessions = getActiveSessions();
 		if (activeSessions != null && !activeSessions.isEmpty()) {
@@ -63,7 +63,7 @@ public class SimpleWebSessionManager extends DefaultWebSessionManager {
 								session.getId()).append("]").append(
 								expired ? " (expired)" : " (stopped)")
 								.toString();
-						//logger.debug(msg);
+						logger.debug(msg);
 					}
 					invalidCount++;
 				}
@@ -79,7 +79,7 @@ public class SimpleWebSessionManager extends DefaultWebSessionManager {
 			else
 				msg = (new StringBuilder()).append(msg).append(
 						"  No sessions were stopped.").toString();
-			//logger.info(msg);
+			logger.info(msg);
 		}
 	}
 

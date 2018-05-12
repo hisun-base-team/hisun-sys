@@ -49,7 +49,7 @@
 	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
 		<constructor-arg value="sid" />
 		<property name="httpOnly" value="true" />
-		<property name="maxAge" value="-1" />
+		<property name="maxAge" value="-1" /><!--会话级cookie，关闭浏览器失效-->
 	</bean>
 	<!-- 表示浏览器关闭时失效此Cookie -->
 	<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
@@ -83,6 +83,7 @@
 	<!-- 会话管理器 定时清除没用SESSION -->
 	<bean id="sessionManager"
 		  class="com.hisun.saas.sys.auth.session.SimpleWebSessionManager">
+		<property name="sessionIdUrlRewritingEnabled" value="false" />
 		<property name="globalSessionTimeout" value="600000" />
 		<property name="sessionValidationInterval" value="30000" />
 		<property name="cacheManager" ref="cacheManager" />
