@@ -222,6 +222,44 @@ public class ECatalogTypeController extends BaseController {
         return map;
     }
 
+    @RequestMapping("/cljs/tree")
+    public @ResponseBody
+    Map<String, Object> cljsTree() throws GenericException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            CommonConditionQuery query = new CommonConditionQuery();
+            CommonOrderBy orderBy = new CommonOrderBy();
+            orderBy.add(CommonOrder.asc("sort"));
+            List<ECatalogTypeInfo> eCatalogTypeInfos = eCatalogTypeService.list(query, orderBy);
+            List<TreeNode> treeNodes = new ArrayList<TreeNode>();
+            TreeNode treeNode = new TreeNode();
+            treeNode.setId("0");
+            treeNode.setName("目录类型");
+            treeNode.setpId("0");
+            treeNode.setOpen(true);
+            treeNodes.add(treeNode);
+            TreeNode childTreeNode=null;
+            for (ECatalogTypeInfo eCatalogTypeInfo : eCatalogTypeInfos) {
+                childTreeNode = new TreeNode();
+                childTreeNode.setId(eCatalogTypeInfo.getId());
+                childTreeNode.setName(eCatalogTypeInfo.getCatalogValue());
+                if(eCatalogTypeInfo.getParent()==null){
+                    childTreeNode.setpId(treeNode.getId());
+                }else{
+                    childTreeNode.setpId(eCatalogTypeInfo.getParent().getId());
+                }
+                treeNodes.add(childTreeNode);
+            }
+            map.put("success", true);
+            map.put("data", treeNodes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e, e);
+            map.put("success", false);
+        }
+        return map;
+    }
+
     @RequiresLog(operateType = LogOperateType.SAVE,description = "增加材料目录:${vo.name}")
     @RequiresPermissions("catalogType:*")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
