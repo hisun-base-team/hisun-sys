@@ -90,6 +90,7 @@ public class ECatalogTypeServiceImpl extends BaseServiceImpl<ECatalogTypeInfo,St
         }else{
             sql+="t.sort=t.sort+1";
         }
+
         if(pId!=null && !pId.equals("")) {
             sql +=" where  t.parent_id='"+eCatalogTypeInfo.getParent().getId()+"'";
         }else{

@@ -6,16 +6,16 @@
 
 package com.hisun.saas.sys.admin.dzda.dao.impl;
 
-import com.hisun.base.dao.impl.BaseDaoImpl;
 import com.hisun.saas.sys.admin.dzda.dao.ECatalogTypeDao;
 import com.hisun.saas.sys.admin.dzda.entity.ECatalogTypeInfo;
+import com.hisun.saas.sys.tenant.base.dao.imp.TenantBaseDaoImpl;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author liuzj {279421824@qq.com}
  */
 @Repository
-public class ECatalogTypeDaoImpl extends BaseDaoImpl<ECatalogTypeInfo,String>
+public class ECatalogTypeDaoImpl extends TenantBaseDaoImpl<ECatalogTypeInfo,String>
        implements ECatalogTypeDao {
 
 

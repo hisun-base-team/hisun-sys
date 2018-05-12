@@ -119,7 +119,7 @@
 						}
 					},
 					error : function(){
-						showTip("警告","修改部门失败!",2000);
+						showTip("警告","修改材料目录失败!",2000);
 						document.getElementById("addForm").reset();
 						$(".control-group").removeClass("error").removeClass("success");
 						$(".help-inline").remove();
