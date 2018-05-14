@@ -232,19 +232,13 @@ public class ECatalogTypeController extends BaseController {
             orderBy.add(CommonOrder.asc("sort"));
             List<ECatalogTypeInfo> eCatalogTypeInfos = eCatalogTypeService.list(query, orderBy);
             List<TreeNode> treeNodes = new ArrayList<TreeNode>();
-            TreeNode treeNode = new TreeNode();
-            treeNode.setId("0");
-            treeNode.setName("目录类型");
-            treeNode.setpId("0");
-            treeNode.setOpen(true);
-            treeNodes.add(treeNode);
             TreeNode childTreeNode=null;
             for (ECatalogTypeInfo eCatalogTypeInfo : eCatalogTypeInfos) {
                 childTreeNode = new TreeNode();
                 childTreeNode.setId(eCatalogTypeInfo.getId());
                 childTreeNode.setName(eCatalogTypeInfo.getCatalogValue());
                 if(eCatalogTypeInfo.getParent()==null){
-                    childTreeNode.setpId(treeNode.getId());
+                    childTreeNode.setpId("");
                 }else{
                     childTreeNode.setpId(eCatalogTypeInfo.getParent().getId());
                 }

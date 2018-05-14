@@ -58,6 +58,8 @@ public class TreeNode {
 
 	private String key;//存储返回值 如果和id一样则可以不传 例如字典树则需要在此传入字典code
 
+	private String description;
+
 	public String getId() {
 		return id;
 	}
@@ -157,5 +159,17 @@ public class TreeNode {
 
 	public void setKey(String key) {
 		this.key = key;
+	}
+
+	public String getDescription() {
+		if(description == null){
+			return name;
+		}else{
+			return description;
+		}
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

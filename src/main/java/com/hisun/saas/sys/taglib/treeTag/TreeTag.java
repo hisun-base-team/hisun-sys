@@ -204,6 +204,9 @@ public final class TreeTag extends BodyTagSupport {
 		nodesHtml.append("\n\t\tdata: {");
 		nodesHtml.append("\n\t\t\tsimpleData: {");
 		nodesHtml.append("\n\t\t\t\tenable: true");
+		nodesHtml.append("\n\t\t\t},");
+		nodesHtml.append("\n\t\t\tkey: {");
+		nodesHtml.append("\n\t\t\t\ttitle: \"description\"");
 		nodesHtml.append("\n\t\t\t}");
 		nodesHtml.append("\n\t\t},");
 		nodesHtml.append("\n\t\tcallback: {");
