@@ -111,7 +111,7 @@ public class LoginController extends BaseController {
             this.tenantLogService.save(log);
             CsrfGuard csrfGuard = CsrfGuard.getInstance();
             csrfGuard.updateToken(WrapWebUtils.getSession());
-            return "redirect:/dashboard?OWASP_CSRFTOKEN="+ WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
+            return "redirect:/zzb/dzda/dashboard?OWASP_CSRFTOKEN="+ WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
         } catch (AuthenticationException e) {
             token.clear();
             String content = "";
@@ -166,7 +166,7 @@ public class LoginController extends BaseController {
     public ModelAndView login(HttpServletRequest req, Model model) {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         if(SecurityUtils.getSubject().isAuthenticated()&&userLoginDetails!=null){
-            return new ModelAndView("redirect:/dashboard");
+            return new ModelAndView("redirect:/zzb/dzda/dashboard");
         }
         Map<String, Object> map = Maps.newHashMap();
         map.put("sysName", sysName);

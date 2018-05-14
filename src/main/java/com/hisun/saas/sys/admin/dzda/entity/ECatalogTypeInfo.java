@@ -21,7 +21,6 @@ public class ECatalogTypeInfo  extends TombstoneEntity implements Serializable {
     private String id;
     private String catalogCode;
     private String catalogValue;
-//    private String parentId;
     private Integer sort;
 
     private ECatalogTypeInfo parent;

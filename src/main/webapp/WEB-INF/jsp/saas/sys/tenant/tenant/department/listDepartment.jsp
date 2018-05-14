@@ -7,7 +7,6 @@
             <div class="caption">部门列表</div>
             <div class="clearfix fr">
                 <a id="add" class="btn green" href="#"><i class="icon-plus"></i> 添加</a>
-                <%--<a id="jztp" class="btn green" href="#"><i class="icon-plus"></i> 加载图片</a>--%>
             </div>
         </div>
         <div class="clearfix">
@@ -78,9 +77,6 @@
         });
     });
 
-    <%--$("#jztp").click(function () {--%>
-        <%--window.open("${path}/zzb/dzda/mlcl/jztp/index?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}");--%>
-    <%--});--%>
 
 
     function update(id) {
