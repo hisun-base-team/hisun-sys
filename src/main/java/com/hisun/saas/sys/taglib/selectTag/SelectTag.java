@@ -34,6 +34,7 @@ public final class SelectTag extends BodyTagSupport {
     private String defaultvalues;//默认的值 要有多个必须和key的内容对应  用,分开
     private String defaultkeys;//默认的知道的相应key值 要有多个必须和值的内容对应  用,分开
     private String token;
+    private String needNullValue="false";//单选增加一个空的选项
     @Override
     public int doStartTag() throws JspTagException {
         return EVAL_BODY_BUFFERED;
@@ -98,7 +99,7 @@ public final class SelectTag extends BodyTagSupport {
             noTreeresults.append("</select>");
             noTreeresults.append("<input type=\"hidden\" id=\""+valueName+"\" name=\""+valueName+"\" value=\""+StringUtils.trimNullCharacter2Empty(this.defaultvalues)+"\">");
             noTreeresults.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" radioOrCheckbox=\""+radioOrCheckbox+"\" url=\""+selectUrl+"\" " +
-                    "defaultkeys=\""+defaultkeys+"\" token=\""+token+"\" userParameter=\""+userParameter+"\" changeFunc=\""+onchange+"\">");
+                    "defaultkeys=\""+defaultkeys+"\" needNullValue=\""+needNullValue+"\" token=\""+token+"\" userParameter=\""+userParameter+"\" changeFunc=\""+onchange+"\">");
             noTreeresults.append("<script type=\"text/javascript\">");
             noTreeresults.append("selectLoadByTag(\""+selectUrl+"\",\""+id+"\",\""+token+"\");");
             noTreeresults.append("</script>");
@@ -269,5 +270,13 @@ public final class SelectTag extends BodyTagSupport {
 
     public void setValueName(String valueName) {
         this.valueName = valueName;
+    }
+
+    public String getNeedNullValue() {
+        return needNullValue;
+    }
+
+    public void setNeedNullValue(String needNullValue) {
+        this.needNullValue = needNullValue;
     }
 }

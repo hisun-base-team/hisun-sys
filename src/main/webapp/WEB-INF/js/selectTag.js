@@ -13,6 +13,12 @@ function selectLoadByTag(selectUrl,id,token){
     var moreSelectSearch = selectDefineAttObj.getAttribute("moreSelectSearch");
     var moreSelectAll = selectDefineAttObj.getAttribute("moreSelectAll");
     var buttonHeight = selectDefineAttObj.getAttribute("buttonHeight");//文本的高度
+    var needNullValue = "false";
+    if(radioOrCheckbox=="radio"){
+        needNullValue = selectDefineAttObj.getAttribute("needNullValue");
+    }
+
+
     var defaultkeyArr = defaultkeys.split(",")
 
     $.ajax({
@@ -31,6 +37,9 @@ function selectLoadByTag(selectUrl,id,token){
             if(data.success) {
                 var options = data.data;
                 if (options != null) {
+                    if(needNullValue == "true"){
+                        $("#" + id).append("<option value=''></option>");
+                    }
                     for (var i in options) {
                         var map = options[i];
                         var optionKey = map["optionKey"];
