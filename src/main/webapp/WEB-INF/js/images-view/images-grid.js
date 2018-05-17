@@ -165,7 +165,9 @@
                             self.imageLoaded(event, $(this), image);
                         }
                     })
-                )
+                ).append('<span style=\'display: block; width: 40px; height: 20px; top: 0; left: 0; z-index: 9999; position: absolute; text-align: center; font-size: 16px; cursor: pointer; color: aliceblue\'>'+alt+'</span>')
+                 .append('<div class="dropdownMob"><div class="btn-group"><a class="btn downMobBtn" href="#" data-toggle="dropdown"><i class="icon-angle-down"></i></a>' +
+                     '<ul class="dropdown-menu"><li><a href="#"><i class="icon-sort-by-alphabet-alt"></i> 排序</a></li><li><a href="#"><i class="icon-remove-sign"></i> 删除</a></li></ul></div></div>')
             );
 
             this.$gridItems.push(item);
@@ -201,8 +203,10 @@
         };
 
         this.imageClick = function(event) {
-            var imageIndex = $(event.currentTarget).data('index');
-            this.modal.open(imageIndex);
+            if (isManage != "true") {
+                var imageIndex = $(event.currentTarget).data('index');
+                 this.modal.open(imageIndex);
+            }
         };
 
         this.imageLoaded = function(event, imageEl, image) {

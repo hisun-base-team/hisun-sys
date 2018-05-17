@@ -5,7 +5,8 @@
  */
 
 .imgs-grid {
-  max-width: 800px;
+  max-width: 1000px;
+  text-align: center;
   margin: 0 auto;
   font-size: 0;
 }
@@ -45,6 +46,7 @@
   overflow: hidden;
   vertical-align: middle;
 }
+
 .imgs-grid .imgs-grid-image .image-wrap img {
   position: relative;
   width: 100%;
@@ -181,7 +183,7 @@
 .imgs-grid-modal .modal-inner .modal-image img:hover {
   cursor: pointer;
 }
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
   .imgs-grid-modal .modal-inner .modal-control {
     width: 40px;
   }
