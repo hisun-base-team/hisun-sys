@@ -93,18 +93,18 @@ public abstract class AbsExcelExchange {
     }
 
 
-    public void toOneExcelByManyPojo(List<? extends Object> objects, String tmplateFile, String destFile) throws Exception {
+    public void toExcelByManyPojo(List<? extends Object> objects, String tmplateFile, String destFile) throws Exception {
         //多个对象一个Excel
         List<String> jsons = new ArrayList<>();
         for(Object obj : objects){
             String json =  JacksonUtil.nonDefaultMapper().toJson(obj);
             jsons.add(json);
         }
-        toOneExcelByManyJson(jsons,tmplateFile,destFile);
+        toExcelByManyJson(jsons,tmplateFile,destFile);
     }
 
 
-    public void toOneExcelByManyJson(List<String> jsons, String tmplateFile, String destFile) throws Exception {
+    public void toExcelByManyJson(List<String> jsons, String tmplateFile, String destFile) throws Exception {
         List<JSONObject> jsonObjects = new ArrayList<>();
         for(String json : jsons){
             JSONObject jsonObject = new JSONObject(json);
@@ -183,6 +183,46 @@ public abstract class AbsExcelExchange {
         JSONObject jsonObject = fromExcel(tmplateFile,srcFile);
         return JacksonUtil.nonDefaultMapper().fromJson(jsonObject.toString(), clazz);
     }
+
+    public List<Object> fromExcel2ManyPojo(Class clazz, String tmplateFile, String srcFile) throws Exception {
+        List<Object> objects = new ArrayList<>();
+        List<JSONObject> jsonObjects = new ArrayList<>();
+        AsposeLicenseUtil.newInstance().init();
+        //模板Excel
+        Workbook tpltWorkbook = read(tmplateFile);
+        WorksheetCollection tpltWorksheets = tpltWorkbook.getWorksheets();
+        //数据Excel
+        Workbook srcWorkbook = read(srcFile);
+        WorksheetCollection srcWorksheets = srcWorkbook.getWorksheets();
+        int sheetIndex = 0;
+        for (Iterator<Worksheet> iterator = tpltWorksheets.iterator(); iterator.hasNext(); ) {
+            Worksheet tpltWorksheet = iterator.next();
+            Cells tpltCells = tpltWorksheet.getCells();
+            Cells srcCells = srcWorksheets.get(sheetIndex).getCells();
+            for (Iterator<Cell> tpltCellIterator = tpltCells.iterator(); tpltCellIterator.hasNext(); ) {
+                Cell tpltCell = tpltCellIterator.next();
+                String value = tpltCell.getStringValue();
+                List<String> fields = this.parseField(value);
+                if (fields != null) {
+                    for (String field : fields) {
+                        if (isListField(value)) {
+                        } else if (isImageField(value)) {
+                        } else {
+                            setValue(jsonObjects,field,tpltCell,srcCells);
+                        }
+                    }
+                }
+            }
+            sheetIndex++;
+        }
+
+        for(JSONObject jsonObject : jsonObjects){
+            objects.add(JacksonUtil.nonDefaultMapper().fromJson(jsonObject.toString(), clazz));
+        }
+        return objects;
+    }
+
+
 
     protected List<String> parseField(String src) {
         Matcher matcher = Pattern.compile(FIELD_REGEXP).matcher(src);
@@ -284,5 +324,36 @@ public abstract class AbsExcelExchange {
             }
         }
     }
+
+    protected void setValue(List<JSONObject> jsonObjects,String field,Cell tpltCell,Cells srcCells){
+        String realValue = "";
+        if(jsonObjects.size()==0){
+            for (Iterator<Cell> srcCellIterator = srcCells.iterator(); srcCellIterator.hasNext();) {
+                Cell srcCell = srcCellIterator.next();
+                if (srcCell.getRow()>=tpltCell.getRow()
+                        &&srcCell.getColumn() == tpltCell.getColumn()) {
+                    realValue = StringUtils.trimNull2Empty(srcCell.getStringValue());
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put(field,realValue);
+                    jsonObjects.add(jsonObject);
+                }
+            }
+
+        }else{
+            int index =0;
+            for (Iterator<Cell> srcCellIterator = srcCells.iterator(); srcCellIterator.hasNext();) {
+                Cell srcCell = srcCellIterator.next();
+                if (srcCell.getRow()>=tpltCell.getRow()
+                        &&srcCell.getColumn() == tpltCell.getColumn()) {
+                    realValue = StringUtils.trimNull2Empty(srcCell.getStringValue());
+                    JSONObject jsonObject = jsonObjects.get(index);
+                    jsonObject.put(field,realValue);
+                    index++;
+                }
+            }
+        }
+    }
+
+
 
 }
