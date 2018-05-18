@@ -85,9 +85,62 @@ public abstract class AbsExcelExchange {
         workbook.save(destFile);
     }
 
+
+
+
     public void toExcel(Object object, String tmplateFile, String destFile) throws Exception {
         toExcel(JacksonUtil.nonDefaultMapper().toJson(object), tmplateFile, destFile);
     }
+
+
+    public void toOneExcelByManyPojo(List<Object> objects, String tmplateFile, String destFile) throws Exception {
+        //多个对象一个Excel
+        List<String> jsons = new ArrayList<>();
+        for(Object obj : objects){
+            String json =  JacksonUtil.nonDefaultMapper().toJson(obj);
+            jsons.add(json);
+        }
+        toOneExcelByManyJson(jsons,tmplateFile,destFile);
+    }
+
+
+    public void toOneExcelByManyJson(List<String> jsons, String tmplateFile, String destFile) throws Exception {
+        List<JSONObject> jsonObjects = new ArrayList<>();
+        for(String json : jsons){
+            JSONObject jsonObject = new JSONObject(json);
+            jsonObjects.add(jsonObject);
+        }
+        AsposeLicenseUtil.newInstance().init();
+        Workbook workbook = read(tmplateFile);
+        WorksheetCollection worksheets = workbook.getWorksheets();
+        for (Iterator<Worksheet> iterator = worksheets.iterator(); iterator.hasNext(); ) {
+            Worksheet worksheet = iterator.next();
+            Cells cells = worksheet.getCells();
+            for (Iterator<Cell> cellIterator = cells.iterator(); cellIterator.hasNext(); ) {
+                Cell cell = cellIterator.next();
+                String value = cell.getStringValue();
+                List<String> fields = this.parseField(value);
+                String realValue = "";
+                if (fields != null) {
+                    for (String field : fields) {
+                        if (isListField(value)) {
+                        } else if (isImageField(value)) {
+                        } else {
+                            int row = cell.getRow();
+                            int column = cell.getColumn();
+                            for(int i = 0;i<jsonObjects.size();i++){
+                                realValue = getValue(jsonObjects.get(i), field);
+                                cells.get(row+i,column).setValue(realValue);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        workbook.save(destFile);
+    }
+
+
 
     public JSONObject fromExcel(String tmplateFile, String srcFile) throws Exception {
         JSONObject jsonObject = new JSONObject();
