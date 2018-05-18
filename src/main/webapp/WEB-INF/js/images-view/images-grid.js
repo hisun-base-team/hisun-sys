@@ -138,11 +138,12 @@
             var src = image,
                 alt = '',
                 title = '';
-
+            var imgId = '';
             if ($.isPlainObject(image)) {
                 src = image.src;
                 alt = image.alt || '';
                 title = image.title || '';
+                imgId = image.imgId;
             }
 
             var item = $('<div>', {
@@ -167,7 +168,9 @@
                     })
                 ).append('<span style=\'display: block; width: 40px; height: 20px; top: 0; left: 0; z-index: 9999; position: absolute; text-align: center; font-size: 16px; cursor: pointer; color: aliceblue\'>'+alt+'</span>')
                  .append('<div class="dropdownMob"><div class="btn-group"><a class="btn downMobBtn" href="#" data-toggle="dropdown"><i class="icon-angle-down"></i></a>' +
-                     '<ul class="dropdown-menu"><li><a href="#"><i class="icon-sort-by-alphabet-alt"></i> 排序</a></li><li><a href="#"><i class="icon-remove-sign"></i> 删除</a></li></ul></div></div>')
+                     '<ul class="dropdown-menu"><li><a href=\'javascript:uploadImageByOne("1","frist")\'><i class="icon-plus"></i> 插入首页</a></li><li><a href=\'javascript:uploadImageByOne("'+title+'","up")\'><i class="icon-plus"></i> 插入上一页</a></li>' +
+                     '<li><a href=\'javascript:uploadImageByOne("'+title+'","down")\'><i class="icon-plus"></i> 插入下一页</a></li><li><a href=\'javascript:uploadImageByOne("","end")\'><i class="icon-plus"></i> 插入尾页</a></li>' +
+                     '<li><a href=\'javascript:updateImgNo("'+imgId+'","'+title+'")\'><i class="icon-sort-by-alphabet-alt"></i> 排序</a></li><li><a href="javascript:deleteImg("'+imgId+'","'+title+'")"><i class="icon-remove-sign"></i> 删除</a></li></ul></div></div>')
             );
 
             this.$gridItems.push(item);

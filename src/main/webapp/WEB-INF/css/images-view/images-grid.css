@@ -20,12 +20,12 @@
 }
 .imgs-grid.imgs-grid-3 .imgs-grid-image,
 .imgs-grid.imgs-grid-6 .imgs-grid-image {
-  width: 33.333333333333336%;
+  width: 50%;
 }
 .imgs-grid.imgs-grid-5 .imgs-grid-image:nth-child(1),
 .imgs-grid.imgs-grid-5 .imgs-grid-image:nth-child(2),
 .imgs-grid.imgs-grid-5 .imgs-grid-image:nth-child(3) {
-  width: 33.333333333333336%;
+  width: 50%;
 }
 .imgs-grid.imgs-grid-5 .imgs-grid-image:nth-child(4),
 .imgs-grid.imgs-grid-5 .imgs-grid-image:nth-child(5) {
