@@ -197,6 +197,10 @@ public final class TreeTag extends BodyTagSupport {
 		nodesHtml.append("\n\t\t\tselectedMulti: false");
 		nodesHtml.append("\n\t\t\t},");
 		nodesHtml.append("\n\t\tedit: {");
+		nodesHtml.append("\n\t\t\tdrag: {");
+		nodesHtml.append("\n\t\t\t\tisCopy: false,");
+		nodesHtml.append("\n\t\t\t\tisMove: false ");
+		nodesHtml.append("\n\t\t\t},");
 		nodesHtml.append("\n\t\t\tenable: true,");
 		nodesHtml.append("\n\t\t\tshowRemoveBtn: false,");
 		nodesHtml.append("\n\t\t\tshowRenameBtn: false");

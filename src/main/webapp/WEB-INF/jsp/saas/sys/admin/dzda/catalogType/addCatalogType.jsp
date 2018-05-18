@@ -45,7 +45,7 @@
 					</div>
 
 				</div>
-				<div id="pcsjValueGroup" class="control-group">
+				<div id="catalogCodeGroup" class="control-group">
 					<label class="control-label">目录编码</label>
 					<div class="controls">
 						<input size="16" type="text"  class="span6 m-wrap" value="${vo.catalogCode}" readonly id="catalogCode" name="catalogCode" >
