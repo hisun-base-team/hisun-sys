@@ -93,7 +93,7 @@ public abstract class AbsExcelExchange {
     }
 
 
-    public void toOneExcelByManyPojo(List<Object> objects, String tmplateFile, String destFile) throws Exception {
+    public void toOneExcelByManyPojo(List<? extends Object> objects, String tmplateFile, String destFile) throws Exception {
         //多个对象一个Excel
         List<String> jsons = new ArrayList<>();
         for(Object obj : objects){
