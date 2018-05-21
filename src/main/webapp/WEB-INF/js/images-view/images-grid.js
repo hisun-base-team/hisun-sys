@@ -404,6 +404,9 @@
                             title: image.title,
                             click: function(event) {
                                 self.imageClick(event, $(this), image);
+                            },
+                            mousewheel:function(event) {
+                                self.imageClick(event, $(this), image);
                             }
                         })
                     ),
