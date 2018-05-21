@@ -7,26 +7,17 @@
 package com.hisun.saas.sys.tenant.tenant.controller;
 
 import com.google.common.collect.Maps;
-import com.hisun.saas.sys.admin.log.entity.SysLog;
-import com.hisun.saas.sys.auth.Constants;
-import com.hisun.saas.sys.auth.KaptchaUsernamePasswordToken;
 import com.hisun.base.controller.BaseController;
-import com.hisun.base.dao.util.CommonConditionQuery;
-import com.hisun.base.dao.util.CommonRestrictions;
-import com.hisun.saas.sys.entity.AbstractRole;
-import com.hisun.base.entity.TombstoneEntity;
 import com.hisun.base.exception.GenericException;
 import com.hisun.saas.sys.admin.message.service.NoticeService;
-import com.hisun.saas.sys.admin.resource.vo.ResourceMenuItem;
-import com.hisun.saas.sys.admin.user.entity.User;
+import com.hisun.saas.sys.auth.Constants;
+import com.hisun.saas.sys.auth.KaptchaUsernamePasswordToken;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.log.LogOperateStatus;
 import com.hisun.saas.sys.log.LogOperateType;
 import com.hisun.saas.sys.tenant.log.entity.TenantLog;
 import com.hisun.saas.sys.tenant.log.service.TenantLogService;
-import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
-import com.hisun.saas.sys.tenant.tenant.entity.TenantRegister;
 import com.hisun.saas.sys.tenant.tenant.service.TenantRegisterService;
 import com.hisun.saas.sys.tenant.user.entity.TenantUser;
 import com.hisun.saas.sys.tenant.user.service.TenantUserService;
@@ -45,14 +36,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,7 +50,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("")
 public class LoginController extends BaseController {
-
     @Resource
     private TenantUserService tenantUserService;
     @Resource
