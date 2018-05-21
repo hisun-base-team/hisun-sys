@@ -346,8 +346,10 @@ public abstract class AbsExcelExchange {
                 if (srcCell.getRow()>=tpltCell.getRow()
                         &&srcCell.getColumn() == tpltCell.getColumn()) {
                     realValue = StringUtils.trimNull2Empty(srcCell.getStringValue());
-                    JSONObject jsonObject = jsonObjects.get(index);
-                    jsonObject.put(field,realValue);
+                    if(index<=(jsonObjects.size()-1)){
+                        JSONObject jsonObject = jsonObjects.get(index);
+                        jsonObject.put(field,realValue);
+                    }
                     index++;
                 }
             }
