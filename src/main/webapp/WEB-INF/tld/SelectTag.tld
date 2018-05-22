@@ -80,7 +80,7 @@
      </attribute>
      <attribute>
          <name>token</name>
-         <required>false</required>
+         <required>true</required>
          <rtexprvalue>true</rtexprvalue>
      </attribute>
      <attribute>
