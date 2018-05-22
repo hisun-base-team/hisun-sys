@@ -18,6 +18,8 @@ import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.admin.log.entity.SysLog;
 import com.hisun.saas.sys.admin.log.service.SysLogService;
 import com.hisun.saas.sys.admin.log.vo.SysLogVo;
+import com.hisun.saas.sys.auth.UserLoginDetails;
+import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.log.LogOperateType;
 import com.hisun.util.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -138,5 +140,56 @@ public class SysLogController extends BaseController {
 		
 		return  new ModelAndView("saas/sys/admin/log/list",map);
 	}
+
+
+
+
+	@RequiresPermissions(value = {"adminLog-security-me:view"},logical = Logical.OR)
+	@RequestMapping(value = "/me/security", method = RequestMethod.GET)
+	public ModelAndView meSecurity(HttpServletRequest request,
+									@RequestParam(value="pageNum",defaultValue="1")int pageNum,
+									@RequestParam(value="pageSize",defaultValue="20") int pageSize) throws GenericException {
+		Map<String, Object> map = Maps.newHashMap();
+		try{
+			UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+			String searchContent = StringUtils.trimNull2Empty(request.getParameter("searchContent"));
+			String start = StringUtils.trimNull2Empty(request.getParameter("start"));
+			String end = StringUtils.trimNull2Empty(request.getParameter("end"));
+			CommonConditionQuery query = new CommonConditionQuery();
+			query.add(CommonRestrictions.and(" userId=:userId","userId",userLoginDetails.getUserid()));
+			List types = Lists.newArrayList();
+			types.add(LogOperateType.LOGIN.getType());
+			types.add(LogOperateType.LOGOUT.getType());
+			query.add(CommonRestrictions.and(" type in (:type)", "type",types));
+			if(start.length()>0){
+				query.add(CommonRestrictions.and(" operateTime >= :start", "start",new DateTime(start).toDate()));
+			}
+			if(end.length()>0){
+				query.add(CommonRestrictions.and(" operateTime <= :end", "end",new DateTime(end).toDate()));
+			}
+			if(searchContent.length()>0){
+				query.add(CommonRestrictions.and(" content like :searchContent ", "searchContent","%"+searchContent+"%"));
+			}
+			Long total = this.logService.count(query);
+			CommonOrderBy orderBy = new CommonOrderBy();
+			orderBy.add(CommonOrder.desc("operateTime"));
+			List<SysLog> queryList = this.logService.list(query, orderBy, pageNum, pageSize);
+			List<SysLogVo> logvos = Lists.newArrayList();
+			SysLogVo logvo;
+			for(SysLog log : queryList){
+				logvo = new SysLogVo();
+				BeanUtils.copyProperties(log, logvo);
+				logvos.add(logvo);
+			}
+			PagerVo<SysLogVo> pager = new PagerVo<SysLogVo>(logvos, total.intValue(), pageNum, pageSize);
+			map.put("pager", pager);
+		}catch(Exception e){
+			throw new GenericException(e);
+		}
+		map.put("bool",true);
+		return  new ModelAndView("saas/sys/admin/log/meSecurityList",map);
+	}
+
+
 
 }

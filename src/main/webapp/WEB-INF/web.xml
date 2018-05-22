@@ -138,7 +138,8 @@
     </filter>
     <filter-mapping>
         <filter-name>CSRFGuard</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/sys/*</url-pattern>
+        <url-pattern>/zzb/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 

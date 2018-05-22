@@ -40,6 +40,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -101,7 +103,7 @@ public class LoginController extends BaseController {
             this.tenantLogService.save(log);
             CsrfGuard csrfGuard = CsrfGuard.getInstance();
             csrfGuard.updateToken(WrapWebUtils.getSession());
-            return "redirect:/zzb/dzda/dashboard";
+            return "redirect:/zzb/dzda/dashboard?OWASP_CSRFTOKEN="+ WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
         } catch (AuthenticationException e) {
             token.clear();
             String content = "";
@@ -170,7 +172,7 @@ public class LoginController extends BaseController {
 
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout() {
+    public String logout() throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();

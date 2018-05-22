@@ -1,6 +1,7 @@
 package com.hisun.saas.sys.admin.user.controller;
 
 import com.google.common.collect.Maps;
+import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.log.LogOperateStatus;
 import com.hisun.saas.sys.log.LogOperateType;
 import com.hisun.saas.sys.admin.user.entity.User;
@@ -18,6 +19,7 @@ import com.hisun.saas.sys.admin.message.service.NoticeService;
 import com.hisun.saas.sys.admin.resource.service.ResourceService;
 import com.hisun.saas.sys.admin.user.service.UserService;
 import com.hisun.saas.sys.auth.UserLoginDetails;
+import com.hisun.saas.sys.tenant.log.entity.TenantLog;
 import com.hisun.util.AddressUtil;
 import com.hisun.util.WrapWebUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +40,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -172,13 +176,21 @@ public class AdminLoginController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)  
-    public String logout() {  
+    public String logout(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Subject currentUser = SecurityUtils.getSubject();  
-        UserLoginDetails userLoginDetails = (UserLoginDetails) currentUser.getSession().getAttribute(Constants.CURRENT_USER);
-        User user = new User();
-		user.setId(userLoginDetails.getUserid());
         currentUser.logout();
-        return "redirect:/admin/login";
+		String ip = this.getIp();
+		SysLog log = new SysLog();
+		log.setUserId(userLoginDetails.getUserid());
+		log.setUserName(userLoginDetails.getRealname());
+		log.setOperateTime(new Date());
+		log.setIp(ip);
+		log.setContent("");
+		log.setType(LogOperateType.LOGOUT.getType());
+		log.setStatus(LogOperateStatus.NORMAL.getStatus());
+		this.logService.save(log);
+		return "redirect:/admin/login";
     }
 	
 	@RequestMapping(value = "/adminDashboard")

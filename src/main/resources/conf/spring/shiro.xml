@@ -167,11 +167,13 @@
 				/js/** = anon
 				/css/** = anon
 				/images/** = anon
-				/login = authc
-				/admin/login = authc
+				/login = anon
+				/admin/login = anon
 				/accessDenied = anon
 				/signin = anon
 				/admin/signin = anon
+				/logout = anon
+				/admin/logout = anon
 				/kaptcha/** = anon
 				/admin/kaptcha/** = anon
 				/admin/sms/send/** = anon
@@ -198,8 +200,6 @@
 				/un/** = anon  <!-- 过滤所有不用权限验证过滤的URL -->
 				/sys/tenant/user/un/** = anon  <!-- 过滤所有不用权限验证过滤的URL -->
 				/sys/tenant/register/** = anon <!-- 注册控制器，不用权限 -->
-				/logout = logout
-				/admin/logout = logout
 				/authenticated = authc
 				/** = ajaxNoAuthc,forceLogoutFilter,user,sysUser
 			</value>
