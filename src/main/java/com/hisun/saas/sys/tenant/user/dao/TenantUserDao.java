@@ -12,22 +12,7 @@ import java.util.List;
  */
 public interface TenantUserDao extends BaseDao<TenantUser,String>{
 
-    /**
-     * 防止并发用户名和邮箱会出现重复，需要额外写保存发吧
-     * @param vo
-     * @return
-     */
     TenantUser saveRegister(TenantRegisterVo vo, Tenant tenant);
-
-    /**
-     * 根据租户ID注销租户下用户
-     * @param tenantId
-     */
     void updateToFreezeByTenant(String tenantId);
-
-    /**
-     * 激活租户下全部用户
-     * @param tenantId
-     */
     void updateToActivateByTenant(String tenantId);
 }

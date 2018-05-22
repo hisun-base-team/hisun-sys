@@ -45,6 +45,7 @@ import com.hisun.saas.sys.util.EntityWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -75,6 +76,7 @@ public class TenantUserServiceImpl extends BaseServiceImpl<TenantUser,String> im
 
 
     @javax.annotation.Resource
+    @Qualifier("tenantUserDao")
     @Override
     public void setBaseDao(BaseDao<TenantUser, String> baseDao) {
         this.baseDao = baseDao;
