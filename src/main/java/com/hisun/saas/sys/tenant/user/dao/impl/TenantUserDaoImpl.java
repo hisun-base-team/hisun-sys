@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
+@Repository("tenantUserDao")
 public class TenantUserDaoImpl extends TenantBaseDaoImpl<TenantUser,String> implements TenantUserDao {
 
     private RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();

@@ -13,12 +13,6 @@
     <link href="${pageContext.request.contextPath}/css/error.css" rel="stylesheet" type="text/css"/>
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css">
 	<script src="${pageContext.request.contextPath}/js/jquery-1.10.1.min.js" type="text/javascript"></script>
-    <script type="application/javascript">
-        jQuery(document).ready(function() {
-            App.init();//必须，不然导航栏及其菜单无法折叠
-        });
-
-    </script>
 
     <!-- END PAGE LEVEL STYLES -->
     <title>错误</title>

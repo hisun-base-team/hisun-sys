@@ -91,7 +91,7 @@ public class TenantResourceController extends BaseController {
     @RequestMapping("/sitemesh/list")
     public ModelAndView resources(HttpServletRequest req, String pId,
                                   @RequestParam(value="pageNum",defaultValue="1")int pageNum,
-                                  @RequestParam(value="pageSize",defaultValue="20") int pageSize)
+                                  @RequestParam(value="pageSize",defaultValue="10") int pageSize)
             throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
 

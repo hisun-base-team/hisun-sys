@@ -14,12 +14,6 @@
     <link href="${pageContext.request.contextPath}/css/error.css" rel="stylesheet" type="text/css"/>
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css">
 	<script src="${pageContext.request.contextPath}/js/jquery-1.10.1.min.js" type="text/javascript"></script>
-    <script type="application/javascript">
-        jQuery(document).ready(function() {
-            App.init();//必须，不然导航栏及其菜单无法折叠
-        });
-
-    </script>
     <!-- END PAGE LEVEL STYLES -->
     <title>错误</title>
 </head>
@@ -35,28 +29,17 @@
 
         <div class="details">
 
-            <h3>噢，系统出现问题了！</h3>
+            <h3>系统出现问题了！</h3>
 
             <p>
 
                 我们会尽快解决它！<br />
 
                 请稍后再访问。<br /><br />
-                <a href="${pageContext.request.contextPath}">返回首页</a>或者尝试使用搜索栏。
+                <a href="javascript:history.back(-1)">返回上一页。</a>
 
             </p>
 
-            <form action="#">
-
-                <div class="input-append">
-
-                    <input class="m-wrap" size="16" type="text" placeholder="关键字..." />
-
-                    <button class="btn blue">搜索</button>
-
-                </div>
-
-            </form>
 
         </div>
 

@@ -45,10 +45,7 @@ import com.hisun.saas.sys.tenant.user.entity.Activation;
 import com.hisun.saas.sys.tenant.user.entity.PasswordReset;
 import com.hisun.saas.sys.tenant.user.entity.TenantUser;
 import com.hisun.saas.sys.tenant.user.entity.TenantUserRole;
-import com.hisun.saas.sys.tenant.user.service.ActivationService;
-import com.hisun.saas.sys.tenant.user.service.PasswordResetService;
-import com.hisun.saas.sys.tenant.user.service.TenantUserRoleService;
-import com.hisun.saas.sys.tenant.user.service.TenantUserService;
+import com.hisun.saas.sys.tenant.user.service.*;
 import com.hisun.saas.sys.tenant.user.vo.TenantRoleSelection;
 import com.hisun.saas.sys.tenant.user.vo.TenantUserVo;
 import com.hisun.saas.sys.util.EntityWrapper;
@@ -87,6 +84,8 @@ public class TenantUserController extends BaseController {
 
     @Resource
     private TenantUserService tenantUserService;
+    @Resource
+    private TenantUser4AdminService tenantUser4AdminService;
     @Value("${sys.upload.absolute.path}")
     private String uploadBasePath;
     @Resource
@@ -637,11 +636,11 @@ public class TenantUserController extends BaseController {
         try {
             TenantUser user = tenantUserService.getByPK(userLoginDetails.getUserid());
             TenantUserVo userVo = new TenantUserVo();
-            BeanUtils.copyProperties(userVo,user);
-            if(user.getTenantDepartment()!=null){
+            BeanUtils.copyProperties(userVo, user);
+            if (user.getTenantDepartment() != null) {
                 userVo.setDepartmentId(user.getTenantDepartment().getId());
                 userVo.setDepartmentName(user.getTenantDepartment().getName());
-            }else{
+            } else {
                 userVo.setDepartmentId(userLoginDetails.getTenantId());
                 userVo.setDepartmentName(userLoginDetails.getTenantName());
             }
@@ -779,7 +778,7 @@ public class TenantUserController extends BaseController {
                 FileUtils.writeByteArrayToFile(destFile, img);
             }
             entity.setHeadPhoto(newFileName);
-            EntityWrapper.wrapperUpdateBaseProperties(entity,userLoginDetails);
+            EntityWrapper.wrapperUpdateBaseProperties(entity, userLoginDetails);
             this.tenantUserService.update(entity);
             userLoginDetails.setHeadPhoto(newFileName);
             Subject currentUser = SecurityUtils.getSubject();
@@ -796,5 +795,48 @@ public class TenantUserController extends BaseController {
         }
         return map;
     }
+
+
+    @RequiresPermissions("sys-tenant:*")
+    @RequestMapping(value = "/4admin/list")
+    public ModelAndView listForAdministrator(HttpServletRequest request,
+                                             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                             @RequestParam(value = "searchContent", required = false) String searchContent,
+                                             @RequestParam(value = "tenantId",required = true) String tenantId) throws GenericException {
+        UserLoginDetails currentUser = UserLoginDetailsUtil.getUserLoginDetails();
+        Map<String, Object> map = Maps.newHashMap();
+        try {
+            CommonConditionQuery query = new CommonConditionQuery();
+            query.add(CommonRestrictions.and(" TenantUser.tenant.id =:tenantId", "tenantId", tenantId));
+            query.add(CommonRestrictions.and(" TenantUser.tombstone =:tombstone", "tombstone", 0));
+            if (com.hisun.util.StringUtils.isNotBlank(searchContent)) {
+                query.add(CommonRestrictions.and(" (TenantUser.username like :username or TenantUser.realname like :username) ", "username", "%" + searchContent + "%"));
+            }
+            CommonOrderBy orderBy = new CommonOrderBy();
+//            orderBy.add(CommonOrder.asc("TenantUser.tenantDepartment.sort"));
+            orderBy.add(CommonOrder.asc("TenantUser.sort"));
+            Long total = tenantUser4AdminService.count(query);
+            List<TenantUser> entities = this.tenantUser4AdminService.list(query, orderBy, pageNum, pageSize);
+            List<TenantUserVo> vos = new ArrayList<>();
+            TenantUserVo vo = null;
+            if (entities != null) {
+                for (TenantUser entity : entities) {
+                    vo = new TenantUserVo();
+                    BeanUtils.copyProperties(vo, entity);
+                    vos.add(vo);
+                }
+            }
+            PagerVo<TenantUserVo> pager = new PagerVo<TenantUserVo>(vos, total.intValue(), pageNum, pageSize);
+            map.put("pager", pager);
+            map.put("searchContent", searchContent);
+        } catch (Exception e) {
+            logger.error(e);
+            throw new GenericException(e);
+        }
+        map.put("tenantId", tenantId);
+        return new ModelAndView("saas/sys/tenant/user/user4AdminList", map);
+    }
+
 
 }
