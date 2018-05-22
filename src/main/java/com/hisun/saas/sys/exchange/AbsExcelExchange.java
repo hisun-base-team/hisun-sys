@@ -316,8 +316,10 @@ public abstract class AbsExcelExchange {
                 Cell srcCell = srcCellIterator.next();
                 if (srcCell.getRow()>=tpltCell.getRow()
                         &&srcCell.getColumn() == tpltCell.getColumn()) {
-                    realValue = StringUtils.trimNull2Empty(srcCell.getStringValue());
-                    jsonArray.getJSONObject(listIndex).put(fieldName,realValue);
+                    if(jsonArray.length()>listIndex){
+                        realValue = StringUtils.trimNull2Empty(srcCell.getStringValue());
+                        jsonArray.getJSONObject(listIndex).put(fieldName,realValue);
+                    }
                     listIndex++;
                 }
             }
@@ -345,8 +347,10 @@ public abstract class AbsExcelExchange {
                 if (srcCell.getRow()>=tpltCell.getRow()
                         &&srcCell.getColumn() == tpltCell.getColumn()) {
                     realValue = StringUtils.trimNull2Empty(srcCell.getStringValue());
-                    JSONObject jsonObject = jsonObjects.get(index);
-                    jsonObject.put(field,realValue);
+                    if(index<=(jsonObjects.size()-1)){
+                        JSONObject jsonObject = jsonObjects.get(index);
+                        jsonObject.put(field,realValue);
+                    }
                     index++;
                 }
             }
