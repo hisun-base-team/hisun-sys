@@ -15,7 +15,7 @@
 <link href="${path}/css/bootstrap-toggle-buttons.css"  rel="stylesheet" type="text/css" />
 <link href="${path}/css/selectCheckBox/jquery.multiselect.css"  rel="stylesheet" type="text/css" />
 <link href="${path}/css/zTreeStyle/zTreeStyle.css"  rel="stylesheet" type="text/css"/>
-<link rel="shortcut icon" href="${path}/images/favicon.ico" />
+<link rel="shortcut icon" href="${path}/images/${favicon}" />
 <!-- END GLOBAL MANDATORY STYLES -->
 
 <!-- BEGIN CORE PLUGINS -->

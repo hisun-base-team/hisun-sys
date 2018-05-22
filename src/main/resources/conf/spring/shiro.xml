@@ -198,7 +198,8 @@
 				/un/** = anon  <!-- 过滤所有不用权限验证过滤的URL -->
 				/sys/tenant/user/un/** = anon  <!-- 过滤所有不用权限验证过滤的URL -->
 				/sys/tenant/register/** = anon <!-- 注册控制器，不用权限 -->
-				<!-- /logout = logout -->
+				/logout = logout
+				/admin/logout = logout
 				/authenticated = authc
 				/** = ajaxNoAuthc,forceLogoutFilter,user,sysUser
 			</value>

@@ -10,7 +10,10 @@
 		http://www.springframework.org/schema/task
         http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-
-
+    <!-- 注解方式配置spring task -->
+    <task:annotation-driven scheduler="scheduler" executor="executor"/>
+    <!-- 调度线程池的大小 -->
+    <task:scheduler id="scheduler" pool-size="5"/>
+    <task:executor id="executor" pool-size="5" />
 
 </beans>

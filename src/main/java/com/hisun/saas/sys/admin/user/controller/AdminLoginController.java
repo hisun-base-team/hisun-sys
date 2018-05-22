@@ -61,6 +61,8 @@ public class AdminLoginController extends BaseController {
 	private String elasticsearchPort;
 	@Value("${sys.admin.name}")
 	private String sysAdminName;
+	@Value("${sys.favicon}")
+	private String favicon;
 	@Value("${sys.login.logo}")
 	private String sysLoginLogo;
 	@Value("${sys.copyright}")
@@ -161,6 +163,7 @@ public class AdminLoginController extends BaseController {
 		}
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("sysAdminName", sysAdminName);
+		map.put("favicon",favicon);
 		map.put("sysLoginLogo", sysLoginLogo);
 		map.put("captchaActivated", captchaActivated);
 		map.put("smsOn", smsOn);

@@ -202,7 +202,9 @@
 				<es.rest.port>9200</es.rest.port>
 				<sys.domain>http://localhost:8080</sys.domain>
 				<sys.deploy.internet>false</sys.deploy.internet>
-				<sys.upload.absolute.path>/Users/zhouying/Documents/workspace/store</sys.upload.absolute.path>
+				<sys.upload.absolute.path>/Volumes/store</sys.upload.absolute.path>
+				<quartz.on>false</quartz.on>
+				<quartz.execute.hostname>192.168.3.200</quartz.execute.hostname>
 				<log4j.rootCategory>DEBUG,logfile,stdout</log4j.rootCategory>
 				<log4j.stdout.Threshold>DEBUG</log4j.stdout.Threshold>
 				<log4j.logfile.Threshold>DEBUG</log4j.logfile.Threshold>
@@ -230,6 +232,8 @@
 				<sys.domain>http://localhost:8080</sys.domain>
 				<sys.deploy.internet>false</sys.deploy.internet>
 				<sys.upload.absolute.path>/Users/zhouying/Documents/workspace/store</sys.upload.absolute.path>
+				<quartz.on>false</quartz.on>
+				<quartz.execute.hostname>192.168.3.200</quartz.execute.hostname>
 				<log4j.rootCategory>DEBUG,logfile,stdout</log4j.rootCategory>
 				<log4j.stdout.Threshold>DEBUG</log4j.stdout.Threshold>
 				<log4j.logfile.Threshold>DEBUG</log4j.logfile.Threshold>
@@ -257,6 +261,8 @@
 				<sys.domain>http://localhost:8080</sys.domain>
 				<sys.deploy.internet>false</sys.deploy.internet>
 				<sys.upload.absolute.path>D:\zzb\store</sys.upload.absolute.path>
+				<quartz.on>true</quartz.on>
+				<quartz.execute.hostname>localhost</quartz.execute.hostname>
 				<log4j.rootCategory>WARN,logfile,stdout</log4j.rootCategory>
 				<log4j.stdout.Threshold>WARN</log4j.stdout.Threshold>
 				<log4j.logfile.Threshold>WARN</log4j.logfile.Threshold>

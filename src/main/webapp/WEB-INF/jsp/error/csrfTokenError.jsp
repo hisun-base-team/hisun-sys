@@ -18,9 +18,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>30云平台</title>
   </head>
-
   <!-- BEGIN BODY -->
-
   <body class="page-header-fixed white" style="background-color:#F8F8F8;">
   <div class="regis_1000" >
     <div class="regis_logo" style="text-align: center;margin-top: 50px;"><img src="${path}/images/templateImage/logo_login.png"></div>

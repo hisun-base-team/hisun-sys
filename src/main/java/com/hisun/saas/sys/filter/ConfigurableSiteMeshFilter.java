@@ -84,6 +84,7 @@ public class ConfigurableSiteMeshFilter extends org.sitemesh.config.Configurable
         }
         Properties resourcesProperties = ApplicationContextUtil.getBean("resourcesProperties", Properties.class);
         ((HttpServletRequest) servletRequest).getSession().setAttribute("mainLogo", resourcesProperties.get("sys.main.logo"));
+        ((HttpServletRequest) servletRequest).getSession().setAttribute("favicon", resourcesProperties.get("sys.favicon"));
         filter.doFilter(servletRequest, servletResponse, filterChain);
     }
 

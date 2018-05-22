@@ -64,6 +64,8 @@ public class LoginController extends BaseController {
     private String elasticsearchPort;
     @Value("${sys.name}")
     private String sysName;
+    @Value("${sys.favicon}")
+    private String favicon;
     @Value("${sys.login.logo}")
     private String sysLoginLogo;
     @Value("${sys.main.logo}")
@@ -99,7 +101,7 @@ public class LoginController extends BaseController {
             this.tenantLogService.save(log);
             CsrfGuard csrfGuard = CsrfGuard.getInstance();
             csrfGuard.updateToken(WrapWebUtils.getSession());
-            return "redirect:/zzb/dzda/dashboard?OWASP_CSRFTOKEN="+ WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
+            return "redirect:/zzb/dzda/dashboard";
         } catch (AuthenticationException e) {
             token.clear();
             String content = "";
@@ -151,13 +153,14 @@ public class LoginController extends BaseController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(HttpServletRequest req, Model model) {
+    public ModelAndView login() {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         if(SecurityUtils.getSubject().isAuthenticated()&&userLoginDetails!=null){
             return new ModelAndView("redirect:/zzb/dzda/dashboard");
         }
         Map<String, Object> map = Maps.newHashMap();
         map.put("sysName", sysName);
+        map.put("favicon",favicon);
         map.put("sysLoginLogo", sysLoginLogo);
         map.put("captchaActivated", captchaActivated);
         map.put("smsOn", smsOn);
