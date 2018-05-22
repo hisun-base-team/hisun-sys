@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>30云平台</title>
+    <title>平台</title>
     <style>
         body{ background-color:#F8F8F8; font-size:14px;}
         .overduetext{ text-align:center; margin-top:30px; font-size:15px;}

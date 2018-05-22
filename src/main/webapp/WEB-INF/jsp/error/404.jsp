@@ -14,12 +14,6 @@
     <link href="${pageContext.request.contextPath}/css/error.css" rel="stylesheet" type="text/css"/>
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css">
 	<script src="${pageContext.request.contextPath}/js/jquery-1.10.1.min.js" type="text/javascript"></script>
-    <script type="application/javascript">
-        jQuery(document).ready(function() {
-            App.init();//必须，不然导航栏及其菜单无法折叠
-        });
-
-    </script>
 
     <!-- END PAGE LEVEL STYLES -->
     <title>错误-404</title>
@@ -37,27 +31,27 @@
 
         <div class="details">
 
-            <h3>噢，您访问的页面不存在！</h3>
+            <h3>您访问的页面不存在！</h3>
 
             <p>
 
                 我们找不到您要访问的页面<br />
 
-                <a href="${pageContext.request.contextPath}/dashboard">返回首页</a>或者尝试使用搜索栏。
+                <a href="javascript:history.back(-1)">返回上一页。</a>
 
             </p>
 
-            <form action="#">
+            <%--<form action="#">--%>
 
-                <div class="input-append">
+                <%--<div class="input-append">--%>
 
-                    <input class="m-wrap" size="16" type="text" placeholder="关键字..." />
+                    <%--<input class="m-wrap" size="16" type="text" placeholder="关键字..." />--%>
 
-                    <button class="btn blue">搜索</button>
+                    <%--<button class="btn blue">搜索</button>--%>
 
-                </div>
+                <%--</div>--%>
 
-            </form>
+            <%--</form>--%>
 
         </div>
 
