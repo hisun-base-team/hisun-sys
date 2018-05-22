@@ -103,7 +103,6 @@ public abstract class AbsExcelExchange {
         toExcelByManyJson(jsons,tmplateFile,destFile);
     }
 
-
     public void toExcelByManyJson(List<String> jsons, String tmplateFile, String destFile) throws Exception {
         List<JSONObject> jsonObjects = new ArrayList<>();
         for(String json : jsons){
@@ -354,6 +353,25 @@ public abstract class AbsExcelExchange {
         }
     }
 
+
+
+    public void insertRows(Cells cells ,int rowIndex,int totalRows){
+        cells.insertRows(rowIndex,totalRows);
+    }
+
+    public void deleteRows(Cells cells,int rowIndex,int totalRows){
+        cells.deleteRows(rowIndex,totalRows);
+    }
+
+
+//    public static void main(String[] args)throws Exception{
+//        AsposeLicenseUtil.newInstance().init();
+//        AbsExcelExchange absExcelExchange = new AbsExcelExchange();
+//        Workbook workbook = absExcelExchange.read("/Users/zhouying/Desktop/new.xlsx");
+//        Worksheet worksheet = workbook.getWorksheets().get(1);
+//        worksheet.getCells().insertRows(5,10);
+//        workbook.save("/Users/zhouying/Desktop/aa.xlsx");
+//    }
 
 
 }
