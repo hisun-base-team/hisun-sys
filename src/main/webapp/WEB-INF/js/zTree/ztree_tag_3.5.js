@@ -285,11 +285,15 @@ function onClickByTreeTag(event,treeId, treeNode) {
 }
 //单选树赋值
 function setValuesByRadio(treeId,treeNode){
-	try{
-		var keyObj =document.getElementById(treeId.substring(0,treeId.lastIndexOf("_tree")))
-		var treeValueObj = document.getElementById(treeId+"_valueName");
+	try {
+		var keyObj = document.getElementById(treeId.substring(0, treeId.lastIndexOf("_tree")))
+		var treeValueObj = document.getElementById(treeId + "_valueName");
 		var text = treeNode.name;
-		keyObj.value=treeNode.key;
+		if (treeNode.key == null || treeNode.key == undefined) {//如果自定义的treeVo 可能没设置key 则取ID
+			keyObj.value = treeNode.id;
+		} else {
+			keyObj.value = treeNode.key;
+		}
 		$('#'+treeValueObj.value).val(text);
 	}catch(e){
 	}
