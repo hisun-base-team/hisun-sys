@@ -8247,6 +8247,31 @@ line-height:140%;
 
 
 
+.xwbmain{overflow: hidden; padding: 0 20px;}
+.mainone{ font-size:14px; line-height:190%;  overflow:hidden;}
+.mainone .imgtp{ float: left; padding-right:30px;}
+
+.gerenintrodu{ margin-bottom:10px; font-size:14px; line-height:24px; color:#666666; margin-top:15px; }
+
+.maintwo{ overflow:hidden; margin-top:20px;}
+.mainoneleft{float:left; padding-right:30px;  width:180px; overflow:hidden;}
+
+.mainoneright{ float: left; width:760px; overflow:hidden;}
+.Fullname{ font-size:32px; color:#006CD1;}
+.ulonleftjx{  border-top: dashed 1px #ddd;  padding-top:10px;}
+.ulonleftjx li{ line-height: 32px;}
+.ulonleftjx li span{ font-weight:bold;}
+
+.maintwo{ overflow:hidden;}
+.maintwo p{ font-size:14px; padding:8px 0; line-height:180%; border-bottom: dashed 1px #ddd;}
+.tith1{ font-size:18px; font-weight: bold; background-color:#F8F8F8; padding-left:12px; height:46px; line-height:46px; color:#006CD1;}
+
+.input-append input, .input-append select, .input-append .uneditable-input{ border-radius:0;}
+.fileupload-new .input-append .btn-file{ border-radius:0;}
+.input-append .add-on:last-child, .input-append .btn:last-child, .input-append .btn-group:last-child > .dropdown-toggle{ border-radius:0;}
+
+.mainthree{ overflow:hidden;}
+
 
 
 

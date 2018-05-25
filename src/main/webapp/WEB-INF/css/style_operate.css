@@ -2,8 +2,8 @@
 /*---------------------------样式归零----------------------*/
 abbr,address,article,aside,audio,b,blockquote,body,canvas,caption,cite,code,dd,del,details,dfn,div,dl,dt,em,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,p,pre,q,samp,section,small,span,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,ul,var,video{margin:0;padding:0;border:0;outline:0;font-size:100%;background:0 0;font-weight:400;font-style:inherit;font-family:inherit;vertical-align:top}
 body{line-height:1;color:#333;background:#fff;font-size:12px; font-family:"微软雅黑", Verdana, Geneva, sans-serif;}
-article,aside,details,figcaption,figure,footer,header,hgroup,hr,menu,nav,section{display:block}nav ul,ol,ul{list-style:none}
-:focus,a{outline:0}a{margin:0;font-size:100 %;vertical-align:baseline;background:0 0;blr:expression(this.onFocus=this.blur())}
+article,aside,details,figcaption,figure,footer,header,hr,menu,nav,section{display:block}nav ul,ol,ul{list-style:none}
+:focus,a{outline:0}a{margin:0;;vertical-align:baseline;background:0 0;blr:expression(this.onFocus=this.blur())}
 a,ins{text-decoration:none}
 a,hr{padding:0}
 ins,mark{background-color:#ff9;color:#333}
