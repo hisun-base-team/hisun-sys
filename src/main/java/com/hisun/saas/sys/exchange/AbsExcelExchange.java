@@ -72,6 +72,9 @@ public abstract class AbsExcelExchange {
                                 realValue = getListValue(jsonObject, field, i);
                                 cells.get(row + i, column).setValue(realValue);
                             }
+                            if(size==0){
+                                cell.setValue(realValue);
+                            }
                         } else if (isImageField(value)) {
 
                         } else {
@@ -91,7 +94,6 @@ public abstract class AbsExcelExchange {
     public void toExcel(Object object, String tmplateFile, String destFile) throws Exception {
         toExcel(JacksonUtil.nonDefaultMapper().toJson(object), tmplateFile, destFile);
     }
-
 
     public void toExcelByManyPojo(List<? extends Object> objects, String tmplateFile, String destFile) throws Exception {
         //多个对象一个Excel
@@ -130,6 +132,9 @@ public abstract class AbsExcelExchange {
                             for(int i = 0;i<jsonObjects.size();i++){
                                 realValue = getValue(jsonObjects.get(i), field);
                                 cells.get(row+i,column).setValue(realValue);
+                            }
+                            if(jsonObjects.size()==0){
+                                cell.setValue(realValue);
                             }
                         }
                     }
