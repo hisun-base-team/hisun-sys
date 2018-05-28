@@ -168,7 +168,8 @@ li {
             <!-- BEGIN LOGO -->
             <c:choose>
                 <c:when test="${username ne 'admin'}">
-                    <a class="brand" href="${path}/dashboard" style="margin-left: 0px;">
+                    <%--<a class="brand" href="${path}/dashboard" style="margin-left: 0px;">--%>
+                    <a class="brand" href="#" style="margin-left: 0px;">
                         <img style="max-height: 32px;" src="${path}/images/${mainLogo}" alt="logo"/>
                     </a>
                 </c:when>
