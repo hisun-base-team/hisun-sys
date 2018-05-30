@@ -9,7 +9,7 @@
                 <i class="icon-plus"></i> 添加
             </a>
             <a id="returnDicTypeList" class="btn btn-default" href="#">
-                <i class="icon-arrow-left"></i> 返回
+                <i class="icon-undo"></i> 返回
             </a>
         </div>
     </div>
