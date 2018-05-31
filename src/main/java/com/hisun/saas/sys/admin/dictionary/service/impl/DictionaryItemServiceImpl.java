@@ -2,11 +2,15 @@ package com.hisun.saas.sys.admin.dictionary.service.impl;
 
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonOrder;
+import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
+import com.hisun.base.entity.TombstoneEntity;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.admin.dictionary.dao.DictionaryItemDao;
 import com.hisun.saas.sys.admin.dictionary.entity.DictionaryItem;
 import com.hisun.saas.sys.admin.dictionary.service.DictionaryItemService;
+import com.hisun.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -108,8 +112,33 @@ public class DictionaryItemServiceImpl extends BaseServiceImpl<DictionaryItem, S
         dictionaryItem.setSort(newSort);
         this.updateSort(dictionaryItem, oldSort);
         this.dictionaryItemDao.update(dictionaryItem);
-
     }
+
+    /**
+     * 反向查询获取字典项
+     * @param name
+     * @return
+     */
+    public String getDictionaryItem(String name,String Code){
+        List<DictionaryItem> dictionaryItems;
+        if(StringUtils.isEmpty(name)){
+            return "";
+        }
+        CommonConditionQuery query = new CommonConditionQuery();
+        query.add(CommonRestrictions.and(" dictionaryType.code=:typeCode ", "typeCode", Code));
+        query.add(CommonRestrictions.and(" tombstone=:tombstone ", "tombstone", TombstoneEntity.TOMBSTONE_FALSE));
+        query.add(CommonRestrictions.and(" display=:display ", "display", DictionaryItem.DISPLAY));
+        CommonOrderBy orderBy = new CommonOrderBy();
+        orderBy.add(CommonOrder.asc("sort"));
+        dictionaryItems = list(query, orderBy);
+        for(DictionaryItem dictionaryItem:dictionaryItems){
+            if(name.equals(dictionaryItem.getName())){
+                return dictionaryItem.getCode();
+            }
+        }
+        return "";
+    }
+
 
 
 }
