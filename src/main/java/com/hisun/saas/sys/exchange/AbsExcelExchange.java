@@ -382,5 +382,171 @@ public abstract class AbsExcelExchange {
 //        workbook.save("/Users/zhouying/Desktop/aa.xlsx");
 //    }
 
+    public JSONObject fromExcelWithLines(String tmplateFile, String srcFile) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        AsposeLicenseUtil.newInstance().init();
+        //模板Excel
+        Workbook tpltWorkbook = read(tmplateFile);
+        WorksheetCollection tpltWorksheets = tpltWorkbook.getWorksheets();
+        //数据Excel
+        Workbook srcWorkbook = read(srcFile);
+        WorksheetCollection srcWorksheets = srcWorkbook.getWorksheets();
+        int sheetIndex = 0;
+        for (Iterator<Worksheet> iterator = tpltWorksheets.iterator(); iterator.hasNext(); ) {
+            Worksheet tpltWorksheet = iterator.next();
+            Cells tpltCells = tpltWorksheet.getCells();
+            for (Iterator<Cell> tpltCellIterator = tpltCells.iterator(); tpltCellIterator.hasNext(); ) {
+                Cell tpltCell = tpltCellIterator.next();
+                String value = tpltCell.getStringValue();
+                List<String> fields = this.parseField(value);
+                String realValue = "";
+                if (fields != null) {
+                    for (String field : fields) {
+                        if (isListField(value)) {
+                            Cells srcCells = srcWorksheets.get(sheetIndex).getCells();
+                            setListValueWithLines(jsonObject,field,tpltCell,srcCells);
+                        } else if (isImageField(value)) {
 
+                        } else {
+                            realValue = srcWorksheets.get(sheetIndex).getCells().get(tpltCell.getRow(), tpltCell.getColumn()).getStringValue();
+                            setValue(jsonObject,field,realValue);
+                        }
+                    }
+                }
+            }
+            sheetIndex++;
+        }
+        return jsonObject;
+    }
+
+    public Object fromExcelWithLines(Class clazz, String tmplateFile, String srcFile) throws Exception {
+        JSONObject jsonObject = fromExcelWithLines(tmplateFile,srcFile);
+        return JacksonUtil.nonDefaultMapper().fromJson(jsonObject.toString(), clazz);
+    }
+
+    protected void setListValueWithLines(JSONObject jsonObject,String field,Cell tpltCell,Cells srcCells){
+        int dot = field.indexOf(".");
+        String listFieldName = field.substring(0, dot);
+        String fieldName = field.substring(dot + 1, field.length());
+        String realValue = "";
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = jsonObject.getJSONArray(listFieldName);
+        } catch (Exception ex) {
+        }
+        if (jsonArray == null) {
+            List<JSONObject> jsonObjectList = new ArrayList<>();
+            for (Iterator<Cell> srcCellIterator = srcCells.iterator(); srcCellIterator.hasNext(); ) {
+                Cell srcCell = srcCellIterator.next();
+                if (srcCell.getRow()>=tpltCell.getRow()
+                        &&srcCell.getColumn() == tpltCell.getColumn()) {
+                    realValue = StringUtils.trimNull2Empty(srcCell.getStringValue());
+                    JSONObject jsonObject1 = new JSONObject();
+                    jsonObject1.put(fieldName,realValue);
+                    jsonObject1.put("row",srcCell.getRow()+1);
+                    jsonObjectList.add(jsonObject1);
+                }
+            }
+            jsonObject.put(listFieldName, jsonObjectList);
+        } else {
+            int listIndex = 0;
+            for (Iterator<Cell> srcCellIterator = srcCells.iterator(); srcCellIterator.hasNext(); ) {
+                Cell srcCell = srcCellIterator.next();
+                if (srcCell.getRow()>=tpltCell.getRow()
+                        &&srcCell.getColumn() == tpltCell.getColumn()) {
+                    if(jsonArray.length()>listIndex){
+//                        realValue = StringUtils.trimNull2Empty(srcCell.getStringValue());
+//                        jsonArray.getJSONObject(listIndex).put(fieldName,realValue);
+                        for(int i=0;i<jsonArray.length();i++){
+                            int jsonObjectRow = (int) jsonArray.getJSONObject(i).get("row")-1;
+                            int srcRow = srcCell.getRow();
+                            if(srcRow == jsonObjectRow){
+                                realValue = StringUtils.trimNull2Empty(srcCell.getStringValue());
+                                jsonArray.getJSONObject(i).put(fieldName,realValue);
+                            }
+                        }
+                    }
+                    listIndex++;
+                }
+            }
+        }
+    }
+
+    public List<Object> fromExcel2ManyPojoWithLines(Class clazz, String tmplateFile, String srcFile) throws Exception {
+        List<Object> objects = new ArrayList<>();
+        List<JSONObject> jsonObjects = new ArrayList<>();
+        AsposeLicenseUtil.newInstance().init();
+        //模板Excel
+        Workbook tpltWorkbook = read(tmplateFile);
+        WorksheetCollection tpltWorksheets = tpltWorkbook.getWorksheets();
+        //数据Excel
+        Workbook srcWorkbook = read(srcFile);
+        WorksheetCollection srcWorksheets = srcWorkbook.getWorksheets();
+        int sheetIndex = 0;
+        for (Iterator<Worksheet> iterator = tpltWorksheets.iterator(); iterator.hasNext(); ) {
+            Worksheet tpltWorksheet = iterator.next();
+            Cells tpltCells = tpltWorksheet.getCells();
+            Cells srcCells = srcWorksheets.get(sheetIndex).getCells();
+            for (Iterator<Cell> tpltCellIterator = tpltCells.iterator(); tpltCellIterator.hasNext(); ) {
+                Cell tpltCell = tpltCellIterator.next();
+                String value = tpltCell.getStringValue();
+                List<String> fields = this.parseField(value);
+                if (fields != null) {
+                    for (String field : fields) {
+                        if (isListField(value)) {
+                        } else if (isImageField(value)) {
+                        } else {
+                            setValueWithLines(jsonObjects,field,tpltCell,srcCells);
+                        }
+                    }
+                }
+            }
+            sheetIndex++;
+        }
+
+        for(JSONObject jsonObject : jsonObjects){
+            objects.add(JacksonUtil.nonDefaultMapper().fromJson(jsonObject.toString(), clazz));
+        }
+        return objects;
+    }
+
+    protected void setValueWithLines(List<JSONObject> jsonObjects,String field,Cell tpltCell,Cells srcCells){
+        String realValue = "";
+        if(jsonObjects.size()==0){
+            for (Iterator<Cell> srcCellIterator = srcCells.iterator(); srcCellIterator.hasNext();) {
+                Cell srcCell = srcCellIterator.next();
+                if (srcCell.getRow()>=tpltCell.getRow()
+                        &&srcCell.getColumn() == tpltCell.getColumn()) {
+                    realValue = StringUtils.trimNull2Empty(srcCell.getStringValue());
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("row",srcCell.getRow()+1);
+                    jsonObject.put(field,realValue);
+                    jsonObjects.add(jsonObject);
+                }
+            }
+
+        }else{
+            int index =0;
+            for (Iterator<Cell> srcCellIterator = srcCells.iterator(); srcCellIterator.hasNext();) {
+                Cell srcCell = srcCellIterator.next();
+                if (srcCell.getRow()>=tpltCell.getRow()
+                        &&srcCell.getColumn() == tpltCell.getColumn()) {
+                    realValue = StringUtils.trimNull2Empty(srcCell.getStringValue());
+                    if(index<=(jsonObjects.size()-1)){
+                        for(int i=0;i<jsonObjects.size();i++){
+                            int jsonObjectRow = (int) jsonObjects.get(i).get("row")-1;
+                            int srcRow = srcCell.getRow();
+                            if(srcRow == jsonObjectRow){
+                                realValue = StringUtils.trimNull2Empty(srcCell.getStringValue());
+                                jsonObjects.get(i).put(field,realValue);
+                            }
+                        }
+//                        JSONObject jsonObject = jsonObjects.get(index);
+//                        jsonObject.put(field,realValue);
+                    }
+                    index++;
+                }
+            }
+        }
+    }
 }

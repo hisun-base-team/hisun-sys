@@ -12,7 +12,8 @@ import com.hisun.base.service.BaseService;
 
 public interface DictionaryItemService extends BaseService<DictionaryItem, String> {
 
-	 Integer getMaxSort(String typeId,String pId);
-	 void saveDictionaryItem(DictionaryItem dictionaryItem);
-	 void updateDictionaryItem(DictionaryItem dictionaryItem,String oldPid,Integer oldSort)throws Exception;
+	Integer getMaxSort(String typeId,String pId);
+	void saveDictionaryItem(DictionaryItem dictionaryItem);
+	void updateDictionaryItem(DictionaryItem dictionaryItem,String oldPid,Integer oldSort)throws Exception;
+	String getDictionaryItem(String name,String Code);
 }
