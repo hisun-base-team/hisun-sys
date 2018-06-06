@@ -94,6 +94,8 @@ public final class TreeTag extends BodyTagSupport {
 	private String onCheck;//用于捕获 checkbox / radio 被勾选 或 取消勾选的事件回调函数
 
 	private String height;//设置高度 如果没设置则表示为默认高度
+
+	private String dtjz="false";//是否动态加载 true为动态加载
 	@Override
 	public int doStartTag() throws JspTagException {
 		return EVAL_BODY_BUFFERED;
@@ -124,7 +126,7 @@ public final class TreeTag extends BodyTagSupport {
 				nodesHtml.append("<div class=\"input-append date form_datetime\" >");
 				nodesHtml.append("<input type = \"text\" id = \""+id+"_keyword\" placeholder = \"搜索关键字...\" class=\"span6 m-wrap\"");
 				nodesHtml.append("style = \"width:175px;height:16px !important\" name = \"keyword\" value = \"\" / >");
-				nodesHtml.append("<span class=\"add-on\" onclick = \"clearTreeQuery('"+id+"_keyword','"+dataType+"','"+submitType+"','"+treeUrl+"','"+id+"',setting_"+id+",'"+isSearch+"','"+token+"');\" ><i class=\"icon-remove\" ></i ></span >");
+				nodesHtml.append("<span class=\"add-on\" onclick = \"clearTreeQuery('"+id+"_keyword','"+id+"','"+dtjz+"');\" ><i class=\"icon-remove\" ></i ></span >");
 				nodesHtml.append("</div>");
 			}
 			//单独使用的树
@@ -164,13 +166,13 @@ public final class TreeTag extends BodyTagSupport {
 					nodesHtml.append("class=\"m-wrap span6\"");
 				}
 				nodesHtml.append("/>");
-				nodesHtml.append("<span class=\"add-on\" onclick=\"clearTreeQuery('" + id + "_tree_keyword','" + dataType + "','" + submitType + "','" + treeUrl + "','" + id + "',setting_" + id + ",'" + isSearch + "','" + token + "');\"><i class=\"icon-remove\"></i></span>");
+				nodesHtml.append("<span class=\"add-on\" onclick=\"clearTreeQuery('" + id + "_tree_keyword','" + id + "_tree','" + dtjz + "');\"><i class=\"icon-remove\"></i></span>");
 				nodesHtml.append("</div>");
 			}
 			nodesHtml.append("<ul id=\""+id+"_tree\" class=\"ztree\" style=\"background:#FFFFFF !important;height:300px; overflow-x: auto; margin: 0px;padding: 0px; border-top:none;\"></ul>");
 			nodesHtml.append("</div>");
 		}
-		nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" onClickFunc=\""+onClick+"\" radioOrCheckbox=\""+radioOrCheckbox+"\" " +
+		nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" onClickFunc=\""+onClick+"\" radioOrCheckbox=\""+radioOrCheckbox+"\" dtjz=\""+dtjz+"\"" +
 				"dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\" beforeCheckFunc=\""+beforeCheck+"\"" +
 				" onclickFunc=\""+onClick+"\" onCheckFunc=\""+onCheck+"\" token=\""+token+"\" userParameter=\""+userParameter+"\" checkedByTitle=\""+checkedByTitle+"\"" +
 				" checkedAndNoUnCheckedUnByTitle=\""+checkedAndNoUnCheckedUnByTitle+"\" valueMerge=\""+valueMerge+"\" initCheckboxValueType=\""+initCheckboxValueType+"\">");
@@ -191,6 +193,14 @@ public final class TreeTag extends BodyTagSupport {
 			}else{
 				nodesHtml.append("\n\t\t\tchkboxType: {\"Y\":\"\", \"N\":\"\"}");
 			}
+			nodesHtml.append("\n\t\t},");
+		}
+		if(dtjz!=null && dtjz.equals("true")){
+			nodesHtml.append("\n\t\tasync: {");
+			nodesHtml.append("\n\t\t\tenable: true,");
+			nodesHtml.append("\n\t\t\tautoParam:[\"id\", \"pId\", \"name\"],");
+			nodesHtml.append("\n\t\t\totherParam:[\"defaultkeys\",\""+defaultkeys+"\"],");
+			nodesHtml.append("\n\t\t\turl: \""+treeUrl+"\"");
 			nodesHtml.append("\n\t\t},");
 		}
 		nodesHtml.append("\n\t\tview: {");
@@ -240,6 +250,10 @@ public final class TreeTag extends BodyTagSupport {
 			if(StringUtils.isNotEmpty(beforeCheck)) {
 				nodesHtml.append("\n\t\t\tbeforeCheck :beforeCheckByTreeTag");
 			}
+		}
+		if(dtjz!=null && dtjz.equals("true")) {//动态加载加载完成后回掉方法
+			nodesHtml.append("\n\t\t\tonAsyncSuccess :onAsyncSuccessByTreeTag");
+
 		}
 		nodesHtml.append("\n\t\t}");
 		nodesHtml.append("\n\t};");
@@ -466,5 +480,13 @@ public final class TreeTag extends BodyTagSupport {
 
 	public void setHeight(String height) {
 		this.height = height;
+	}
+
+	public String getDtjz() {
+		return dtjz;
+	}
+
+	public void setDtjz(String dtjz) {
+		this.dtjz = dtjz;
 	}
 }
