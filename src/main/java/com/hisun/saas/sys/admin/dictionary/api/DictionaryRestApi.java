@@ -247,10 +247,10 @@ public class DictionaryRestApi {
         List<String> dicItemIds = new ArrayList<String>();
         if(defaultkeys!=null && !defaultkeys.equals("")){
             String str[] = defaultkeys.split(",");
-            List daztCodeList =  Arrays.asList(str);
+            List idList =  Arrays.asList(str);
 
             CommonConditionQuery query = new CommonConditionQuery();
-            query.add(CommonRestrictions.and(" code in (:daztCodeList) ", "daztCodeList",daztCodeList));
+            query.add(CommonRestrictions.and(" code in (:idList) ", "idList",idList));
             query.add(CommonRestrictions.and(" dictionaryType.code=:typeCode ", "typeCode", typeCode));
             query.add(CommonRestrictions.and(" tombstone=:tombstone ", "tombstone", TombstoneEntity.TOMBSTONE_FALSE));
             query.add(CommonRestrictions.and(" display=:display ", "display", DictionaryItem.DISPLAY));
