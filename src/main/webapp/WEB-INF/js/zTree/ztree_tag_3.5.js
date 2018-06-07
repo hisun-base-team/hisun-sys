@@ -175,6 +175,8 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,
 	var valueMerge = treeDefineAttObj.getAttribute("valueMerge");
 	var initCheckboxValueType = treeDefineAttObj.getAttribute("initCheckboxValueType");
 	var dtjz = treeDefineAttObj.getAttribute("dtjz");//是否动态加载
+    var isSelectTree = treeDefineAttObj.getAttribute("isSelectTree");//是否下拉控件展示的树
+
 	var dataValue = "";
 	if(userParameter!=null && userParameter!="") {
 		var userParameterArr = userParameter.split(";");
@@ -191,16 +193,49 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,
 	}
 
 	if(dtjz!=null && dtjz=="true"){//动态加载
-        $.fn.zTree.init($("#"+id+""), tagSetting);
-        zTree1 = $.fn.zTree.getZTreeObj(id);
-        if(isSearch=="true") {
-            fuzzySearch(id, '#'+id+'_keyword', false, true); //初始化模糊搜索方法
-        }
-        if(loadAfterMethod!=null && loadAfterMethod){
-            eval(loadAfterMethod);
-            //eval(loadAfterMethod+"(event,treeId, treeNode)");
-        }
-        zTree1.setting.async.otherParam=[];
+        if(isSelectTree=="false"){
+            //树实时加载顶级节点
+            $.ajax({
+                async : false,
+                cache:false,
+                type: submitType,
+                dataType : dataType,
+                url: treeUrl,// 请求的action路径
+                //data:dataValue,
+                headers: {
+                    "OWASP_CSRFTOKEN":token
+                },
+                error: function () {// 请求失败处理函数
+                    alert('加载树数据失败');
+                },
+                success:function(data){
+                    $.fn.zTree.init($("#"+id+""), tagSetting,data);
+                    zTree1 = $.fn.zTree.getZTreeObj(id);
+                    if(isSearch=="true") {
+                        fuzzySearch(id, '#'+id+'_keyword', false, true); //初始化模糊搜索方法
+                    }
+                    if(loadAfterMethod!=null && loadAfterMethod){
+                        eval(loadAfterMethod);
+                        //eval(loadAfterMethod+"(event,treeId, treeNode)");
+                    }
+                    zTree1.setting.async.otherParam=[];
+                }
+            });
+        }else{
+            //下拉控件 延迟加载
+            $.fn.zTree.init($("#"+id+""), tagSetting);
+            zTree1 = $.fn.zTree.getZTreeObj(id);
+            if(isSearch=="true") {
+                fuzzySearch(id, '#'+id+'_keyword', false, true); //初始化模糊搜索方法
+            }
+            if(loadAfterMethod!=null && loadAfterMethod){
+                eval(loadAfterMethod);
+                //eval(loadAfterMethod+"(event,treeId, treeNode)");
+            }
+            zTree1.setting.async.otherParam=[];
+		}
+
+
 
 	}else{
 		$.ajax({
