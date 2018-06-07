@@ -269,11 +269,12 @@ public class DictionaryRestApi {
     private void getParentItem(List<String> dicItemIds ,DictionaryItem item){
         if(item.getParentItem()!=null){
             dicItemIds.add(item.getId());
-            this.getParentItem(dicItemIds,item.getParentItem());
+
             List<DictionaryItem> xdItems = item.getParentItem().getChildrenItems();
             for(DictionaryItem xdItem : xdItems){
                 dicItemIds.add(xdItem.getId());
             }
+            this.getParentItem(dicItemIds,item.getParentItem());
         }else{
             dicItemIds.add(item.getId());
             return;

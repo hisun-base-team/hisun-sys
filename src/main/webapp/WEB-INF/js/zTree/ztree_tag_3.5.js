@@ -165,6 +165,7 @@ function clearTreeQuery(queryName,id,dtjz) {
 	}
 	//treeLoadByTag(dataType,submitType,url,id,setting,isSearch,token);
 }
+
 //执行树加载
 function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,loadAfterMethod){
 	var treeDefineAttObj = document.getElementById(id+"_tagDefineAtt");
@@ -369,7 +370,14 @@ function onAsyncSuccessByTreeTag(event, treeId, treeNode, msg){
                     }
                 }
             }
-        }
+        }else{
+        	var cuaNodeDt = $("#cuaNodeId");//页面定义一个反选变量 用于树刷新反选
+        	if(cuaNodeDt!=null && cuaNodeDt.val()!=""){
+                var cuaNodeIdValue = cuaNodeDt.val();
+                var nodeDt = zTree.getNodeByParam('key', cuaNodeIdValue);
+                zTree.selectNode(nodeDt);
+			}
+		}
     }
     //加载完成后将参数和回掉函数清空
     zTree.setting.async.otherParam=[];
@@ -594,6 +602,7 @@ function refreshTreeTag(id,tagSetting,loadAfterMethod){
 	var isSearch = treeDefineAttObj.getAttribute("isSearch");
 	var token = treeDefineAttObj.getAttribute("token");
 	treeLoadByTag(dataType,submitType,url,id,tagSetting,isSearch,token,loadAfterMethod);
+
 }
 
 /**
@@ -611,6 +620,24 @@ function refreshSelectTreeTag(id,tagSetting,loadAfterMethod){
 	var token = treeDefineAttObj.getAttribute("token");
 
 	treeLoadByTag(dataType,submitType,url,id+"_tree",tagSetting,isSearch,token,loadAfterMethod);
+}
+
+//动态刷新树 且选中传入的节点
+function refreshTreeTagByDt(treeId,nodeId) {
+    var treeObj = $.fn.zTree.getZTreeObj(treeId);
+    var node = treeObj.getNodeByParam("id", 0, null);
+    //加载树且反选
+    if (nodeId != null && nodeId != undefined && nodeId != "") {
+		treeObj.setting.async.otherParam = ["defaultkeys", nodeId];
+	}else{
+        treeObj.setting.async.otherParam = ["defaultkeys", ""];
+	}
+	treeObj.setting.callback.onAsyncSuccess = onAsyncSuccessByTreeTag;//
+	treeObj.reAsyncChildNodes(node, "refresh");
+
+    // var cuanode = treeObj.getNodeByParam('id',nodeId);// 获取id为-1的点
+    // treeObj.selectNode(cuanode);
+    // treeObj.expandNode(node, true, false , true);
 }
 
 //得到特殊查询的值
