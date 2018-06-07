@@ -371,7 +371,7 @@ function onAsyncSuccessByTreeTag(event, treeId, treeNode, msg){
                 }
             }
         }else{
-        	var cuaNodeDt = $("#cuaNodeId");//页面定义一个反选变量 用于树刷新反选
+        	var cuaNodeDt = $("#"+treeId+"_tree_cuaNode_id");//页面定义一个反选变量 用于树刷新反选
         	if(cuaNodeDt!=null && cuaNodeDt.val()!=""){
                 var cuaNodeIdValue = cuaNodeDt.val();
                 var nodeDt = zTree.getNodeByParam('key', cuaNodeIdValue);
@@ -440,6 +440,7 @@ function onClickByTreeTag(event,treeId, treeNode) {
 function setValuesByRadio(treeId,treeNode){
 	try {
 		var keyObj = document.getElementById(treeId.substring(0, treeId.lastIndexOf("_tree")))
+		var oldKey = keyObj.value;
 		var treeValueObj = document.getElementById(treeId + "_valueName");
 		var text = treeNode.name;
 		if (treeNode.key == null || treeNode.key == undefined) {//如果自定义的treeVo 可能没设置key 则取ID
@@ -448,6 +449,18 @@ function setValuesByRadio(treeId,treeNode){
 			keyObj.value = treeNode.key;
 		}
 		$('#'+treeValueObj.value).val(text);
+		if(oldKey!=keyObj.value){
+            var treeDefineAttObj = document.getElementById(treeId+ "_tagDefineAtt");
+            if (treeDefineAttObj == null) {
+                treeDefineAttObj = document.getElementById(treeId.substring(0, treeId.lastIndexOf("_tree")) + "_tagDefineAtt");
+            }
+            var onchangeFunc = treeDefineAttObj.getAttribute("onchangeFunc");
+            if(onchangeFunc!=""){
+            	eval(onchangeFunc);
+			}
+		}
+
+
 	}catch(e){
 	}
 }
@@ -626,6 +639,7 @@ function refreshSelectTreeTag(id,tagSetting,loadAfterMethod){
 function refreshTreeTagByDt(treeId,nodeId) {
     var treeObj = $.fn.zTree.getZTreeObj(treeId);
     var node = treeObj.getNodeByParam("id", 0, null);
+    $("#"+treeId+"_tree_cuaNode_id").val(nodeId);
     //加载树且反选
     if (nodeId != null && nodeId != undefined && nodeId != "") {
 		treeObj.setting.async.otherParam = ["defaultkeys", nodeId];

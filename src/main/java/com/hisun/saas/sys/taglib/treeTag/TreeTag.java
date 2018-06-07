@@ -50,6 +50,8 @@ public final class TreeTag extends BodyTagSupport {
 	//用于捕获节点被点击的事件回调函数
 	private String onClick="";
 
+	private String onChange="";
+
 	//动态加载 true为动态加载 false为静态加载
 	private String  dynamicLoading="false";
 	//Ajax 获取的数据类型。 默认为text
@@ -131,6 +133,7 @@ public final class TreeTag extends BodyTagSupport {
 			}
 			//单独使用的树
 			nodesHtml.append("<div class=\"zTreeDemoBackground\" id=\""+id+"_div\" style=\" overflow: auto;margin: 0px;padding: 0px\">");
+			nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tree_cuaNode_id\" name=\""+id+"_tree_cuaNode_id\" value=\"\"/>");
 			nodesHtml.append("<ul id=\""+id+"\" class=\"ztree\"></ul>");
 			nodesHtml.append("</div>");
 		}else{
@@ -174,7 +177,7 @@ public final class TreeTag extends BodyTagSupport {
 		}
 		nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" onClickFunc=\""+onClick+"\" radioOrCheckbox=\""+radioOrCheckbox+"\" dtjz=\""+dtjz+"\"" +
 				"dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\" beforeCheckFunc=\""+beforeCheck+"\" isSelectTree=\""+isSelectTree+"\"" +
-				" onclickFunc=\""+onClick+"\" onCheckFunc=\""+onCheck+"\" token=\""+token+"\" userParameter=\""+userParameter+"\" checkedByTitle=\""+checkedByTitle+"\"" +
+				" onclickFunc=\""+onClick+"\" onchangeFunc=\""+onChange+"\" onCheckFunc=\""+onCheck+"\" token=\""+token+"\" userParameter=\""+userParameter+"\" checkedByTitle=\""+checkedByTitle+"\"" +
 				" checkedAndNoUnCheckedUnByTitle=\""+checkedAndNoUnCheckedUnByTitle+"\" valueMerge=\""+valueMerge+"\" initCheckboxValueType=\""+initCheckboxValueType+"\">");
 		nodesHtml.append("<script>");
 //		if(isSelectTree!=null && isSelectTree.equals("true")) {
@@ -488,5 +491,13 @@ public final class TreeTag extends BodyTagSupport {
 
 	public void setDtjz(String dtjz) {
 		this.dtjz = dtjz;
+	}
+
+	public String getOnChange() {
+		return onChange;
+	}
+
+	public void setOnChange(String onChange) {
+		this.onChange = onChange;
 	}
 }
