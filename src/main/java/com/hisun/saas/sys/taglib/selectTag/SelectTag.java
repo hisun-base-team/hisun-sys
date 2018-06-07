@@ -35,6 +35,9 @@ public final class SelectTag extends BodyTagSupport {
     private String defaultkeys;//默认的知道的相应key值 要有多个必须和值的内容对应  用,分开
     private String token;
     private String needNullValue="false";//单选增加一个空的选项
+    //是否必填
+    private String required="false";
+
     @Override
     public int doStartTag() throws JspTagException {
         return EVAL_BODY_BUFFERED;
@@ -95,6 +98,9 @@ public final class SelectTag extends BodyTagSupport {
                     }
                 }
             }
+             if(required.equals("true")) {
+                 noTreeresults.append(" required ");
+             }
             noTreeresults.append(" >");
             noTreeresults.append("</select>");
             noTreeresults.append("<input type=\"hidden\" id=\""+valueName+"\" name=\""+valueName+"\" value=\""+StringUtils.trimNullCharacter2Empty(this.defaultvalues)+"\">");
@@ -278,5 +284,13 @@ public final class SelectTag extends BodyTagSupport {
 
     public void setNeedNullValue(String needNullValue) {
         this.needNullValue = needNullValue;
+    }
+
+    public String getRequired() {
+        return required;
+    }
+
+    public void setRequired(String required) {
+        this.required = required;
     }
 }
