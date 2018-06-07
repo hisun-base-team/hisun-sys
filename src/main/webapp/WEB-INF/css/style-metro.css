@@ -29,7 +29,7 @@ select:focus {
 	padding: 6px 14px; 
 	text-shadow: none;
 	font-family:'微软雅黑', "Segoe UI", Helvetica, Arial, sans-serif;
-  font-size: 12px;  	
+  font-size: 12px;
   color: #333333;
 	cursor: pointer;
 	outline: none;
@@ -373,7 +373,7 @@ input.m-wrap,
 button.m-wrap,
 select.m-wrap,
 textarea.m-wrap {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: normal;
   line-height: 20px;
 
@@ -415,7 +415,7 @@ input[type="color"].m-wrap {
   height: 16px;
 	padding: 6px 6px !important;
   line-height: 16px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: normal;
   vertical-align: top;  
 	background-color: #ffffff;
