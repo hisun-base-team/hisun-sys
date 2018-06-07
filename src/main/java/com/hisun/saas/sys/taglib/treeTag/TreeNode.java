@@ -60,6 +60,13 @@ public class TreeNode {
 
 	private String description;
 
+	/**
+	 * 记录 treeNode 节点是否为父节点。1、初始化节点数据时，根据 treeNode.children 属性判断，有子节点则设置为 true，否则为 false
+	 2、初始化节点数据时，如果设定 treeNode.isParent = true，即使无子节点数据，也会设置为父节点
+	 3、为了解决部分朋友生成 json 数据出现的兼容问题, 支持 "false","true" 字符串格式的数据
+	 */
+	private boolean isParent;
+
 	public String getId() {
 		return id;
 	}
@@ -171,5 +178,13 @@ public class TreeNode {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public boolean getIsParent() {
+		return isParent;
+	}
+
+	public void setIsParent(boolean isParent) {
+		this.isParent = isParent;
 	}
 }
