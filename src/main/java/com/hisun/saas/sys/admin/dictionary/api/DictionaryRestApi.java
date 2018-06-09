@@ -187,7 +187,9 @@ public class DictionaryRestApi {
             //加载默认值的节点及其父节点
             if(defaultkeys!=null && !defaultkeys.equals("")) {
                 List defaultkeysList = this.getDicItemsByDefaultkeys(defaultkeys,typeCode);
-                query.add(CommonRestrictions.or(" id in (:defaultkeysList) ", "defaultkeysList",defaultkeysList));
+                if(defaultkeysList!=null && defaultkeysList.size()>0) {
+                    query.add(CommonRestrictions.or(" id in (:defaultkeysList) ", "defaultkeysList", defaultkeysList));
+                }
             }
             CommonOrderBy orderBy = new CommonOrderBy();
             orderBy.add(CommonOrder.asc("code"));
