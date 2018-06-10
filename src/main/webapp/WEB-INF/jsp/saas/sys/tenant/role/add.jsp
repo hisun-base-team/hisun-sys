@@ -13,9 +13,7 @@
     <div class="row-fluid">
         <div class="portlet box grey">
             <div class="portlet-title">
-                <div class="caption">
-                    <span class="hidden-480">添加角色</span>
-                </div>
+                <div class="caption">添加角色</div>
             </div>
             <div class="portlet-body form">
                 <form class="form-horizontal " id="form1" method="post">

@@ -6,6 +6,7 @@
 
 package com.hisun.saas.sys.tenant.base.dao.imp;
 
+import com.hisun.saas.sys.auth.Constants;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.tenant.base.entity.TenantEntity;
 import com.hisun.base.dao.impl.BaseDaoImpl;
@@ -34,7 +35,8 @@ public class TenantBaseDaoImpl<E extends java.io.Serializable, PK extends java.i
     		}catch(ShiroException e){
     			logger.info("This entity is TenantEntity,but tenantFilter is not used.Reason is ["+e.getMessage()+"]");
     		}
-    		if(userLoginDetails!=null){
+    		if(userLoginDetails!=null &&
+					(userLoginDetails.getUserType()== Constants.USER_TYPE_TENANT)){
     			session.enableFilter("tenantFilter").setParameter("tenantFilterParam", userLoginDetails.getTenantId());
     		}
     	}

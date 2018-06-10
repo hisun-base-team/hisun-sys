@@ -98,7 +98,7 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant, String> implement
 		role.setIsDefault(Constants.DEFAULT_ROLE);
 		//设置缺省角色模板
 		CommonConditionQuery query = new CommonConditionQuery();
-		query.add(CommonRestrictions.and("roleCodePrefix = : codePrefix","codePrefix",Constants.ROLE_ADMIN_PREFIX));
+		query.add(CommonRestrictions.and("roleCodePrefix =:codePrefix","codePrefix",Constants.ROLE_ADMIN_PREFIX));
 		List<TenantRoleTplt> tenantRoleTplts =  tenantRoleTpltDao.list(query,null);
 		if(tenantRoleTplts!=null&& tenantRoleTplts.size()>0){
 			role.setTenantRoleTplt(tenantRoleTplts.get(0));

@@ -52,7 +52,7 @@
 									class="required">*</span>
 							</label>
 							<div class="controls">
-								<input class="span6 m-wrap" type="text" name="adminUserName" id="adminUserName" value="" required minlength="4" maxlength="30" usernamePattern="true" tenantUsernameUnique="true" csrftoken="${sessionScope.OWASP_CSRFTOKEN}">
+								<input class="span6 m-wrap" type="text" name="adminUserName" id="adminUserName" value="" required minlength="4" maxlength="30" usernamePattern="true"  csrftoken="${sessionScope.OWASP_CSRFTOKEN}">
 							</div>
 						</div>
 						<div id="adminUserPasswordGroup" class="control-group">
