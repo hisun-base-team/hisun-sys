@@ -15,6 +15,7 @@ public class TenantResourceVo{
 	private String name;
 	private boolean open;
 	private String href;
+	private String key;
 	
 	//resource entity中的对应属性，用于直接entity转vo在前台进行显示
 	private String resourceName;
@@ -166,5 +167,17 @@ public class TenantResourceVo{
 
 	public void setPrivilegeSetting(Integer privilegeSetting) {
 		this.privilegeSetting = privilegeSetting;
+	}
+
+	public String getKey() {
+		if(key == null){
+			return id;
+		}else{
+			return key;
+		}
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 }
