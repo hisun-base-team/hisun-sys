@@ -98,6 +98,9 @@ public final class TreeTag extends BodyTagSupport {
 	private String height;//设置高度 如果没设置则表示为默认高度
 
 	private String dtjz="false";//是否动态加载 true为动态加载
+
+	private String shjz="false";//动态加载时 是否实时加载 true为动态加载
+
 	@Override
 	public int doStartTag() throws JspTagException {
 		return EVAL_BODY_BUFFERED;
@@ -175,7 +178,7 @@ public final class TreeTag extends BodyTagSupport {
 			nodesHtml.append("<ul id=\""+id+"_tree\" class=\"ztree\" style=\"background:#FFFFFF !important;height:300px; overflow-x: auto; margin: 0px;padding: 0px; border-top:none;\"></ul>");
 			nodesHtml.append("</div>");
 		}
-		nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" onClickFunc=\""+onClick+"\" radioOrCheckbox=\""+radioOrCheckbox+"\" dtjz=\""+dtjz+"\"" +
+		nodesHtml.append("<input type=\"hidden\" id=\""+id+"_tagDefineAtt\" onClickFunc=\""+onClick+"\" radioOrCheckbox=\""+radioOrCheckbox+"\" dtjz=\""+dtjz+"\" shjz=\""+shjz+"\"" +
 				"dataType=\""+dataType+"\" submitType=\""+submitType+"\" url=\""+treeUrl+"\" isSearch=\""+isSearch+"\" beforeCheckFunc=\""+beforeCheck+"\" isSelectTree=\""+isSelectTree+"\"" +
 				" onclickFunc=\""+onClick+"\" onchangeFunc=\""+onChange+"\" onCheckFunc=\""+onCheck+"\" token=\""+token+"\" userParameter=\""+userParameter+"\" checkedByTitle=\""+checkedByTitle+"\"" +
 				" checkedAndNoUnCheckedUnByTitle=\""+checkedAndNoUnCheckedUnByTitle+"\" valueMerge=\""+valueMerge+"\" initCheckboxValueType=\""+initCheckboxValueType+"\">");
@@ -499,5 +502,13 @@ public final class TreeTag extends BodyTagSupport {
 
 	public void setOnChange(String onChange) {
 		this.onChange = onChange;
+	}
+
+	public String getShjz() {
+		return shjz;
+	}
+
+	public void setShjz(String shjz) {
+		this.shjz = shjz;
 	}
 }

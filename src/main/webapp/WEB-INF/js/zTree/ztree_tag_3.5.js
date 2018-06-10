@@ -176,6 +176,8 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,
 	var valueMerge = treeDefineAttObj.getAttribute("valueMerge");
 	var initCheckboxValueType = treeDefineAttObj.getAttribute("initCheckboxValueType");
 	var dtjz = treeDefineAttObj.getAttribute("dtjz");//是否动态加载
+    var shjz = treeDefineAttObj.getAttribute("shjz");//动态加载时 是否实时加载 true为动态加载
+
     var isSelectTree = treeDefineAttObj.getAttribute("isSelectTree");//是否下拉控件展示的树
 
 	var dataValue = "";
@@ -194,7 +196,7 @@ function treeLoadByTag(dataType,submitType,treeUrl,id,tagSetting,isSearch,token,
 	}
 
 	if(dtjz!=null && dtjz=="true"){//动态加载
-        if(isSelectTree=="false"){
+        if(shjz!=null && shjz=="true"){
             //树实时加载顶级节点
             $.ajax({
                 async : false,
