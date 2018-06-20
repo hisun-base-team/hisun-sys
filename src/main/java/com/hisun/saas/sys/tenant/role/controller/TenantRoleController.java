@@ -355,7 +355,11 @@ public class TenantRoleController extends BaseController {
             model.put("vos", vos);
             model.put("resourceId", resourceId);
             model.put("resourceName", resourceName);
-            model.put("tenant2ResourceId", tenant2Resource.getId());
+            String tenant2ResourceId = "";
+            if(tenant2Resource!=null){
+                tenant2ResourceId =  tenant2Resource.getId();
+            }
+            model.put("tenant2ResourceId", tenant2ResourceId);
 
             model.put("roleId", roleId);
             model.put("roleName", roleName);
