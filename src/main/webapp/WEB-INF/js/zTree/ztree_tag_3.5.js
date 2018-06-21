@@ -621,6 +621,25 @@ function refreshTreeTag(id,tagSetting,loadAfterMethod){
 }
 
 /**
+ * 重新传入URL 刷新树
+ * @param id 定义ID
+ * @param tagSetting setting_加id  如定义id为demoTree 则传入setting_demoTree
+ * @param loadAfterMethod 刷新后调用的私有方法
+ */
+function refreshTreeTagByNewUrl(id,tagSetting,loadAfterMethod,url){
+    var treeDefineAttObj = document.getElementById(id+"_tagDefineAtt");
+    var dataType = treeDefineAttObj.getAttribute("dataType");
+    var submitType = treeDefineAttObj.getAttribute("submitType");
+    if(url==null || url==""){
+        url = treeDefineAttObj.getAttribute("url");
+	}
+    var isSearch = treeDefineAttObj.getAttribute("isSearch");
+    var token = treeDefineAttObj.getAttribute("token");
+    treeLoadByTag(dataType,submitType,url,id,tagSetting,isSearch,token,loadAfterMethod);
+
+}
+
+/**
  * 刷新树
  * @param id 定义ID
  * @param tagSetting setting_加id  如定义id为demoTree 则传入setting_demoTree
