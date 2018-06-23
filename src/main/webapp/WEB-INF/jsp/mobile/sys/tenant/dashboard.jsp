@@ -90,7 +90,7 @@
         </ul>
     </div>
     <div class="navig_contact">
-        <a class="nav_a" href="/zzb/app/console/bset/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+        <a class="nav_a" href="/xx/app/console/Sha01/un/wap/hypcList?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco01.png"></dt>
                 <dd>
