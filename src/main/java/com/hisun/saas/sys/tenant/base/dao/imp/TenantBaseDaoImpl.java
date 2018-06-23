@@ -37,6 +37,7 @@ public class TenantBaseDaoImpl<E extends java.io.Serializable, PK extends java.i
     		}
     		if(userLoginDetails!=null &&
 					(userLoginDetails.getUserType()== Constants.USER_TYPE_TENANT)){
+    			//只有租户才需要增加租户过滤
     			session.enableFilter("tenantFilter").setParameter("tenantFilterParam", userLoginDetails.getTenantId());
     		}
     	}

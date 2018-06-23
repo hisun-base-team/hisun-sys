@@ -14,11 +14,13 @@
 .login_footer{ background-color:#fff; height:58px; width:100%; text-align:center; line-height:58px; color:#888; margin-top:20px;}
 /*.login_main{  background-color:#3183eb; width:100%; overflow:hidden;}*/
 .login_main{ background:url(../images/templateImage/logo_banner_Bg1.jpg) #1a4284 no-repeat center; height:476px; width:100%; overflow:hidden;}
-
+.login_main_mobile{height:476px; width:100%; overflow:hidden;}
 .login_main_title{ width:390px; margin:0 auto; padding:65px 0 40px 0;}
 /*.login_mod{ background:url(../images/templateImage/login_mod_bg.png) no-repeat center; width:437px; height:460px; margin:0 auto;}*/
 .login_mod{ width:1000px; margin:0 auto; padding-bottom:20px;}
+.login_mod_mobile{ width:100%; margin:0 auto; padding-bottom:20px;}
 .login_mod_show{background-color:#FFFFFF; width:290px; float:right; padding:20px 32px; margin:60px 0 20px 0; }
+.login_mod_show_mobile{background-color:#FFFFFF; padding:20px 32px; margin:60px 0 20px 0; }
 .login_mod_left{ width:550px; height:476px; float:left;}
 
 

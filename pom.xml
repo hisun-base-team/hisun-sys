@@ -223,7 +223,7 @@
 					<![CDATA[ jdbc:mysql://localhost/zzb?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true  ]]>
 				</db.connection.url>
 				<db.connection.username>root</db.connection.username>
-				<db.connection.password>123456</db.connection.password>
+				<db.connection.password></db.connection.password>
 				<db.connection.properties>config.decrypt=false</db.connection.properties>
 				<es.cluster.name>elasticsearch</es.cluster.name>
 				<es.ip>localhost</es.ip>
@@ -231,9 +231,9 @@
 				<es.rest.port>9200</es.rest.port>
 				<sys.domain>http://localhost:8080</sys.domain>
 				<sys.deploy.internet>false</sys.deploy.internet>
-				<sys.upload.absolute.path>F:/store</sys.upload.absolute.path>
-				<quartz.on>true</quartz.on>
-				<quartz.execute.hostname>192.168.3.7</quartz.execute.hostname>
+				<sys.upload.absolute.path>/Users/zhouying/Documents/workspace/store</sys.upload.absolute.path>
+				<quartz.on>false</quartz.on>
+				<quartz.execute.hostname>192.168.3.200</quartz.execute.hostname>
 				<log4j.rootCategory>DEBUG,logfile,stdout</log4j.rootCategory>
 				<log4j.stdout.Threshold>DEBUG</log4j.stdout.Threshold>
 				<log4j.logfile.Threshold>DEBUG</log4j.logfile.Threshold>

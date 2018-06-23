@@ -22,6 +22,8 @@ import com.hisun.saas.sys.tenant.tenant.service.TenantRegisterService;
 import com.hisun.saas.sys.tenant.user.entity.TenantUser;
 import com.hisun.saas.sys.tenant.user.service.TenantUserService;
 import com.hisun.util.AddressUtil;
+import com.hisun.util.URLEncoderUtil;
+import com.hisun.util.UserAgentDetector;
 import com.hisun.util.WrapWebUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -42,6 +44,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,17 +77,48 @@ public class LoginController extends BaseController {
     private String mainLogo;
     @Value("${sys.copyright}")
     private String sysCopyright;
-    @Value(value= "${kaptcha.activated}")
+    @Value(value = "${kaptcha.activated}")
     private boolean captchaActivated;
     @Value(value = "${communication.sms.on}")
     private boolean smsOn;
     @Value(value = "${sys.deploy.internet}")
     private boolean outernet;
+    @Value("${sys.main.url.pc}")
+    private String mainUrlPC;
+    @Value("${sys.main.url.mobile}")
+    private String mainUrlMobile;
+
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView login() {
+        boolean isMobileAgent = UserAgentDetector.detectMobileAgent();
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        if (SecurityUtils.getSubject().isAuthenticated() && userLoginDetails != null) {
+            if (isMobileAgent) {
+                return new ModelAndView("redirect:" + mainUrlMobile);
+            } else {
+                return new ModelAndView("redirect:" + mainUrlPC);
+            }
+        }
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("sysName", sysName);
+        map.put("favicon", favicon);
+        map.put("sysLoginLogo", sysLoginLogo);
+        map.put("captchaActivated", captchaActivated);
+        map.put("smsOn", smsOn);
+        map.put("sysCopyright", sysCopyright);
+        if (isMobileAgent) {
+            return new ModelAndView("mobile/login", map);
+        } else {
+            return new ModelAndView("login", map);
+        }
+    }
 
     @RequestMapping(value = "/signin")
     public String signin(TenantUser loginUser, Model model, boolean remember, String kaptcha, HttpServletRequest req) {
+        boolean isMobileAgent = UserAgentDetector.detectMobileAgent();
         Subject currentUser = SecurityUtils.getSubject();
-        KaptchaUsernamePasswordToken token = new KaptchaUsernamePasswordToken(loginUser.getUsername(), loginUser.getPassword(),false,kaptcha,false);
+        KaptchaUsernamePasswordToken token = new KaptchaUsernamePasswordToken(loginUser.getUsername(), loginUser.getPassword(), false, kaptcha, false);
         token.setRememberMe(false);
         try {
             currentUser.login(token);
@@ -103,23 +137,28 @@ public class LoginController extends BaseController {
             this.tenantLogService.save(log);
             CsrfGuard csrfGuard = CsrfGuard.getInstance();
             csrfGuard.updateToken(WrapWebUtils.getSession());
-            return "redirect:/zzb/dzda/dashboard?OWASP_CSRFTOKEN="+ WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
+            if (isMobileAgent) {
+                return "redirect:" + mainUrlMobile + "?OWASP_CSRFTOKEN=" + WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
+            } else {
+                return "redirect:" + mainUrlPC + "?OWASP_CSRFTOKEN=" + WrapWebUtils.getSession().getAttribute("OWASP_CSRFTOKEN");
+            }
+
         } catch (AuthenticationException e) {
             token.clear();
             String content = "";
-            if(e.getCause() instanceof GenericException){
-                content="验证码错误!";
+            if (e.getCause() instanceof GenericException) {
+                content = "验证码错误!";
                 model.addAttribute("error", "2");
-            } else if(e instanceof ExcessiveAttemptsException){
-                content="当天错误输入5次密码，该账号已被锁定!";
-                model.addAttribute("error","3");
-            }else if(e instanceof UnknownAccountException){
-                content="不存在此账号!";
-                model.addAttribute("error","4");
-            }else if(e instanceof LockedAccountException){
-                content="账号已冻结!";
-                model.addAttribute("error","5");
-            } else{
+            } else if (e instanceof ExcessiveAttemptsException) {
+                content = "当天错误输入5次密码，该账号已被锁定!";
+                model.addAttribute("error", "3");
+            } else if (e instanceof UnknownAccountException) {
+                content = "不存在此账号!";
+                model.addAttribute("error", "4");
+            } else if (e instanceof LockedAccountException) {
+                content = "账号已冻结!";
+                model.addAttribute("error", "5");
+            } else {
                 content = e.getMessage();
                 model.addAttribute("error", "1");
             }
@@ -137,12 +176,11 @@ public class LoginController extends BaseController {
         }
     }
 
-
-    private String getIp(){
+    private String getIp() {
         String ip = WrapWebUtils.getRemoteIp();
-        if(StringUtils.isEmpty(ip)){
-            ip="localhost";
-        }else{
+        if (StringUtils.isEmpty(ip)) {
+            ip = "localhost";
+        } else {
             try {
                 if (outernet) {
                     ip = AddressUtil.getIpInformation(ip);
@@ -153,23 +191,6 @@ public class LoginController extends BaseController {
         }
         return ip;
     }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login() {
-        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
-        if(SecurityUtils.getSubject().isAuthenticated()&&userLoginDetails!=null){
-            return new ModelAndView("redirect:/zzb/dzda/dashboard");
-        }
-        Map<String, Object> map = Maps.newHashMap();
-        map.put("sysName", sysName);
-        map.put("favicon",favicon);
-        map.put("sysLoginLogo", sysLoginLogo);
-        map.put("captchaActivated", captchaActivated);
-        map.put("smsOn", smsOn);
-        map.put("sysCopyright",sysCopyright);
-        return new ModelAndView("login",map);
-    }
-
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() throws IOException {
@@ -190,26 +211,30 @@ public class LoginController extends BaseController {
         return "redirect:/login";
     }
 
-    //@RequiresPermissions("tenant:dashboard")
     @RequestMapping(value = "/dashboard")
     public ModelAndView dashboard() {
         ModelAndView modelAndView = null;
         Map<String, String> map = Maps.newConcurrentMap();
         map.put("logo", mainLogo);
-        modelAndView = new ModelAndView("saas/sys/tenant/dashboard", map);
+        boolean isMobileAgent = UserAgentDetector.detectMobileAgent();
+        if(isMobileAgent){
+            modelAndView = new ModelAndView("mobile/sys/tenant/dashboard", map);
+        }else {
+            modelAndView = new ModelAndView("sys/tenant/dashboard", map);
+        }
         return modelAndView;
     }
 
-    @RequestMapping(value = "/signup")
-    public String signup(){
-        return "redirect:/dashboard";
-    }
-
-    @RequestMapping(value="/register", method = RequestMethod.GET)
-    public ModelAndView openRegister(HttpServletRequest request){
-        String path = request.getContextPath();
-        Map<String,Object> model = new HashMap<String,Object>();
-        model.put("path",path);
-        return new ModelAndView("register",model);
-    }
+//    @RequestMapping(value = "/signup")
+//    public String signup() {
+//        return "redirect:/dashboard";
+//    }
+//
+//    @RequestMapping(value = "/register", method = RequestMethod.GET)
+//    public ModelAndView openRegister(HttpServletRequest request) {
+//        String path = request.getContextPath();
+//        Map<String, Object> model = new HashMap<String, Object>();
+//        model.put("path", path);
+//        return new ModelAndView("register", model);
+//    }
 }
