@@ -50,7 +50,7 @@
         .dlnavigcont dd .navp01{ text-align: center;}
     </style>
 </head>
-<body>
+<body >
 <div class="navig">
     <div class="navig_header">
         <div class="naviglogo"><img  style="max-height: 44px;" src="${path}/images/${logo}"></div>
@@ -157,7 +157,14 @@
     function autoFixed() {
         //定义内容区域的高度 var mainHeight = $(window).height()-$(".navbar-inner").outerHeight()
         var mainHeight = $(window).height();
+        var mainWidth = $(window).width();
         $('.navig').height(mainHeight);
+        if(mainWidth>mainHeight){
+            $('.navig').css("background","url(../images/templateImage/navig_bg.jpg) no-repeat center");
+        }else{
+            $('.navig').css("background","url(../images/templateImage/navig_bg1.jpg) no-repeat center");
+        }
+
     }
 
     function getMessage() {
