@@ -203,6 +203,8 @@
 				<sys.domain>http://localhost:8080</sys.domain>
 				<sys.deploy.internet>false</sys.deploy.internet>
 				<sys.upload.absolute.path>Z:</sys.upload.absolute.path>
+				<sys.main.url.pc>/zzb/dzda/dashboard</sys.main.url.pc>
+				<sys.main.url.mobile>/dashboard</sys.main.url.mobile>
 				<quartz.on>false</quartz.on>
 				<quartz.execute.hostname>192.168.3.200</quartz.execute.hostname>
 				<log4j.rootCategory>DEBUG,logfile,stdout</log4j.rootCategory>
@@ -232,6 +234,8 @@
 				<sys.domain>http://localhost:8080</sys.domain>
 				<sys.deploy.internet>false</sys.deploy.internet>
 				<sys.upload.absolute.path>/Users/zhouying/Documents/workspace/store</sys.upload.absolute.path>
+				<sys.main.url.pc>/zzb/dzda/dashboard</sys.main.url.pc>
+				<sys.main.url.mobile>/dashboard</sys.main.url.mobile>
 				<quartz.on>false</quartz.on>
 				<quartz.execute.hostname>192.168.3.200</quartz.execute.hostname>
 				<log4j.rootCategory>DEBUG,logfile,stdout</log4j.rootCategory>
@@ -261,6 +265,8 @@
 				<sys.domain>http://localhost:8080</sys.domain>
 				<sys.deploy.internet>false</sys.deploy.internet>
 				<sys.upload.absolute.path>D:\zzb\store</sys.upload.absolute.path>
+				<sys.main.url.pc>/zzb/dzda/dashboard</sys.main.url.pc>
+				<sys.main.url.mobile>/dashboard</sys.main.url.mobile>
 				<quartz.on>true</quartz.on>
 				<quartz.execute.hostname>localhost</quartz.execute.hostname>
 				<log4j.rootCategory>WARN,logfile,stdout</log4j.rootCategory>
