@@ -52,6 +52,8 @@
                     <option value="2" ${param.type eq '2'?'selected="selected"':''}>修改</option>
                     <option value="3" ${param.type eq '3'?'selected="selected"':''}>删除</option>
                     <option value="4" ${param.type eq '4'?'selected="selected"':''}>查询</option>
+                    <option value="7" ${param.type eq '7'?'selected="selected"':''}>下载</option>
+                    <option value="8" ${param.type eq '8'?'selected="selected"':''}>打印</option>
                 </select>
                 <button type="submit" class="btn  Short_but">查询</button>
                 <button id="submitBtn" type="button" class="btn Short_but">清空</button>

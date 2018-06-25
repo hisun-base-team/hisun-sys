@@ -151,7 +151,7 @@ public class TenantLogController extends BaseController {
 			List types = Lists.newArrayList();
 			types.add(LogOperateType.LOGIN.getType());
 			types.add(LogOperateType.LOGOUT.getType());
-			query.add(CommonRestrictions.and(" type not in (:type)", "type",types));
+			query.add(CommonRestrictions.and(" type not in (:types)", "types",types));
 			if(start.length()>0){
 				query.add(CommonRestrictions.and(" operateTime >= :start", "start",new DateTime(start).toDate()));
 			}
