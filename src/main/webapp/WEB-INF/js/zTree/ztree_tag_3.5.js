@@ -632,10 +632,12 @@ function refreshTreeTagByNewUrl(id,tagSetting,loadAfterMethod,url){
     var submitType = treeDefineAttObj.getAttribute("submitType");
     if(url==null || url==""){
         url = treeDefineAttObj.getAttribute("url");
+	}else{
+        treeDefineAttObj.setAttribute("url",url);
 	}
     var isSearch = treeDefineAttObj.getAttribute("isSearch");
     var token = treeDefineAttObj.getAttribute("token");
-    treeLoadByTag(dataType,submitType,url,id,tagSetting,isSearch,token,loadAfterMethod);
+    treeLoadByTag(dataType,submitType,url,id+"_tree",tagSetting,isSearch,token,loadAfterMethod);
 
 }
 
