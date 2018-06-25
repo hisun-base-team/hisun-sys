@@ -15,4 +15,5 @@ import com.hisun.saas.sys.admin.dzda.entity.ECatalogTypeInfo;
 public interface ECatalogTypeService extends BaseService<ECatalogTypeInfo,String>{
     Integer getMaxSort(String pId);
     void updateCatalogType(ECatalogTypeInfo eCatalogTypeInfo, String oldPid, Integer oldSort);
+    ECatalogTypeInfo getECatalogTypeInfoByCatalogCode(String catalogCode);
 }

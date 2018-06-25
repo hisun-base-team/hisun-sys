@@ -108,4 +108,22 @@ public class ECatalogTypeServiceImpl extends BaseServiceImpl<ECatalogTypeInfo,St
         }
         this.eCatalogTypeDao.executeNativeBulk(sql,query);
     }
+
+    @Override
+    public ECatalogTypeInfo getECatalogTypeInfoByCatalogCode(String catalogCode){
+        Map<String, Object> map=new HashMap<String, Object>();
+        String sql="select e.id,e.catalogCode,e.catalogValue,e.sort from ECatalogTypeInfo e ";
+        sql+=" where e.catalogCode=:eCatalogCode ";
+        map.put("eCatalogCode",catalogCode);
+        List<Map> maps = this.eCatalogTypeDao.list(sql,map);
+        ECatalogTypeInfo eCatalogTypeInfo = new ECatalogTypeInfo();
+        if(maps!=null&&maps.size()>0){
+            Map map1 = maps.get(0);
+            eCatalogTypeInfo.setId((String)map1.get("0"));
+            eCatalogTypeInfo.setCatalogCode((String)map1.get("1"));
+            eCatalogTypeInfo.setCatalogValue((String)map1.get("2"));
+        }
+        return eCatalogTypeInfo;
+    }
+
 }
