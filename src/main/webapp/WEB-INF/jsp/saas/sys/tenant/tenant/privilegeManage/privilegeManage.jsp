@@ -66,7 +66,7 @@ ul.ztree{margin-bottom: 10px; background: #f1f3f6 !important;}
 			$("#treeDemo_div").css('height',divHeight);
 		}
 
-		function checkByTree(e,treeId, treeNode){
+		function checkByTree(treeId, treeNode){
 			var zTree = $.fn.zTree.getZTreeObj(treeId);
 			var changeCheckedNodes = zTree.getChangeCheckedNodes();
             var changeCheckedIds = "";
