@@ -584,7 +584,7 @@ function onCheckByCheckBox(e, treeId, treeNode) {
 	if (treeDefineAttObj != null) {
 		var onCheckFunc = treeDefineAttObj.getAttribute("onCheckFunc");
 		if(onCheckFunc!=null && onCheckFunc!=""){
-			return eval(onCheckFunc+"(event,treeId, treeNode)");
+			return eval(onCheckFunc+"(treeId, treeNode)");
 		}
 	}
 }
